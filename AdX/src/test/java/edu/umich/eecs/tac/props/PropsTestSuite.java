@@ -13,8 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		PricingTest.class, ProductTest.class, PublisherInfoTest.class,
 		QueryReportTest.class, QueryTest.class, QueryTypeTest.class,
 		RankingTest.class, RetailCatalogTest.class, SalesReportTest.class,
-		SlotInfoTest.class, TransportableTestUtils.class,
-		UserClickModelTest.class })
+		SlotInfoTest.class, UserClickModelTest.class })
 public class PropsTestSuite {
 
 }

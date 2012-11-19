@@ -57,7 +57,7 @@ public class RetailCatalogTest {
 	@Test
 	public void testSalesProfitForUncontainedProduct() {
 		RetailCatalog catalog = new RetailCatalog();
-		assertEquals(catalog.getSalesProfit(null), 0.0);
+		assertEquals(catalog.getSalesProfit(null), 0.0, 0);
 
 	}
 
@@ -81,9 +81,9 @@ public class RetailCatalogTest {
 		assertEquals(catalog.getComponents().size(), 3);
 		assertEquals(catalog.size(), 3);
 
-		assertEquals(catalog.getSalesProfit(product), 10.5);
-		assertEquals(catalog.getSalesProfit(1), 15.5);
-		assertEquals(catalog.getSalesProfit(new Product()), 0.0);
+		assertEquals(catalog.getSalesProfit(product), 10.5, 0);
+		assertEquals(catalog.getSalesProfit(1), 15.5, 0);
+		assertEquals(catalog.getSalesProfit(new Product()), 0.0, 0);
 
 		for (Product p : catalog) {
 			p.equals(new Product("m1", "c1"));

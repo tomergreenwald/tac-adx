@@ -172,7 +172,7 @@ public class PricingTest {
 		assertNotNull(instance);
 		assertNotNull(received);
 		assertEquals(instance.adLinks().size(), received.adLinks().size());
-		assertEquals(instance.getPrice(ad), received.getPrice(ad));
+		assertEquals(instance.getPrice(ad), received.getPrice(ad), 0);
 
 		instance.lock();
 		received = new Pricing();
@@ -183,7 +183,7 @@ public class PricingTest {
 		assertNotNull(instance);
 		assertNotNull(received);
 		assertEquals(instance.adLinks().size(), received.adLinks().size());
-		assertEquals(instance.getPrice(ad), received.getPrice(ad));
+		assertEquals(instance.getPrice(ad), received.getPrice(ad), 0);
 	}
 
 	@Test

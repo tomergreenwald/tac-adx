@@ -304,17 +304,17 @@ public class UserClickModelTest {
 		queryIndex = 0;
 		expResult = 0.00;
 		result = instance.getContinuationProbability(queryIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		queryIndex = 6;
 		expResult = 6.0 / 9.0;
 		result = instance.getContinuationProbability(queryIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		queryIndex = 9;
 		expResult = 1.0;
 		result = instance.getContinuationProbability(queryIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 	}
 
 	@Test
@@ -343,18 +343,18 @@ public class UserClickModelTest {
 		queryIndex = 0;
 		instance.setContinuationProbability(queryIndex, probability);
 		assertEquals(instance.getContinuationProbability(queryIndex),
-				probability);
+				probability, 0);
 
 		probability = 0.33;
 		instance.setContinuationProbability(queryIndex, probability);
 		assertEquals(instance.getContinuationProbability(queryIndex),
-				probability);
+				probability, 0);
 
 		probability = 0.1;
 		queryIndex = 1;
 		instance.setContinuationProbability(queryIndex, probability);
 		assertEquals(instance.getContinuationProbability(queryIndex),
-				probability);
+				probability, 0);
 
 		instance.lock();
 		try {
@@ -384,37 +384,37 @@ public class UserClickModelTest {
 		advertiserIndex = 0;
 		expResult = 0.0;
 		result = instance.getAdvertiserEffect(queryIndex, advertiserIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		queryIndex = 0;
 		advertiserIndex = 1;
 		expResult = 1.0 / 2.0;
 		result = instance.getAdvertiserEffect(queryIndex, advertiserIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		queryIndex = 0;
 		advertiserIndex = 2;
 		expResult = 1.0;
 		result = instance.getAdvertiserEffect(queryIndex, advertiserIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		queryIndex = 9;
 		advertiserIndex = 0;
 		expResult = 0.0;
 		result = instance.getAdvertiserEffect(queryIndex, advertiserIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		queryIndex = 9;
 		advertiserIndex = 2;
 		expResult = 1.0;
 		result = instance.getAdvertiserEffect(queryIndex, advertiserIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		queryIndex = 3;
 		advertiserIndex = 1;
 		expResult = 1.0 / 2.0;
 		result = instance.getAdvertiserEffect(queryIndex, advertiserIndex);
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 	}
 
 	@Test
@@ -453,49 +453,49 @@ public class UserClickModelTest {
 		effect = 0.33;
 		instance.setAdvertiserEffect(queryIndex, advertiserIndex, effect);
 		assertEquals(instance.getAdvertiserEffect(queryIndex, advertiserIndex),
-				effect);
+				effect, 0);
 
 		queryIndex = 0;
 		advertiserIndex = 0;
 		effect = 0.0;
 		instance.setAdvertiserEffect(queryIndex, advertiserIndex, effect);
 		assertEquals(instance.getAdvertiserEffect(queryIndex, advertiserIndex),
-				effect);
+				effect, 0);
 
 		queryIndex = 4;
 		advertiserIndex = 0;
 		effect = 0.93;
 		instance.setAdvertiserEffect(queryIndex, advertiserIndex, effect);
 		assertEquals(instance.getAdvertiserEffect(queryIndex, advertiserIndex),
-				effect);
+				effect, 0);
 
 		queryIndex = 4;
 		advertiserIndex = 0;
 		effect = 0.0;
 		instance.setAdvertiserEffect(queryIndex, advertiserIndex, effect);
 		assertEquals(instance.getAdvertiserEffect(queryIndex, advertiserIndex),
-				effect);
+				effect, 0);
 
 		queryIndex = 5;
 		advertiserIndex = 1;
 		effect = 0.23;
 		instance.setAdvertiserEffect(queryIndex, advertiserIndex, effect);
 		assertEquals(instance.getAdvertiserEffect(queryIndex, advertiserIndex),
-				effect);
+				effect, 0);
 
 		queryIndex = 5;
 		advertiserIndex = 1;
 		effect = 0.0;
 		instance.setAdvertiserEffect(queryIndex, advertiserIndex, effect);
 		assertEquals(instance.getAdvertiserEffect(queryIndex, advertiserIndex),
-				effect);
+				effect, 0);
 
 		queryIndex = 9;
 		advertiserIndex = 2;
 		effect = 0.53;
 		instance.setAdvertiserEffect(queryIndex, advertiserIndex, effect);
 		assertEquals(instance.getAdvertiserEffect(queryIndex, advertiserIndex),
-				effect);
+				effect, 0);
 
 		instance.lock();
 		try {

@@ -72,16 +72,16 @@ public class BidBundleTest {
 
 		int index = 0;
 		assertEquals(bundle.getQuery(index), query);
-		assertEquals(bundle.getBid(query), bid);
-		assertEquals(bundle.getBid(index), bid);
+		assertEquals(bundle.getBid(query), bid, 0);
+		assertEquals(bundle.getBid(index), bid, 0);
 		assertEquals(bundle.getAd(query), ad);
 		assertEquals(bundle.getAd(index), ad);
-		assertEquals(bundle.getCampaignDailySpendLimit(), 100.5);
-		assertEquals(bundle.getDailyLimit(query), 15.0);
-		assertEquals(bundle.getDailyLimit(1), 200.0);
+		assertEquals(bundle.getCampaignDailySpendLimit(), 100.5, 0);
+		assertEquals(bundle.getDailyLimit(query), 15.0, 0);
+		assertEquals(bundle.getDailyLimit(1), 200.0, 0);
 
 		bundle.setBid(query, 100.0);
-		assertEquals(bundle.getBid(query), 100.0);
+		assertEquals(bundle.getBid(query), 100.0, 0);
 
 		Ad ad3 = new Ad();
 		Product product3 = new Product();
@@ -94,7 +94,7 @@ public class BidBundleTest {
 		Query query4 = new Query();
 		query4.setComponent("c4");
 		bundle.setBid(query4, 200.0);
-		assertEquals(bundle.getBid(query4), 200.0);
+		assertEquals(bundle.getBid(query4), 200.0, 0);
 
 		Query query5 = new Query();
 		query5.setComponent("c5");
@@ -108,7 +108,7 @@ public class BidBundleTest {
 		Query query6 = new Query();
 		query6.setComponent("c6");
 		bundle.setDailyLimit(query6, 57.2);
-		assertEquals(bundle.getDailyLimit(query6), 57.2);
+		assertEquals(bundle.getDailyLimit(query6), 57.2, 0);
 
 		Query query7 = new Query();
 		query7.setComponent("c7");
@@ -118,11 +118,11 @@ public class BidBundleTest {
 		ad7.setProduct(product7);
 		bundle.setBidAndAd(query7, 64.3, ad7);
 		assertEquals(bundle.getAd(query7), ad7);
-		assertEquals(bundle.getBid(query7), 64.3);
+		assertEquals(bundle.getBid(query7), 64.3, 0);
 
 		bundle.setBidAndAd(query7, 24.5, ad3);
 		assertEquals(bundle.getAd(query7), ad3);
-		assertEquals(bundle.getBid(query7), 24.5);
+		assertEquals(bundle.getBid(query7), 24.5, 0);
 
 		Iterator<Query> i = bundle.iterator();
 		assertEquals(i.next().getComponent(), "c1");
@@ -142,8 +142,8 @@ public class BidBundleTest {
 	public void testGets() {
 		BidBundle instance = new BidBundle();
 		assertNull(instance.getAd(null));
-		assertEquals(instance.getBid(null), Double.NaN);
-		assertEquals(instance.getDailyLimit(null), Double.NaN);
+		assertEquals(instance.getBid(null), Double.NaN, 0);
+		assertEquals(instance.getDailyLimit(null), Double.NaN, 0);
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class BidBundleTest {
 		byte[] buffer = getBytesForTransportable(writer, bundle);
 		BidBundle received = readFromBytes(reader, buffer, "BidBundle");
 
-		assertEquals(received.getCampaignDailySpendLimit(), Double.NaN);
+		assertEquals(received.getCampaignDailySpendLimit(), Double.NaN, 0);
 		assertNotNull(bundle);
 		assertNotNull(received);
 		assertEquals(received.size(), 2);

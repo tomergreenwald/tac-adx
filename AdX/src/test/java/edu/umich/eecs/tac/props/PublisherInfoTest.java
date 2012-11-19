@@ -46,9 +46,9 @@ public class PublisherInfoTest {
 	@Test
 	public void testAccessors() {
 		PublisherInfo p = new PublisherInfo();
-		assertEquals(p.getSquashingParameter(), 0.0);
+		assertEquals(p.getSquashingParameter(), 0.0, 0);
 		p.setSquashingParameter(1.0);
-		assertEquals(p.getSquashingParameter(), 1.0);
+		assertEquals(p.getSquashingParameter(), 1.0, 0);
 	}
 
 	@Test
@@ -63,6 +63,6 @@ public class PublisherInfoTest {
 		PublisherInfo received = readFromBytes(reader, buffer, "PublisherInfo");
 		assertNotNull(received);
 		assertEquals(info.getSquashingParameter(), received
-				.getSquashingParameter());
+				.getSquashingParameter(), 0);
 	}
 }

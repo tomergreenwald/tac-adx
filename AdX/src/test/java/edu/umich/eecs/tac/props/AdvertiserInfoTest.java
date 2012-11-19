@@ -64,19 +64,19 @@ public class AdvertiserInfoTest {
 		info.setFocusEffects(QueryType.FOCUS_LEVEL_TWO, 4.4);
 
 		assertEquals(info.getAdvertiserId(), "a");
-		assertEquals(info.getComponentBonus(), 1.0);
+		assertEquals(info.getComponentBonus(), 1.0, 0);
 		assertEquals(info.getComponentSpecialty(), "b");
 		assertEquals(info.getDistributionCapacity(), 10);
-		assertEquals(info.getManufacturerBonus(), 2.0);
+		assertEquals(info.getManufacturerBonus(), 2.0, 0);
 		assertEquals(info.getManufacturerSpecialty(), "c");
 		assertEquals(info.getPublisherId(), "d");
-		assertEquals(info.getDistributionCapacityDiscounter(), 3.0);
+		assertEquals(info.getDistributionCapacityDiscounter(), 3.0, 0);
 		assertEquals(info.getDistributionWindow(), 4);
-		assertEquals(info.getTargetEffect(), 3.3);
+		assertEquals(info.getTargetEffect(), 3.3, 0);
 
-		assertEquals(info.getFocusEffects(QueryType.FOCUS_LEVEL_ZERO), 0.0);
-		assertEquals(info.getFocusEffects(QueryType.FOCUS_LEVEL_ONE), 2.2);
-		assertEquals(info.getFocusEffects(QueryType.FOCUS_LEVEL_TWO), 4.4);
+		assertEquals(info.getFocusEffects(QueryType.FOCUS_LEVEL_ZERO), 0.0, 0);
+		assertEquals(info.getFocusEffects(QueryType.FOCUS_LEVEL_ONE), 2.2, 0);
+		assertEquals(info.getFocusEffects(QueryType.FOCUS_LEVEL_TWO), 4.4, 0);
 
 		info.lock();
 		int thrown = 0;

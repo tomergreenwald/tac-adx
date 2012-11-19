@@ -65,9 +65,9 @@ public class SalesReportTest {
 		entry.setConversions(1);
 		assertEquals(entry.getConversions(), 1);
 
-		assertEquals(entry.getRevenue(), 0.0);
+		assertEquals(entry.getRevenue(), 0.0, 0);
 		entry.setRevenue(1.5);
-		assertEquals(entry.getRevenue(), 1.5);
+		assertEquals(entry.getRevenue(), 1.5, 0);
 
 		assertEquals(entry.getTransportName(), "SalesReportEntry");
 		assertEquals(entry.toString(),
@@ -95,7 +95,7 @@ public class SalesReportTest {
 
 		assertEquals(received.getQuery(), new Query());
 		assertEquals(received.getConversions(), 1);
-		assertEquals(received.getRevenue(), 1.5);
+		assertEquals(received.getRevenue(), 1.5, 0);
 		assertEquals(entry.getTransportName(), "SalesReportEntry");
 
 	}
@@ -120,7 +120,7 @@ public class SalesReportTest {
 
 		assertNull(received.getQuery());
 		assertEquals(received.getConversions(), 1);
-		assertEquals(received.getRevenue(), 1.5);
+		assertEquals(received.getRevenue(), 1.5, 0);
 
 		assertEquals(received.getTransportName(), "SalesReportEntry");
 		assertEquals(received.toString(), "(null conv: 1 rev: 1.500000)");
@@ -168,7 +168,7 @@ public class SalesReportTest {
 		report.addQuery(query, 15, 100.3);
 		assertEquals(report.size(), 2);
 		assertTrue(report.containsQuery(query));
-		assertEquals(report.getRevenue(query), 100.3);
+		assertEquals(report.getRevenue(query), 100.3, 0);
 		assertEquals(report.getConversions(query), 15);
 
 		report.addQuery(null);
@@ -199,11 +199,11 @@ public class SalesReportTest {
 		report.setRevenue(new Query(), 1.0);
 		assertEquals(report.size(), 1);
 		assertTrue(report.containsQuery(new Query()));
-		assertEquals(report.getRevenue(new Query()), 1.0);
+		assertEquals(report.getRevenue(new Query()), 1.0, 0);
 
 		report.setRevenue(new Query(), 3.0);
 		assertEquals(report.size(), 1);
-		assertEquals(report.getRevenue(new Query()), 3.0);
+		assertEquals(report.getRevenue(new Query()), 3.0, 0);
 
 		report.setRevenue(null, 2);
 	}
@@ -217,12 +217,12 @@ public class SalesReportTest {
 		assertEquals(report.size(), 1);
 		assertTrue(report.containsQuery(new Query()));
 		assertEquals(report.getConversions(new Query()), 1);
-		assertEquals(report.getRevenue(new Query()), 2.0);
+		assertEquals(report.getRevenue(new Query()), 2.0, 0);
 
 		report.setConversionsAndRevenue(new Query(), 3, 4.0);
 		assertEquals(report.size(), 1);
 		assertEquals(report.getConversions(new Query()), 3);
-		assertEquals(report.getRevenue(new Query()), 4.0);
+		assertEquals(report.getRevenue(new Query()), 4.0, 0);
 
 		report.setConversionsAndRevenue(null, 2, 3.0);
 	}
@@ -233,7 +233,7 @@ public class SalesReportTest {
 		assertEquals(report.size(), 0);
 
 		assertEquals(report.getConversions(null), 0);
-		assertEquals(report.getRevenue(null), 0.0);
+		assertEquals(report.getRevenue(null), 0.0, 0);
 	}
 
 	@Test
@@ -251,18 +251,18 @@ public class SalesReportTest {
 		Query query = new Query();
 
 		assertEquals(report.getConversions(query), 0);
-		assertEquals(report.getRevenue(query), 0.0);
+		assertEquals(report.getRevenue(query), 0.0, 0);
 		report.addConversions(query, 2);
 		report.addRevenue(query, 3.0);
 		assertEquals(report.getConversions(query), 2);
-		assertEquals(report.getRevenue(query), 3.0);
+		assertEquals(report.getRevenue(query), 3.0, 0);
 		report.addConversions(query, 2);
 		report.addRevenue(query, 3.0);
 		assertEquals(report.getConversions(query), 4);
-		assertEquals(report.getRevenue(query), 6.0);
+		assertEquals(report.getRevenue(query), 6.0, 0);
 
 		report = new SalesReport();
 		report.addRevenue(query, 3.0);
-		assertEquals(report.getRevenue(query), 3.0);
+		assertEquals(report.getRevenue(query), 3.0, 0);
 	}
 }

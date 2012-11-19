@@ -57,18 +57,18 @@ public class SlotInfoTest {
 	public void testPromotedReserve() {
             for (QueryType type : QueryType.values()) {
 //                System.out.println(type+" "+reserveInfo.getPromotedReserve(type));
-		assertEquals(reserveInfo.getPromotedReserve(type), 0.0);
+		assertEquals(reserveInfo.getPromotedReserve(type), 0.0, 0);
 		reserveInfo.setPromotedReserve(type, 1.0);
-		assertEquals(reserveInfo.getPromotedReserve(type), 1.0);
+		assertEquals(reserveInfo.getPromotedReserve(type), 1.0, 0);
             }
 	}
 
 	@Test
 	public void testRegularReserve() {
             for (QueryType type : QueryType.values()) {
-		assertEquals(reserveInfo.getRegularReserve(type), 0.0);
+		assertEquals(reserveInfo.getRegularReserve(type), 0.0, 0);
 		reserveInfo.setRegularReserve(type, 1.0);
-		assertEquals(reserveInfo.getRegularReserve(type), 1.0);
+		assertEquals(reserveInfo.getRegularReserve(type), 1.0, 0);
             }
 	}
 

@@ -60,20 +60,20 @@ public class BankStatusTest {
 		BankStatus instance = new BankStatus();
 		double expResult = 0.0;
 		double result = instance.getAccountBalance();
-		assertEquals(expResult, result);
+		assertEquals(expResult, result, 0);
 
 		double b = 0.0;
 		instance.setAccountBalance(b);
 		result = instance.getAccountBalance();
-		assertEquals(b, result);
+		assertEquals(b, result, 0);
 
 		b = 100.5;
 		instance.setAccountBalance(b);
 		result = instance.getAccountBalance();
-		assertEquals(b, result);
+		assertEquals(b, result, 0);
 
 		instance = new BankStatus(100.0);
-		assertEquals(instance.getAccountBalance(), 100.0);
+		assertEquals(instance.getAccountBalance(), 100.0, 0);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class BankStatusTest {
 
 		assertNotNull(instance);
 		assertNotNull(received);
-		assertEquals(instance.getAccountBalance(), received.getAccountBalance());
+		assertEquals(instance.getAccountBalance(), received.getAccountBalance(), 0);
 
 		instance.lock();
 		received = new BankStatus();
@@ -114,7 +114,7 @@ public class BankStatusTest {
 
 		assertNotNull(instance);
 		assertNotNull(received);
-		assertEquals(instance.getAccountBalance(), received.getAccountBalance());
+		assertEquals(instance.getAccountBalance(), received.getAccountBalance(), 0);
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class BankStatusTest {
 
 		assertNotNull(instance);
 		assertNotNull(received);
-		assertEquals(instance.getAccountBalance(), received.getAccountBalance());
+		assertEquals(instance.getAccountBalance(), received.getAccountBalance(), 0);
 
 		instance.lock();
 		received = new BankStatus();
@@ -140,7 +140,7 @@ public class BankStatusTest {
 
 		assertNotNull(instance);
 		assertNotNull(received);
-		assertEquals(instance.getAccountBalance(), received.getAccountBalance());
+		assertEquals(instance.getAccountBalance(), received.getAccountBalance(), 0);
 	}
 
 	@Test(expected = IllegalStateException.class)

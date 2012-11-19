@@ -66,9 +66,9 @@ public class AuctionInfoTest {
 
 	@Test
 	public void testPromotedSlotBonus() {
-		assertEquals(slotInfo.getPromotedSlotBonus(), 0.0);
+		assertEquals(slotInfo.getPromotedSlotBonus(), 0.0, 0);
 		slotInfo.setPromotedSlotBonus(1.0);
-		assertEquals(slotInfo.getPromotedSlotBonus(), 1.0);
+		assertEquals(slotInfo.getPromotedSlotBonus(), 1.0, 0);
 	}
 
 	@Test
