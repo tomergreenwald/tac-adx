@@ -5,6 +5,13 @@
 	<artifactId>adx</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Ad-Exchange</name>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://adexchange.ci.cloudbees.com/job/adx-git/</url>
+	</ciManagement>
+	<scm>
+		<url>https://code.google.com/p/tac-adx/source/checkout</url>
+	</scm>
 	<build>
 		<plugins>
 			<plugin>
@@ -69,13 +76,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>jetty</groupId>
-			<artifactId>jetty</artifactId>
-			<version>4.2.27</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.sonatype.maven.plugin</groupId>
 			<artifactId>emma-maven-plugin</artifactId>
 			<version>1.2</version>
@@ -88,6 +88,13 @@
 			<version>2.12.4</version>
 			<type>maven-plugin</type>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>4.2.27</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>
