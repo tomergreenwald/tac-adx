@@ -21,7 +21,7 @@
 				<configuration>
 					<forkMode>once</forkMode>
 					<reportFormat>xml</reportFormat>
-					<classesDirectory>${project.build.directory}/generated-classes/emma/classes</classesDirectory>
+					<!--classesDirectory>${project.build.directory}/generated-classes/emma/classes</classesDirectory-->
 				</configuration>
 			</plugin>
 		</plugins>
