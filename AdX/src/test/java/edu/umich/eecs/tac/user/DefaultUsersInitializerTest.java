@@ -24,17 +24,19 @@
  */
 package edu.umich.eecs.tac.user;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.jmock.Mockery;
-import org.jmock.Expectations;
-
-import java.util.List;
-import java.util.LinkedList;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import edu.umich.eecs.tac.props.Product;
 

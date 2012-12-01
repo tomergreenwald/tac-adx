@@ -24,17 +24,21 @@
  */
 package edu.umich.eecs.tac.user;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.jmock.Mockery;
-import org.jmock.Expectations;
-import edu.umich.eecs.tac.props.Query;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.AdLink;
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan

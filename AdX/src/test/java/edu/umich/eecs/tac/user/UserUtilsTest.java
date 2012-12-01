@@ -24,15 +24,26 @@
  */
 package edu.umich.eecs.tac.user;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.BeforeClass;
-
-import static edu.umich.eecs.tac.user.UserUtils.*;
-import edu.umich.eecs.tac.props.*;
+import static edu.umich.eecs.tac.user.UserUtils.calculateClickProbability;
+import static edu.umich.eecs.tac.user.UserUtils.calculateConversionProbability;
+import static edu.umich.eecs.tac.user.UserUtils.findAdvertiserEffect;
+import static edu.umich.eecs.tac.user.UserUtils.modifyOdds;
+import static edu.umich.eecs.tac.user.UserUtils.modifyOddsForComponentSpecialty;
+import static edu.umich.eecs.tac.user.UserUtils.modifySalesProfitForManufacturerSpecialty;
+import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import edu.umich.eecs.tac.props.AdLink;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.QueryType;
+import edu.umich.eecs.tac.props.UserClickModel;
 
 /**
  * @author Patrick Jordan

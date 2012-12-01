@@ -24,14 +24,18 @@
  */
 package edu.umich.eecs.tac.user;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.Before;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.props.Query;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.RetailCatalog;
 
 /**
  * @author Patrick Jordan

@@ -24,19 +24,24 @@
  */
 package edu.umich.eecs.tac.user;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.Before;
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import edu.umich.eecs.tac.sim.AgentRepository;
-import edu.umich.eecs.tac.sim.SalesAnalyst;
-import edu.umich.eecs.tac.props.*;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.Random;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import se.sics.tasim.sim.SimulationAgent;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.sim.AgentRepository;
+import edu.umich.eecs.tac.sim.SalesAnalyst;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * @author Patrick Jordan

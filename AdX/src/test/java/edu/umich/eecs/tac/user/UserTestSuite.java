@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+
 @RunWith(value = Suite.class)
 @SuiteClasses(value = { DefaultUserManagerBuilderTest.class,
 		DefaultUserManagerTest.class, DefaultUserQueryManagerBuilderTest.class,
@@ -13,7 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		DefaultUserTransitionManagerTest.class,
 		DefaultUserViewManagerBuilderTest.class,
 		DefaultUserViewManagerTest.class, QueryStateTest.class,
-		UserEventSupportTest.class, UserTest.class, UserUtilsTest.class })
+		UserEventSupportTest.class, UserTest.class, UserUtilsTest.class})
 public class UserTestSuite {
 
 }
