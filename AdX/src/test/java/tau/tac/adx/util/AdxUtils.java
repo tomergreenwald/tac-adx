@@ -88,7 +88,7 @@ public class AdxUtils<T> {
 	 * @return Initialized {@link Map}.
 	 */
 	public Map<T, Integer> initEmptyMap(Iterable<T> iterable) {
-		Map<T, Integer> map = new HashMap<>();
+		Map<T, Integer> map = new HashMap<T, Integer>();
 		for (T object : iterable) {
 			map.put(object, 0);
 		}
@@ -103,7 +103,7 @@ public class AdxUtils<T> {
 	 * @return Initialized {@link Map}.
 	 */
 	public Map<T, Integer> initEmptyMap(T[] values) {
-		Map<T, Integer> map = new HashMap<>();
+		Map<T, Integer> map = new HashMap<T, Integer>();
 		for (T object : values) {
 			map.put(object, 0);
 		}

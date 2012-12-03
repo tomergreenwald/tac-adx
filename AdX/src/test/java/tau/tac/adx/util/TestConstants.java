@@ -44,6 +44,6 @@ public class TestConstants {
 	/**
 	 * Amount of {@link AdxUser users} to generate.
 	 */
-	public static final int USER_COUNT = 100_000;
+	public static final int USER_COUNT = 100000;
 
 }

@@ -47,7 +47,7 @@ public class DistributionUserGeneratorTest {
 	public void testAgeGeneration() {
 
 		Map<Age, Integer> ageValues = summarizeAgeValues(users);
-		ObjectAssertion<Age> ageAssetion = new ObjectAssertion<>();
+		ObjectAssertion<Age> ageAssetion = new ObjectAssertion<Age>();
 		ageAssetion.assertEqualDistribution(
 				distributionMaps.getAgeDistribution(), ageValues,
 				TestConstants.EPSILON_RANGE);
@@ -62,7 +62,7 @@ public class DistributionUserGeneratorTest {
 	public void testGenderGeneration() {
 
 		Map<Gender, Integer> genderValues = summarizeGenderValues(users);
-		ObjectAssertion<Gender> genderAssetion = new ObjectAssertion<>();
+		ObjectAssertion<Gender> genderAssetion = new ObjectAssertion<Gender>();
 		genderAssetion.assertEqualDistribution(
 				distributionMaps.getGenderDistribution(), genderValues,
 				TestConstants.EPSILON_RANGE);
@@ -77,7 +77,7 @@ public class DistributionUserGeneratorTest {
 	public void testIncomeGeneration() {
 
 		Map<Income, Integer> inceomValues = summarizeIncomeValues(users);
-		ObjectAssertion<Income> incomeAssertion = new ObjectAssertion<>();
+		ObjectAssertion<Income> incomeAssertion = new ObjectAssertion<Income>();
 		incomeAssertion.assertEqualDistribution(
 				distributionMaps.getIncomeDistribution(), inceomValues,
 				TestConstants.EPSILON_RANGE);
@@ -92,7 +92,7 @@ public class DistributionUserGeneratorTest {
 	 *         among the users.
 	 */
 	private Map<Age, Integer> summarizeAgeValues(Collection<AdxUser> users) {
-		AdxUtils<Age> adxUtils = new AdxUtils<>();
+		AdxUtils<Age> adxUtils = new AdxUtils<Age>();
 		Map<Age, Integer> map = adxUtils.initEmptyMap(Age.values());
 		for (AdxUser adxUser : users) {
 			Age age = adxUser.getAge();
@@ -111,7 +111,7 @@ public class DistributionUserGeneratorTest {
 	 *         among the users.
 	 */
 	private Map<Gender, Integer> summarizeGenderValues(Collection<AdxUser> users) {
-		AdxUtils<Gender> adxUtils = new AdxUtils<>();
+		AdxUtils<Gender> adxUtils = new AdxUtils<Gender>();
 		Map<Gender, Integer> map = adxUtils.initEmptyMap(Gender.values());
 		for (AdxUser adxUser : users) {
 			Gender gender = adxUser.getGender();
@@ -130,7 +130,7 @@ public class DistributionUserGeneratorTest {
 	 *         among the users.
 	 */
 	private Map<Income, Integer> summarizeIncomeValues(Collection<AdxUser> users) {
-		AdxUtils<Income> adxUtils = new AdxUtils<>();
+		AdxUtils<Income> adxUtils = new AdxUtils<Income>();
 		Map<Income, Integer> map = adxUtils.initEmptyMap(Income.values());
 		for (AdxUser adxUser : users) {
 			Income income = adxUser.getIncome();
@@ -145,14 +145,14 @@ public class DistributionUserGeneratorTest {
 	 * @return Randomized {@link AdxUserDistributionMaps}.
 	 */
 	private AdxUserDistributionMaps randomizeAdxUserDistributionMaps() {
-		MapGenerator<Age> ageMapGenerator = new MapGenerator<>();
+		MapGenerator<Age> ageMapGenerator = new MapGenerator<Age>();
 		Map<Age, Integer> ageWeigtMap = ageMapGenerator
 				.randomizeWeightMap(Age.values(), TestConstants.MAX_WEIGHT);
-		MapGenerator<Gender> genderMapGenerator = new MapGenerator<>();
+		MapGenerator<Gender> genderMapGenerator = new MapGenerator<Gender>();
 		Map<Gender, Integer> genderWeigtMap = genderMapGenerator
 				.randomizeWeightMap(Gender.values(),
 						TestConstants.MAX_WEIGHT);
-		MapGenerator<Income> incomeMapGenerator = new MapGenerator<>();
+		MapGenerator<Income> incomeMapGenerator = new MapGenerator<Income>();
 
 		Map<Income, Integer> incomeWeigtMap = incomeMapGenerator
 				.randomizeWeightMap(Income.values(),

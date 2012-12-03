@@ -31,7 +31,7 @@ public class MapGenerator<T> {
 	 *         <b>weight</b> for each key.
 	 */
 	public Map<T, Integer> randomizeWeightMap(T[] objects, int maxWeight) {
-		Map<T, Integer> weights = new HashMap<>();
+		Map<T, Integer> weights = new HashMap<T, Integer>();
 		for (T object : objects) {
 			weights.put(object, random.nextInt(maxWeight));
 		}
@@ -47,7 +47,7 @@ public class MapGenerator<T> {
 	 *         <b>random double</b> for each key.
 	 */
 	public Map<T, Double> randomizeProbabilityMap(T[] objects) {
-		Map<T, Double> weights = new HashMap<>();
+		Map<T, Double> weights = new HashMap<T, Double>();
 		for (T object : objects) {
 			weights.put(object, random.nextDouble());
 		}

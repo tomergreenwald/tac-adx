@@ -34,11 +34,11 @@ public class DistributionUserGenerator implements GenericGenerator<AdxUser> {
 	 * @param distributionMaps
 	 */
 	public DistributionUserGenerator(AdxUserDistributionMaps distributionMaps) {
-		ageGenerator = new EnumGenerator<>(
+		ageGenerator = new EnumGenerator<Age>(
 				distributionMaps.getAgeDistribution());
-		genderGenerator = new EnumGenerator<>(
+		genderGenerator = new EnumGenerator<Gender>(
 				distributionMaps.getGenderDistribution());
-		incomeGenerator = new EnumGenerator<>(
+		incomeGenerator = new EnumGenerator<Income>(
 				distributionMaps.getIncomeDistribution());
 	}
 
@@ -47,7 +47,7 @@ public class DistributionUserGenerator implements GenericGenerator<AdxUser> {
 	 */
 	@Override
 	public Collection<AdxUser> generate(int amount) {
-		Collection<AdxUser> users = new LinkedList<>();
+		Collection<AdxUser> users = new LinkedList<AdxUser>();
 		for (int i = 0; i < amount; i++) {
 			users.add(getRandomUser());
 		}

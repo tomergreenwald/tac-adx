@@ -25,7 +25,7 @@ public class SimpleUserGenerator implements GenericGenerator<AdxUser> {
 	 */
 	@Override
 	public Collection<AdxUser> generate(int amount) {
-		Collection<AdxUser> users = new LinkedList<>();
+		Collection<AdxUser> users = new LinkedList<AdxUser>();
 		for (int i = 0; i < amount; i++) {
 			users.add(getRandomUser());
 		}
@@ -42,7 +42,7 @@ public class SimpleUserGenerator implements GenericGenerator<AdxUser> {
 	 * @return A collection of all possible {@link AdxUser uesrs}.
 	 */
 	public static Collection<AdxUser> generateAllPossibleUsers() {
-		Collection<AdxUser> users = new LinkedList<>();
+		Collection<AdxUser> users = new LinkedList<AdxUser>();
 		for (Age age : Age.values()) {
 			for (Gender gender : Gender.values()) {
 				for (Income income : Income.values()) {

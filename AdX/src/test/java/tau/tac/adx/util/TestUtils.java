@@ -46,7 +46,7 @@ public class TestUtils {
 	 */
 	public static Map<Object, Integer> randomizeObjectWeightMap(
 			Object[] objects, int maxWeight) {
-		Map<Object, Integer> weights = new HashMap<>();
+		Map<Object, Integer> weights = new HashMap<Object, Integer>();
 		for (Object object : objects) {
 			weights.put(object, maxWeight);
 		}
