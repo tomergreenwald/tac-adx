@@ -1,11 +1,10 @@
 package tau.tac.adx.users;
 
-import edu.umich.eecs.tac.user.User;
-import lombok.Data;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
 import tau.tac.adx.users.properties.UserState;
+import edu.umich.eecs.tac.user.User;
 
 /**
  * Defines a user in the Ad-Exchange system.<br>
@@ -15,17 +14,14 @@ import tau.tac.adx.users.properties.UserState;
  * @author greenwald
  * 
  */
-@lombok.NoArgsConstructor
-@Data
-@lombok.EqualsAndHashCode(exclude = "userState", callSuper=false)
 public class AdxUser extends User implements Cloneable {
 
 	/** Users's {@link Age age}. */
-	private Age age;
+	private final Age age;
 	/** Users's {@link Gender gender}. */
-	private Gender gender;
+	private final Gender gender;
 	/** Users's {@link Income Income}. */
-	private Income income;
+	private final Income income;
 	/**
 	 * The probability an {@link AdxUser} is likely to continue visiting this
 	 * site after visiting it once in a given day.
@@ -55,6 +51,57 @@ public class AdxUser extends User implements Cloneable {
 	}
 
 	/**
+	 * @return the pContinue
+	 */
+	public double getpContinue() {
+		return pContinue;
+	}
+
+	/**
+	 * @param pContinue
+	 *            the pContinue to set
+	 */
+	public void setpContinue(double pContinue) {
+		this.pContinue = pContinue;
+	}
+
+	/**
+	 * @return the userState
+	 */
+	public UserState getUserState() {
+		return userState;
+	}
+
+	/**
+	 * @param userState
+	 *            the userState to set
+	 */
+	public void setUserState(UserState userState) {
+		this.userState = userState;
+	}
+
+	/**
+	 * @return the age
+	 */
+	public Age getAge() {
+		return age;
+	}
+
+	/**
+	 * @return the gender
+	 */
+	public Gender getGender() {
+		return gender;
+	}
+
+	/**
+	 * @return the income
+	 */
+	public Income getIncome() {
+		return income;
+	}
+
+	/**
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
@@ -71,6 +118,46 @@ public class AdxUser extends User implements Cloneable {
 		pContinue = Double.NaN;
 		userState = UserState.IDLE;
 		return this;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AdxUser other = (AdxUser) obj;
+		if (age != other.age)
+			return false;
+		if (gender != other.gender)
+			return false;
+		if (income != other.income)
+			return false;
+		if (Double.doubleToLongBits(pContinue) != Double
+				.doubleToLongBits(other.pContinue))
+			return false;
+		return true;
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((age == null) ? 0 : age.hashCode());
+		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result + ((income == null) ? 0 : income.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(pContinue);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
 	}
 
 }
