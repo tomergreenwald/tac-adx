@@ -43,16 +43,14 @@ public class DistributionUserGenerator implements GenericGenerator<AdxUser> {
 	}
 
 	/**
-	 * @see tau.adx.common.generators.GenericGenerator#generate(int)
+	 * @see GenericGenerator#generate(int)
 	 */
-	@Override
 	public Collection<AdxUser> generate(int amount) {
 		Collection<AdxUser> users = new LinkedList<AdxUser>();
 		for (int i = 0; i < amount; i++) {
 			users.add(getRandomUser());
 		}
-		logger.fine("Generated " + amount + " " + AdxUser.class.getName()
-				+ "s");
+		logger.fine("Generated " + amount + " " + AdxUser.class.getName() + "s");
 		return users;
 	}
 
