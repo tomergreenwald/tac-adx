@@ -2,6 +2,7 @@ package tau.tac.adx.users.generators;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -21,10 +22,11 @@ import tau.tac.adx.users.properties.Income;
 public class SimpleUserGenerator implements GenericGenerator<AdxUser> {
 
 	/**
-	 * @see tau.adx.common.generators.GenericGenerator#generate(int)
+	 * @see GenericGenerator#generate(int)
 	 */
-	public Collection<AdxUser> generate(int amount) {
-		Collection<AdxUser> users = new LinkedList<AdxUser>();
+	@Override
+	public List<AdxUser> generate(int amount) {
+		List<AdxUser> users = new LinkedList<AdxUser>();
 		for (int i = 0; i < amount; i++) {
 			users.add(getRandomUser());
 		}
