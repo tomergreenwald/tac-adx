@@ -1,5 +1,5 @@
 /*
- * RetailCatalog.java
+ * UserQueryManager.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,43 +22,14 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.props;
+package tau.tac.adx.users;
 
-import java.util.Iterator;
-
-import tau.tac.adx.publishers.AdxPublisher;
-import edu.umich.eecs.tac.props.AbstractTransportableEntryListBacking;
-import edu.umich.eecs.tac.props.KeyIterator;
+import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.props.AdxQuery;
 
 /**
- * A catalog of all available publishers.
- * 
- * @author greenwald
+ * @author Patrick Jordan
  */
-public class PublisherCatalog extends
-		AbstractTransportableEntryListBacking<AdxPublisher> implements
-		Iterable<AdxPublisher> {
-
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -5999861205883888430L;
-
-	/**
-	 * @see edu.umich.eecs.tac.props.AbstractTransportableEntryListBacking#entryClass()
-	 */
-	@Override
-	protected Class<AdxPublisher> entryClass() {
-		return AdxPublisher.class;
-	}
-
-	/**
-	 * Returns an iterator over the keys in the list.
-	 * 
-	 * @return an iterator over the keys in the list.
-	 */
-	@Override
-	public final Iterator<AdxPublisher> iterator() {
-		return new KeyIterator<AdxPublisher>(getEntries().iterator());
-	}
+public interface AdxUserQueryManager extends TimeListener {
+	public AdxQuery generateQuery(AdxUser user);
 }

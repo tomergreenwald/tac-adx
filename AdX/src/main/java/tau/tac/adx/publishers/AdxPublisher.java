@@ -8,13 +8,13 @@ import java.util.Map;
 
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
-import se.sics.isl.transport.Transportable;
 import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
+import edu.umich.eecs.tac.props.KeyedEntry;
 import edu.umich.eecs.tac.sim.Publisher;
 
 /**
@@ -33,7 +33,12 @@ import edu.umich.eecs.tac.sim.Publisher;
  * @author greenwald
  * 
  */
-public class AdxPublisher implements Transportable {
+public class AdxPublisher implements KeyedEntry<AdxPublisher> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8433553718771938842L;
 
 	/**
 	 * A probability {@link Map} of how likely an ad of type {@link AdType} is
@@ -259,6 +264,31 @@ public class AdxPublisher implements Transportable {
 	@Override
 	public synchronized void write(TransportWriter writer) {
 		writer.write(this);
+	}
+
+	/**
+	 * @see edu.umich.eecs.tac.props.KeyedEntry#getKey()
+	 */
+	@Override
+	public AdxPublisher getKey() {
+		return this;
+	}
+
+	/**
+	 * Determines how likely a {@link AdxUser user} is to visit this
+	 * {@link AdxPublisher publisher}.
+	 * 
+	 * @param user
+	 *            {@link AdxUser}.
+	 * @return How likely the {@link AdxUser user} is to visit this
+	 *         {@link AdxPublisher publisher} with {@link Device device}.
+	 */
+	public double userAffiliation(AdxUser user) {
+		double d = probabilityMaps.getAgeDistribution().get(user.getAge())
+				* probabilityMaps.getGenderDistribution().get(user.getGender())
+				* probabilityMaps.getIncomeDistribution().get(user.getIncome())
+				* relativePopularity;
+		return d;
 	}
 
 }
