@@ -28,7 +28,7 @@ public class AdxQuery extends AbstractTransportable {
 	private static final long serialVersionUID = -7210442551464879289L;
 
 	/**
-	 * The manufacturer key.
+	 * The publisher key.
 	 */
 	private static final String PUBLISHER_KEY = "publisher";
 

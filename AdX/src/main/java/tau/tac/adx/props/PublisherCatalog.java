@@ -24,34 +24,57 @@
  */
 package tau.tac.adx.props;
 
-import java.text.ParseException;
+import java.util.List;
 
-import se.sics.isl.transport.TransportReader;
-import se.sics.isl.transport.TransportWriter;
-import edu.umich.eecs.tac.props.AbstractTransportable;
+import tau.tac.adx.publishers.AdxPublisher;
+import edu.umich.eecs.tac.props.AbstractTransportableEntryListBacking;
 
 /**
- * The class holds the available products, which the users have preferences
- * over. In addition, the advertiser sales profit per conversion is given for
- * each product.
+ * A catalog of all available publishers.
  * 
- * @author Patrick Jordan, Lee Callender
- * @see <a href="http://aa.tradingagents.org/documentation">TAC
- *      Documentation</a>
+ * @author greenwald
  */
-public class PublisherCatalog extends AbstractTransportable {
+public class PublisherCatalog extends
+		AbstractTransportableEntryListBacking<AdxPublisher> {
 
-	@Override
-	protected void readWithLock(TransportReader reader) throws ParseException {
-		this.setPublisher(reader.getAttribute(PUBLISHER_KEY, null));
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -5999861205883888430L;
 
+	/**
+	 * Publisher catalog.
+	 */
+	private List<AdxPublisher> publishers;
+
+	/**
+	 * @param publishers
+	 */
+	public PublisherCatalog(List<AdxPublisher> publishers) {
+		super();
+		this.publishers = publishers;
 	}
 
-	@Override
-	protected void writeWithLock(TransportWriter writer) {
-		if (getPublisher() != null) {
-			writer.attr(PUBLISHER_KEY, getPublisher());
-		}
+	/**
+	 * @return the publishers
+	 */
+	public List<AdxPublisher> getPublishers() {
+		return publishers;
 	}
 
+	/**
+	 * @param publishers
+	 *            the publishers to set
+	 */
+	public void setPublishers(List<AdxPublisher> publishers) {
+		this.publishers = publishers;
+	}
+
+	/**
+	 * @see edu.umich.eecs.tac.props.AbstractTransportableEntryListBacking#entryClass()
+	 */
+	@Override
+	protected Class<AdxPublisher> entryClass() {
+		return AdxPublisher.class;
+	}
 }
