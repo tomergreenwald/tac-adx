@@ -1,5 +1,5 @@
 /*
- * UserQueryManager.java
+ * DefaultUserQueryManager.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -24,19 +24,145 @@
  */
 package tau.tac.adx.users;
 
-import se.sics.tasim.aw.TimeListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import tau.tac.adx.Adx;
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.props.PublisherCatalog;
+import tau.tac.adx.props.TacQuery;
+import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.util.EnumGenerator;
+import edu.umich.eecs.tac.user.User;
+import edu.umich.eecs.tac.util.sampling.MutableSampler;
+import edu.umich.eecs.tac.util.sampling.Sampler;
+import edu.umich.eecs.tac.util.sampling.WheelSampler;
 
 /**
- * Query manager interface which allows query generation.
+ * {@link UserQueryManager} implementation.
  * 
  * @author greenwald
+ * 
  */
-public interface AdxUserQueryManager extends TimeListener {
+public class AdxUserQueryManager implements UserQueryManager<Adx> {
+
 	/**
-	 * @param user
-	 *            An {@link AdxUser}.
-	 * @return Generate {@link AdxQuery}.
+	 * {@link Map} between {@link User}s and an {@link AdxQuery} {@link Sampler}
+	 * .
 	 */
-	public AdxQuery generateQuery(AdxUser user);
+	private final Map<User, Sampler<TacQuery<Adx>>> querySamplers;
+
+	/**
+	 * {@link Device} distribution map. Each {@link Device} is associated with
+	 * its relative popularity.
+	 */
+	private final Map<Device, Integer> deviceDeistributionMap;
+	/**
+	 * {@link AdType} distribution map. Each {@link AdType} is associated with
+	 * its relative popularity.
+	 */
+	private final Map<AdType, Integer> adTypeDeistributionMap;
+
+	/**
+	 * @param catalog
+	 *            {@link PublisherCatalog}.
+	 * @param users
+	 *            {@link List} of {@link AdxUser}s.
+	 * @param deviceDeistributionMap
+	 *            {@link Device} distribution map. Each {@link Device} is
+	 *            associated with its relative popularity.
+	 * @param adTypeDeistributionMap
+	 *            {@link AdType} distribution map. Each {@link AdType} is
+	 *            associated with its relative popularity.
+	 * @param random
+	 *            {@link Random}.
+	 */
+	public AdxUserQueryManager(PublisherCatalog catalog, List<AdxUser> users,
+			Map<Device, Integer> deviceDeistributionMap,
+			Map<AdType, Integer> adTypeDeistributionMap, Random random) {
+		if (catalog == null) {
+			throw new NullPointerException("Retail catalog cannot be null");
+		}
+
+		if (users == null) {
+			throw new NullPointerException("User list cannot be null");
+		}
+
+		if (random == null) {
+			throw new NullPointerException(
+					"Random number generator cannot be null");
+		}
+
+		if (deviceDeistributionMap == null) {
+			throw new NullPointerException(
+					"Device distribution map cannot be null");
+		}
+
+		if (adTypeDeistributionMap == null) {
+			throw new NullPointerException(
+					"Ad Type distribution map cannot be null");
+		}
+		this.deviceDeistributionMap = deviceDeistributionMap;
+		this.adTypeDeistributionMap = adTypeDeistributionMap;
+		querySamplers = buildQuerySamplers(catalog, null, random);
+	}
+
+	/**
+	 * @see tau.tac.adx.users.UserQueryManager#generateQuery(TacUser)
+	 */
+	@Override
+	public TacQuery<Adx> generateQuery(TacUser<Adx> user) {
+		return querySamplers.get(user).getSample();
+	}
+
+	/**
+	 * @see se.sics.tasim.aw.TimeListener#nextTimeUnit(int)
+	 */
+	@Override
+	public void nextTimeUnit(int timeUnit) {
+		// no implementation needed.
+	}
+
+	/**
+	 * Builds a {@link Map} between {@link User}s and an {@link AdxQuery}
+	 * {@link Sampler}.
+	 * 
+	 * @param catalog
+	 *            {@link PublisherCatalog}.
+	 * @param users
+	 *            {@link List} of {@link AdxUser}s.
+	 * @param random
+	 *            {@link Random}.
+	 * @return A {@link Map} between {@link User}s and an {@link AdxQuery}
+	 *         {@link Sampler}.
+	 */
+	private Map<User, Sampler<TacQuery<Adx>>> buildQuerySamplers(
+			PublisherCatalog catalog, List<AdxUser> users, Random random) {
+		EnumGenerator<Device> deviceGenerator = new EnumGenerator<Device>(
+				deviceDeistributionMap);
+		EnumGenerator<AdType> adTypeGenerator = new EnumGenerator<AdType>(
+				adTypeDeistributionMap);
+		Map<User, Sampler<TacQuery<Adx>>> samplingMap = new HashMap<User, Sampler<TacQuery<Adx>>>();
+
+		for (AdxUser user : users) {
+			MutableSampler<AdxQuery> sampler = new WheelSampler<AdxQuery>(
+					random);
+			for (AdxPublisher publisher : catalog) {
+				Device device = deviceGenerator.randomType();
+				AdType adType = adTypeGenerator.randomType();
+				AdxQuery query = new AdxQuery(publisher, user, device, adType);
+				double weight = publisher.userAffiliation(user);
+				sampler.addState(weight, query);
+			}
+
+			return samplingMap;
+		}
+		return samplingMap;
+
+	}
+
 }

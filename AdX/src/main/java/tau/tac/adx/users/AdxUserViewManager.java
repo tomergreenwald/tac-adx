@@ -24,34 +24,31 @@
  */
 package tau.tac.adx.users;
 
-import static edu.umich.eecs.tac.user.UserUtils.calculateClickProbability;
-import static edu.umich.eecs.tac.user.UserUtils.calculateConversionProbability;
-import static edu.umich.eecs.tac.user.UserUtils.findAdvertiserEffect;
-import static edu.umich.eecs.tac.user.UserUtils.modifySalesProfitForManufacturerSpecialty;
+import static tau.tac.adx.users.UserUtils.calculateClickProbability;
+import static tau.tac.adx.users.UserUtils.calculateConversionProbability;
+import static tau.tac.adx.users.UserUtils.findAdvertiserEffect;
+import static tau.tac.adx.users.UserUtils.modifySalesProfitForManufacturerSpecialty;
 
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import tau.tac.adx.Adx;
+import tau.tac.adx.props.TacQuery;
+import tau.tac.adx.props.UserClickModel;
 import edu.umich.eecs.tac.props.AdLink;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.Pricing;
-import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
-import edu.umich.eecs.tac.props.UserClickModel;
 import edu.umich.eecs.tac.sim.RecentConversionsTracker;
-import edu.umich.eecs.tac.user.User;
-import edu.umich.eecs.tac.user.UserEventListener;
-import edu.umich.eecs.tac.user.UserEventSupport;
-import edu.umich.eecs.tac.user.UserViewManager;
 
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
  */
-public class AdxUserViewManager implements UserViewManager {
+public class AdxUserViewManager implements UserViewManager<Adx> {
 	private final Logger log = Logger.getLogger(AdxUserViewManager.class
 			.getName());
 
@@ -116,7 +113,8 @@ public class AdxUserViewManager implements UserViewManager {
 	}
 
 	@Override
-	public boolean processImpression(User user, Query query, Auction auction) {
+	public boolean processImpression(TacUser<Adx> user, TacQuery<Adx> query,
+			Auction auction) {
 		fireQueryIssued(query);
 
 		boolean converted = false;
@@ -214,20 +212,21 @@ public class AdxUserViewManager implements UserViewManager {
 		return eventSupport.removeUserEventListener(listener);
 	}
 
-	private void fireQueryIssued(Query query) {
+	private void fireQueryIssued(TacQuery<Adx> query) {
 		eventSupport.fireQueryIssued(query);
 	}
 
-	private void fireAdViewed(Query query, AdLink ad, int slot,
+	private void fireAdViewed(TacQuery<Adx> query, AdLink ad, int slot,
 			boolean isPromoted) {
 		eventSupport.fireAdViewed(query, ad, slot, isPromoted);
 	}
 
-	private void fireAdClicked(Query query, AdLink ad, int slot, double cpc) {
+	private void fireAdClicked(TacQuery<Adx> query, AdLink ad, int slot,
+			double cpc) {
 		eventSupport.fireAdClicked(query, ad, slot, cpc);
 	}
 
-	private void fireAdConverted(Query query, AdLink ad, int slot,
+	private void fireAdConverted(TacQuery<Adx> query, AdLink ad, int slot,
 			double salesProfit) {
 		eventSupport.fireAdConverted(query, ad, slot, salesProfit);
 	}

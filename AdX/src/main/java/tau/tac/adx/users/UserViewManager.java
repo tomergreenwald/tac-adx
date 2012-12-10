@@ -1,5 +1,5 @@
 /*
- * DefaultUserQueryManagerBuilder.java
+ * UserViewManager.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -24,34 +24,27 @@
  */
 package tau.tac.adx.users;
 
-import java.util.Map;
-import java.util.Random;
-
-import tau.tac.adx.Adx;
-import tau.tac.adx.ads.properties.AdType;
-import tau.tac.adx.devices.Device;
-import tau.tac.adx.sim.AdxAgentRepository;
-import edu.umich.eecs.tac.util.config.ConfigProxy;
+import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.props.TacQuery;
+import tau.tac.adx.props.UserClickModel;
+import edu.umich.eecs.tac.props.Auction;
 
 /**
- * {@link AdxUserBehaviorBuilder} implementation.
- * 
- * @author greenwald
+ * @author Patrick Jordan
+ * @param <T>
+ *            User view manager type.
  */
-public class AdxUserQueryManagerBuilder implements
-		AdxUserBehaviorBuilder<UserQueryManager<Adx>> {
-	/**
-	 * @see tau.tac.adx.users.AdxUserBehaviorBuilder#build(edu.umich.eecs.tac.util.config.ConfigProxy,
-	 *      tau.tac.adx.sim.AdxAgentRepository, java.util.Map, java.util.Map,
-	 *      java.util.Random)
-	 */
-	@Override
-	public AdxUserQueryManager build(ConfigProxy userConfigProxy,
-			AdxAgentRepository repository,
-			Map<Device, Integer> deviceDeistributionMap,
-			Map<AdType, Integer> adTypeDeistributionMap, Random random) {
-		return new AdxUserQueryManager(repository.getPublisherCatalog(),
-				repository.getUserPopulation(), deviceDeistributionMap,
-				adTypeDeistributionMap, random);
-	}
+public interface UserViewManager<T> extends TimeListener {
+	public boolean processImpression(TacUser<T> user, TacQuery<T> query,
+			Auction auction);
+
+	public boolean addUserEventListener(UserEventListener listener);
+
+	public boolean containsUserEventListener(UserEventListener listener);
+
+	public boolean removeUserEventListener(UserEventListener listener);
+
+	public UserClickModel getUserClickModel();
+
+	public void setUserClickModel(UserClickModel userClickModel);
 }

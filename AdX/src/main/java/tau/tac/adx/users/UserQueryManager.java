@@ -1,5 +1,5 @@
 /*
- * DefaultUserQueryManagerBuilder.java
+ * UserQueryManager.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -24,34 +24,22 @@
  */
 package tau.tac.adx.users;
 
-import java.util.Map;
-import java.util.Random;
-
-import tau.tac.adx.Adx;
-import tau.tac.adx.ads.properties.AdType;
-import tau.tac.adx.devices.Device;
-import tau.tac.adx.sim.AdxAgentRepository;
-import edu.umich.eecs.tac.util.config.ConfigProxy;
+import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.props.TacQuery;
 
 /**
- * {@link AdxUserBehaviorBuilder} implementation.
+ * Query manager interface which allows query generation.
  * 
  * @author greenwald
+ * @param <T>
+ *            User type.
  */
-public class AdxUserQueryManagerBuilder implements
-		AdxUserBehaviorBuilder<UserQueryManager<Adx>> {
+public interface UserQueryManager<T> extends TimeListener {
 	/**
-	 * @see tau.tac.adx.users.AdxUserBehaviorBuilder#build(edu.umich.eecs.tac.util.config.ConfigProxy,
-	 *      tau.tac.adx.sim.AdxAgentRepository, java.util.Map, java.util.Map,
-	 *      java.util.Random)
+	 * @param user
+	 *            An {@link AdxUser}.
+	 * @return Generate {@link AdxQuery}.
 	 */
-	@Override
-	public AdxUserQueryManager build(ConfigProxy userConfigProxy,
-			AdxAgentRepository repository,
-			Map<Device, Integer> deviceDeistributionMap,
-			Map<AdType, Integer> adTypeDeistributionMap, Random random) {
-		return new AdxUserQueryManager(repository.getPublisherCatalog(),
-				repository.getUserPopulation(), deviceDeistributionMap,
-				adTypeDeistributionMap, random);
-	}
+	public TacQuery<T> generateQuery(TacUser<T> user);
 }

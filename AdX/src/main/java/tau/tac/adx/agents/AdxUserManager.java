@@ -31,15 +31,15 @@ import java.util.logging.Logger;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
-import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.Adx;
+import tau.tac.adx.props.TacQuery;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.users.AdxUserQueryManager;
 import tau.tac.adx.users.AdxUserViewManager;
+import tau.tac.adx.users.UserQueryManager;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.UserClickModel;
 import edu.umich.eecs.tac.sim.Auctioneer;
@@ -65,7 +65,7 @@ public class AdxUserManager implements UserManager {
 
 	private final RetailCatalog retailCatalog;
 
-	private final AdxUserQueryManager queryManager;
+	private final UserQueryManager<Adx> queryManager;
 
 	private final UserTransitionManager transitionManager;
 
@@ -77,7 +77,7 @@ public class AdxUserManager implements UserManager {
 
 	public AdxUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			AdxUserQueryManager queryManager, AdxUserViewManager viewManager,
+			UserQueryManager queryManager, AdxUserViewManager viewManager,
 			int populationSize) {
 		this(retailCatalog, transitionManager, queryManager, viewManager,
 				populationSize, new Random());
@@ -85,7 +85,7 @@ public class AdxUserManager implements UserManager {
 
 	public AdxUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			AdxUserQueryManager queryManager, AdxUserViewManager viewManager,
+			UserQueryManager queryManager, AdxUserViewManager viewManager,
 			int populationSize, Random random) {
 		lock = new Object();
 
@@ -173,7 +173,7 @@ public class AdxUserManager implements UserManager {
 
 		boolean transacted = false;
 
-		AdxQuery query = generateQuery(user);
+		TacQuery<Adx> query = generateQuery(user);
 
 		if (query != null) {
 			// Auction auction = auctioneer.runAuction(query);
@@ -184,7 +184,8 @@ public class AdxUserManager implements UserManager {
 		return transacted;
 	}
 
-	private boolean handleImpression(Query query, Auction auction, User user) {
+	private boolean handleImpression(TacQuery<Adx> query, Auction auction,
+			User user) {
 		return viewManager.processImpression(user, query, auction);
 	}
 
@@ -192,7 +193,7 @@ public class AdxUserManager implements UserManager {
 		user.setState(transitionManager.transition(user, transacted));
 	}
 
-	private AdxQuery generateQuery(AdxUser user) {
+	private TacQuery<Adx> generateQuery(AdxUser user) {
 		return queryManager.generateQuery(user);
 	}
 

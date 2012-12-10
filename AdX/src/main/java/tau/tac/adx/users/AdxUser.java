@@ -1,5 +1,6 @@
 package tau.tac.adx.users;
 
+import tau.tac.adx.Adx;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
@@ -14,7 +15,7 @@ import edu.umich.eecs.tac.user.User;
  * @author greenwald
  * 
  */
-public class AdxUser extends User implements Cloneable {
+public class AdxUser extends User implements Cloneable, TacUser<Adx> {
 
 	/** Users's {@link Age age}. */
 	private final Age age;
