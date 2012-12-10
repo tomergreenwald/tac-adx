@@ -35,6 +35,7 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserQueryManager;
+import tau.tac.adx.users.AdxUserViewManager;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.Product;
@@ -47,9 +48,7 @@ import edu.umich.eecs.tac.user.QueryState;
 import edu.umich.eecs.tac.user.User;
 import edu.umich.eecs.tac.user.UserEventListener;
 import edu.umich.eecs.tac.user.UserManager;
-import edu.umich.eecs.tac.user.UserQueryManager;
 import edu.umich.eecs.tac.user.UserTransitionManager;
-import edu.umich.eecs.tac.user.UserViewManager;
 import edu.umich.eecs.tac.user.UsersInitializer;
 
 /**
@@ -70,7 +69,7 @@ public class AdxUserManager implements UserManager {
 
 	private final UserTransitionManager transitionManager;
 
-	private final UserViewManager viewManager;
+	private final AdxUserViewManager viewManager;
 
 	private UserClickModel userClickModel;
 
@@ -78,7 +77,7 @@ public class AdxUserManager implements UserManager {
 
 	public AdxUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			AdxUserQueryManager queryManager, UserViewManager viewManager,
+			AdxUserQueryManager queryManager, AdxUserViewManager viewManager,
 			int populationSize) {
 		this(retailCatalog, transitionManager, queryManager, viewManager,
 				populationSize, new Random());
@@ -86,7 +85,7 @@ public class AdxUserManager implements UserManager {
 
 	public AdxUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			AdxUserQueryManager queryManager, UserViewManager viewManager,
+			AdxUserQueryManager queryManager, AdxUserViewManager viewManager,
 			int populationSize, Random random) {
 		lock = new Object();
 
@@ -177,9 +176,9 @@ public class AdxUserManager implements UserManager {
 		AdxQuery query = generateQuery(user);
 
 		if (query != null) {
-			Auction auction = auctioneer.runAuction(query);
+			// Auction auction = auctioneer.runAuction(query);
 
-			transacted = handleImpression(query, auction, user);
+			transacted = handleImpression(query, user);
 		}
 
 		return transacted;
