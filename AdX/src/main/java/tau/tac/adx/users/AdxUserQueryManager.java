@@ -28,8 +28,15 @@ import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.props.AdxQuery;
 
 /**
- * @author Patrick Jordan
+ * Query manager interface which allows query generation.
+ * 
+ * @author greenwald
  */
 public interface AdxUserQueryManager extends TimeListener {
+	/**
+	 * @param user
+	 *            An {@link AdxUser}.
+	 * @return Generate {@link AdxQuery}.
+	 */
 	public AdxQuery generateQuery(AdxUser user);
 }

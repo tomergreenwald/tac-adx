@@ -33,6 +33,8 @@ import tau.tac.adx.sim.AdxAgentRepository;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
+ * {@link AdxUserBehaviorBuilder} implementation.
+ * 
  * @author greenwald
  */
 public class AdxUserQueryManagerBuilder implements

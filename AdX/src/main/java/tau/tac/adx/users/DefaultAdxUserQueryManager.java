@@ -41,9 +41,17 @@ import edu.umich.eecs.tac.util.sampling.Sampler;
 import edu.umich.eecs.tac.util.sampling.WheelSampler;
 
 /**
+ * {@link AdxUserQueryManager} implementation.
+ * 
  * @author greenwald
+ * 
  */
 public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
+
+	/**
+	 * {@link Map} between {@link User}s and an {@link AdxQuery} {@link Sampler}
+	 * .
+	 */
 	private final Map<User, Sampler<AdxQuery>> querySamplers;
 
 	/**
@@ -57,13 +65,20 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 	 */
 	private final Map<AdType, Integer> adTypeDeistributionMap;
 
-	public DefaultAdxUserQueryManager(PublisherCatalog catalog,
-			List<AdxUser> users, Map<Device, Integer> deviceDeistributionMap,
-			Map<AdType, Integer> adTypeDeistributionMap) {
-		this(catalog, users, deviceDeistributionMap, adTypeDeistributionMap,
-				new Random());
-	}
-
+	/**
+	 * @param catalog
+	 *            {@link PublisherCatalog}.
+	 * @param users
+	 *            {@link List} of {@link AdxUser}s.
+	 * @param deviceDeistributionMap
+	 *            {@link Device} distribution map. Each {@link Device} is
+	 *            associated with its relative popularity.
+	 * @param adTypeDeistributionMap
+	 *            {@link AdType} distribution map. Each {@link AdType} is
+	 *            associated with its relative popularity.
+	 * @param random
+	 *            {@link Random}.
+	 */
 	public DefaultAdxUserQueryManager(PublisherCatalog catalog,
 			List<AdxUser> users, Map<Device, Integer> deviceDeistributionMap,
 			Map<AdType, Integer> adTypeDeistributionMap, Random random) {
@@ -94,16 +109,35 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 		querySamplers = buildQuerySamplers(catalog, null, random);
 	}
 
+	/**
+	 * @see tau.tac.adx.users.AdxUserQueryManager#generateQuery(tau.tac.adx.users.AdxUser)
+	 */
 	@Override
 	public AdxQuery generateQuery(AdxUser user) {
 		return querySamplers.get(user).getSample();
 	}
 
+	/**
+	 * @see se.sics.tasim.aw.TimeListener#nextTimeUnit(int)
+	 */
 	@Override
 	public void nextTimeUnit(int timeUnit) {
-
+		// no implementation needed.
 	}
 
+	/**
+	 * Builds a {@link Map} between {@link User}s and an {@link AdxQuery}
+	 * {@link Sampler}.
+	 * 
+	 * @param catalog
+	 *            {@link PublisherCatalog}.
+	 * @param users
+	 *            {@link List} of {@link AdxUser}s.
+	 * @param random
+	 *            {@link Random}.
+	 * @return A {@link Map} between {@link User}s and an {@link AdxQuery}
+	 *         {@link Sampler}.
+	 */
 	private Map<User, Sampler<AdxQuery>> buildQuerySamplers(
 			PublisherCatalog catalog, List<AdxUser> users, Random random) {
 		EnumGenerator<Device> deviceGenerator = new EnumGenerator<Device>(

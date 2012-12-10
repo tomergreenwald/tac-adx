@@ -26,6 +26,7 @@ package tau.tac.adx.agents.behaviors;
 
 import java.util.Random;
 
+import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.is.EventWriter;
 import edu.umich.eecs.tac.props.Ad;
@@ -45,22 +46,52 @@ import edu.umich.eecs.tac.util.config.ConfigProxy;
 import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
 
 /**
+ * {@link UsersBehavior} implementation.
+ * 
  * @author Patrick Jordan, Lee Callender
  */
 public class AdxUsersBehavior implements UsersBehavior {
 
+	/**
+	 * {@link UserManager}.
+	 */
 	private UserManager userManager;
 
+	/**
+	 * {@link DistributionBroadcaster}.
+	 */
 	private DistributionBroadcaster distributionBroadcaster;
 
+	/**
+	 * Amount of virtual days.
+	 */
 	private int virtualDays;
 
+	/**
+	 * {@link ConfigProxy} used to configure an instance.
+	 */
 	private final ConfigProxy config;
 
+	/**
+	 * {@link AgentRepository} used to query and access data about {@link Agent}
+	 * s.
+	 */
 	private final AgentRepository agentRepository;
 
-	private final UsersTransactor usersTransactor;
+	/**
+	 * {@link UsersTransactor}.
+	 */
+	final UsersTransactor usersTransactor;
 
+	/**
+	 * @param config
+	 *            {@link ConfigProxy} used to configure an instance.
+	 * @param agentRepository
+	 *            {@link AgentRepository} used to query and access data about
+	 *            {@link Agent} s.
+	 * @param usersTransactor
+	 *            {@link UsersTransactor}.
+	 */
 	public AdxUsersBehavior(ConfigProxy config,
 			AgentRepository agentRepository, UsersTransactor usersTransactor) {
 
@@ -83,6 +114,9 @@ public class AdxUsersBehavior implements UsersBehavior {
 		this.usersTransactor = usersTransactor;
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#nextTimeUnit(int)
+	 */
 	@Override
 	public void nextTimeUnit(int date) {
 
@@ -97,6 +131,9 @@ public class AdxUsersBehavior implements UsersBehavior {
 						.getAgent());
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#setup()
+	 */
 	@Override
 	public void setup() {
 		virtualDays = config.getPropertyAsInt("virtual_days", 0);
@@ -119,22 +156,44 @@ public class AdxUsersBehavior implements UsersBehavior {
 		}
 	}
 
+	/**
+	 * @author greenwald
+	 * 
+	 */
 	protected class ConversionMonitor implements UserEventListener {
 
+		/**
+		 * @see edu.umich.eecs.tac.user.UserEventListener#queryIssued(edu.umich.eecs.tac.props.Query)
+		 */
 		@Override
 		public void queryIssued(Query query) {
+			// no implementation.
 		}
 
+		/**
+		 * @see edu.umich.eecs.tac.user.UserEventListener#viewed(edu.umich.eecs.tac.props.Query,
+		 *      edu.umich.eecs.tac.props.Ad, int, java.lang.String, boolean)
+		 */
 		@Override
 		public void viewed(Query query, Ad ad, int slot, String advertiser,
 				boolean isPromoted) {
+			// no implementation.
 		}
 
+		/**
+		 * @see edu.umich.eecs.tac.user.UserEventListener#clicked(edu.umich.eecs.tac.props.Query,
+		 *      edu.umich.eecs.tac.props.Ad, int, double, java.lang.String)
+		 */
 		@Override
 		public void clicked(Query query, Ad ad, int slot, double cpc,
 				String advertiser) {
+			// no implementation.
 		}
 
+		/**
+		 * @see edu.umich.eecs.tac.user.UserEventListener#converted(edu.umich.eecs.tac.props.Query,
+		 *      edu.umich.eecs.tac.props.Ad, int, double, java.lang.String)
+		 */
 		@Override
 		public void converted(Query query, Ad ad, int slot, double salesProfit,
 				String advertiser) {
@@ -142,6 +201,14 @@ public class AdxUsersBehavior implements UsersBehavior {
 		}
 	}
 
+	/**
+	 * Generates a {@link UserBehaviorBuilder}.
+	 * 
+	 * @return A {@link UserBehaviorBuilder}.
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	protected UserBehaviorBuilder<UserManager> createBuilder()
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException {
@@ -150,39 +217,67 @@ public class AdxUsersBehavior implements UsersBehavior {
 				"edu.umich.eecs.tac.user.DefaultUserManagerBuilder");
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#stopped()
+	 */
 	@Override
 	public void stopped() {
+		// no implementation.
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#shutdown()
+	 */
 	@Override
 	public void shutdown() {
+		// no implementation.
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#getRanking(edu.umich.eecs.tac.props.Query,
+	 *      edu.umich.eecs.tac.sim.Auctioneer)
+	 */
 	@Override
 	public Ranking getRanking(Query query, Auctioneer auctioneer) {
 		return auctioneer.runAuction(query).getRanking();
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#messageReceived(se.sics.tasim.aw.Message)
+	 */
 	@Override
 	public void messageReceived(Message message) {
 		userManager.messageReceived(message);
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#addUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
+	 */
 	@Override
 	public boolean addUserEventListener(UserEventListener listener) {
 		return userManager.addUserEventListener(listener);
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#containsUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
+	 */
 	@Override
 	public boolean containsUserEventListener(UserEventListener listener) {
 		return userManager.containsUserEventListener(listener);
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.UsersBehavior#removeUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
+	 */
 	@Override
 	public boolean removeUserEventListener(UserEventListener listener) {
 		return userManager.removeUserEventListener(listener);
 	}
 
+	/**
+	 * @see edu.umich.eecs.tac.user.DistributionBroadcaster#broadcastUserDistribution(int,
+	 *      se.sics.tasim.is.EventWriter)
+	 */
 	@Override
 	public void broadcastUserDistribution(int usersIndex,
 			EventWriter eventWriter) {

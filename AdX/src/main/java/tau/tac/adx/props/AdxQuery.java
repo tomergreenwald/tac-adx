@@ -98,26 +98,47 @@ public class AdxQuery extends AbstractTransportable {
 		this.publisher = publisher;
 	}
 
+	/**
+	 * @return the user
+	 */
 	public AdxUser getUser() {
 		return user;
 	}
 
+	/**
+	 * @param user
+	 *            the user to set
+	 */
 	public void setUser(AdxUser user) {
 		this.user = user;
 	}
 
+	/**
+	 * @return the device
+	 */
 	public Device getDevice() {
 		return device;
 	}
 
+	/**
+	 * @param device
+	 *            the device to set
+	 */
 	public void setDevice(Device device) {
 		this.device = device;
 	}
 
+	/**
+	 * @return the adType
+	 */
 	public AdType getAdType() {
 		return adType;
 	}
 
+	/**
+	 * @param adType
+	 *            the adType to set
+	 */
 	public void setAdType(AdType adType) {
 		this.adType = adType;
 	}
@@ -130,8 +151,8 @@ public class AdxQuery extends AbstractTransportable {
 		AdxQuery query = (AdxQuery) reader.readTransportable();
 		this.adType = query.adType;
 		this.device = query.device;
-		this.publisher=query.publisher;
-		this.user=query.user;
+		this.publisher = query.publisher;
+		this.user = query.user;
 		calculateHashCode();
 	}
 
