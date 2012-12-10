@@ -24,12 +24,12 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.sim.Auctioneer;
-import edu.umich.eecs.tac.props.UserClickModel;
+import se.sics.tasim.aw.Message;
+import se.sics.tasim.aw.TimeListener;
 import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.props.RetailCatalog;
-import se.sics.tasim.aw.TimeListener;
-import se.sics.tasim.aw.Message;
+import edu.umich.eecs.tac.props.UserClickModel;
+import edu.umich.eecs.tac.sim.Auctioneer;
 
 /**
  * UserManager provides a public interface for triggering and managing agent

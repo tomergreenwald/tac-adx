@@ -24,10 +24,10 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Auction;
-import edu.umich.eecs.tac.props.UserClickModel;
 import se.sics.tasim.aw.TimeListener;
+import edu.umich.eecs.tac.props.Auction;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.UserClickModel;
 
 /**
  * @author Patrick Jordan

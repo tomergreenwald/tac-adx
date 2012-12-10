@@ -24,17 +24,30 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
-import edu.umich.eecs.tac.props.*;
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import com.botbox.util.ArrayUtils;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.Set;
-import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import tau.tac.adx.props.AdLink;
+
+import com.botbox.util.ArrayUtils;
+
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.Auction;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.PublisherInfo;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.Ranking;
+import edu.umich.eecs.tac.props.ReserveInfo;
+import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * @author Lee Callender

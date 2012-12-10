@@ -28,14 +28,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.logging.Logger;
 
+import se.sics.isl.transport.ContextFactory;
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.Transportable;
-import se.sics.isl.transport.ContextFactory;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
-import edu.umich.eecs.tac.props.AAInfo;
 import se.sics.tasim.props.ServerConfig;
-import static edu.umich.eecs.tac.TACAAConstants.*;
+import edu.umich.eecs.tac.props.AAInfo;
 
 /**
  * The abstract class <code>Parser</code> is a base class that helps with the

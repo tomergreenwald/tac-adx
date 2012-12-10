@@ -24,8 +24,9 @@
  */
 package edu.umich.eecs.tac.props;
 
+import static org.junit.Assert.assertFalse;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * @author Patrick Jordan

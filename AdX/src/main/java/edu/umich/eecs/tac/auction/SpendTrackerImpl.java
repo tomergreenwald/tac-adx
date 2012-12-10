@@ -24,11 +24,11 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import edu.umich.eecs.tac.props.Query;
-
 import java.util.Arrays;
 
 import com.botbox.util.ArrayUtils;
+
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan

@@ -24,21 +24,24 @@
  */
 package edu.umich.eecs.tac;
 
-import se.sics.tasim.logtool.ParticipantInfo;
-import se.sics.tasim.logtool.LogReader;
-import se.sics.tasim.props.ServerConfig;
-import se.sics.isl.transport.Transportable;
+import static edu.umich.eecs.tac.TACAAConstants.ADVERTISER;
+import static edu.umich.eecs.tac.TACAAConstants.DU_BANK_ACCOUNT;
 
-import java.util.logging.Logger;
-import java.util.Hashtable;
-import java.util.ArrayList;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.logging.Logger;
+
+import se.sics.isl.transport.Transportable;
+import se.sics.tasim.logtool.LogReader;
+import se.sics.tasim.logtool.ParticipantInfo;
+import se.sics.tasim.props.ServerConfig;
+
+import com.botbox.util.ArrayUtils;
 
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
-import com.botbox.util.ArrayUtils;
-import static edu.umich.eecs.tac.TACAAConstants.*;
 
 /**
  * @author Patrick Jordan, Lee Callender

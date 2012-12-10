@@ -38,7 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.umich.eecs.tac.props.AdLink;
+import tau.tac.adx.props.AdLink;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.props.Query;

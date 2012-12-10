@@ -24,7 +24,11 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.props.*;
+import tau.tac.adx.props.AdLink;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.UserClickModel;
 
 /**
  * @author Patrick Jordan

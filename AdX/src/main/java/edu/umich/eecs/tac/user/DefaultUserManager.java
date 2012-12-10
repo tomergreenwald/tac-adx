@@ -24,15 +24,20 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.props.*;
-import edu.umich.eecs.tac.sim.Publisher;
-import edu.umich.eecs.tac.sim.Auctioneer;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
-import se.sics.tasim.aw.Message;
 import se.sics.isl.transport.Transportable;
+import se.sics.tasim.aw.Message;
+import edu.umich.eecs.tac.props.Auction;
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.UserClickModel;
+import edu.umich.eecs.tac.sim.Auctioneer;
 
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender

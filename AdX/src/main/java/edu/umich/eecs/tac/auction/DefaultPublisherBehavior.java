@@ -24,22 +24,30 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import edu.umich.eecs.tac.props.*;
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import edu.umich.eecs.tac.sim.Users;
-import edu.umich.eecs.tac.sim.AgentRepository;
-import edu.umich.eecs.tac.sim.QueryReportSender;
-import edu.umich.eecs.tac.user.UserEventListener;
-
-import java.util.Set;
-import java.util.Random;
 import java.util.HashSet;
-import java.util.logging.Logger;
+import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
-import se.sics.isl.transport.Transportable;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.Auction;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.PublisherInfo;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.ReserveInfo;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.props.UserClickModel;
+import edu.umich.eecs.tac.sim.AgentRepository;
+import edu.umich.eecs.tac.sim.QueryReportSender;
+import edu.umich.eecs.tac.sim.Users;
+import edu.umich.eecs.tac.user.UserEventListener;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * @author Patrick Jordan

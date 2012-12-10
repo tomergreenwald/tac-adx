@@ -24,17 +24,18 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import edu.umich.eecs.tac.props.QueryReport;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ad;
-import edu.umich.eecs.tac.sim.QueryReportSender;
-import com.botbox.util.ArrayUtils;
-
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
+
+import com.botbox.util.ArrayUtils;
+
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.QueryReport;
+import edu.umich.eecs.tac.sim.QueryReportSender;
 
 /**
  * @author Patrick Jordan, Lee Callender, Akshat Kaul

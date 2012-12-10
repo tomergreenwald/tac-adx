@@ -24,15 +24,18 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.AdLink;
-import edu.umich.eecs.tac.props.BidBundle;
-import edu.umich.eecs.tac.props.Ad;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.Test;
+
+import tau.tac.adx.props.AdLink;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan

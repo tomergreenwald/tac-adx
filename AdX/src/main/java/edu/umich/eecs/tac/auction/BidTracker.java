@@ -24,11 +24,11 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.AdLink;
-import edu.umich.eecs.tac.props.BidBundle;
-
 import java.util.Set;
+
+import tau.tac.adx.props.AdLink;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan

@@ -24,9 +24,13 @@
  */
 package edu.umich.eecs.tac.auction;
 
+import static edu.umich.eecs.tac.auction.AuctionUtils.calculateSecondPriceWithReserve;
+import static edu.umich.eecs.tac.auction.AuctionUtils.generalizedSecondPrice;
+import static edu.umich.eecs.tac.auction.AuctionUtils.hardSort;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static edu.umich.eecs.tac.auction.AuctionUtils.*;
 
 /**
  * @author Patrick Jordan, Lee Callender

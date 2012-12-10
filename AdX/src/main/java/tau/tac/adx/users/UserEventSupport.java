@@ -27,8 +27,8 @@ package tau.tac.adx.users;
 import java.util.ArrayList;
 import java.util.List;
 
+import tau.tac.adx.props.AdLink;
 import tau.tac.adx.props.TacQuery;
-import edu.umich.eecs.tac.props.AdLink;
 
 /**
  * @author Patrick Jordan, Lee Callender

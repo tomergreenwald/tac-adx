@@ -24,13 +24,18 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import edu.umich.eecs.tac.props.*;
-import edu.umich.eecs.tac.props.BidBundle.BidEntry;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
+import tau.tac.adx.props.AdLink;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.UserClickModel;
 
 /**
  * @author Patrick Jordan, Lee Callender

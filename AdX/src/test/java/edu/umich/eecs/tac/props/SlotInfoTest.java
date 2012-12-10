@@ -24,18 +24,19 @@
  */
 package edu.umich.eecs.tac.props;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
+import static edu.umich.eecs.tac.props.TransportableTestUtils.getBytesForTransportable;
+import static edu.umich.eecs.tac.props.TransportableTestUtils.readFromBytes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.text.ParseException;
 
-import se.sics.isl.transport.BinaryTransportWriter;
+import org.junit.Before;
+import org.junit.Test;
+
 import se.sics.isl.transport.BinaryTransportReader;
-import static edu.umich.eecs.tac.props.TransportableTestUtils.getBytesForTransportable;
-import static edu.umich.eecs.tac.props.TransportableTestUtils.readFromBytes;
+import se.sics.isl.transport.BinaryTransportWriter;
 
 /**
  * @author Patrick Jordan

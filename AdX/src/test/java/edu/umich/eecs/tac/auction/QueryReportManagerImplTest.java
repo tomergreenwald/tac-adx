@@ -24,12 +24,15 @@
  */
 package edu.umich.eecs.tac.auction;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
-import edu.umich.eecs.tac.sim.QueryReportSender;
-import edu.umich.eecs.tac.props.QueryReport;
-import edu.umich.eecs.tac.props.Query;
+
 import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.QueryReport;
+import edu.umich.eecs.tac.sim.QueryReportSender;
 
 /**
  * @author Patrick Jordan

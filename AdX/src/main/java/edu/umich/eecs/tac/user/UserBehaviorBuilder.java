@@ -24,11 +24,10 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import edu.umich.eecs.tac.sim.TACAASimulation;
-import edu.umich.eecs.tac.sim.AgentRepository;
-
 import java.util.Random;
+
+import edu.umich.eecs.tac.sim.AgentRepository;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * User behavior builders construct user behaviors from a configuration.

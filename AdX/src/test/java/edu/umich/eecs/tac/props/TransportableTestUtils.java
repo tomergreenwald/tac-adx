@@ -24,12 +24,12 @@
  */
 package edu.umich.eecs.tac.props;
 
+import java.text.ParseException;
+
+import se.sics.isl.transport.BinaryTransportReader;
+import se.sics.isl.transport.BinaryTransportWriter;
 import se.sics.isl.transport.TransportWriter;
 import se.sics.isl.transport.Transportable;
-import se.sics.isl.transport.BinaryTransportWriter;
-import se.sics.isl.transport.BinaryTransportReader;
-
-import java.text.ParseException;
 
 /**
  * @author Patrick Jordan

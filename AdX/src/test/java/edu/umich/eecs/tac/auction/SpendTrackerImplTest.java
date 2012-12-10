@@ -24,8 +24,11 @@
  */
 package edu.umich.eecs.tac.auction;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import edu.umich.eecs.tac.props.Query;
 
 /**

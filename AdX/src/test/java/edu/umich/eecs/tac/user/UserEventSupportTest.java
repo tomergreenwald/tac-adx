@@ -36,8 +36,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import tau.tac.adx.props.AdLink;
 import edu.umich.eecs.tac.props.Ad;
-import edu.umich.eecs.tac.props.AdLink;
 import edu.umich.eecs.tac.props.Query;
 
 /**

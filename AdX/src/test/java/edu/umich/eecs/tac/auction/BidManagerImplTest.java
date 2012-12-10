@@ -24,18 +24,26 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
-import org.jmock.Mockery;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import edu.umich.eecs.tac.props.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import java.util.Set;
-import java.util.HashSet;
+import tau.tac.adx.props.AdLink;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.UserClickModel;
 
 /**
  * @author Patrick Jordan, Lee Callender

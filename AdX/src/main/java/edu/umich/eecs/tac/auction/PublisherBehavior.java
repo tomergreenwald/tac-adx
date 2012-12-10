@@ -26,8 +26,8 @@ package edu.umich.eecs.tac.auction;
 
 import se.sics.tasim.aw.Message;
 import edu.umich.eecs.tac.props.Auction;
-import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.PublisherInfo;
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan

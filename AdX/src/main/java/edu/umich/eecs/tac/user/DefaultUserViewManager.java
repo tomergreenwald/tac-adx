@@ -24,14 +24,25 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.props.*;
-import edu.umich.eecs.tac.sim.RecentConversionsTracker;
+import static edu.umich.eecs.tac.user.UserUtils.calculateClickProbability;
+import static edu.umich.eecs.tac.user.UserUtils.calculateConversionProbability;
+import static edu.umich.eecs.tac.user.UserUtils.findAdvertiserEffect;
+import static edu.umich.eecs.tac.user.UserUtils.modifySalesProfitForManufacturerSpecialty;
 
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import static edu.umich.eecs.tac.user.UserUtils.*;
+import tau.tac.adx.props.AdLink;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.Auction;
+import edu.umich.eecs.tac.props.Pricing;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.Ranking;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.props.UserClickModel;
+import edu.umich.eecs.tac.sim.RecentConversionsTracker;
 
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender

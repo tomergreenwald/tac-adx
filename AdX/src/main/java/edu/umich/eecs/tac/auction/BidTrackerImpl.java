@@ -24,14 +24,16 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.AdLink;
-import edu.umich.eecs.tac.props.Ad;
-import edu.umich.eecs.tac.props.BidBundle;
-import com.botbox.util.ArrayUtils;
-
 import java.util.Set;
 import java.util.logging.Logger;
+
+import tau.tac.adx.props.AdLink;
+
+import com.botbox.util.ArrayUtils;
+
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan

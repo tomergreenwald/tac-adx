@@ -41,7 +41,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import edu.umich.eecs.tac.props.AdLink;
+import tau.tac.adx.props.AdLink;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.Pricing;

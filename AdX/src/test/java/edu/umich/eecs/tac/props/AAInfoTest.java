@@ -24,8 +24,11 @@
  */
 package edu.umich.eecs.tac.props;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import se.sics.isl.transport.Context;
 
 /**

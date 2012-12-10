@@ -24,7 +24,11 @@
  */
 package edu.umich.eecs.tac.auction;
 
-import edu.umich.eecs.tac.props.*;
+import edu.umich.eecs.tac.props.Auction;
+import edu.umich.eecs.tac.props.PublisherInfo;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.ReserveInfo;
+import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**

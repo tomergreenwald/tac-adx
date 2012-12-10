@@ -24,16 +24,16 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.util.sampling.Sampler;
-import edu.umich.eecs.tac.util.sampling.MutableSampler;
-import edu.umich.eecs.tac.util.sampling.WheelSampler;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.util.sampling.MutableSampler;
+import edu.umich.eecs.tac.util.sampling.Sampler;
+import edu.umich.eecs.tac.util.sampling.WheelSampler;
 
 /**
  * @author Patrick Jordan

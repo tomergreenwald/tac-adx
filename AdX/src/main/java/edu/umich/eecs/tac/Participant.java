@@ -24,12 +24,12 @@
  */
 package edu.umich.eecs.tac;
 
-import edu.umich.eecs.tac.props.BankStatus;
-import se.sics.isl.transport.Transportable;
-import se.sics.tasim.props.StartInfo;
-import se.sics.tasim.logtool.ParticipantInfo;
-
 import java.util.Comparator;
+
+import se.sics.isl.transport.Transportable;
+import se.sics.tasim.logtool.ParticipantInfo;
+import se.sics.tasim.props.StartInfo;
+import edu.umich.eecs.tac.props.BankStatus;
 
 /**
  * @author Patrick Jordan, Lee Callender

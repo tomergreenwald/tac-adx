@@ -24,10 +24,10 @@
  */
 package tau.tac.adx.users;
 
+import tau.tac.adx.props.AdLink;
 import tau.tac.adx.props.TacQuery;
 import tau.tac.adx.props.UserClickModel;
 import edu.umich.eecs.tac.props.Ad;
-import edu.umich.eecs.tac.props.AdLink;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.user.User;

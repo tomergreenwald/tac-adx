@@ -24,16 +24,18 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
-import edu.umich.eecs.tac.props.*;
-import edu.umich.eecs.tac.sim.Auctioneer;
-import edu.umich.eecs.tac.sim.AgentRepository;
-import edu.umich.eecs.tac.sim.Publisher;
 import java.util.Random;
 
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.is.EventWriter;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.Ranking;
+import edu.umich.eecs.tac.sim.AgentRepository;
+import edu.umich.eecs.tac.sim.Auctioneer;
+import edu.umich.eecs.tac.sim.Publisher;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
+import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
 
 /**
  * @author Patrick Jordan, Lee Callender

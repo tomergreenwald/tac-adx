@@ -25,10 +25,8 @@
 package edu.umich.eecs.tac.user;
 
 import se.sics.tasim.aw.Message;
-import se.sics.tasim.is.EventWriter;
-import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.sim.Publisher;
+import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.sim.Auctioneer;
 
 /**

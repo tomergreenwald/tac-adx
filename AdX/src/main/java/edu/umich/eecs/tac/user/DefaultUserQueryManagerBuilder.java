@@ -24,11 +24,10 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import edu.umich.eecs.tac.sim.AgentRepository;
-import edu.umich.eecs.tac.props.RetailCatalog;
-
 import java.util.Random;
+
+import edu.umich.eecs.tac.sim.AgentRepository;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * @author Patrick Jordan

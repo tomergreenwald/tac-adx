@@ -24,7 +24,6 @@
  */
 package edu.umich.eecs.tac.user;
 
-import java.util.Random;
 
 /**
  * @author Patrick Jordan

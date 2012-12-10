@@ -26,8 +26,8 @@ package edu.umich.eecs.tac.user;
 
 import se.sics.tasim.is.EventWriter;
 import edu.umich.eecs.tac.TACAAConstants;
-import edu.umich.eecs.tac.props.UserPopulationState;
 import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.UserPopulationState;
 
 /**
  * @author Patrick Jordan, Lee Callender

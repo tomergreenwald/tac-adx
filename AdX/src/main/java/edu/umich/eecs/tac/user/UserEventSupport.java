@@ -24,11 +24,11 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.AdLink;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import tau.tac.adx.props.AdLink;
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan, Lee Callender

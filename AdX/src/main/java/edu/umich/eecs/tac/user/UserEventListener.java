@@ -24,8 +24,8 @@
  */
 package edu.umich.eecs.tac.user;
 
-import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.Query;
 
 /**
  * @author Patrick Jordan
