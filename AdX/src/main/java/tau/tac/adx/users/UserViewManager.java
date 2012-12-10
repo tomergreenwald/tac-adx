@@ -25,9 +25,8 @@
 package tau.tac.adx.users;
 
 import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.auction.AuctionResult;
 import tau.tac.adx.props.TacQuery;
-import tau.tac.adx.props.UserClickModel;
-import edu.umich.eecs.tac.props.Auction;
 
 /**
  * @author Patrick Jordan
@@ -35,16 +34,13 @@ import edu.umich.eecs.tac.props.Auction;
  *            User view manager type.
  */
 public interface UserViewManager<T> extends TimeListener {
+
 	public boolean processImpression(TacUser<T> user, TacQuery<T> query,
-			Auction auction);
+			AuctionResult<T> auctionResult);
 
 	public boolean addUserEventListener(UserEventListener listener);
 
 	public boolean containsUserEventListener(UserEventListener listener);
 
 	public boolean removeUserEventListener(UserEventListener listener);
-
-	public UserClickModel getUserClickModel();
-
-	public void setUserClickModel(UserClickModel userClickModel);
 }

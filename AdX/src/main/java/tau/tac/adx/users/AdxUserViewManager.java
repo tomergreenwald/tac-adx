@@ -24,23 +24,17 @@
  */
 package tau.tac.adx.users;
 
-import static tau.tac.adx.users.UserUtils.calculateClickProbability;
-import static tau.tac.adx.users.UserUtils.calculateConversionProbability;
-import static tau.tac.adx.users.UserUtils.findAdvertiserEffect;
-import static tau.tac.adx.users.UserUtils.modifySalesProfitForManufacturerSpecialty;
-
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
 import tau.tac.adx.Adx;
+import tau.tac.adx.auction.AdxAuctionResult;
+import tau.tac.adx.auction.AuctionResult;
+import tau.tac.adx.auction.AuctionState;
 import tau.tac.adx.props.TacQuery;
-import tau.tac.adx.props.UserClickModel;
 import edu.umich.eecs.tac.props.AdLink;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.Auction;
-import edu.umich.eecs.tac.props.Pricing;
-import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.RecentConversionsTracker;
@@ -61,8 +55,6 @@ public class AdxUserViewManager implements UserViewManager<Adx> {
 	private final RetailCatalog catalog;
 
 	private final Random random;
-
-	private UserClickModel userClickModel;
 
 	private final RecentConversionsTracker recentConversionsTracker;
 
@@ -114,87 +106,16 @@ public class AdxUserViewManager implements UserViewManager<Adx> {
 
 	@Override
 	public boolean processImpression(TacUser<Adx> user, TacQuery<Adx> query,
-			Auction auction) {
+			AuctionResult<Adx> auctionResult) {
 		fireQueryIssued(query);
 
-		boolean converted = false;
-		boolean clicking = true;
-
-		// Grab the continuation probability from the user click model.
-		double continuationProbability = 0.0;
-
-		int queryIndex = userClickModel.queryIndex(query);
-
-		if (queryIndex < 0) {
-			log.warning(String.format("Query: %s does not have a click model.",
-					query));
-		} else {
-			continuationProbability = userClickModel
-					.getContinuationProbability(queryIndex);
+		AdxAuctionResult adxAuctionResult = (AdxAuctionResult) auctionResult;
+		if (adxAuctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
+			fireAdViewed(query, (AdLink) adxAuctionResult.getWinningBidInfo()
+					.getBidProduct());
+			return true;
 		}
-
-		Ranking ranking = auction.getRanking();
-		Pricing pricing = auction.getPricing();
-
-		// Users will view all adLinks, but may only click on some.
-		for (int i = 0; i < ranking.size(); i++) {
-
-			AdLink ad = ranking.get(i);
-			boolean isPromoted = ranking.isPromoted(i);
-
-			fireAdViewed(query, ad, i + 1, isPromoted);
-
-			// If the user is still considering clicks, process the attempt
-			if (clicking) {
-
-				AdvertiserInfo info = advertiserInfo.get(ad.getAdvertiser());
-
-				double promotionEffect = ranking.isPromoted(i) ? slotInfo
-						.getPromotedSlotBonus() : 0.0;
-
-				double clickProbability = calculateClickProbability(user,
-						ad.getAd(), info.getTargetEffect(), promotionEffect,
-						findAdvertiserEffect(query, ad, userClickModel));
-
-				if (random.nextDouble() <= clickProbability) {
-					// Users has clicked on the ad
-
-					fireAdClicked(query, ad, i + 1, pricing.getPrice(ad));
-
-					double conversionProbability = calculateConversionProbability(
-							user, query, info,
-							recentConversionsTracker.getRecentConversions(ad
-									.getAdvertiser()));
-					if (user.isTransacting()) {
-						if (random.nextDouble() <= conversionProbability) {
-							// User has converted and will no longer click
-
-							double salesProfit = catalog.getSalesProfit(user
-									.getProduct());
-
-							fireAdConverted(
-									query,
-									ad,
-									i + 1,
-									modifySalesProfitForManufacturerSpecialty(
-											user,
-											info.getManufacturerSpecialty(),
-											info.getManufacturerBonus(),
-											salesProfit));
-
-							converted = true;
-							clicking = false;
-						}
-					}
-				}
-			}
-
-			if (random.nextDouble() > continuationProbability) {
-				clicking = false;
-			}
-		}
-
-		return converted;
+		return false;
 	}
 
 	@Override
@@ -216,28 +137,8 @@ public class AdxUserViewManager implements UserViewManager<Adx> {
 		eventSupport.fireQueryIssued(query);
 	}
 
-	private void fireAdViewed(TacQuery<Adx> query, AdLink ad, int slot,
-			boolean isPromoted) {
-		eventSupport.fireAdViewed(query, ad, slot, isPromoted);
+	private void fireAdViewed(TacQuery<Adx> query, AdLink ad) {
+		eventSupport.fireAdViewed(query, ad);
 	}
 
-	private void fireAdClicked(TacQuery<Adx> query, AdLink ad, int slot,
-			double cpc) {
-		eventSupport.fireAdClicked(query, ad, slot, cpc);
-	}
-
-	private void fireAdConverted(TacQuery<Adx> query, AdLink ad, int slot,
-			double salesProfit) {
-		eventSupport.fireAdConverted(query, ad, slot, salesProfit);
-	}
-
-	@Override
-	public UserClickModel getUserClickModel() {
-		return userClickModel;
-	}
-
-	@Override
-	public void setUserClickModel(UserClickModel userClickModel) {
-		this.userClickModel = userClickModel;
-	}
 }

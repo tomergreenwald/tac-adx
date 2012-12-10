@@ -1,5 +1,5 @@
 /*
- * UserEventListener.java
+ * UserManager.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -24,16 +24,51 @@
  */
 package tau.tac.adx.users;
 
-import tau.tac.adx.props.TacQuery;
-import edu.umich.eecs.tac.props.Ad;
+import se.sics.tasim.aw.Message;
+import se.sics.tasim.aw.TimeListener;
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.UserClickModel;
+import edu.umich.eecs.tac.sim.Auctioneer;
 
 /**
+ * UserManager provides a public interface for triggering and managing agent
+ * behavior. Listeners may be added and removed through this object.
+ * 
  * @author Patrick Jordan
- * @param <T>
- *            User view manager type.
  */
-public interface UserEventListener<T> {
-	void queryIssued(TacQuery<T> query);
+public interface UserManager extends TimeListener {
 
-	void viewed(TacQuery<T> query, Ad ad, String advertiser);
+	public void initialize(int virtualDays);
+
+	public void triggerBehavior(Auctioneer auctioneer);
+
+	public boolean addUserEventListener(UserEventListener listener);
+
+	public boolean containsUserEventListener(UserEventListener listener);
+
+	public boolean removeUserEventListener(UserEventListener listener);
+
+	/**
+	 * Gathers the state distribution over all product populations
+	 * 
+	 * @return
+	 */
+	public int[] getStateDistribution();
+
+	/**
+	 * Gathers the state distribution over the given product population
+	 * 
+	 * @param product
+	 * @return
+	 */
+	public int[] getStateDistribution(Product product);
+
+	public RetailCatalog getRetailCatalog();
+
+	public UserClickModel getUserClickModel();
+
+	public void setUserClickModel(UserClickModel userClickModel);
+
+	public void messageReceived(Message message);
 }

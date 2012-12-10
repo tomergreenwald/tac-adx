@@ -22,28 +22,21 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.agents;
+package tau.tac.adx.users;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
-import tau.tac.adx.Adx;
-import tau.tac.adx.auction.AuctionResult;
-import tau.tac.adx.props.TacQuery;
-import tau.tac.adx.props.UserClickModel;
-import tau.tac.adx.publishers.AdxPublisher;
-import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.users.AdxUserViewManager;
-import tau.tac.adx.users.TacUser;
-import tau.tac.adx.users.UserEventListener;
-import tau.tac.adx.users.UserManager;
-import tau.tac.adx.users.UserQueryManager;
-import tau.tac.adx.users.generators.SimpleUserGenerator;
+import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.UserClickModel;
 import edu.umich.eecs.tac.sim.Auctioneer;
 import edu.umich.eecs.tac.user.DefaultUsersInitializer;
 import edu.umich.eecs.tac.user.QueryState;
@@ -54,38 +47,38 @@ import edu.umich.eecs.tac.user.UsersInitializer;
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
  */
-public class AdxUserManager implements UserManager {
-	protected Logger log = Logger.getLogger(AdxUserManager.class.getName());
+public class DefaultUserManager implements UserManager {
+	protected Logger log = Logger.getLogger(DefaultUserManager.class.getName());
 
 	private final Object lock;
 
-	private final List<AdxUser> users;
+	private final List<User> users;
 
 	private final Random random;
 
 	private final RetailCatalog retailCatalog;
 
-	private final UserQueryManager<Adx> queryManager;
+	private final UserQueryManager queryManager;
 
 	private final UserTransitionManager transitionManager;
 
-	private final AdxUserViewManager viewManager;
+	private final UserViewManager viewManager;
 
 	private UserClickModel userClickModel;
 
 	private final UsersInitializer usersInitializer;
 
-	public AdxUserManager(RetailCatalog retailCatalog,
+	public DefaultUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			UserQueryManager queryManager, AdxUserViewManager viewManager,
+			UserQueryManager queryManager, UserViewManager viewManager,
 			int populationSize) {
 		this(retailCatalog, transitionManager, queryManager, viewManager,
 				populationSize, new Random());
 	}
 
-	public AdxUserManager(RetailCatalog retailCatalog,
+	public DefaultUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			UserQueryManager queryManager, AdxUserViewManager viewManager,
+			UserQueryManager queryManager, UserViewManager viewManager,
 			int populationSize, Random random) {
 		lock = new Object();
 
@@ -122,8 +115,20 @@ public class AdxUserManager implements UserManager {
 		this.queryManager = queryManager;
 		this.viewManager = viewManager;
 		this.usersInitializer = new DefaultUsersInitializer(transitionManager);
-		SimpleUserGenerator generator = new SimpleUserGenerator();
-		users = generator.generate(populationSize);
+
+		users = buildUsers(retailCatalog, populationSize);
+	}
+
+	private List<User> buildUsers(RetailCatalog catalog, int populationSize) {
+		List<User> users = new ArrayList<User>();
+
+		for (Product product : catalog) {
+			for (int i = 0; i < populationSize; i++) {
+				users.add(new User(QueryState.NON_SEARCHING, product));
+			}
+		}
+
+		return users;
 	}
 
 	@Override
@@ -139,8 +144,11 @@ public class AdxUserManager implements UserManager {
 
 			Collections.shuffle(users, random);
 
-			for (AdxUser user : users) {
-				handleUserActivity(user);
+			for (User user : users) {
+
+				boolean transacted = handleSearch(user, auctioneer);
+
+				handleTransition(user, transacted);
 			}
 
 			log.finest("FINISH OF USER TRIGGER");
@@ -148,53 +156,30 @@ public class AdxUserManager implements UserManager {
 
 	}
 
-	/**
-	 * Activates a user for at least one time, with a probability of
-	 * {@link AdxUser#getpContinue()} for continuing browsing websites (
-	 * {@link AdxPublisher}) each time after that.
-	 * 
-	 * @param user
-	 */
-	private void handleUserActivity(AdxUser user) {
-		do {
-			handleSearch(user);
-		} while (user.getpContinue() > random.nextDouble());
-	}
-
-	/**
-	 * Activate user and generate queries and auctions for it. Causes the user
-	 * to "browse" to a websites ({@link AdxPublisher}) and activate the
-	 * Ad-Exchange auctioneer.
-	 * 
-	 * @param user
-	 *            An {@link AdxUser} to generate a query for.
-	 */
-	private boolean handleSearch(AdxUser user) {
+	private boolean handleSearch(User user, Auctioneer auctioneer) {
 
 		boolean transacted = false;
 
-		TacQuery<Adx> query = generateQuery(user);
+		Query query = generateQuery(user);
 
 		if (query != null) {
-			// Auction auction = auctioneer.runAuction(query);
+			Auction auction = auctioneer.runAuction(query);
 
-			AuctionResult<Adx> auction;
 			transacted = handleImpression(query, auction, user);
 		}
 
 		return transacted;
 	}
 
-	private boolean handleImpression(TacQuery<Adx> query,
-			AuctionResult<Adx> auctionResult, TacUser<Adx> user) {
-		return viewManager.processImpression(user, query, auctionResult);
+	private boolean handleImpression(Query query, Auction auction, User user) {
+		return viewManager.processImpression(user, query, auction);
 	}
 
 	private void handleTransition(User user, boolean transacted) {
 		user.setState(transitionManager.transition(user, transacted));
 	}
 
-	private TacQuery<Adx> generateQuery(AdxUser user) {
+	private Query generateQuery(User user) {
 		return queryManager.generateQuery(user);
 	}
 
@@ -256,7 +241,22 @@ public class AdxUserManager implements UserManager {
 	}
 
 	@Override
+	public UserClickModel getUserClickModel() {
+		return userClickModel;
+	}
+
+	@Override
+	public void setUserClickModel(UserClickModel userClickModel) {
+		this.userClickModel = userClickModel;
+		viewManager.setUserClickModel(userClickModel);
+	}
+
+	@Override
 	public void messageReceived(Message message) {
-		// Transportable content = message.getContent();
+		Transportable content = message.getContent();
+
+		if (content instanceof UserClickModel) {
+			setUserClickModel((UserClickModel) content);
+		}
 	}
 }

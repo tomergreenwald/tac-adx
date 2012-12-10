@@ -61,25 +61,9 @@ public class UserEventSupport<T> {
 		}
 	}
 
-	public void fireAdViewed(TacQuery<T> query, AdLink ad, int slot,
-			boolean isPromoted) {
+	public void fireAdViewed(TacQuery<T> query, AdLink ad) {
 		for (UserEventListener listener : listeners) {
-			listener.viewed(query, ad.getAd(), slot, ad.getAdvertiser(),
-					isPromoted);
-		}
-	}
-
-	public void fireAdClicked(TacQuery<T> query, AdLink ad, int slot, double cpc) {
-		for (UserEventListener listener : listeners) {
-			listener.clicked(query, ad.getAd(), slot, cpc, ad.getAdvertiser());
-		}
-	}
-
-	public void fireAdConverted(TacQuery<T> query, AdLink ad, int slot,
-			double salesProfit) {
-		for (UserEventListener listener : listeners) {
-			listener.converted(query, ad.getAd(), slot, salesProfit,
-					ad.getAdvertiser());
+			listener.viewed(query, ad.getAd(), ad.getAdvertiser());
 		}
 	}
 
