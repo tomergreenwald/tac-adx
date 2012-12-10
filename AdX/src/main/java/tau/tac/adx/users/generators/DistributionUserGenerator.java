@@ -5,13 +5,13 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import tac.tau.adx.utils.EnumGenerator;
 import tau.tac.adx.generators.GenericGenerator;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.properties.AdxUserDistributionMaps;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
+import tau.tac.adx.util.EnumGenerator;
 
 /**
  * An advanced implementation of the {@link GenericGenerator}.<br>

@@ -8,7 +8,6 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import tac.tau.adx.utils.EnumGenerator;
 import tau.tac.adx.users.properties.Age;
 
 /**

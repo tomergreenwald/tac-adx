@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tac.tau.adx.utils;
+package tau.tac.adx.util;
 
 import java.util.HashMap;
 import java.util.Map;

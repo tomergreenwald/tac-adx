@@ -9,14 +9,13 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import tac.tau.adx.utils.AdxUtils;
-import tac.tau.adx.utils.MapGenerator;
 import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.users.generators.DistributionUserGenerator;
 import tau.tac.adx.users.properties.AdxUserDistributionMaps;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
+import tau.tac.adx.util.AdxUtils;
+import tau.tac.adx.util.MapGenerator;
 import tau.tac.adx.util.ObjectAssertion;
 import tau.tac.adx.util.TestConstants;
 
