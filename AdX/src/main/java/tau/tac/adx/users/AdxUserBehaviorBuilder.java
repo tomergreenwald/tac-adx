@@ -24,17 +24,24 @@
  */
 package tau.tac.adx.users;
 
+import java.util.Map;
 import java.util.Random;
 
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.sim.AdxAgentRepository;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * User behavior builders construct user behaviors from a configuration.
  * 
- * @author Patrick Jordan
+ * @author greenwald
+ * @param <T>
+ *            {@link #build(ConfigProxy, AdxAgentRepository, Map, Map, Random)}
+ *            type.
  */
 public interface AdxUserBehaviorBuilder<T> {
+
 	/**
 	 * Build a user behavior from a configuration.
 	 * 
@@ -42,10 +49,17 @@ public interface AdxUserBehaviorBuilder<T> {
 	 *            the configuration proxy
 	 * @param repository
 	 *            the repository of agents
+	 * @param deviceDeistributionMap
+	 *            {@link Device} distribution map. Each {@link Device} is
+	 *            associated with its relative popularity.
+	 * @param adTypeDeistributionMap
+	 *            {@link AdType} distribution map. Each {@link AdType} is
+	 *            associated with its relative popularity.
 	 * @param random
 	 *            the random number generator
 	 * @return a built user behavior
 	 */
 	public T build(ConfigProxy userConfigProxy, AdxAgentRepository repository,
-			Random random);
+			Map<Device, Integer> deviceDeistributionMap,
+			Map<AdType, Integer> adTypeDeistributionMap, Random random);
 }
