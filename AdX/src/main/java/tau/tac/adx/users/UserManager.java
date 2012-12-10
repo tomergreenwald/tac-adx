@@ -28,7 +28,6 @@ import se.sics.tasim.aw.Message;
 import se.sics.tasim.aw.TimeListener;
 import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.UserClickModel;
 import edu.umich.eecs.tac.sim.Auctioneer;
 
 /**
@@ -65,10 +64,6 @@ public interface UserManager extends TimeListener {
 	public int[] getStateDistribution(Product product);
 
 	public RetailCatalog getRetailCatalog();
-
-	public UserClickModel getUserClickModel();
-
-	public void setUserClickModel(UserClickModel userClickModel);
 
 	public void messageReceived(Message message);
 }
