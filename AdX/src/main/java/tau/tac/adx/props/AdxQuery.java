@@ -7,6 +7,9 @@ import java.text.ParseException;
 
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
+import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
 import edu.umich.eecs.tac.props.AbstractTransportable;
 
@@ -28,32 +31,62 @@ public class AdxQuery extends AbstractTransportable {
 	private static final long serialVersionUID = -7210442551464879289L;
 
 	/**
-	 * The publisher key.
-	 */
-	private static final String PUBLISHER_KEY = "publisher";
-
-	/**
 	 * Cached hashcode.
 	 */
 	private int hashCode;
 	/**
-	 * The string representing the publisher. May be <code>null</code>.
+	 * The queried {@link AdxPublisher}.
 	 */
-	private String publisher;
+	private AdxPublisher publisher;
 
 	/**
-	 * @param publisher
+	 * {@link AdxUser} who this {@link AdxQuery} relates to.
 	 */
-	public AdxQuery(String publisher) {
+	private AdxUser user;
+
+	/**
+	 * Accessing {@link Device} used for the query.
+	 */
+	private Device device;
+
+	/**
+	 * Requested {@link AdType} for the query.
+	 */
+	private AdType adType;
+
+	/**
+	 * Class constructor.
+	 * 
+	 * @param publisher
+	 *            The queried {@link AdxPublisher}.
+	 * @param user
+	 *            {@link AdxUser} who this {@link AdxQuery} relates to.
+	 * @param device
+	 *            Accessing {@link Device} used for the query.
+	 * @param adType
+	 *            Requested {@link AdType} for the query.
+	 */
+	public AdxQuery(AdxPublisher publisher, AdxUser user, Device device,
+			AdType adType) {
 		super();
 		this.publisher = publisher;
+		this.user = user;
+		this.device = device;
+		this.adType = adType;
 		calculateHashCode();
+	}
+
+	/**
+	 * Empty constructor.
+	 */
+	public AdxQuery() {
+		super();
 	}
 
 	/**
 	 * @return the publisher
 	 */
-	public String getPublisher() {
+	public AdxPublisher getPublisher() {
 		return publisher;
 	}
 
@@ -61,8 +94,32 @@ public class AdxQuery extends AbstractTransportable {
 	 * @param publisher
 	 *            the publisher to set
 	 */
-	public void setPublisher(String publisher) {
+	public void setPublisher(AdxPublisher publisher) {
 		this.publisher = publisher;
+	}
+
+	public AdxUser getUser() {
+		return user;
+	}
+
+	public void setUser(AdxUser user) {
+		this.user = user;
+	}
+
+	public Device getDevice() {
+		return device;
+	}
+
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+
+	public AdType getAdType() {
+		return adType;
+	}
+
+	public void setAdType(AdType adType) {
+		this.adType = adType;
 	}
 
 	/**
@@ -70,7 +127,11 @@ public class AdxQuery extends AbstractTransportable {
 	 */
 	@Override
 	protected void readWithLock(TransportReader reader) throws ParseException {
-		this.setPublisher(reader.getAttribute(PUBLISHER_KEY, null));
+		AdxQuery query = (AdxQuery) reader.readTransportable();
+		this.adType = query.adType;
+		this.device = query.device;
+		this.publisher=query.publisher;
+		this.user=query.user;
 		calculateHashCode();
 	}
 
@@ -79,9 +140,7 @@ public class AdxQuery extends AbstractTransportable {
 	 */
 	@Override
 	protected void writeWithLock(TransportWriter writer) {
-		if (getPublisher() != null) {
-			writer.attr(PUBLISHER_KEY, getPublisher());
-		}
+		writer.write(this);
 	}
 
 	/*	*//**

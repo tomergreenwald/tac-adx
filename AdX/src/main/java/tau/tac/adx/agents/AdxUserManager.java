@@ -31,7 +31,10 @@ import java.util.logging.Logger;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
+import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.users.AdxUserQueryManager;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.Product;
@@ -52,9 +55,8 @@ import edu.umich.eecs.tac.user.UsersInitializer;
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
  */
-public class DefaultAdxUserManager implements UserManager {
-	protected Logger log = Logger.getLogger(DefaultAdxUserManager.class
-			.getName());
+public class AdxUserManager implements UserManager {
+	protected Logger log = Logger.getLogger(AdxUserManager.class.getName());
 
 	private final Object lock;
 
@@ -64,7 +66,7 @@ public class DefaultAdxUserManager implements UserManager {
 
 	private final RetailCatalog retailCatalog;
 
-	private final UserQueryManager queryManager;
+	private final AdxUserQueryManager queryManager;
 
 	private final UserTransitionManager transitionManager;
 
@@ -74,17 +76,17 @@ public class DefaultAdxUserManager implements UserManager {
 
 	private final UsersInitializer usersInitializer;
 
-	public DefaultAdxUserManager(RetailCatalog retailCatalog,
+	public AdxUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			UserQueryManager queryManager, UserViewManager viewManager,
+			AdxUserQueryManager queryManager, UserViewManager viewManager,
 			int populationSize) {
 		this(retailCatalog, transitionManager, queryManager, viewManager,
 				populationSize, new Random());
 	}
 
-	public DefaultAdxUserManager(RetailCatalog retailCatalog,
+	public AdxUserManager(RetailCatalog retailCatalog,
 			UserTransitionManager transitionManager,
-			UserQueryManager queryManager, UserViewManager viewManager,
+			AdxUserQueryManager queryManager, UserViewManager viewManager,
 			int populationSize, Random random) {
 		lock = new Object();
 
@@ -138,11 +140,8 @@ public class DefaultAdxUserManager implements UserManager {
 
 			Collections.shuffle(users, random);
 
-			for (User user : users) {
-
-				boolean transacted = handleSearch(user, auctioneer);
-
-				handleTransition(user, transacted);
+			for (AdxUser user : users) {
+				handleUserActivity(user);
 			}
 
 			log.finest("FINISH OF USER TRIGGER");
@@ -150,11 +149,32 @@ public class DefaultAdxUserManager implements UserManager {
 
 	}
 
-	private boolean handleSearch(User user, Auctioneer auctioneer) {
+	/**
+	 * Activates a user for at least one time, with a probability of
+	 * {@link AdxUser#getpContinue()} for continuing browsing websites (
+	 * {@link AdxPublisher}) each time after that.
+	 * 
+	 * @param user
+	 */
+	private void handleUserActivity(AdxUser user) {
+		do {
+			handleSearch(user);
+		} while (user.getpContinue() > random.nextDouble());
+	}
+
+	/**
+	 * Activate user and generate queries and auctions for it. Causes the user
+	 * to "browse" to a websites ({@link AdxPublisher}) and activate the
+	 * Ad-Exchange auctioneer.
+	 * 
+	 * @param user
+	 *            An {@link AdxUser} to generate a query for.
+	 */
+	private boolean handleSearch(AdxUser user) {
 
 		boolean transacted = false;
 
-		Query query = generateQuery(user);
+		AdxQuery query = generateQuery(user);
 
 		if (query != null) {
 			Auction auction = auctioneer.runAuction(query);
@@ -173,7 +193,7 @@ public class DefaultAdxUserManager implements UserManager {
 		user.setState(transitionManager.transition(user, transacted));
 	}
 
-	private Query generateQuery(User user) {
+	private AdxQuery generateQuery(AdxUser user) {
 		return queryManager.generateQuery(user);
 	}
 

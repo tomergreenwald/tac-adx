@@ -47,7 +47,7 @@ import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
 /**
  * @author Patrick Jordan, Lee Callender
  */
-public class DefaultUsersBehavior implements UsersBehavior {
+public class AdxUsersBehavior implements UsersBehavior {
 
 	private UserManager userManager;
 
@@ -61,7 +61,7 @@ public class DefaultUsersBehavior implements UsersBehavior {
 
 	private final UsersTransactor usersTransactor;
 
-	public DefaultUsersBehavior(ConfigProxy config,
+	public AdxUsersBehavior(ConfigProxy config,
 			AgentRepository agentRepository, UsersTransactor usersTransactor) {
 
 		if (config == null) {

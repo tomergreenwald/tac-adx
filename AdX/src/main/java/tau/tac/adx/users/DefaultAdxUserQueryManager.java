@@ -29,9 +29,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.util.EnumGenerator;
 import edu.umich.eecs.tac.user.User;
 import edu.umich.eecs.tac.util.sampling.MutableSampler;
 import edu.umich.eecs.tac.util.sampling.Sampler;
@@ -43,13 +46,27 @@ import edu.umich.eecs.tac.util.sampling.WheelSampler;
 public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 	private final Map<User, Sampler<AdxQuery>> querySamplers;
 
+	/**
+	 * {@link Device} distribution map. Each {@link Device} is associated with
+	 * its relative popularity.
+	 */
+	private final Map<Device, Integer> deviceDeistributionMap;
+	/**
+	 * {@link AdType} distribution map. Each {@link AdType} is associated with
+	 * its relative popularity.
+	 */
+	private final Map<AdType, Integer> adTypeDeistributionMap;
+
 	public DefaultAdxUserQueryManager(PublisherCatalog catalog,
-			List<AdxUser> users) {
-		this(catalog, users, new Random());
+			List<AdxUser> users, Map<Device, Integer> deviceDeistributionMap,
+			Map<AdType, Integer> adTypeDeistributionMap) {
+		this(catalog, users, deviceDeistributionMap, adTypeDeistributionMap,
+				new Random());
 	}
 
 	public DefaultAdxUserQueryManager(PublisherCatalog catalog,
-			List<AdxUser> users, Random random) {
+			List<AdxUser> users, Map<Device, Integer> deviceDeistributionMap,
+			Map<AdType, Integer> adTypeDeistributionMap, Random random) {
 		if (catalog == null) {
 			throw new NullPointerException("Retail catalog cannot be null");
 		}
@@ -63,6 +80,17 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 					"Random number generator cannot be null");
 		}
 
+		if (deviceDeistributionMap == null) {
+			throw new NullPointerException(
+					"Device distribution map cannot be null");
+		}
+
+		if (adTypeDeistributionMap == null) {
+			throw new NullPointerException(
+					"Ad Type distribution map cannot be null");
+		}
+		this.deviceDeistributionMap = deviceDeistributionMap;
+		this.adTypeDeistributionMap = adTypeDeistributionMap;
 		querySamplers = buildQuerySamplers(catalog, null, random);
 	}
 
@@ -78,12 +106,19 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 
 	private Map<User, Sampler<AdxQuery>> buildQuerySamplers(
 			PublisherCatalog catalog, List<AdxUser> users, Random random) {
+		EnumGenerator<Device> deviceGenerator = new EnumGenerator<Device>(
+				deviceDeistributionMap);
+		EnumGenerator<AdType> adTypeGenerator = new EnumGenerator<AdType>(
+				adTypeDeistributionMap);
 		Map<User, Sampler<AdxQuery>> samplingMap = new HashMap<User, Sampler<AdxQuery>>();
+
 		for (AdxUser user : users) {
 			MutableSampler<AdxQuery> sampler = new WheelSampler<AdxQuery>(
 					random);
 			for (AdxPublisher publisher : catalog) {
-				AdxQuery query = new AdxQuery(publisher.getName());
+				Device device = deviceGenerator.randomType();
+				AdType adType = adTypeGenerator.randomType();
+				AdxQuery query = new AdxQuery(publisher, user, device, adType);
 				double weight = publisher.userAffiliation(user);
 				sampler.addState(weight, query);
 			}
