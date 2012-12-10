@@ -178,8 +178,8 @@ public class AdxUserManager implements UserManager {
 		if (query != null) {
 			// Auction auction = auctioneer.runAuction(query);
 
-			AuctionResult<Adx> auction;
-			transacted = handleImpression(query, auction, user);
+			// AuctionResult<Adx> auction;
+			// transacted = handleImpression(query, auction, user);
 		}
 
 		return transacted;
