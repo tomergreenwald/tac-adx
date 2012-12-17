@@ -168,6 +168,63 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 	}
 
 	/**
+	 * @param adTypeDistribution
+	 *            the adTypeDistribution to set
+	 */
+	public void setAdTypeDistribution(Map<AdType, Double> adTypeDistribution) {
+		this.adTypeDistribution = adTypeDistribution;
+	}
+
+	/**
+	 * @param deviceProbabilityMap
+	 *            the deviceProbabilityMap to set
+	 */
+	public void setDeviceProbabilityMap(Map<Device, Double> deviceProbabilityMap) {
+		this.deviceProbabilityMap = deviceProbabilityMap;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @param pImpressions
+	 *            the pImpressions to set
+	 */
+	public void setpImpressions(double pImpressions) {
+		this.pImpressions = pImpressions;
+	}
+
+	/**
+	 * @param probabilityMaps
+	 *            the probabilityMaps to set
+	 */
+	public void setProbabilityMaps(
+			AdxUserAttributeProbabilityMaps probabilityMaps) {
+		this.probabilityMaps = probabilityMaps;
+	}
+
+	/**
+	 * @param relativePopularity
+	 *            the relativePopularity to set
+	 */
+	public void setRelativePopularity(double relativePopularity) {
+		this.relativePopularity = relativePopularity;
+	}
+
+	/**
+	 * @param reservePriceManager
+	 *            the reservePriceManager to set
+	 */
+	public void setReservePriceManager(ReservePriceManager reservePriceManager) {
+		this.reservePriceManager = reservePriceManager;
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
