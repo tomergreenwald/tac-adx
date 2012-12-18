@@ -30,6 +30,8 @@ public class AdxUser extends User implements Cloneable, TacUser<Adx> {
 	private double pContinue;
 	/** User's activity {@link UserState state}. */
 	private UserState userState;
+	/** Unique user id. */
+	private final int uniqueId;
 
 	/**
 	 * @param age
@@ -41,14 +43,18 @@ public class AdxUser extends User implements Cloneable, TacUser<Adx> {
 	 * @param pContinue
 	 *            The probability an {@link AdxUser} is likely to continue
 	 *            visiting this site after visiting it once in a given day.
+	 * @param uniqueId
+	 *            Unique user id.
 	 */
-	public AdxUser(Age age, Gender gender, Income income, double pContinue) {
+	public AdxUser(Age age, Gender gender, Income income, double pContinue,
+			int uniqueId) {
 		super();
 		this.age = age;
 		this.gender = gender;
 		this.income = income;
 		this.pContinue = pContinue;
 		this.userState = UserState.IDLE;
+		this.uniqueId = uniqueId;
 	}
 
 	/**
@@ -103,11 +109,18 @@ public class AdxUser extends User implements Cloneable, TacUser<Adx> {
 	}
 
 	/**
+	 * @return the uniqueId
+	 */
+	public int getUniqueId() {
+		return uniqueId;
+	}
+
+	/**
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
 	public Object clone() {
-		return new AdxUser(age, gender, income, pContinue);
+		return new AdxUser(age, gender, income, pContinue, uniqueId);
 	}
 
 	/**

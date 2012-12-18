@@ -5,12 +5,12 @@ package tau.tac.adx.users.generators;
 
 import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.users.generators.SimpleUserGenerator;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
@@ -21,6 +21,9 @@ import tau.tac.adx.util.TestConstants;
  * 
  */
 public class SimpleUserGeneratorTest {
+
+	/** Unique user id. */
+	private static AtomicInteger uniqueId = new AtomicInteger();
 
 	/**
 	 * Test method for
@@ -49,7 +52,8 @@ public class SimpleUserGeneratorTest {
 			for (Gender gender : Gender.values()) {
 				for (Income income : Income.values()) {
 					Assert.assertTrue(allPossibleUsers.contains(new AdxUser(
-							age, gender, income, Double.NaN)));
+							age, gender, income, Double.NaN, uniqueId
+									.incrementAndGet())));
 				}
 			}
 		}

@@ -26,6 +26,26 @@ import edu.umich.eecs.tac.props.AbstractTransportable;
 public class AdxQuery extends AbstractTransportable {
 
 	/**
+	 * The ad type key.
+	 */
+	private static final String AD_TYPE_KEY = "AD_TYPE_KEY";
+
+	/**
+	 * The device key.
+	 */
+	private static final String DEVICE_KEY = "DEVICE_KEY";
+
+	/**
+	 * The publisher key.
+	 */
+	private static final String PUBLISHER_KEY = "PUBLISHER_KEY";
+
+	/**
+	 * The publisher key.
+	 */
+	private static final String USER_KEY = "USER_KEY";
+
+	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = -7210442551464879289L;
@@ -37,12 +57,12 @@ public class AdxQuery extends AbstractTransportable {
 	/**
 	 * The queried {@link AdxPublisher}.
 	 */
-	private AdxPublisher publisher;
+	private String publisher;
 
 	/**
 	 * {@link AdxUser} who this {@link AdxQuery} relates to.
 	 */
-	private AdxUser user;
+	private int userId;
 
 	/**
 	 * Accessing {@link Device} used for the query.
@@ -59,18 +79,17 @@ public class AdxQuery extends AbstractTransportable {
 	 * 
 	 * @param publisher
 	 *            The queried {@link AdxPublisher}.
-	 * @param user
+	 * @param userId
 	 *            {@link AdxUser} who this {@link AdxQuery} relates to.
 	 * @param device
 	 *            Accessing {@link Device} used for the query.
 	 * @param adType
 	 *            Requested {@link AdType} for the query.
 	 */
-	public AdxQuery(AdxPublisher publisher, AdxUser user, Device device,
-			AdType adType) {
+	public AdxQuery(String publisher, int userId, Device device, AdType adType) {
 		super();
 		this.publisher = publisher;
-		this.user = user;
+		this.userId = userId;
 		this.device = device;
 		this.adType = adType;
 		calculateHashCode();
@@ -84,9 +103,31 @@ public class AdxQuery extends AbstractTransportable {
 	}
 
 	/**
+	 * Class constructor.
+	 * 
+	 * @param publisher
+	 *            The queried {@link AdxPublisher}.
+	 * @param user
+	 *            {@link AdxUser} who this {@link AdxQuery} relates to.
+	 * @param device
+	 *            Accessing {@link Device} used for the query.
+	 * @param adType
+	 *            Requested {@link AdType} for the query.
+	 */
+	public AdxQuery(AdxPublisher publisher, AdxUser user, Device device,
+			AdType adType) {
+		super();
+		this.publisher = publisher.getName();
+		this.userId = user.getUniqueId();
+		this.device = device;
+		this.adType = adType;
+		calculateHashCode();
+	}
+
+	/**
 	 * @return the publisher
 	 */
-	public AdxPublisher getPublisher() {
+	public String getPublisher() {
 		return publisher;
 	}
 
@@ -94,23 +135,23 @@ public class AdxQuery extends AbstractTransportable {
 	 * @param publisher
 	 *            the publisher to set
 	 */
-	public void setPublisher(AdxPublisher publisher) {
+	public void setPublisher(String publisher) {
 		this.publisher = publisher;
 	}
 
 	/**
 	 * @return the user
 	 */
-	public AdxUser getUser() {
-		return user;
+	public int getUserId() {
+		return userId;
 	}
 
 	/**
-	 * @param user
+	 * @param userId
 	 *            the user to set
 	 */
-	public void setUser(AdxUser user) {
-		this.user = user;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	/**
@@ -148,11 +189,10 @@ public class AdxQuery extends AbstractTransportable {
 	 */
 	@Override
 	protected void readWithLock(TransportReader reader) throws ParseException {
-		AdxQuery query = (AdxQuery) reader.readTransportable();
-		this.adType = query.adType;
-		this.device = query.device;
-		this.publisher = query.publisher;
-		this.user = query.user;
+		this.setAdType(AdType.valueOf(reader.getAttribute(AD_TYPE_KEY, null)));
+		this.setDevice(Device.valueOf(reader.getAttribute(DEVICE_KEY, null)));
+		this.setPublisher(reader.getAttribute(PUBLISHER_KEY, null));
+		this.setUserId(reader.getAttributeAsInt(USER_KEY));
 		calculateHashCode();
 	}
 
@@ -161,7 +201,18 @@ public class AdxQuery extends AbstractTransportable {
 	 */
 	@Override
 	protected void writeWithLock(TransportWriter writer) {
-		writer.write(this);
+		if (getAdType() != null) {
+			writer.attr(AD_TYPE_KEY, getAdType().name());
+		}
+		if (getDevice() != null) {
+			writer.attr(DEVICE_KEY, getDevice().name());
+		}
+		if (getPublisher() != null) {
+			writer.attr(PUBLISHER_KEY, getPublisher());
+		}
+		if (getUserId() != 0) {
+			writer.attr(USER_KEY, getUserId());
+		}
 	}
 
 	/*	*//**

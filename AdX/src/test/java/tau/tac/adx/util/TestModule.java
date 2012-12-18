@@ -5,7 +5,16 @@ package tau.tac.adx.util;
 
 import java.util.Collection;
 
+import tau.tac.adx.ads.properties.generators.AdTypeGenerator;
+import tau.tac.adx.ads.properties.generators.SimpleAdTypeGenerator;
+import tau.tac.adx.devices.generators.DeviceGenerator;
+import tau.tac.adx.devices.generators.SimpleDeviceGenerator;
+import tau.tac.adx.props.generators.AdxQueryGenerator;
+import tau.tac.adx.props.generators.SimpleAdxQueryGenerator;
+import tau.tac.adx.publishers.generators.AdxPublisherGenerator;
+import tau.tac.adx.publishers.generators.SimplePublisherGenerator;
 import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.users.generators.AdxUserGenerator;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 
 import com.google.inject.AbstractModule;
@@ -37,10 +46,15 @@ public class TestModule extends AbstractModule {
 		return users;
 	}
 
+	/**
+	 * @see com.google.inject.AbstractModule#configure()
+	 */
 	@Override
 	protected void configure() {
-		// TODO Auto-generated method stub
-		
+		bind(AdxQueryGenerator.class).to(SimpleAdxQueryGenerator.class);
+		bind(AdxUserGenerator.class).to(SimpleUserGenerator.class);
+		bind(AdxPublisherGenerator.class).to(SimplePublisherGenerator.class);
+		bind(AdTypeGenerator.class).to(SimpleAdTypeGenerator.class);
+		bind(DeviceGenerator.class).to(SimpleDeviceGenerator.class);
 	}
-
 }

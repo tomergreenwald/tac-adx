@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import tau.tac.adx.generators.GenericGenerator;
@@ -19,7 +20,10 @@ import tau.tac.adx.users.properties.Income;
  * @author greenwald
  * 
  */
-public class SimpleUserGenerator implements GenericGenerator<AdxUser> {
+public class SimpleUserGenerator implements AdxUserGenerator {
+
+	/** Unique user id. */
+	private static AtomicInteger uniqueId = new AtomicInteger();
 
 	/**
 	 * @see GenericGenerator#generate(int)
@@ -46,7 +50,8 @@ public class SimpleUserGenerator implements GenericGenerator<AdxUser> {
 		for (Age age : Age.values()) {
 			for (Gender gender : Gender.values()) {
 				for (Income income : Income.values()) {
-					users.add(new AdxUser(age, gender, income, Double.NaN));
+					users.add(new AdxUser(age, gender, income, Double.NaN,
+							uniqueId.incrementAndGet()));
 				}
 			}
 		}
@@ -61,7 +66,8 @@ public class SimpleUserGenerator implements GenericGenerator<AdxUser> {
 		Gender gender = randomGender();
 		Income income = randomIncome();
 		double pContinue = Math.random();
-		AdxUser user = new AdxUser(age, gender, income, pContinue);
+		AdxUser user = new AdxUser(age, gender, income, pContinue,
+				uniqueId.incrementAndGet());
 		return user;
 	}
 

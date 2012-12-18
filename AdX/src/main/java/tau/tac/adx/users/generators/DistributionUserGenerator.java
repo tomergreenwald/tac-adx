@@ -21,7 +21,7 @@ import tau.tac.adx.util.EnumGenerator;
  * @author greenwald
  * 
  */
-public class DistributionUserGenerator implements GenericGenerator<AdxUser> {
+public class DistributionUserGenerator implements AdxUserGenerator {
 
 	/** An {@link EnumGenerator} over {@link Age} with probability. */
 	private final EnumGenerator<Age> ageGenerator;
@@ -29,6 +29,8 @@ public class DistributionUserGenerator implements GenericGenerator<AdxUser> {
 	private final EnumGenerator<Gender> genderGenerator;
 	/** An {@link EnumGenerator} over {@link Income} with probability. */
 	private final EnumGenerator<Income> incomeGenerator;
+	/** Unique user id. */
+	private int uniqueId;
 
 	/**
 	 * @param distributionMaps
@@ -45,6 +47,7 @@ public class DistributionUserGenerator implements GenericGenerator<AdxUser> {
 	/**
 	 * @see GenericGenerator#generate(int)
 	 */
+	@Override
 	public Collection<AdxUser> generate(int amount) {
 		Collection<AdxUser> users = new LinkedList<AdxUser>();
 		for (int i = 0; i < amount; i++) {
@@ -64,7 +67,8 @@ public class DistributionUserGenerator implements GenericGenerator<AdxUser> {
 		Gender gender = genderGenerator.randomType();
 		Income income = incomeGenerator.randomType();
 		double pContinue = Math.random();
-		AdxUser user = new AdxUser(age, gender, income, pContinue);
+		AdxUser user = new AdxUser(age, gender, income, pContinue, uniqueId);
+		uniqueId++;
 		return user;
 	}
 
