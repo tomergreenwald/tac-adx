@@ -36,6 +36,9 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import edu.umich.eecs.tac.props.AAInfo;
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.RetailCatalog.RetailCatalogEntry;
 
 /**

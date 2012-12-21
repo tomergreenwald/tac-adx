@@ -5,13 +5,14 @@ package tau.tac.adx.props;
 
 import java.text.ParseException;
 
+import edu.umich.eecs.tac.props.AbstractTransportable;
+
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
-import edu.umich.eecs.tac.props.AbstractTransportable;
 
 /**
  * An {@link AdxUser} <b>query</b> in the simulation. Each {@link AdxQuery} is

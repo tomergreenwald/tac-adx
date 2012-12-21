@@ -64,7 +64,7 @@ public class AdxQueryTest {
 	public void testValidTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AdxInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 		Injector injector = TestUtils.getInjector();
 		AdxQueryGenerator generator = injector
 				.getInstance(AdxQueryGenerator.class);

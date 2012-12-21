@@ -26,6 +26,7 @@ package tau.tac.adx.users;
 
 import java.util.Random;
 
+
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.user.DefaultUserManager;

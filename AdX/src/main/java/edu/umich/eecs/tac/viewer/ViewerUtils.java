@@ -31,6 +31,7 @@ import edu.umich.eecs.tac.props.RetailCatalog;
 
 import java.util.Set;
 
+
 /**
  * @author Patrick Jordan
  */

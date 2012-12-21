@@ -30,6 +30,7 @@ import se.sics.isl.transport.TransportWriter;
 import java.text.ParseException;
 import java.util.*;
 
+
 /**
  * The class holds the available products, which the users have preferences
  * over. In addition, the advertiser sales profit per conversion is given for

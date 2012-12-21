@@ -30,6 +30,8 @@ import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.props.RetailCatalog;
 
 import javax.swing.*;
+
+
 import java.awt.*;
 
 /**

@@ -25,10 +25,11 @@
 package tau.tac.adx.props;
 
 import java.util.Iterator;
+import java.util.List;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.publishers.AdxPublisher;
 import edu.umich.eecs.tac.props.AbstractTransportableEntryListBacking;
-import edu.umich.eecs.tac.props.KeyIterator;
 
 /**
  * A catalog of all available publishers.
@@ -36,8 +37,8 @@ import edu.umich.eecs.tac.props.KeyIterator;
  * @author greenwald
  */
 public class PublisherCatalog extends
-		AbstractTransportableEntryListBacking<AdxPublisher> implements
-		Iterable<AdxPublisher> {
+		AbstractTransportableEntryListBacking<PublisherCatalogEntry> implements
+		Iterable<PublisherCatalogEntry> {
 
 	/**
 	 * serialVersionUID
@@ -45,20 +46,57 @@ public class PublisherCatalog extends
 	private static final long serialVersionUID = -5999861205883888430L;
 
 	/**
-	 * @see edu.umich.eecs.tac.props.AbstractTransportableEntryListBacking#entryClass()
+	 * Adds an {@link AdxPublisher} to the {@link PublisherCatalog}.
+	 * 
+	 * @param publisher
+	 *            {@link AdxPublisher} to add.
 	 */
-	@Override
-	protected Class<AdxPublisher> entryClass() {
-		return AdxPublisher.class;
+	protected void addPublisher(AdxPublisher publisher) {
+		addEntry(new PublisherCatalogEntry(publisher.getName()));
+		AdxManager.addPublisher(publisher);
 	}
 
 	/**
-	 * Returns an iterator over the keys in the list.
+	 * Creates a {@link PublisherCatalogEntry} for an {@link AdxPublisher}.
 	 * 
-	 * @return an iterator over the keys in the list.
+	 * @param adxPublisher
+	 *            the {@link AdxPublisher} for the created entry.
+	 * @return a {@link PublisherCatalogEntry} for an {@link AdxPublisher}.
+	 */
+	protected final PublisherCatalogEntry createEntry(AdxPublisher adxPublisher) {
+		return new PublisherCatalogEntry(adxPublisher);
+	}
+
+	/**
+	 * Returns whether the transportable is immutable.
+	 * 
+	 * @return <code>true</code> if the transportable is locked,
+	 *         <code>false</code> otherwise.
+	 */
+	protected boolean locked() {
+		return isLocked();
+	}
+
+	/**
+	 * @see java.lang.Iterable#iterator()
 	 */
 	@Override
-	public final Iterator<AdxPublisher> iterator() {
-		return new KeyIterator<AdxPublisher>(getEntries().iterator());
+	public Iterator<PublisherCatalogEntry> iterator() {
+		return getEntries().iterator();
+	}
+
+	/**
+	 * @see edu.umich.eecs.tac.props.AbstractTransportableEntryListBacking#entryClass()
+	 */
+	@Override
+	protected Class<PublisherCatalogEntry> entryClass() {
+		return PublisherCatalogEntry.class;
+	}
+
+	/**
+	 * @return A {@link List} of {@link PublisherCatalogEntry}s.
+	 */
+	public List<PublisherCatalogEntry> getPublishers() {
+		return getEntries();
 	}
 }

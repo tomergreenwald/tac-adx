@@ -30,10 +30,12 @@ import java.util.Map;
 import java.util.Random;
 
 import tau.tac.adx.Adx;
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
+import tau.tac.adx.props.PublisherCatalogEntry;
 import tau.tac.adx.props.TacQuery;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.util.EnumGenerator;
@@ -151,10 +153,14 @@ public class AdxUserQueryManager implements UserQueryManager<Adx> {
 		for (AdxUser user : users) {
 			MutableSampler<AdxQuery> sampler = new WheelSampler<AdxQuery>(
 					random);
-			for (AdxPublisher publisher : catalog) {
+			for (PublisherCatalogEntry publisherEntry : catalog) {
 				Device device = deviceGenerator.randomType();
 				AdType adType = adTypeGenerator.randomType();
-				AdxQuery query = new AdxQuery(publisher, user, device, adType);
+				AdxQuery query = new AdxQuery(
+						publisherEntry.getPublisherName(), user.getUniqueId(),
+						device, adType);
+				AdxPublisher publisher = AdxManager.getPublisher(publisherEntry
+						.getPublisherName());
 				double weight = publisher.userAffiliation(user);
 				sampler.addState(weight, query);
 			}
