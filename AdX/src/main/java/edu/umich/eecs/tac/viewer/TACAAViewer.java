@@ -26,12 +26,14 @@
 package edu.umich.eecs.tac.viewer;
 
 import static edu.umich.eecs.tac.TACAAConstants.ROLE_NAME;
-import edu.umich.eecs.tac.props.RetailCatalog;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.SimulationViewer;
 import se.sics.tasim.viewer.ViewerPanel;
 
 import javax.swing.*;
+
+import edu.umich.eecs.tac.props.RetailCatalog;
+
 import java.util.logging.Logger;
 
 /**

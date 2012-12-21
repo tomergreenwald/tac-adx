@@ -56,11 +56,11 @@ import edu.umich.eecs.tac.props.UserPopulationState;
  * 
  * @author Lee Callender, Patrick Jordan
  */
-public class AdxInfo implements ContextFactory {
+public class AdxInfoContextFactory implements ContextFactory {
 	/**
 	 * Basic context name.
 	 */
-	private static final String CONTEXT_NAME = "aacontext";
+	private static final String ADX_CONTEXT_NAME = "adxcontext";
 
 	/**
 	 * Cache of the last created context (since contexts should be constants).
@@ -70,7 +70,7 @@ public class AdxInfo implements ContextFactory {
 	/**
 	 * Creates a new AA context factory.
 	 */
-	public AdxInfo() {
+	public AdxInfoContextFactory() {
 	}
 
 	/**
@@ -92,50 +92,51 @@ public class AdxInfo implements ContextFactory {
 	 */
 	@Override
 	public final Context createContext(final Context parentContext) {
-		Context context = lastContext;
-		if (context != null && context.getParent() == parentContext) {
-			return context;
+		Context con = lastContext;
+		if (con != null && con.getParent() == parentContext) {
+			return con;
 		}
+		con = new Context(ADX_CONTEXT_NAME, parentContext);
+		con.addTransportable(new Ping());
+		con.addTransportable(new Alert());
+		con.addTransportable(new BankStatus());
+		con.addTransportable(new AdminContent());
+		con.addTransportable(new SimulationStatus());
+		con.addTransportable(new StartInfo());
+		con.addTransportable(new SlotInfo());
+		con.addTransportable(new ReserveInfo());
+		con.addTransportable(new PublisherInfo());
+		con.addTransportable(new ServerConfig());
+		con.addTransportable(new Query());
+		con.addTransportable(new Product());
+		con.addTransportable(new Ad());
+		con.addTransportable(new AdLink());
+		con.addTransportable(new SalesReport());
+		con.addTransportable(new SalesReport.SalesReportEntry());
+		con.addTransportable(new QueryReport());
+		con.addTransportable(new QueryReport.QueryReportEntry());
+		con.addTransportable(new QueryReport.DisplayReportEntry());
+		con.addTransportable(new QueryReport.DisplayReport());
+		con.addTransportable(new RetailCatalog());
+		con.addTransportable(new RetailCatalog.RetailCatalogEntry());
+		con.addTransportable(new BidBundle());
+		con.addTransportable(new BidBundle.BidEntry());
+		con.addTransportable(new Ranking());
+		con.addTransportable(new Ranking.Slot());
+		con.addTransportable(new Pricing());
+		con.addTransportable(new UserClickModel());
+		con.addTransportable(new Auction());
+		con.addTransportable(new AdvertiserInfo());
+		con.addTransportable(new ManufacturerComponentComposable());
+		con.addTransportable(new UserPopulationState());
+		con.addTransportable(new UserPopulationState.UserPopulationEntry());
 
-		context = new Context(CONTEXT_NAME, parentContext);
-		context.addTransportable(new Ping());
-
-		context.addTransportable(new Alert());
-		context.addTransportable(new BankStatus());
-		context.addTransportable(new AdminContent());
-		context.addTransportable(new SimulationStatus());
-		context.addTransportable(new StartInfo());
-		context.addTransportable(new SlotInfo());
-		context.addTransportable(new ReserveInfo());
-		context.addTransportable(new PublisherInfo());
-		context.addTransportable(new ServerConfig());
-		context.addTransportable(new Query());
-		context.addTransportable(new Product());
-		context.addTransportable(new Ad());
-		context.addTransportable(new AdLink());
-		context.addTransportable(new SalesReport());
-		context.addTransportable(new SalesReport.SalesReportEntry());
-		context.addTransportable(new QueryReport());
-		context.addTransportable(new QueryReport.QueryReportEntry());
-		context.addTransportable(new QueryReport.DisplayReportEntry());
-		context.addTransportable(new QueryReport.DisplayReport());
-		context.addTransportable(new RetailCatalog());
-		context.addTransportable(new RetailCatalog.RetailCatalogEntry());
-		context.addTransportable(new BidBundle());
-		context.addTransportable(new BidBundle.BidEntry());
-		context.addTransportable(new Ranking());
-		context.addTransportable(new Ranking.Slot());
-		context.addTransportable(new Pricing());
-		context.addTransportable(new UserClickModel());
-		context.addTransportable(new Auction());
-		context.addTransportable(new AdvertiserInfo());
-		context.addTransportable(new ManufacturerComponentComposable());
-		context.addTransportable(new UserPopulationState());
-		context.addTransportable(new UserPopulationState.UserPopulationEntry());
-		context.addTransportable(new AdxQuery());
+		con.addTransportable(new AdxQuery());
+		con.addTransportable(new PublisherCatalog());
+		con.addTransportable(new PublisherCatalogEntry());
 
 		// Cache the last context
-		lastContext = context;
-		return context;
+		lastContext = con;
+		return con;
 	}
 }

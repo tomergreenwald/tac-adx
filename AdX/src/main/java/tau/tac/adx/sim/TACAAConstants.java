@@ -22,7 +22,7 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package edu.umich.eecs.tac;
+package tau.tac.adx.sim;
 
 /**
  * TACAAConstants is used to define any constants used by the TAC AA
@@ -134,6 +134,10 @@ public final class TACAAConstants {
 	 * The TAC AA User role.
 	 */
 	public static final int USERS = 2;
+	/**
+	 * The TAC AA User role.
+	 */
+	public static final int ADX_USERS = 3;
 	/**
 	 * The TAC AA participant roles as human readable names.
 	 */

@@ -36,6 +36,12 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import edu.umich.eecs.tac.props.AAInfo;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.Product;
+import edu.umich.eecs.tac.props.Query;
+
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
 

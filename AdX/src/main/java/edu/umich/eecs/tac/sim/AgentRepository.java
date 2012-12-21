@@ -24,8 +24,8 @@
  */
 package edu.umich.eecs.tac.sim;
 
-import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
 
 import java.util.Map;

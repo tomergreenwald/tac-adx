@@ -31,10 +31,10 @@ import se.sics.tasim.sim.SimulationAgent;
 
 import edu.umich.eecs.tac.agents.DefaultPublisher;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.props.BankStatus;
 import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SalesReport;
 
 /**
