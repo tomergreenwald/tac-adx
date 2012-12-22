@@ -74,7 +74,7 @@ public abstract class Builtin extends Agent implements TimeListener {
 	protected final void simulationSetup() {
 	}
 
-	final void simulationSetup(TACAASimulation simulation, int index) {
+	public final void simulationSetup(TACAASimulation simulation, int index) {
 		this.index = index;
 		this.simulation = simulation;
 		this.config = simulation.getConfig();
