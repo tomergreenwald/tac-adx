@@ -48,6 +48,7 @@ import edu.umich.eecs.tac.props.ReserveInfo;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SalesReport;
 import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.props.UserClickModel;
 import edu.umich.eecs.tac.props.UserPopulationState;
 
 /**

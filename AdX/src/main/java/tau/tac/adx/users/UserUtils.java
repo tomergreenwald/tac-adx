@@ -24,9 +24,6 @@
  */
 package tau.tac.adx.users;
 
-import tau.tac.adx.props.AdLink;
-import tau.tac.adx.props.TacQuery;
-import tau.tac.adx.props.UserClickModel;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.Query;
@@ -96,13 +93,4 @@ public class UserUtils {
 		return probability;
 	}
 
-	public static <T> double findAdvertiserEffect(TacQuery<T> query, AdLink ad,
-			UserClickModel userClickModel) {
-		int advertiserIndex = userClickModel
-				.advertiserIndex(ad.getAdvertiser());
-		int queryIndex = userClickModel.queryIndex(query);
-
-		return advertiserIndex >= 0 && queryIndex >= 0 ? userClickModel
-				.getAdvertiserEffect(queryIndex, advertiserIndex) : 0.0;
-	}
 }

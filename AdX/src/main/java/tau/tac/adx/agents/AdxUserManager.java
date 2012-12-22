@@ -33,7 +33,6 @@ import se.sics.tasim.aw.Message;
 import tau.tac.adx.Adx;
 import tau.tac.adx.auction.AuctionResult;
 import tau.tac.adx.props.TacQuery;
-import tau.tac.adx.props.UserClickModel;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserViewManager;
@@ -70,8 +69,6 @@ public class AdxUserManager implements UserManager {
 	private final UserTransitionManager transitionManager;
 
 	private final AdxUserViewManager viewManager;
-
-	private UserClickModel userClickModel;
 
 	private final UsersInitializer usersInitializer;
 
