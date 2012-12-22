@@ -24,18 +24,27 @@
  */
 package edu.umich.eecs.tac.agents;
 
-import edu.umich.eecs.tac.sim.Publisher;
-import edu.umich.eecs.tac.sim.AgentRepository;
-import edu.umich.eecs.tac.sim.SalesAnalyst;
-import edu.umich.eecs.tac.TACAAConstants;
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import edu.umich.eecs.tac.auction.*;
-import edu.umich.eecs.tac.props.*;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
-
-import java.util.logging.Logger;
-import java.util.*;
+import tau.tac.adx.sim.Publisher;
+import edu.umich.eecs.tac.TACAAConstants;
+import edu.umich.eecs.tac.auction.BidBundleWriter;
+import edu.umich.eecs.tac.auction.ClickCharger;
+import edu.umich.eecs.tac.auction.DefaultPublisherBehavior;
+import edu.umich.eecs.tac.auction.PublisherBehavior;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.Auction;
+import edu.umich.eecs.tac.props.BidBundle;
+import edu.umich.eecs.tac.props.PublisherInfo;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.sim.AgentRepository;
+import edu.umich.eecs.tac.sim.SalesAnalyst;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * @author Lee Callender, Patrick Jordan

@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.sim.Users;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.BidBundle;
@@ -45,7 +46,6 @@ import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.props.UserClickModel;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.QueryReportSender;
-import edu.umich.eecs.tac.sim.Users;
 import edu.umich.eecs.tac.user.UserEventListener;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
@@ -105,15 +105,15 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 
 	private Random random;
 
-	private ConfigProxy config;
+	private final ConfigProxy config;
 
-	private AgentRepository agentRepository;
+	private final AgentRepository agentRepository;
 
-	private QueryReportSender queryReportSender;
+	private final QueryReportSender queryReportSender;
 
-	private ClickCharger clickCharger;
+	private final ClickCharger clickCharger;
 
-	private BidBundleWriter bidBundleWriter;
+	private final BidBundleWriter bidBundleWriter;
 
 	public DefaultPublisherBehavior(ConfigProxy config,
 			AgentRepository agentRepository,
@@ -151,6 +151,7 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 		this.bidBundleWriter = bidBundleWriter;
 	}
 
+	@Override
 	public void nextTimeUnit(int date) {
 		spendTracker.reset();
 
@@ -160,6 +161,7 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 		}
 	}
 
+	@Override
 	public void setup() {
 		this.log = Logger.getLogger(DefaultPublisherBehavior.class.getName());
 
@@ -185,9 +187,10 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 	private PublisherInfo createPublisherInfo() {
 		double squashingMin = config.getPropertyAsDouble("squashing.min", 0.0);
 		double squashingMax = config.getPropertyAsDouble("squashing.max", 1.0);
-        double squashingPower = config.getPropertyAsDouble("squashing.power", 1.0);
-		double squashing = Math.pow(squashingMin + random.nextDouble()* (squashingMax - squashingMin),
-                                    1.0/squashingPower);
+		double squashingPower = config.getPropertyAsDouble("squashing.power",
+				1.0);
+		double squashing = Math.pow(squashingMin + random.nextDouble()
+				* (squashingMax - squashingMin), 1.0 / squashingPower);
 
 		PublisherInfo publisherInfo = new PublisherInfo();
 		publisherInfo.setSquashingParameter(squashing);
@@ -259,12 +262,15 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 		return factory;
 	}
 
+	@Override
 	public void stopped() {
 	}
 
+	@Override
 	public void shutdown() {
 	}
 
+	@Override
 	public void messageReceived(Message message) {
 		String sender = message.getSender();
 		Transportable content = message.getContent();
@@ -337,8 +343,8 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 				Query f1_manufacturer = new Query(product.getManufacturer(),
 						null);
 				Query f1_component = new Query(null, product.getComponent());
-				Query f2 = new Query(product.getManufacturer(), product
-						.getComponent());
+				Query f2 = new Query(product.getManufacturer(),
+						product.getComponent());
 
 				querySpace.add(f0);
 				querySpace.add(f1_manufacturer);
@@ -349,11 +355,13 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 		}
 	}
 
+	@Override
 	public void sendQueryReportsToAll() {
 		if (queryReportManager != null)
 			queryReportManager.sendQueryReportToAll();
 	}
 
+	@Override
 	public Auction runAuction(Query query) {
 
 		if (auctionFactory != null) {
@@ -363,33 +371,40 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 		return null;
 	}
 
+	@Override
 	public PublisherInfo getPublisherInfo() {
 		return publisherInfo;
 	}
 
+	@Override
 	public void setPublisherInfo(PublisherInfo publisherInfo) {
 		this.publisherInfo = publisherInfo;
 	}
 
-    public void applyBidUpdates() {
-        bidManager.applyBidUpdates();
-    }
+	@Override
+	public void applyBidUpdates() {
+		bidManager.applyBidUpdates();
+	}
 
-    protected class ClickMonitor implements UserEventListener {
+	protected class ClickMonitor implements UserEventListener {
 
+		@Override
 		public void queryIssued(Query query) {
 		}
 
+		@Override
 		public void viewed(Query query, Ad ad, int slot, String advertiser,
 				boolean isPromoted) {
 		}
 
+		@Override
 		public void clicked(Query query, Ad ad, int slot, double cpc,
 				String advertiser) {
 			clickCharger.charge(advertiser, cpc);
 			spendTracker.addCost(advertiser, query, cpc);
 		}
 
+		@Override
 		public void converted(Query query, Ad ad, int slot, double salesProfit,
 				String advertiser) {
 		}

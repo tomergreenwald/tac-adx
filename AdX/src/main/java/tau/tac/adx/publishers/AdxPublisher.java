@@ -12,10 +12,10 @@ import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.sim.Publisher;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
 import edu.umich.eecs.tac.props.KeyedEntry;
-import edu.umich.eecs.tac.sim.Publisher;
 
 /**
  * Defines a publisher in the Ad-Exchange system.<br>

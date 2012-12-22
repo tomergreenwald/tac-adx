@@ -26,7 +26,6 @@ package edu.umich.eecs.tac.user;
 
 import java.util.Random;
 
-
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.util.config.ConfigProxy;

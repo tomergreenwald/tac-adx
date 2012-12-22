@@ -24,32 +24,40 @@
  */
 package edu.umich.eecs.tac.agents;
 
-import edu.umich.eecs.tac.sim.*;
-import edu.umich.eecs.tac.user.*;
-import edu.umich.eecs.tac.TACAAConstants;
-import edu.umich.eecs.tac.util.config.ConfigProxy;
-import edu.umich.eecs.tac.props.*;
-import se.sics.tasim.aw.Message;
-import se.sics.tasim.sim.SimulationAgent;
-
 import java.util.Map;
 import java.util.logging.Logger;
+
+import se.sics.tasim.aw.Message;
+import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.sim.Users;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.sim.AgentRepository;
+import edu.umich.eecs.tac.sim.SalesAnalyst;
+import edu.umich.eecs.tac.user.DefaultUsersBehavior;
+import edu.umich.eecs.tac.user.UserEventListener;
+import edu.umich.eecs.tac.user.UsersBehavior;
+import edu.umich.eecs.tac.user.UsersTransactor;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * @author Lee Callender, Patrick Jordan
  */
 public class DefaultUsers extends Users {
-	private UsersBehavior usersBehavior;
+	private final UsersBehavior usersBehavior;
 
 	public DefaultUsers() {
 		usersBehavior = new DefaultUsersBehavior(new UsersConfigProxy(),
 				new AgentRepositoryProxy(), new UsersTransactorProxy());
 	}
 
+	@Override
 	public void nextTimeUnit(int date) {
 		usersBehavior.nextTimeUnit(date);
 	}
 
+	@Override
 	protected void setup() {
 		super.setup();
 
@@ -58,111 +66,137 @@ public class DefaultUsers extends Users {
 		usersBehavior.setup();
 	}
 
+	@Override
 	protected void stopped() {
 		usersBehavior.stopped();
 	}
 
+	@Override
 	protected void shutdown() {
 		usersBehavior.shutdown();
 	}
 
+	@Override
 	protected void messageReceived(Message message) {
 		usersBehavior.messageReceived(message);
 	}
 
+	@Override
 	public boolean addUserEventListener(UserEventListener listener) {
 		return usersBehavior.addUserEventListener(listener);
 	}
 
+	@Override
 	public boolean containsUserEventListener(UserEventListener listener) {
 		return usersBehavior.containsUserEventListener(listener);
 	}
 
+	@Override
 	public boolean removeUserEventListener(UserEventListener listener) {
 		return usersBehavior.removeUserEventListener(listener);
 	}
 
+	@Override
 	public void broadcastUserDistribution() {
 		usersBehavior.broadcastUserDistribution(getIndex(), getEventWriter());
 	}
 
 	protected class UsersConfigProxy implements ConfigProxy {
+		@Override
 		public String getProperty(String name) {
 			return DefaultUsers.this.getProperty(name);
-	}
+		}
 
+		@Override
 		public String getProperty(String name, String defaultValue) {
 			return DefaultUsers.this.getProperty(name, defaultValue);
 		}
 
+		@Override
 		public String[] getPropertyAsArray(String name) {
 			return DefaultUsers.this.getPropertyAsArray(name);
 		}
 
+		@Override
 		public String[] getPropertyAsArray(String name, String defaultValue) {
 			return DefaultUsers.this.getPropertyAsArray(name, defaultValue);
 		}
 
+		@Override
 		public int getPropertyAsInt(String name, int defaultValue) {
 			return DefaultUsers.this.getPropertyAsInt(name, defaultValue);
 		}
 
+		@Override
 		public int[] getPropertyAsIntArray(String name) {
 			return DefaultUsers.this.getPropertyAsIntArray(name);
 		}
 
+		@Override
 		public int[] getPropertyAsIntArray(String name, String defaultValue) {
 			return DefaultUsers.this.getPropertyAsIntArray(name, defaultValue);
 		}
 
+		@Override
 		public long getPropertyAsLong(String name, long defaultValue) {
 			return DefaultUsers.this.getPropertyAsLong(name, defaultValue);
 		}
 
+		@Override
 		public float getPropertyAsFloat(String name, float defaultValue) {
 			return DefaultUsers.this.getPropertyAsFloat(name, defaultValue);
 		}
 
+		@Override
 		public double getPropertyAsDouble(String name, double defaultValue) {
 			return DefaultUsers.this.getPropertyAsDouble(name, defaultValue);
 		}
 	}
 
 	protected class UsersTransactorProxy implements UsersTransactor {
+		@Override
 		public void transact(String address, double amount) {
 			DefaultUsers.this.transact(address, amount);
 		}
 	}
 
 	protected class AgentRepositoryProxy implements AgentRepository {
+		@Override
 		public RetailCatalog getRetailCatalog() {
 			return getSimulation().getRetailCatalog();
 		}
 
+		@Override
 		public SlotInfo getAuctionInfo() {
 			return getSimulation().getAuctionInfo();
 		}
 
+		@Override
 		public Map<String, AdvertiserInfo> getAdvertiserInfo() {
 			return getSimulation().getAdvertiserInfo();
 		}
 
+		@Override
 		public SimulationAgent[] getPublishers() {
 			return getSimulation().getPublishers();
 		}
 
+		@Override
 		public SimulationAgent[] getUsers() {
 			return getSimulation().getUsers();
 		}
 
+		@Override
 		public SalesAnalyst getSalesAnalyst() {
 			return getSimulation().getSalesAnalyst();
 		}
 
+		@Override
 		public int getNumberOfAdvertisers() {
 			return getSimulation().getNumberOfAdvertisers();
 		}
 
+		@Override
 		public String[] getAdvertiserAddresses() {
 			return getSimulation().getAdvertiserAddresses();
 		}

@@ -51,7 +51,7 @@ public class PublisherCatalog extends
 	 * @param publisher
 	 *            {@link AdxPublisher} to add.
 	 */
-	protected void addPublisher(AdxPublisher publisher) {
+	public void addPublisher(AdxPublisher publisher) {
 		addEntry(new PublisherCatalogEntry(publisher.getName()));
 		AdxManager.addPublisher(publisher);
 	}

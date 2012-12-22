@@ -24,13 +24,12 @@
  */
 package edu.umich.eecs.tac.sim;
 
-import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.SlotInfo;
-
 import java.util.Map;
 
 import se.sics.tasim.sim.SimulationAgent;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.RetailCatalog;
+import edu.umich.eecs.tac.props.SlotInfo;
 
 /**
  * The agent repository holds references to all agents in the TAC/AA simulation.

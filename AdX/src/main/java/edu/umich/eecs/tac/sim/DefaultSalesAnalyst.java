@@ -24,18 +24,15 @@
  */
 package edu.umich.eecs.tac.sim;
 
-import edu.umich.eecs.tac.user.UserEventListener;
-import edu.umich.eecs.tac.props.SalesReport;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ad;
-import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.TACAAConstants;
+import java.util.Arrays;
+import java.util.Map;
+
 import com.botbox.util.ArrayUtils;
 
-import java.util.Map;
-import java.util.Arrays;
-
-import se.sics.tasim.is.EventWriter;
+import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.Query;
+import edu.umich.eecs.tac.props.SalesReport;
 
 /**
  * @author Patrick Jordan, Lee Callender

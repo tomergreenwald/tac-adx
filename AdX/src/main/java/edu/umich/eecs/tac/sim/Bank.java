@@ -27,9 +27,11 @@ package edu.umich.eecs.tac.sim;
 
 import java.util.logging.Logger;
 
-import com.botbox.util.ArrayUtils;
-import edu.umich.eecs.tac.props.BankStatus;
 import se.sics.tasim.is.SimulationInfo;
+
+import com.botbox.util.ArrayUtils;
+
+import edu.umich.eecs.tac.props.BankStatus;
 
 /**
  * @author Lee Callender, Ben Cassell
