@@ -38,9 +38,9 @@ public interface UserViewManager<T> extends TimeListener {
 	public boolean processImpression(TacUser<T> user, TacQuery<T> query,
 			AuctionResult<T> auctionResult);
 
-	public boolean addUserEventListener(UserEventListener listener);
+	public boolean addUserEventListener(AdxUserEventListener listener);
 
-	public boolean containsUserEventListener(UserEventListener listener);
+	public boolean containsUserEventListener(AdxUserEventListener listener);
 
-	public boolean removeUserEventListener(UserEventListener listener);
+	public boolean removeUserEventListener(AdxUserEventListener listener);
 }

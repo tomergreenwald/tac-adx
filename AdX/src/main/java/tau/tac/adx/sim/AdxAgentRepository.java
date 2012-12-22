@@ -28,11 +28,14 @@ import java.util.List;
 import java.util.Map;
 
 import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.users.AdxUser;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
+import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.SalesAnalyst;
 
 /**
@@ -40,18 +43,19 @@ import edu.umich.eecs.tac.sim.SalesAnalyst;
  * 
  * @author Patrick Jordan
  */
-public interface AdxAgentRepository {
+public interface AdxAgentRepository extends AgentRepository {
 	/**
 	 * Get the retail catalog used for the simulation.
 	 * 
 	 * @return the retail catalog
 	 */
+	@Override
 	RetailCatalog getRetailCatalog();
 
 	/**
-	 * Get the {@link PublisherCatalog} catalog used for the simulation.
+	 * Get the {@link PublisherCatalog} used for the simulation.
 	 * 
-	 * @return the {@link PublisherCatalog}.
+	 * @return The {@link PublisherCatalog}.
 	 */
 	PublisherCatalog getPublisherCatalog();
 
@@ -60,6 +64,7 @@ public interface AdxAgentRepository {
 	 * 
 	 * @return the auction info
 	 */
+	@Override
 	SlotInfo getAuctionInfo();
 
 	/**
@@ -67,6 +72,7 @@ public interface AdxAgentRepository {
 	 * 
 	 * @return the advertiser information mapping.
 	 */
+	@Override
 	Map<String, AdvertiserInfo> getAdvertiserInfo();
 
 	/**
@@ -74,6 +80,7 @@ public interface AdxAgentRepository {
 	 * 
 	 * @return the list of publisher agents.
 	 */
+	@Override
 	SimulationAgent[] getPublishers();
 
 	/**
@@ -81,20 +88,22 @@ public interface AdxAgentRepository {
 	 * 
 	 * @return the list of user agents.
 	 */
+	@Override
 	SimulationAgent[] getUsers();
 
 	/**
-	 * Get the list of all available users.
+	 * Get the list of user agents.
 	 * 
-	 * @return the list of all available users.
+	 * @return the list of user agents.
 	 */
-	List<AdxUser> getUserPopulation();
+	SimulationAgent[] getAdxUsers();
 
 	/**
 	 * Get the sales analyst.
 	 * 
 	 * @return the sales analyst.
 	 */
+	@Override
 	SalesAnalyst getSalesAnalyst();
 
 	/**
@@ -102,6 +111,7 @@ public interface AdxAgentRepository {
 	 * 
 	 * @return the number of advertisers in the simulation.
 	 */
+	@Override
 	int getNumberOfAdvertisers();
 
 	/**
@@ -109,5 +119,27 @@ public interface AdxAgentRepository {
 	 * 
 	 * @return the addresses of advertisers in the simulation.
 	 */
+	@Override
 	String[] getAdvertiserAddresses();
+
+	/**
+	 * {@link AdxUser} population in the simulation.
+	 * 
+	 * @return {@link AdxUser} population in the simulation.
+	 */
+	List<AdxUser> getUserPopulation();
+
+	/**
+	 * {@link Device} distribution {@link Map}.
+	 * 
+	 * @return {@link Device} distribution {@link Map}.
+	 */
+	Map<Device, Integer> getDeviceDistributionMap();
+
+	/**
+	 * {@link AdType} distribution {@link Map}.
+	 * 
+	 * @return {@link AdType} distribution {@link Map}.
+	 */
+	Map<AdType, Integer> getAdTypeDistributionMap();
 }

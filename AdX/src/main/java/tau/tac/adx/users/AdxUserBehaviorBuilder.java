@@ -60,6 +60,5 @@ public interface AdxUserBehaviorBuilder<T> {
 	 * @return a built user behavior
 	 */
 	public T build(ConfigProxy userConfigProxy, AdxAgentRepository repository,
-			Map<Device, Integer> deviceDeistributionMap,
-			Map<AdType, Integer> adTypeDeistributionMap, Random random);
+			Random random);
 }

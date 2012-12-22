@@ -26,8 +26,8 @@ package tau.tac.adx.users;
 
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.props.PublisherCatalog;
 import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.sim.Auctioneer;
 
 /**
@@ -36,17 +36,17 @@ import edu.umich.eecs.tac.sim.Auctioneer;
  * 
  * @author Patrick Jordan
  */
-public interface UserManager extends TimeListener {
+public interface AdxUserManager extends TimeListener {
 
 	public void initialize(int virtualDays);
 
 	public void triggerBehavior(Auctioneer auctioneer);
 
-	public boolean addUserEventListener(UserEventListener listener);
+	public boolean addUserEventListener(AdxUserEventListener listener);
 
-	public boolean containsUserEventListener(UserEventListener listener);
+	public boolean containsUserEventListener(AdxUserEventListener listener);
 
-	public boolean removeUserEventListener(UserEventListener listener);
+	public boolean removeUserEventListener(AdxUserEventListener listener);
 
 	/**
 	 * Gathers the state distribution over all product populations
@@ -63,7 +63,7 @@ public interface UserManager extends TimeListener {
 	 */
 	public int[] getStateDistribution(Product product);
 
-	public RetailCatalog getRetailCatalog();
+	public PublisherCatalog getPublisherCatalog();
 
 	public void messageReceived(Message message);
 }

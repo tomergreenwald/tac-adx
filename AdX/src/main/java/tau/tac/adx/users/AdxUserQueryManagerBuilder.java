@@ -24,12 +24,9 @@
  */
 package tau.tac.adx.users;
 
-import java.util.Map;
 import java.util.Random;
 
 import tau.tac.adx.Adx;
-import tau.tac.adx.ads.properties.AdType;
-import tau.tac.adx.devices.Device;
 import tau.tac.adx.sim.AdxAgentRepository;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
@@ -47,11 +44,10 @@ public class AdxUserQueryManagerBuilder implements
 	 */
 	@Override
 	public AdxUserQueryManager build(ConfigProxy userConfigProxy,
-			AdxAgentRepository repository,
-			Map<Device, Integer> deviceDeistributionMap,
-			Map<AdType, Integer> adTypeDeistributionMap, Random random) {
+			AdxAgentRepository repository, Random random) {
 		return new AdxUserQueryManager(repository.getPublisherCatalog(),
-				repository.getUserPopulation(), deviceDeistributionMap,
-				adTypeDeistributionMap, random);
+				repository.getUserPopulation(),
+				repository.getDeviceDistributionMap(),
+				repository.getAdTypeDistributionMap(), random);
 	}
 }

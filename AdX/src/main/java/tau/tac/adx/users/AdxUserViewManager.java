@@ -119,17 +119,17 @@ public class AdxUserViewManager implements UserViewManager<Adx> {
 	}
 
 	@Override
-	public boolean addUserEventListener(UserEventListener listener) {
+	public boolean addUserEventListener(AdxUserEventListener listener) {
 		return eventSupport.addUserEventListener(listener);
 	}
 
 	@Override
-	public boolean containsUserEventListener(UserEventListener listener) {
+	public boolean containsUserEventListener(AdxUserEventListener listener) {
 		return eventSupport.containsUserEventListener(listener);
 	}
 
 	@Override
-	public boolean removeUserEventListener(UserEventListener listener) {
+	public boolean removeUserEventListener(AdxUserEventListener listener) {
 		return eventSupport.removeUserEventListener(listener);
 	}
 

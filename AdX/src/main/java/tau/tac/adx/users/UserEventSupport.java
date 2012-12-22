@@ -37,32 +37,32 @@ import tau.tac.adx.props.TacQuery;
  */
 public class UserEventSupport<T> {
 
-	private final List<UserEventListener<T>> listeners;
+	private final List<AdxUserEventListener<T>> listeners;
 
 	public UserEventSupport() {
-		listeners = new ArrayList<UserEventListener<T>>();
+		listeners = new ArrayList<AdxUserEventListener<T>>();
 	}
 
-	public boolean addUserEventListener(UserEventListener listener) {
+	public boolean addUserEventListener(AdxUserEventListener listener) {
 		return listeners.add(listener);
 	}
 
-	public boolean containsUserEventListener(UserEventListener listener) {
+	public boolean containsUserEventListener(AdxUserEventListener listener) {
 		return listeners.contains(listener);
 	}
 
-	public boolean removeUserEventListener(UserEventListener listener) {
+	public boolean removeUserEventListener(AdxUserEventListener listener) {
 		return listeners.remove(listener);
 	}
 
 	public void fireQueryIssued(TacQuery<T> query) {
-		for (UserEventListener listener : listeners) {
+		for (AdxUserEventListener listener : listeners) {
 			listener.queryIssued(query);
 		}
 	}
 
 	public void fireAdViewed(TacQuery<T> query, AdLink ad) {
-		for (UserEventListener listener : listeners) {
+		for (AdxUserEventListener listener : listeners) {
 			listener.viewed(query, ad.getAd(), ad.getAdvertiser());
 		}
 	}

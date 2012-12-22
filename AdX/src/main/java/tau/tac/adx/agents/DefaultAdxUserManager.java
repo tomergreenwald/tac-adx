@@ -32,29 +32,28 @@ import java.util.logging.Logger;
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.Adx;
 import tau.tac.adx.auction.AuctionResult;
+import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.TacQuery;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.users.AdxUserEventListener;
+import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUserViewManager;
 import tau.tac.adx.users.TacUser;
-import tau.tac.adx.users.UserEventListener;
-import tau.tac.adx.users.UserManager;
 import tau.tac.adx.users.UserQueryManager;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.sim.Auctioneer;
-import edu.umich.eecs.tac.user.DefaultUsersInitializer;
 import edu.umich.eecs.tac.user.QueryState;
 import edu.umich.eecs.tac.user.User;
 import edu.umich.eecs.tac.user.UserTransitionManager;
-import edu.umich.eecs.tac.user.UsersInitializer;
 
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
  */
-public class AdxUserManager implements UserManager {
-	protected Logger log = Logger.getLogger(AdxUserManager.class.getName());
+public class DefaultAdxUserManager implements AdxUserManager {
+	protected Logger log = Logger.getLogger(DefaultAdxUserManager.class
+			.getName());
 
 	private final Object lock;
 
@@ -62,37 +61,27 @@ public class AdxUserManager implements UserManager {
 
 	private final Random random;
 
-	private final RetailCatalog retailCatalog;
+	private final PublisherCatalog publisherCatalog;
 
 	private final UserQueryManager<Adx> queryManager;
 
-	private final UserTransitionManager transitionManager;
-
 	private final AdxUserViewManager viewManager;
 
-	private final UsersInitializer usersInitializer;
-
-	public AdxUserManager(RetailCatalog retailCatalog,
+	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			UserTransitionManager transitionManager,
 			UserQueryManager queryManager, AdxUserViewManager viewManager,
 			int populationSize) {
-		this(retailCatalog, transitionManager, queryManager, viewManager,
-				populationSize, new Random());
+		this(publisherCatalog, queryManager, viewManager, populationSize,
+				new Random());
 	}
 
-	public AdxUserManager(RetailCatalog retailCatalog,
-			UserTransitionManager transitionManager,
+	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			UserQueryManager queryManager, AdxUserViewManager viewManager,
 			int populationSize, Random random) {
 		lock = new Object();
 
-		if (retailCatalog == null) {
-			throw new NullPointerException("Retail catalog cannot be null");
-		}
-
-		if (transitionManager == null) {
-			throw new NullPointerException(
-					"User transition manager cannot be null");
+		if (publisherCatalog == null) {
+			throw new NullPointerException("Publisher catalog cannot be null");
 		}
 
 		if (queryManager == null) {
@@ -113,19 +102,16 @@ public class AdxUserManager implements UserManager {
 					"Random number generator cannot be null");
 		}
 
-		this.retailCatalog = retailCatalog;
+		this.publisherCatalog = publisherCatalog;
 		this.random = random;
-		this.transitionManager = transitionManager;
 		this.queryManager = queryManager;
 		this.viewManager = viewManager;
-		this.usersInitializer = new DefaultUsersInitializer(transitionManager);
 		SimpleUserGenerator generator = new SimpleUserGenerator();
 		users = generator.generate(populationSize);
 	}
 
 	@Override
 	public void initialize(int virtualDays) {
-		usersInitializer.initialize(users, virtualDays);
 	}
 
 	@Override
@@ -187,30 +173,26 @@ public class AdxUserManager implements UserManager {
 		return viewManager.processImpression(user, query, auctionResult);
 	}
 
-	private void handleTransition(User user, boolean transacted) {
-		user.setState(transitionManager.transition(user, transacted));
-	}
-
 	private TacQuery<Adx> generateQuery(AdxUser user) {
 		return queryManager.generateQuery(user);
 	}
 
 	@Override
-	public boolean addUserEventListener(UserEventListener listener) {
+	public boolean addUserEventListener(AdxUserEventListener listener) {
 		synchronized (lock) {
 			return viewManager.addUserEventListener(listener);
 		}
 	}
 
 	@Override
-	public boolean containsUserEventListener(UserEventListener listener) {
+	public boolean containsUserEventListener(AdxUserEventListener listener) {
 		synchronized (lock) {
 			return viewManager.containsUserEventListener(listener);
 		}
 	}
 
 	@Override
-	public boolean removeUserEventListener(UserEventListener listener) {
+	public boolean removeUserEventListener(AdxUserEventListener listener) {
 		synchronized (lock) {
 			return viewManager.removeUserEventListener(listener);
 		}
@@ -220,7 +202,6 @@ public class AdxUserManager implements UserManager {
 	public void nextTimeUnit(int timeUnit) {
 		viewManager.nextTimeUnit(timeUnit);
 		queryManager.nextTimeUnit(timeUnit);
-		transitionManager.nextTimeUnit(timeUnit);
 	}
 
 	@Override
@@ -248,12 +229,12 @@ public class AdxUserManager implements UserManager {
 	}
 
 	@Override
-	public RetailCatalog getRetailCatalog() {
-		return this.retailCatalog;
+	public void messageReceived(Message message) {
+		// Transportable content = message.getContent();
 	}
 
 	@Override
-	public void messageReceived(Message message) {
-		// Transportable content = message.getContent();
+	public PublisherCatalog getPublisherCatalog() {
+		return publisherCatalog;
 	}
 }

@@ -32,7 +32,7 @@ import edu.umich.eecs.tac.props.Ad;
  * @param <T>
  *            User view manager type.
  */
-public interface UserEventListener<T> {
+public interface AdxUserEventListener<T> {
 	void queryIssued(TacQuery<T> query);
 
 	void viewed(TacQuery<T> query, Ad ad, String advertiser);
