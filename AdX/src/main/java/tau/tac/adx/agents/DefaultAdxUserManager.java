@@ -38,10 +38,9 @@ import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
-import tau.tac.adx.users.AdxUserViewManager;
+import tau.tac.adx.users.DefaultAdxUserViewManager;
 import tau.tac.adx.users.TacUser;
 import tau.tac.adx.users.UserQueryManager;
-import tau.tac.adx.users.generators.SimpleUserGenerator;
 import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.sim.Auctioneer;
 import edu.umich.eecs.tac.user.QueryState;
@@ -65,23 +64,28 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final UserQueryManager<Adx> queryManager;
 
-	private final AdxUserViewManager viewManager;
+	private final DefaultAdxUserViewManager viewManager;
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
-			UserTransitionManager transitionManager,
-			UserQueryManager queryManager, AdxUserViewManager viewManager,
-			int populationSize) {
-		this(publisherCatalog, queryManager, viewManager, populationSize,
-				new Random());
+			List<AdxUser> users, UserTransitionManager transitionManager,
+			UserQueryManager queryManager,
+			DefaultAdxUserViewManager viewManager, int populationSize) {
+		this(publisherCatalog, users, queryManager, viewManager,
+				populationSize, new Random());
 	}
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
-			UserQueryManager queryManager, AdxUserViewManager viewManager,
-			int populationSize, Random random) {
+			List<AdxUser> users, UserQueryManager queryManager,
+			DefaultAdxUserViewManager viewManager, int populationSize,
+			Random random) {
 		lock = new Object();
 
 		if (publisherCatalog == null) {
 			throw new NullPointerException("Publisher catalog cannot be null");
+		}
+
+		if (users == null) {
+			throw new NullPointerException("User list cannot be null");
 		}
 
 		if (queryManager == null) {
@@ -106,8 +110,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 		this.random = random;
 		this.queryManager = queryManager;
 		this.viewManager = viewManager;
-		SimpleUserGenerator generator = new SimpleUserGenerator();
-		users = generator.generate(populationSize);
+		this.users = users;
 	}
 
 	@Override

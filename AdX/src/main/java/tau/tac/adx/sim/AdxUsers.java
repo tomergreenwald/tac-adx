@@ -1,5 +1,5 @@
 /*
- * UsersBehavior.java
+ * Users.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,32 +22,46 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.sim;
 
-import se.sics.tasim.aw.Message;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ranking;
-import edu.umich.eecs.tac.sim.Auctioneer;
+import java.util.logging.Logger;
+
+import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.users.AdxUserEventListener;
+import edu.umich.eecs.tac.sim.PublisherInfoSender;
 
 /**
- * @author Patrick Jordan
+ * @author Lee Callender, Patrick Jordan
  */
-public interface AdxUsersBehavior {
-	void nextTimeUnit(int date);
+public abstract class AdxUsers extends Builtin {
+	private static final String CONF = "adxusers.";
 
-	void setup();
+	protected Logger log = Logger.getLogger(AdxUsers.class.getName());
 
-	void stopped();
+	PublisherInfoSender[] publishers;
 
-	void shutdown();
+	public AdxUsers() {
+		super(CONF);
+	}
 
-	void messageReceived(Message message);
+	@Override
+	protected void setup() {
+		SimulationAgent[] publish = getSimulation().getPublishers();
+		publishers = new PublisherInfoSender[publish.length];
+		for (int i = 0, n = publish.length; i < n; i++) {
+			publishers[i] = (PublisherInfoSender) publish[i].getAgent();
+		}
+	}
 
-	Ranking getRanking(Query query, Auctioneer auctioneer);
+	public abstract boolean addUserEventListener(AdxUserEventListener listener);
 
-	boolean addUserEventListener(AdxUserEventListener listener);
+	public abstract boolean containsUserEventListener(
+			AdxUserEventListener listener);
 
-	boolean containsUserEventListener(AdxUserEventListener listener);
+	public abstract boolean removeUserEventListener(
+			AdxUserEventListener listener);
 
-	boolean removeUserEventListener(AdxUserEventListener listener);
+	protected void transact(String advertiser, double amount) {
+		getSimulation().transaction(getAddress(), advertiser, amount);
+	}
 }

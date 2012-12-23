@@ -33,17 +33,17 @@ import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.auction.AuctionResult;
 import tau.tac.adx.auction.AuctionState;
 import tau.tac.adx.props.AdLink;
+import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.TacQuery;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.RecentConversionsTracker;
 
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
  */
-public class AdxUserViewManager implements UserViewManager<Adx> {
-	private final Logger log = Logger.getLogger(AdxUserViewManager.class
+public class DefaultAdxUserViewManager implements UserViewManager<Adx> {
+	private final Logger log = Logger.getLogger(DefaultAdxUserViewManager.class
 			.getName());
 
 	private final UserEventSupport eventSupport;
@@ -52,25 +52,25 @@ public class AdxUserViewManager implements UserViewManager<Adx> {
 
 	private final SlotInfo slotInfo;
 
-	private final RetailCatalog catalog;
+	private final PublisherCatalog publisherCatalog;
 
 	private final Random random;
 
 	private final RecentConversionsTracker recentConversionsTracker;
 
-	public AdxUserViewManager(RetailCatalog catalog,
+	public DefaultAdxUserViewManager(PublisherCatalog publisherCatalog,
 			RecentConversionsTracker recentConversionsTracker,
 			Map<String, AdvertiserInfo> advertiserInfo, SlotInfo slotInfo) {
-		this(catalog, recentConversionsTracker, advertiserInfo, slotInfo,
+		this(publisherCatalog, recentConversionsTracker, advertiserInfo, slotInfo,
 				new Random());
 	}
 
-	public AdxUserViewManager(RetailCatalog catalog,
+	public DefaultAdxUserViewManager(PublisherCatalog publisherCatalog,
 			RecentConversionsTracker recentConversionsTracker,
 			Map<String, AdvertiserInfo> advertiserInfo, SlotInfo slotInfo,
 			Random random) {
-		if (catalog == null) {
-			throw new NullPointerException("Retail catalog cannot be null");
+		if (publisherCatalog == null) {
+			throw new NullPointerException("Publisher catalog cannot be null");
 		}
 
 		if (slotInfo == null) {
@@ -91,7 +91,7 @@ public class AdxUserViewManager implements UserViewManager<Adx> {
 			throw new NullPointerException("Random generator cannot be null");
 		}
 
-		this.catalog = catalog;
+		this.publisherCatalog = publisherCatalog;
 		this.random = random;
 		this.recentConversionsTracker = recentConversionsTracker;
 		this.advertiserInfo = advertiserInfo;

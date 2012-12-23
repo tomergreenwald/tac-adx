@@ -40,7 +40,6 @@ import tau.tac.adx.props.TacQuery;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.util.EnumGenerator;
 import edu.umich.eecs.tac.user.User;
-import edu.umich.eecs.tac.util.sampling.MutableSampler;
 import edu.umich.eecs.tac.util.sampling.Sampler;
 import edu.umich.eecs.tac.util.sampling.WheelSampler;
 
@@ -56,7 +55,7 @@ public class AdxUserQueryManager implements UserQueryManager<Adx> {
 	 * {@link Map} between {@link User}s and an {@link AdxQuery} {@link Sampler}
 	 * .
 	 */
-	private final Map<User, Sampler<TacQuery<Adx>>> querySamplers;
+	private final Map<AdxUser, Sampler<TacQuery<Adx>>> querySamplers;
 
 	/**
 	 * {@link Device} distribution map. Each {@link Device} is associated with
@@ -110,7 +109,7 @@ public class AdxUserQueryManager implements UserQueryManager<Adx> {
 		}
 		this.deviceDeistributionMap = deviceDeistributionMap;
 		this.adTypeDeistributionMap = adTypeDeistributionMap;
-		querySamplers = buildQuerySamplers(catalog, null, random);
+		querySamplers = buildQuerySamplers(catalog, users, random);
 	}
 
 	/**
@@ -142,16 +141,16 @@ public class AdxUserQueryManager implements UserQueryManager<Adx> {
 	 * @return A {@link Map} between {@link User}s and an {@link AdxQuery}
 	 *         {@link Sampler}.
 	 */
-	private Map<User, Sampler<TacQuery<Adx>>> buildQuerySamplers(
+	private Map<AdxUser, Sampler<TacQuery<Adx>>> buildQuerySamplers(
 			PublisherCatalog catalog, List<AdxUser> users, Random random) {
 		EnumGenerator<Device> deviceGenerator = new EnumGenerator<Device>(
 				deviceDeistributionMap);
 		EnumGenerator<AdType> adTypeGenerator = new EnumGenerator<AdType>(
 				adTypeDeistributionMap);
-		Map<User, Sampler<TacQuery<Adx>>> samplingMap = new HashMap<User, Sampler<TacQuery<Adx>>>();
+		Map<AdxUser, Sampler<TacQuery<Adx>>> samplingMap = new HashMap<AdxUser, Sampler<TacQuery<Adx>>>();
 
 		for (AdxUser user : users) {
-			MutableSampler<AdxQuery> sampler = new WheelSampler<AdxQuery>(
+			WheelSampler<TacQuery<Adx>> sampler = new WheelSampler<TacQuery<Adx>>(
 					random);
 			for (PublisherCatalogEntry publisherEntry : catalog) {
 				Device device = deviceGenerator.randomType();
@@ -164,8 +163,7 @@ public class AdxUserQueryManager implements UserQueryManager<Adx> {
 				double weight = publisher.userAffiliation(user);
 				sampler.addState(weight, query);
 			}
-
-			return samplingMap;
+			samplingMap.put(user, sampler);
 		}
 		return samplingMap;
 

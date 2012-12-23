@@ -24,19 +24,26 @@
  */
 package tau.tac.adx.agents;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
-import tau.tac.adx.agents.behaviors.AdxUsersBehavior;
-import tau.tac.adx.sim.Users;
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.agents.behaviors.DefaultAdxUsersBehavior;
+import tau.tac.adx.devices.Device;
+import tau.tac.adx.props.PublisherCatalog;
+import tau.tac.adx.sim.AdxAgentRepository;
+import tau.tac.adx.sim.AdxUsers;
+import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.users.AdxUserEventListener;
+import tau.tac.adx.users.AdxUsersBehavior;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.SalesAnalyst;
-import edu.umich.eecs.tac.user.UserEventListener;
 import edu.umich.eecs.tac.user.UsersBehavior;
 import edu.umich.eecs.tac.user.UsersTransactor;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
@@ -44,17 +51,17 @@ import edu.umich.eecs.tac.util.config.ConfigProxy;
 /**
  * @author Lee Callender, Patrick Jordan
  */
-public class AdxUsers extends Users {
+public class DefaultAdxUsers extends AdxUsers {
 	/**
 	 * enclosed {@link UsersBehavior}.
 	 */
-	private final UsersBehavior usersBehavior;
+	private final AdxUsersBehavior usersBehavior;
 
 	/**
 	 * Default constructor.
 	 */
-	public AdxUsers() {
-		usersBehavior = new AdxUsersBehavior(new UsersConfigProxy(),
+	public DefaultAdxUsers() {
+		usersBehavior = new DefaultAdxUsersBehavior(new UsersConfigProxy(),
 				new AgentRepositoryProxy(), new UsersTransactorProxy());
 	}
 
@@ -73,7 +80,7 @@ public class AdxUsers extends Users {
 	protected void setup() {
 		super.setup();
 
-		this.log = Logger.getLogger(AdxUsers.class.getName());
+		this.log = Logger.getLogger(DefaultAdxUsers.class.getName());
 
 		usersBehavior.setup();
 	}
@@ -106,7 +113,7 @@ public class AdxUsers extends Users {
 	 * @see edu.umich.eecs.tac.sim.Users#addUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
 	 */
 	@Override
-	public boolean addUserEventListener(UserEventListener listener) {
+	public boolean addUserEventListener(AdxUserEventListener listener) {
 		return usersBehavior.addUserEventListener(listener);
 	}
 
@@ -114,7 +121,7 @@ public class AdxUsers extends Users {
 	 * @see edu.umich.eecs.tac.sim.Users#containsUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
 	 */
 	@Override
-	public boolean containsUserEventListener(UserEventListener listener) {
+	public boolean containsUserEventListener(AdxUserEventListener listener) {
 		return usersBehavior.containsUserEventListener(listener);
 	}
 
@@ -122,16 +129,8 @@ public class AdxUsers extends Users {
 	 * @see edu.umich.eecs.tac.sim.Users#removeUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
 	 */
 	@Override
-	public boolean removeUserEventListener(UserEventListener listener) {
+	public boolean removeUserEventListener(AdxUserEventListener listener) {
 		return usersBehavior.removeUserEventListener(listener);
-	}
-
-	/**
-	 * @see edu.umich.eecs.tac.sim.Users#broadcastUserDistribution()
-	 */
-	@Override
-	public void broadcastUserDistribution() {
-		usersBehavior.broadcastUserDistribution(getIndex(), getEventWriter());
 	}
 
 	/**
@@ -146,7 +145,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public String getProperty(String name) {
-			return AdxUsers.this.getProperty(name);
+			return DefaultAdxUsers.this.getProperty(name);
 		}
 
 		/**
@@ -155,7 +154,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public String getProperty(String name, String defaultValue) {
-			return AdxUsers.this.getProperty(name, defaultValue);
+			return DefaultAdxUsers.this.getProperty(name, defaultValue);
 		}
 
 		/**
@@ -163,7 +162,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public String[] getPropertyAsArray(String name) {
-			return AdxUsers.this.getPropertyAsArray(name);
+			return DefaultAdxUsers.this.getPropertyAsArray(name);
 		}
 
 		/**
@@ -172,7 +171,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public String[] getPropertyAsArray(String name, String defaultValue) {
-			return AdxUsers.this.getPropertyAsArray(name, defaultValue);
+			return DefaultAdxUsers.this.getPropertyAsArray(name, defaultValue);
 		}
 
 		/**
@@ -181,7 +180,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public int getPropertyAsInt(String name, int defaultValue) {
-			return AdxUsers.this.getPropertyAsInt(name, defaultValue);
+			return DefaultAdxUsers.this.getPropertyAsInt(name, defaultValue);
 		}
 
 		/**
@@ -189,7 +188,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public int[] getPropertyAsIntArray(String name) {
-			return AdxUsers.this.getPropertyAsIntArray(name);
+			return DefaultAdxUsers.this.getPropertyAsIntArray(name);
 		}
 
 		/**
@@ -198,7 +197,8 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public int[] getPropertyAsIntArray(String name, String defaultValue) {
-			return AdxUsers.this.getPropertyAsIntArray(name, defaultValue);
+			return DefaultAdxUsers.this.getPropertyAsIntArray(name,
+					defaultValue);
 		}
 
 		/**
@@ -207,7 +207,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public long getPropertyAsLong(String name, long defaultValue) {
-			return AdxUsers.this.getPropertyAsLong(name, defaultValue);
+			return DefaultAdxUsers.this.getPropertyAsLong(name, defaultValue);
 		}
 
 		/**
@@ -216,7 +216,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public float getPropertyAsFloat(String name, float defaultValue) {
-			return AdxUsers.this.getPropertyAsFloat(name, defaultValue);
+			return DefaultAdxUsers.this.getPropertyAsFloat(name, defaultValue);
 		}
 
 		/**
@@ -225,7 +225,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public double getPropertyAsDouble(String name, double defaultValue) {
-			return AdxUsers.this.getPropertyAsDouble(name, defaultValue);
+			return DefaultAdxUsers.this.getPropertyAsDouble(name, defaultValue);
 		}
 	}
 
@@ -242,7 +242,7 @@ public class AdxUsers extends Users {
 		 */
 		@Override
 		public void transact(String address, double amount) {
-			AdxUsers.this.transact(address, amount);
+			DefaultAdxUsers.this.transact(address, amount);
 		}
 	}
 
@@ -252,14 +252,7 @@ public class AdxUsers extends Users {
 	 * @author Lee Callender, Patrick Jordan
 	 * 
 	 */
-	protected class AgentRepositoryProxy implements AgentRepository {
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getRetailCatalog()
-		 */
-		@Override
-		public RetailCatalog getRetailCatalog() {
-			return getSimulation().getRetailCatalog();
-		}
+	protected class AgentRepositoryProxy implements AdxAgentRepository {
 
 		/**
 		 * @see edu.umich.eecs.tac.sim.AgentRepository#getAuctionInfo()
@@ -315,6 +308,36 @@ public class AdxUsers extends Users {
 		@Override
 		public String[] getAdvertiserAddresses() {
 			return getSimulation().getAdvertiserAddresses();
+		}
+
+		@Override
+		public PublisherCatalog getPublisherCatalog() {
+			return getSimulation().getPublisherCatalog();
+		}
+
+		@Override
+		public SimulationAgent[] getAdxUsers() {
+			return getSimulation().getAdxUsers();
+		}
+
+		@Override
+		public List<AdxUser> getUserPopulation() {
+			return getSimulation().getUserPopulation();
+		}
+
+		@Override
+		public Map<Device, Integer> getDeviceDistributionMap() {
+			return getSimulation().getDeviceDistributionMap();
+		}
+
+		@Override
+		public Map<AdType, Integer> getAdTypeDistributionMap() {
+			return getSimulation().getAdTypeDistributionMap();
+		}
+
+		@Override
+		public RetailCatalog getRetailCatalog() {
+			return getSimulation().getRetailCatalog();
 		}
 	}
 }

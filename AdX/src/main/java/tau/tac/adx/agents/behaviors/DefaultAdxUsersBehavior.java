@@ -28,17 +28,18 @@ import java.util.Random;
 
 import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
-import se.sics.tasim.is.EventWriter;
+import tau.tac.adx.sim.AdxAgentRepository;
 import tau.tac.adx.sim.Publisher;
-import edu.umich.eecs.tac.props.Ad;
+import tau.tac.adx.users.AdxUserBehaviorBuilder;
+import tau.tac.adx.users.AdxUserEventListener;
+import tau.tac.adx.users.AdxUserManager;
+import tau.tac.adx.users.AdxUsersBehavior;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.Auctioneer;
-import edu.umich.eecs.tac.user.DefaultDistributionBroadcaster;
 import edu.umich.eecs.tac.user.DistributionBroadcaster;
 import edu.umich.eecs.tac.user.UserBehaviorBuilder;
-import edu.umich.eecs.tac.user.UserEventListener;
 import edu.umich.eecs.tac.user.UserManager;
 import edu.umich.eecs.tac.user.UsersBehavior;
 import edu.umich.eecs.tac.user.UsersTransactor;
@@ -50,12 +51,12 @@ import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
  * 
  * @author Patrick Jordan, Lee Callender
  */
-public class AdxUsersBehavior implements UsersBehavior {
+public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 
 	/**
 	 * {@link UserManager}.
 	 */
-	private UserManager userManager;
+	private AdxUserManager userManager;
 
 	/**
 	 * {@link DistributionBroadcaster}.
@@ -76,7 +77,7 @@ public class AdxUsersBehavior implements UsersBehavior {
 	 * {@link AgentRepository} used to query and access data about {@link Agent}
 	 * s.
 	 */
-	private final AgentRepository agentRepository;
+	private final AdxAgentRepository agentRepository;
 
 	/**
 	 * {@link UsersTransactor}.
@@ -87,13 +88,13 @@ public class AdxUsersBehavior implements UsersBehavior {
 	 * @param config
 	 *            {@link ConfigProxy} used to configure an instance.
 	 * @param agentRepository
-	 *            {@link AgentRepository} used to query and access data about
+	 *            {@link AdxAgentRepository} used to query and access data about
 	 *            {@link Agent} s.
 	 * @param usersTransactor
 	 *            {@link UsersTransactor}.
 	 */
-	public AdxUsersBehavior(ConfigProxy config,
-			AgentRepository agentRepository, UsersTransactor usersTransactor) {
+	public DefaultAdxUsersBehavior(ConfigProxy config,
+			AdxAgentRepository agentRepository, UsersTransactor usersTransactor) {
 
 		if (config == null) {
 			throw new NullPointerException("config cannot be null");
@@ -140,12 +141,10 @@ public class AdxUsersBehavior implements UsersBehavior {
 
 		try {
 			// Create the user manager
-			UserBehaviorBuilder<UserManager> managerBuilder = createBuilder();
+			AdxUserBehaviorBuilder<AdxUserManager> managerBuilder = createBuilder();
 
 			userManager = managerBuilder.build(config, agentRepository,
 					new Random());
-
-			addUserEventListener(new ConversionMonitor());
 
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
@@ -157,51 +156,6 @@ public class AdxUsersBehavior implements UsersBehavior {
 	}
 
 	/**
-	 * @author greenwald
-	 * 
-	 */
-	protected class ConversionMonitor implements UserEventListener {
-
-		/**
-		 * @see edu.umich.eecs.tac.user.UserEventListener#queryIssued(edu.umich.eecs.tac.props.Query)
-		 */
-		@Override
-		public void queryIssued(Query query) {
-			// no implementation.
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.user.UserEventListener#viewed(edu.umich.eecs.tac.props.Query,
-		 *      edu.umich.eecs.tac.props.Ad, int, java.lang.String, boolean)
-		 */
-		@Override
-		public void viewed(Query query, Ad ad, int slot, String advertiser,
-				boolean isPromoted) {
-			// no implementation.
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.user.UserEventListener#clicked(edu.umich.eecs.tac.props.Query,
-		 *      edu.umich.eecs.tac.props.Ad, int, double, java.lang.String)
-		 */
-		@Override
-		public void clicked(Query query, Ad ad, int slot, double cpc,
-				String advertiser) {
-			// no implementation.
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.user.UserEventListener#converted(edu.umich.eecs.tac.props.Query,
-		 *      edu.umich.eecs.tac.props.Ad, int, double, java.lang.String)
-		 */
-		@Override
-		public void converted(Query query, Ad ad, int slot, double salesProfit,
-				String advertiser) {
-			usersTransactor.transact(advertiser, salesProfit);
-		}
-	}
-
-	/**
 	 * Generates a {@link UserBehaviorBuilder}.
 	 * 
 	 * @return A {@link UserBehaviorBuilder}.
@@ -209,12 +163,12 @@ public class AdxUsersBehavior implements UsersBehavior {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	protected UserBehaviorBuilder<UserManager> createBuilder()
+	protected AdxUserBehaviorBuilder<AdxUserManager> createBuilder()
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException {
 		return ConfigProxyUtils.createObjectFromProperty(config,
-				"usermanger.builder",
-				"edu.umich.eecs.tac.user.DefaultUserManagerBuilder");
+				"adxusermanger.builder",
+				"tau.tac.adx.users.DefaultAdxUserManagerBuilder");
 	}
 
 	/**
@@ -254,7 +208,7 @@ public class AdxUsersBehavior implements UsersBehavior {
 	 * @see edu.umich.eecs.tac.user.UsersBehavior#addUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
 	 */
 	@Override
-	public boolean addUserEventListener(UserEventListener listener) {
+	public boolean addUserEventListener(AdxUserEventListener listener) {
 		return userManager.addUserEventListener(listener);
 	}
 
@@ -262,7 +216,7 @@ public class AdxUsersBehavior implements UsersBehavior {
 	 * @see edu.umich.eecs.tac.user.UsersBehavior#containsUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
 	 */
 	@Override
-	public boolean containsUserEventListener(UserEventListener listener) {
+	public boolean containsUserEventListener(AdxUserEventListener listener) {
 		return userManager.containsUserEventListener(listener);
 	}
 
@@ -270,24 +224,8 @@ public class AdxUsersBehavior implements UsersBehavior {
 	 * @see edu.umich.eecs.tac.user.UsersBehavior#removeUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
 	 */
 	@Override
-	public boolean removeUserEventListener(UserEventListener listener) {
+	public boolean removeUserEventListener(AdxUserEventListener listener) {
 		return userManager.removeUserEventListener(listener);
 	}
 
-	/**
-	 * @see edu.umich.eecs.tac.user.DistributionBroadcaster#broadcastUserDistribution(int,
-	 *      se.sics.tasim.is.EventWriter)
-	 */
-	@Override
-	public void broadcastUserDistribution(int usersIndex,
-			EventWriter eventWriter) {
-
-		if (distributionBroadcaster == null) {
-			distributionBroadcaster = new DefaultDistributionBroadcaster(
-					userManager);
-		}
-
-		distributionBroadcaster.broadcastUserDistribution(usersIndex,
-				eventWriter);
-	}
 }

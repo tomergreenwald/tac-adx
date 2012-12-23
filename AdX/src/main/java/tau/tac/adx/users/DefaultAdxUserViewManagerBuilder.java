@@ -1,5 +1,5 @@
 /*
- * UsersBehavior.java
+ * DefaultUserViewManagerBuilder.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -24,30 +24,21 @@
  */
 package tau.tac.adx.users;
 
-import se.sics.tasim.aw.Message;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ranking;
-import edu.umich.eecs.tac.sim.Auctioneer;
+import java.util.Random;
+
+import tau.tac.adx.sim.AdxAgentRepository;
+import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
  * @author Patrick Jordan
  */
-public interface AdxUsersBehavior {
-	void nextTimeUnit(int date);
-
-	void setup();
-
-	void stopped();
-
-	void shutdown();
-
-	void messageReceived(Message message);
-
-	Ranking getRanking(Query query, Auctioneer auctioneer);
-
-	boolean addUserEventListener(AdxUserEventListener listener);
-
-	boolean containsUserEventListener(AdxUserEventListener listener);
-
-	boolean removeUserEventListener(AdxUserEventListener listener);
+public class DefaultAdxUserViewManagerBuilder implements
+		AdxUserBehaviorBuilder<DefaultAdxUserViewManager> {
+	@Override
+	public DefaultAdxUserViewManager build(ConfigProxy userConfigProxy,
+			AdxAgentRepository repository, Random random) {
+		return new DefaultAdxUserViewManager(repository.getPublisherCatalog(),
+				repository.getSalesAnalyst(), repository.getAdvertiserInfo(),
+				repository.getAuctionInfo(), random);
+	}
 }
