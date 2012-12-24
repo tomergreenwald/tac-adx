@@ -128,7 +128,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			for (AdxUser user : users) {
 				handleUserActivity(user);
 			}
-
+			//update publishers' reserve price
 			log.finest("FINISH OF USER TRIGGER");
 		}
 
@@ -162,8 +162,9 @@ public class DefaultAdxUserManager implements AdxUserManager {
 		TacQuery<Adx> query = generateQuery(user);
 
 		if (query != null) {
-			// Auction auction = auctioneer.runAuction(query);
-
+			//Generate publisher reserve price
+			// Auction auction = auctioneer.runAuction(query, reserve_price);
+			//return reserve price result to publisher
 			// AuctionResult<Adx> auction;
 			// transacted = handleImpression(query, auction, user);
 		}
