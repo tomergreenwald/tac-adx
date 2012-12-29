@@ -54,10 +54,10 @@ public class DefaultAdxUserManagerBuilder implements
 		RetailCatalog retailCatalog = repository.getRetailCatalog();
 
 		try {
-			AdxUserBehaviorBuilder<AdxUserQueryManager> queryBuilder = ConfigProxyUtils
+			AdxUserBehaviorBuilder<DefaultAdxUserQueryManager> queryBuilder = ConfigProxyUtils
 					.createObjectFromProperty(userConfigProxy, ADX_BASE + '.'
 							+ QUERY_MANAGER_KEY, ADX_QUERY_MANAGER_DEFAULT);
-			AdxUserQueryManager queryManager = queryBuilder.build(
+			DefaultAdxUserQueryManager queryManager = queryBuilder.build(
 					userConfigProxy, repository, random);
 
 			AdxUserBehaviorBuilder<DefaultAdxUserViewManager> viewBuilder = ConfigProxyUtils

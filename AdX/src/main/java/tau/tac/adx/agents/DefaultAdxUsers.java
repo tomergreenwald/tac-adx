@@ -45,7 +45,6 @@ import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.SalesAnalyst;
 import edu.umich.eecs.tac.user.UsersBehavior;
-import edu.umich.eecs.tac.user.UsersTransactor;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
@@ -62,7 +61,7 @@ public class DefaultAdxUsers extends AdxUsers {
 	 */
 	public DefaultAdxUsers() {
 		usersBehavior = new DefaultAdxUsersBehavior(new UsersConfigProxy(),
-				new AgentRepositoryProxy(), new UsersTransactorProxy());
+				new AgentRepositoryProxy(), this);
 	}
 
 	/**
@@ -230,23 +229,6 @@ public class DefaultAdxUsers extends AdxUsers {
 	}
 
 	/**
-	 * {@link UsersTransactor} proxy implementation.
-	 * 
-	 * @author Lee Callender, Patrick Jordan
-	 * 
-	 */
-	protected class UsersTransactorProxy implements UsersTransactor {
-		/**
-		 * @see edu.umich.eecs.tac.user.UsersTransactor#transact(java.lang.String,
-		 *      double)
-		 */
-		@Override
-		public void transact(String address, double amount) {
-			DefaultAdxUsers.this.transact(address, amount);
-		}
-	}
-
-	/**
 	 * {@link AgentRepository} proxy implementation.
 	 * 
 	 * @author Lee Callender, Patrick Jordan
@@ -339,5 +321,13 @@ public class DefaultAdxUsers extends AdxUsers {
 		public RetailCatalog getRetailCatalog() {
 			return getSimulation().getRetailCatalog();
 		}
+	}
+
+	/**
+	 * @see tau.tac.adx.sim.AdxUsers#sendPublisherReportToAll()
+	 */
+	@Override
+	public void sendPublisherReportToAll() {
+		usersBehavior.sendQueryReportsToAll();
 	}
 }

@@ -3,6 +3,7 @@
  */
 package tau.tac.adx;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,13 @@ public class AdxManager {
 	 */
 	public static AdxPublisher getPublisher(String publisherName) {
 		return publishersNamingMap.get(publisherName);
+	}
+
+	/**
+	 * @return {@link Collection} of all {@link AdxPublisher publishers}.
+	 */
+	public static Collection<AdxPublisher> getPublishers() {
+		return publishersNamingMap.values();
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- * UserQueryManager.java
+ * QueryReportManager.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,24 +22,25 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.auction;
 
-import se.sics.tasim.aw.TimeListener;
-import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.props.TacQuery;
+import tau.tac.adx.users.AdxUserEventListener;
 
 /**
- * Query manager interface which allows query generation.
+ * The query report manager stores and distributes the query reports.
  * 
  * @author greenwald
- * @param <T>
- *            User type.
  */
-public interface UserQueryManager<T> extends TimeListener {
+public interface AdxPublisherReportManager extends AdxUserEventListener {
 	/**
-	 * @param user
-	 *            An {@link AdxUser}.
-	 * @return Generate {@link AdxQuery}.
+	 * Distributed all of the query reports to the advertisers.
 	 */
-	public TacQuery<T> generateQuery(TacUser<T> user);
+	void sendQueryReportToAll();
+
+	/**
+	 * The number of advertisers in the dataset.
+	 * 
+	 * @return number of advertisers in the dataset.
+	 */
+	int size();
 }
