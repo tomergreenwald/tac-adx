@@ -149,6 +149,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	@Override
 	public void setup() {
 		virtualDays = config.getPropertyAsInt("virtual_days", 0);
+		publisherReportManager = createQueryReportManager();
 
 		try {
 			// Create the user manager
@@ -164,7 +165,10 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
+<<<<<<< HEAD
 		publisherReportManager = createQueryReportManager();
+=======
+>>>>>>> branch 'agents' of https://tomerg@code.google.com/p/tac-adx
 	}
 
 	private AdxPublisherReportManager createQueryReportManager() {
@@ -259,5 +263,8 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	public void sendQueryReportsToAll() {
 		publisherReportManager.sendQueryReportToAll();
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'agents' of https://tomerg@code.google.com/p/tac-adx
 }

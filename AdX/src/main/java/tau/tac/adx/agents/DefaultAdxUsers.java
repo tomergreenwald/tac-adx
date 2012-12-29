@@ -36,6 +36,7 @@ import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.sim.AdxAgentRepository;
 import tau.tac.adx.sim.AdxUsers;
+import tau.tac.adx.sim.report.publisher.AdxPublisherReport;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUsersBehavior;
@@ -324,10 +325,18 @@ public class DefaultAdxUsers extends AdxUsers {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * @see tau.tac.adx.sim.AdxUsers#sendPublisherReportToAll()
 	 */
 	@Override
 	public void sendPublisherReportToAll() {
 		usersBehavior.sendQueryReportsToAll();
+=======
+	 * @see tau.tac.adx.sim.AdxPublisherReportSender#broadcastReport(tau.tac.adx.sim.report.publisher.AdxPublisherReport)
+	 */
+	@Override
+	public void broadcastReport(AdxPublisherReport report) {
+		getSimulation().broadcastReport(report);
+>>>>>>> branch 'agents' of https://tomerg@code.google.com/p/tac-adx
 	}
 }
