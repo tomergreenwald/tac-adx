@@ -62,7 +62,6 @@ public class AdxPublisherReport extends
 	@Override
 	protected AdxPublisherReportEntry createEntry(PublisherCatalogEntry key) {
 		AdxPublisherReportEntry entry = new AdxPublisherReportEntry(
-<<<<<<< HEAD
 				key.getPublisherName(), key);
 		return entry;
 	}
@@ -131,76 +130,6 @@ public class AdxPublisherReport extends
 		if (publisherReportEntry == null) {
 			publisherReportEntry = new AdxPublisherReportEntry(
 					query.getPublisher(), publisherCatalogEntry);
-=======
-				key.getPublisherName(), 0);
-		return entry;
-	}
-
-	/**
-	 * Adds an {@link AdxPublisherReportEntry} keyed with a
-	 * {@link PublisherCatalogEntry}.
-	 * 
-	 * @param publisher
-	 *            {@link PublisherCatalogEntry}.
-	 * @param publisherReportEntry
-	 *            AdxPublisherReportEntry.
-	 * 
-	 */
-	public void addPublisherReportEntry(PublisherCatalogEntry publisher,
-			AdxPublisherReportEntry publisherReportEntry) {
-		lockCheck();
-		int index = addKey(publisher);
-		AdxPublisherReportEntry entry = getEntry(index);
-		entry.setPublisherName(publisher.getPublisherName());
-		entry.setPopularity(publisherReportEntry.getPopularity());
-		entry.setAdTypeOrientation(publisherReportEntry.getAdTypeOrientation());
-	}
-
-	/**
-	 * Retrieves an {@link AdxPublisherReportEntry} keyed with a
-	 * {@link PublisherCatalogEntry}.
-	 * 
-	 * @param publisher
-	 *            {@link PublisherCatalogEntry}.
-	 * @return {@link AdxPublisherReportEntry}.
-	 * 
-	 */
-	public AdxPublisherReportEntry getPublisherReportEntry(
-			PublisherCatalogEntry publisher) {
-		return getEntry(publisher);
-	}
-
-	/**
-	 * Retrieves an {@link AdxPublisherReportEntry} keyed with a
-	 * {@link PublisherCatalogEntry}.
-	 * 
-	 * @param publisher
-	 *            {@link PublisherCatalogEntry}.
-	 * @return {@link AdxPublisherReportEntry}.
-	 * 
-	 */
-	public AdxPublisherReportEntry getPublisherReportEntry(String publisher) {
-		PublisherCatalogEntry publisherEntry = getPublisherCatalogEntry(publisher);
-		return getEntry(publisherEntry);
-	}
-
-	/**
-	 * @param publisher
-	 *            {@link AdxPublisher} name.
-	 * @return Corresponding {@link PublisherCatalogEntry}.
-	 */
-	private PublisherCatalogEntry getPublisherCatalogEntry(String publisher) {
-		return new PublisherCatalogEntry(AdxManager.getPublisher(publisher));
-	}
-
-	public void addQuery(AdxQuery query) {
-		PublisherCatalogEntry publisherCatalogEntry = getPublisherCatalogEntry(query
-				.getPublisher());
-		AdxPublisherReportEntry publisherReportEntry = getPublisherReportEntry(publisherCatalogEntry);
-		if (publisherReportEntry == null) {
-			publisherReportEntry = new AdxPublisherReportEntry(
-					query.getPublisher(), 0);
->>>>>>> branch 'agents' of https://tomerg@code.google.com/p/tac-adx
 			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
 		}
 		publisherReportEntry.addQuery(query);

@@ -13,5 +13,5 @@ done
 echo $TACAA_HOME
 echo $CLASSPATH
 
-#java -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y -cp $CLASSPATH se.sics.tasim.sim.Main
-java -cp $CLASSPATH se.sics.tasim.sim.Main
+java -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y -cp $CLASSPATH se.sics.tasim.sim.Main
+#java -cp $CLASSPATH se.sics.tasim.sim.Main

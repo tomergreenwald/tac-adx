@@ -48,7 +48,6 @@ public class AdxPublisherReportEntry extends
 
 	/**
 	 * @param publisherName
-<<<<<<< HEAD
 	 * @param key
 	 */
 	public AdxPublisherReportEntry(String publisherName,
@@ -59,18 +58,6 @@ public class AdxPublisherReportEntry extends
 		adTypeOrientation.put(AdType.text, 0);
 		adTypeOrientation.put(AdType.video, 0);
 		setKey(key);
-=======
-	 * @param popularity
-	 * @param adTypeOrientation
-	 */
-	public AdxPublisherReportEntry(String publisherName, int popularity) {
-		super();
-		this.publisherName = publisherName;
-		this.popularity = popularity;
-		adTypeOrientation = new HashMap<AdType, Integer>();
-		adTypeOrientation.put(AdType.text, 0);
-		adTypeOrientation.put(AdType.video, 0);
->>>>>>> branch 'agents' of https://tomerg@code.google.com/p/tac-adx
 	}
 
 	/**
