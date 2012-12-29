@@ -30,17 +30,16 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
-import tau.tac.adx.Adx;
-import tau.tac.adx.auction.AuctionResult;
+import tau.tac.adx.auction.AdxAuctionResult;
+import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
-import tau.tac.adx.props.TacQuery;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.sim.SimpleAdxAuctioneer;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
+import tau.tac.adx.users.AdxUserQueryManager;
 import tau.tac.adx.users.DefaultAdxUserViewManager;
-import tau.tac.adx.users.TacUser;
-import tau.tac.adx.users.UserQueryManager;
 import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.sim.Auctioneer;
 import edu.umich.eecs.tac.user.QueryState;
@@ -62,20 +61,22 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final PublisherCatalog publisherCatalog;
 
-	private final UserQueryManager<Adx> queryManager;
+	private final AdxUserQueryManager queryManager;
 
 	private final DefaultAdxUserViewManager viewManager;
 
+	private final SimpleAdxAuctioneer auctioneer = new SimpleAdxAuctioneer();
+
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			List<AdxUser> users, UserTransitionManager transitionManager,
-			UserQueryManager queryManager,
+			AdxUserQueryManager queryManager,
 			DefaultAdxUserViewManager viewManager, int populationSize) {
 		this(publisherCatalog, users, queryManager, viewManager,
 				populationSize, new Random());
 	}
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
-			List<AdxUser> users, UserQueryManager queryManager,
+			List<AdxUser> users, AdxUserQueryManager queryManager,
 			DefaultAdxUserViewManager viewManager, int populationSize,
 			Random random) {
 		lock = new Object();
@@ -128,7 +129,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			for (AdxUser user : users) {
 				handleUserActivity(user);
 			}
-			//update publishers' reserve price
+			// update publishers' reserve price
 			log.finest("FINISH OF USER TRIGGER");
 		}
 
@@ -159,25 +160,25 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 		boolean transacted = false;
 
-		TacQuery<Adx> query = generateQuery(user);
+		AdxQuery query = generateQuery(user);
 
 		if (query != null) {
-			//Generate publisher reserve price
-			// Auction auction = auctioneer.runAuction(query, reserve_price);
-			//return reserve price result to publisher
-			// AuctionResult<Adx> auction;
-			// transacted = handleImpression(query, auction, user);
+			List<AdxAuctionResult> auctionResults = auctioneer
+					.runAuction(query);
+			for (AdxAuctionResult auctionResult : auctionResults) {
+				transacted = handleImpression(query, auctionResult, user);
+			}
 		}
 
 		return transacted;
 	}
 
-	private boolean handleImpression(TacQuery<Adx> query,
-			AuctionResult<Adx> auctionResult, TacUser<Adx> user) {
+	private boolean handleImpression(AdxQuery query,
+			AdxAuctionResult auctionResult, AdxUser user) {
 		return viewManager.processImpression(user, query, auctionResult);
 	}
 
-	private TacQuery<Adx> generateQuery(AdxUser user) {
+	private AdxQuery generateQuery(AdxUser user) {
 		return queryManager.generateQuery(user);
 	}
 

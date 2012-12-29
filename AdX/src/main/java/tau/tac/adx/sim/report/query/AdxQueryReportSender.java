@@ -1,5 +1,5 @@
 /*
- * UserQueryManager.java
+ * QueryReportSender.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,21 +22,31 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.sim.report.query;
 
-import se.sics.tasim.aw.TimeListener;
-import tau.tac.adx.props.AdxQuery;
+import edu.umich.eecs.tac.props.QueryReport;
 
 /**
- * Query manager interface which allows query generation.
- * 
- * @author greenwald
+ * @author Patrick Jordan
  */
-public interface AdxUserQueryManager extends TimeListener {
+public interface AdxQueryReportSender {
 	/**
-	 * @param user
-	 *            An {@link AdxUser}.
-	 * @return Generate {@link AdxQuery}.
+	 * Send query report to the advertiser.
+	 * 
+	 * @param advertiser
+	 *            the advertiser whose report is being sent
+	 * @param report
+	 *            the report being sent
 	 */
-	public AdxQuery generateQuery(AdxUser user);
+	void sendQueryReport(String advertiser, QueryReport report);
+
+	/**
+	 * Broadcast the impressions received by the advertiser
+	 * 
+	 * @param advertiser
+	 *            the advertiser
+	 * @param impressions
+	 *            the number of conversions
+	 */
+	void broadcastImpressions(String advertiser, int impressions);
 }

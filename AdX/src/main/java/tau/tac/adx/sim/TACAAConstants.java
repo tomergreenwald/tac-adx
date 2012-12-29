@@ -24,6 +24,8 @@
  */
 package tau.tac.adx.sim;
 
+import tau.tac.adx.sim.report.publisher.AdxPublisherReport;
+
 /**
  * TACAAConstants is used to define any constants used by the TAC AA
  * Simulations.
@@ -121,6 +123,10 @@ public final class TACAAConstants {
 	 * The slot information for an advertiser.
 	 */
 	public static final int DU_ADVERTISER_INFO = 307;
+	/**
+	 * @see {@link AdxPublisherReport}.
+	 */
+	public static final int DU_PUBLISHER_QUERY_REPORT = 400;
 
 	/**
 	 * The TAC AA Publisher role.

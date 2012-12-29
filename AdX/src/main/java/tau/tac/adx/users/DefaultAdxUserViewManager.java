@@ -28,13 +28,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import tau.tac.adx.Adx;
 import tau.tac.adx.auction.AdxAuctionResult;
-import tau.tac.adx.auction.AuctionResult;
 import tau.tac.adx.auction.AuctionState;
 import tau.tac.adx.props.AdLink;
+import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
-import tau.tac.adx.props.TacQuery;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.RecentConversionsTracker;
@@ -42,11 +40,11 @@ import edu.umich.eecs.tac.sim.RecentConversionsTracker;
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
  */
-public class DefaultAdxUserViewManager implements UserViewManager<Adx> {
+public class DefaultAdxUserViewManager implements AdxUserViewManager {
 	private final Logger log = Logger.getLogger(DefaultAdxUserViewManager.class
 			.getName());
 
-	private final UserEventSupport eventSupport;
+	private final AdxUserEventSupport eventSupport;
 
 	private final Map<String, AdvertiserInfo> advertiserInfo;
 
@@ -61,8 +59,8 @@ public class DefaultAdxUserViewManager implements UserViewManager<Adx> {
 	public DefaultAdxUserViewManager(PublisherCatalog publisherCatalog,
 			RecentConversionsTracker recentConversionsTracker,
 			Map<String, AdvertiserInfo> advertiserInfo, SlotInfo slotInfo) {
-		this(publisherCatalog, recentConversionsTracker, advertiserInfo, slotInfo,
-				new Random());
+		this(publisherCatalog, recentConversionsTracker, advertiserInfo,
+				slotInfo, new Random());
 	}
 
 	public DefaultAdxUserViewManager(PublisherCatalog publisherCatalog,
@@ -96,7 +94,7 @@ public class DefaultAdxUserViewManager implements UserViewManager<Adx> {
 		this.recentConversionsTracker = recentConversionsTracker;
 		this.advertiserInfo = advertiserInfo;
 		this.slotInfo = slotInfo;
-		eventSupport = new UserEventSupport();
+		eventSupport = new AdxUserEventSupport();
 	}
 
 	@Override
@@ -105,11 +103,11 @@ public class DefaultAdxUserViewManager implements UserViewManager<Adx> {
 	}
 
 	@Override
-	public boolean processImpression(TacUser<Adx> user, TacQuery<Adx> query,
-			AuctionResult<Adx> auctionResult) {
+	public boolean processImpression(AdxUser user, AdxQuery query,
+			AdxAuctionResult auctionResult) {
 		fireQueryIssued(query);
 
-		AdxAuctionResult adxAuctionResult = (AdxAuctionResult) auctionResult;
+		AdxAuctionResult adxAuctionResult = auctionResult;
 		if (adxAuctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
 			fireAdViewed(query, (AdLink) adxAuctionResult.getWinningBidInfo()
 					.getBidProduct());
@@ -133,11 +131,11 @@ public class DefaultAdxUserViewManager implements UserViewManager<Adx> {
 		return eventSupport.removeUserEventListener(listener);
 	}
 
-	private void fireQueryIssued(TacQuery<Adx> query) {
+	private void fireQueryIssued(AdxQuery query) {
 		eventSupport.fireQueryIssued(query);
 	}
 
-	private void fireAdViewed(TacQuery<Adx> query, AdLink ad) {
+	private void fireAdViewed(AdxQuery query, AdLink ad) {
 		eventSupport.fireAdViewed(query, ad);
 	}
 

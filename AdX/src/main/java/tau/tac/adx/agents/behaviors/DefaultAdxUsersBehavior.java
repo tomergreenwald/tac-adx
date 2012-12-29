@@ -28,7 +28,12 @@ import java.util.Random;
 
 import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
+import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.auction.AdxPublisherReportManager;
+import tau.tac.adx.auction.AdxPublisherReportManagerImpl;
 import tau.tac.adx.sim.AdxAgentRepository;
+import tau.tac.adx.sim.AdxPublisherReportSender;
+import tau.tac.adx.sim.AdxUsers;
 import tau.tac.adx.sim.Publisher;
 import tau.tac.adx.users.AdxUserBehaviorBuilder;
 import tau.tac.adx.users.AdxUserEventListener;
@@ -42,7 +47,6 @@ import edu.umich.eecs.tac.user.DistributionBroadcaster;
 import edu.umich.eecs.tac.user.UserBehaviorBuilder;
 import edu.umich.eecs.tac.user.UserManager;
 import edu.umich.eecs.tac.user.UsersBehavior;
-import edu.umich.eecs.tac.user.UsersTransactor;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
 
@@ -80,9 +84,14 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	private final AdxAgentRepository agentRepository;
 
 	/**
-	 * {@link UsersTransactor}.
+	 * {@link AdxPublisherReportManager}.
 	 */
-	final UsersTransactor usersTransactor;
+	AdxPublisherReportManager publisherReportManager;
+
+	/**
+	 * {@link AdxPublisherReportSender}.
+	 */
+	AdxPublisherReportSender publisherReportSender;
 
 	/**
 	 * @param config
@@ -90,11 +99,12 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	 * @param agentRepository
 	 *            {@link AdxAgentRepository} used to query and access data about
 	 *            {@link Agent} s.
-	 * @param usersTransactor
-	 *            {@link UsersTransactor}.
+	 * @param publisherReportSender
+	 *            {@link AdxPublisherReportSender}.
 	 */
 	public DefaultAdxUsersBehavior(ConfigProxy config,
-			AdxAgentRepository agentRepository, UsersTransactor usersTransactor) {
+			AdxAgentRepository agentRepository,
+			AdxPublisherReportSender publisherReportSender) {
 
 		if (config == null) {
 			throw new NullPointerException("config cannot be null");
@@ -108,11 +118,12 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 
 		this.agentRepository = agentRepository;
 
-		if (usersTransactor == null) {
-			throw new NullPointerException("users transactor cannot be null");
+		if (publisherReportSender == null) {
+			throw new NullPointerException(
+					"Publisher report sender cannot be null");
 		}
 
-		this.usersTransactor = usersTransactor;
+		this.publisherReportSender = publisherReportSender;
 	}
 
 	/**
@@ -138,6 +149,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	@Override
 	public void setup() {
 		virtualDays = config.getPropertyAsInt("virtual_days", 0);
+		publisherReportManager = createQueryReportManager();
 
 		try {
 			// Create the user manager
@@ -153,6 +165,18 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private AdxPublisherReportManager createQueryReportManager() {
+		AdxPublisherReportManager queryReportManager = new AdxPublisherReportManagerImpl(
+				publisherReportSender);
+
+		for (SimulationAgent agent : agentRepository.getAdxUsers()) {
+			AdxUsers users = (AdxUsers) agent.getAgent();
+			users.addUserEventListener(queryReportManager);
+		}
+
+		return queryReportManager;
 	}
 
 	/**
@@ -228,4 +252,11 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		return userManager.removeUserEventListener(listener);
 	}
 
+	/**
+	 * @see tau.tac.adx.users.AdxUsersBehavior#sendQueryReportsToAll()
+	 */
+	@Override
+	public void sendQueryReportsToAll() {
+		publisherReportManager.sendQueryReportToAll();
+	}
 }

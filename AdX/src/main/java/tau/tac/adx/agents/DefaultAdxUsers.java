@@ -36,6 +36,7 @@ import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.sim.AdxAgentRepository;
 import tau.tac.adx.sim.AdxUsers;
+import tau.tac.adx.sim.report.publisher.AdxPublisherReport;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUsersBehavior;
@@ -45,7 +46,6 @@ import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.SalesAnalyst;
 import edu.umich.eecs.tac.user.UsersBehavior;
-import edu.umich.eecs.tac.user.UsersTransactor;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
@@ -62,7 +62,7 @@ public class DefaultAdxUsers extends AdxUsers {
 	 */
 	public DefaultAdxUsers() {
 		usersBehavior = new DefaultAdxUsersBehavior(new UsersConfigProxy(),
-				new AgentRepositoryProxy(), new UsersTransactorProxy());
+				new AgentRepositoryProxy(), this);
 	}
 
 	/**
@@ -230,23 +230,6 @@ public class DefaultAdxUsers extends AdxUsers {
 	}
 
 	/**
-	 * {@link UsersTransactor} proxy implementation.
-	 * 
-	 * @author Lee Callender, Patrick Jordan
-	 * 
-	 */
-	protected class UsersTransactorProxy implements UsersTransactor {
-		/**
-		 * @see edu.umich.eecs.tac.user.UsersTransactor#transact(java.lang.String,
-		 *      double)
-		 */
-		@Override
-		public void transact(String address, double amount) {
-			DefaultAdxUsers.this.transact(address, amount);
-		}
-	}
-
-	/**
 	 * {@link AgentRepository} proxy implementation.
 	 * 
 	 * @author Lee Callender, Patrick Jordan
@@ -339,5 +322,13 @@ public class DefaultAdxUsers extends AdxUsers {
 		public RetailCatalog getRetailCatalog() {
 			return getSimulation().getRetailCatalog();
 		}
+	}
+
+	/**
+	 * @see tau.tac.adx.sim.AdxPublisherReportSender#broadcastReport(tau.tac.adx.sim.report.publisher.AdxPublisherReport)
+	 */
+	@Override
+	public void broadcastReport(AdxPublisherReport report) {
+		getSimulation().broadcastReport(report);
 	}
 }

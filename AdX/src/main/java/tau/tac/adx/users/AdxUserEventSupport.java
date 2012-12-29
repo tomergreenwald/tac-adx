@@ -1,5 +1,5 @@
 /*
- * UserViewManager.java
+ * UserEventSupport.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -24,23 +24,47 @@
  */
 package tau.tac.adx.users;
 
-import se.sics.tasim.aw.TimeListener;
-import tau.tac.adx.auction.AuctionResult;
-import tau.tac.adx.props.TacQuery;
+import java.util.ArrayList;
+import java.util.List;
+
+import tau.tac.adx.props.AdLink;
+import tau.tac.adx.props.AdxQuery;
 
 /**
- * @author Patrick Jordan
+ * @author Patrick Jordan, Lee Callender
  * @param <T>
  *            User view manager type.
  */
-public interface UserViewManager<T> extends TimeListener {
+public class AdxUserEventSupport {
 
-	public boolean processImpression(TacUser<T> user, TacQuery<T> query,
-			AuctionResult<T> auctionResult);
+	private final List<AdxUserEventListener> listeners;
 
-	public boolean addUserEventListener(AdxUserEventListener listener);
+	public AdxUserEventSupport() {
+		listeners = new ArrayList<AdxUserEventListener>();
+	}
 
-	public boolean containsUserEventListener(AdxUserEventListener listener);
+	public boolean addUserEventListener(AdxUserEventListener listener) {
+		return listeners.add(listener);
+	}
 
-	public boolean removeUserEventListener(AdxUserEventListener listener);
+	public boolean containsUserEventListener(AdxUserEventListener listener) {
+		return listeners.contains(listener);
+	}
+
+	public boolean removeUserEventListener(AdxUserEventListener listener) {
+		return listeners.remove(listener);
+	}
+
+	public void fireQueryIssued(AdxQuery query) {
+		for (AdxUserEventListener listener : listeners) {
+			listener.queryIssued(query);
+		}
+	}
+
+	public void fireAdViewed(AdxQuery query, AdLink ad) {
+		for (AdxUserEventListener listener : listeners) {
+			listener.adViewed(query, ad.getAd(), ad.getAdvertiser());
+		}
+	}
+
 }

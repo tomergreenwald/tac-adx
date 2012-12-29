@@ -33,7 +33,8 @@ import edu.umich.eecs.tac.sim.PublisherInfoSender;
 /**
  * @author Lee Callender, Patrick Jordan
  */
-public abstract class AdxUsers extends Builtin {
+public abstract class AdxUsers extends Builtin implements
+		AdxPublisherReportSender {
 	private static final String CONF = "adxusers.";
 
 	protected Logger log = Logger.getLogger(AdxUsers.class.getName());
