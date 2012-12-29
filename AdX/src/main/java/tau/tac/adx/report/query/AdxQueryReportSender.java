@@ -1,5 +1,5 @@
 /*
- * QueryReportManager.java
+ * QueryReportSender.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,25 +22,31 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.auction;
+package tau.tac.adx.report.query;
 
-import tau.tac.adx.users.AdxUserEventListener;
+import edu.umich.eecs.tac.props.QueryReport;
 
 /**
- * The query report manager stores and distributes the query reports.
- * 
- * @author greenwald
+ * @author Patrick Jordan
  */
-public interface AdxPublisherReportManager extends AdxUserEventListener {
+public interface AdxQueryReportSender {
 	/**
-	 * Distributed all of the query reports to the advertisers.
+	 * Send query report to the advertiser.
+	 * 
+	 * @param advertiser
+	 *            the advertiser whose report is being sent
+	 * @param report
+	 *            the report being sent
 	 */
-	void sendQueryReportToAll();
+	void sendQueryReport(String advertiser, QueryReport report);
 
 	/**
-	 * The number of advertisers in the dataset.
+	 * Broadcast the impressions received by the advertiser
 	 * 
-	 * @return number of advertisers in the dataset.
+	 * @param advertiser
+	 *            the advertiser
+	 * @param impressions
+	 *            the number of conversions
 	 */
-	int size();
+	void broadcastImpressions(String advertiser, int impressions);
 }

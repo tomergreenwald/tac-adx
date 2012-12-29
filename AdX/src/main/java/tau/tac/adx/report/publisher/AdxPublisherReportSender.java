@@ -1,6 +1,5 @@
-package tau.tac.adx.sim;
+package tau.tac.adx.report.publisher;
 
-import tau.tac.adx.sim.report.publisher.AdxPublisherReport;
 
 /**
  * @author greenwald

@@ -1,4 +1,4 @@
-package tau.tac.adx.sim.report.query;
+package tau.tac.adx.report.query;
 
 import java.text.ParseException;
 

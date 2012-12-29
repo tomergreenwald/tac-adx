@@ -24,7 +24,7 @@
  */
 package tau.tac.adx.sim;
 
-import tau.tac.adx.sim.report.publisher.AdxPublisherReport;
+import tau.tac.adx.report.publisher.AdxPublisherReport;
 
 /**
  * TACAAConstants is used to define any constants used by the TAC AA

@@ -22,13 +22,11 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.auction;
+package tau.tac.adx.report.publisher;
 
 import java.util.logging.Logger;
 
 import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.sim.AdxPublisherReportSender;
-import tau.tac.adx.sim.report.publisher.AdxPublisherReport;
 import edu.umich.eecs.tac.props.Ad;
 
 /**
@@ -65,7 +63,7 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 
 	// ------------------------------------------------------------------------------------------------------
 	/**
-	 * @see tau.tac.adx.auction.AdxPublisherReportManager#size()
+	 * @see tau.tac.adx.report.publisher.AdxPublisherReportManager#size()
 	 */
 	@Override
 	public int size() {
@@ -91,7 +89,7 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	}
 
 	/**
-	 * @see tau.tac.adx.auction.AdxPublisherReportManager#sendQueryReportToAll()
+	 * @see tau.tac.adx.report.publisher.AdxPublisherReportManager#sendQueryReportToAll()
 	 */
 	@Override
 	public void sendQueryReportToAll() {

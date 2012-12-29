@@ -1,4 +1,4 @@
-package tau.tac.adx.sim.report.publisher;
+package tau.tac.adx.report.publisher;
 
 import java.text.ParseException;
 import java.util.HashMap;

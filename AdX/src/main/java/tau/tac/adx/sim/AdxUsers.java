@@ -27,7 +27,8 @@ package tau.tac.adx.sim;
 import java.util.logging.Logger;
 
 import se.sics.tasim.sim.SimulationAgent;
-import tau.tac.adx.sim.report.publisher.AdxPublisherReport;
+import tau.tac.adx.report.publisher.AdxPublisherReport;
+import tau.tac.adx.report.publisher.AdxPublisherReportSender;
 import tau.tac.adx.users.AdxUserEventListener;
 import edu.umich.eecs.tac.sim.PublisherInfoSender;
 
@@ -70,7 +71,7 @@ public abstract class AdxUsers extends Builtin implements
 	}
 
 	/**
-	 * @see tau.tac.adx.sim.AdxPublisherReportSender#broadcastReport(tau.tac.adx.sim.report.publisher.AdxPublisherReport)
+	 * @see tau.tac.adx.report.publisher.AdxPublisherReportSender#broadcastReport(tau.tac.adx.report.publisher.AdxPublisherReport)
 	 */
 	@Override
 	public void broadcastReport(AdxPublisherReport report) {
