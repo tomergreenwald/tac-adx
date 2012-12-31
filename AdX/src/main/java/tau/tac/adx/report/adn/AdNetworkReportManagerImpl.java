@@ -24,6 +24,9 @@
  */
 package tau.tac.adx.report.adn;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import tau.tac.adx.auction.AdxAuctionResult;
@@ -41,9 +44,9 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 			.getName());
 
 	/**
-	 * The query reports
+	 * {@link AdNetworkReport}s, each matches and <b>AdNetwork</b>.
 	 */
-	private final AdNetworkReport adNetworkReport = new AdNetworkReport();
+	private final Map<Integer, AdNetworkReport> adNetworkReports = new HashMap<Integer, AdNetworkReport>();
 
 	/**
 	 * The {@link AdNetworkReportSender}.
@@ -68,7 +71,7 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 */
 	@Override
 	public int size() {
-		return adNetworkReport.size();
+		return adNetworkReports.size();
 	}
 
 	/**
@@ -83,13 +86,19 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 * @param auctionResult
 	 * @param query
 	 * @param user
-	 * @see tau.tac.adx.users.AdxUserEventListener#adViewed(tau.tac.adx.props.AdxQuery,
-	 *      edu.umich.eecs.tac.props.Ad, java.lang.String)
+	 * @see tau.tac.adx.users.AdxUserEventListener#auctionPerformed(AdxAuctionResult,
+	 *      AdxQuery, AdxUser)
 	 */
 	@Override
 	public void auctionPerformed(AdxAuctionResult auctionResult,
 			AdxQuery query, AdxUser user) {
-		adNetworkReport.addBid(auctionResult, query, user);
+		int bidder = auctionResult.getWinningBidInfo().getBidder().getId();
+		AdNetworkReport report = adNetworkReports.get(bidder);
+		if (report == null) {
+			report = new AdNetworkReport();
+			adNetworkReports.put(bidder, report);
+		}
+		report.addBid(auctionResult, query, user);
 	}
 
 	/**
@@ -97,6 +106,10 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 */
 	@Override
 	public void sendReportsToAll() {
-		adNetworkReportSender.broadcastReport(adNetworkReport);
+		for (Entry<Integer, AdNetworkReport> entry : adNetworkReports
+				.entrySet()) {
+			adNetworkReportSender.broadcastReport(entry.getKey(),
+					entry.getValue());
+		}
 	}
 }

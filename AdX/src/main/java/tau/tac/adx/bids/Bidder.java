@@ -14,4 +14,9 @@ package tau.tac.adx.bids;
  */
 public interface Bidder {
 	// tag interface
+
+	/**
+	 * @return Bidder's id.
+	 */
+	public int getId();
 }

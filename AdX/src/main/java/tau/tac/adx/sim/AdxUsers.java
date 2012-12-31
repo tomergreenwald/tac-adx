@@ -81,10 +81,11 @@ public abstract class AdxUsers extends Builtin implements
 	}
 
 	/**
-	 * @see tau.tac.adx.report.adn.AdNetworkReportSender#broadcastReport(tau.tac.adx.report.adn.AdNetworkReport)
+	 * @see tau.tac.adx.report.adn.AdNetworkReportSender#broadcastReport(int,
+	 *      AdNetworkReport)
 	 */
 	@Override
-	public void broadcastReport(AdNetworkReport report) {
-		getSimulation().broadcastReport(report);
+	public void broadcastReport(int adNetworkId, AdNetworkReport report) {
+		getSimulation().broadcastReport(adNetworkId, report);
 	}
 }
