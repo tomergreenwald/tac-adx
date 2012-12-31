@@ -26,8 +26,9 @@ package tau.tac.adx.report.publisher;
 
 import java.util.logging.Logger;
 
+import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.props.AdxQuery;
-import edu.umich.eecs.tac.props.Ad;
+import tau.tac.adx.users.AdxUser;
 
 /**
  * @author Patrick Jordan, Lee Callender, Akshat Kaul
@@ -79,20 +80,20 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	}
 
 	/**
-	 * @see tau.tac.adx.users.AdxUserEventListener#adViewed(tau.tac.adx.props.AdxQuery,
-	 *      edu.umich.eecs.tac.props.Ad, java.lang.String)
+	 * @see tau.tac.adx.report.publisher.AdxPublisherReportManager#sendReportsToAll()
 	 */
 	@Override
-	public void adViewed(AdxQuery query, Ad ad, String advertiserName) {
-		// TODO Auto-generated method stub
-
+	public void sendReportsToAll() {
+		publisherReportSender.broadcastReport(publisherReport);
 	}
 
 	/**
-	 * @see tau.tac.adx.report.publisher.AdxPublisherReportManager#sendQueryReportToAll()
+	 * @see tau.tac.adx.users.AdxUserEventListener#auctionPerformed(tau.tac.adx.auction.AdxAuctionResult,
+	 *      tau.tac.adx.props.AdxQuery, tau.tac.adx.users.AdxUser)
 	 */
 	@Override
-	public void sendQueryReportToAll() {
-		publisherReportSender.broadcastReport(publisherReport);
+	public void auctionPerformed(AdxAuctionResult auctionResult,
+			AdxQuery query, AdxUser user) {
+		// No implementation needed.
 	}
 }

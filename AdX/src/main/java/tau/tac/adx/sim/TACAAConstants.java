@@ -24,6 +24,7 @@
  */
 package tau.tac.adx.sim;
 
+import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 
 /**
@@ -127,6 +128,10 @@ public final class TACAAConstants {
 	 * @see {@link AdxPublisherReport}.
 	 */
 	public static final int DU_PUBLISHER_QUERY_REPORT = 400;
+	/**
+	 * @see {@link AdNetworkReport}.
+	 */
+	public static final int DU_AD_NETWORK_REPORT = 401;
 
 	/**
 	 * The TAC AA Publisher role.

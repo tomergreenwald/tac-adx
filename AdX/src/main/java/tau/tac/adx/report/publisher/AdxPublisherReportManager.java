@@ -35,7 +35,7 @@ public interface AdxPublisherReportManager extends AdxUserEventListener {
 	/**
 	 * Distributed all of the query reports to the advertisers.
 	 */
-	void sendQueryReportToAll();
+	void sendReportsToAll();
 
 	/**
 	 * The number of advertisers in the dataset.

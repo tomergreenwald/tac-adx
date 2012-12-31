@@ -26,15 +26,14 @@ package tau.tac.adx.report.adn;
 
 import java.util.logging.Logger;
 
+import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.report.publisher.AdxPublisherReportManager;
-import tau.tac.adx.report.publisher.AdxPublisherReportSender;
-import edu.umich.eecs.tac.props.Ad;
+import tau.tac.adx.users.AdxUser;
 
 /**
  * @author Patrick Jordan, Lee Callender, Akshat Kaul
  */
-public class AdNetworkReportManagerImpl implements AdxPublisherReportManager {
+public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	/**
 	 * {@link Logger}.
 	 */
@@ -44,22 +43,22 @@ public class AdNetworkReportManagerImpl implements AdxPublisherReportManager {
 	/**
 	 * The query reports
 	 */
-	private final AdNetworkReport publisherReport = new AdNetworkReport();
+	private final AdNetworkReport adNetworkReport = new AdNetworkReport();
 
 	/**
-	 * The {@link AdxPublisherReportSender}.
+	 * The {@link AdNetworkReportSender}.
 	 */
-	private final AdxPublisherReportSender publisherReportSender;
+	private final AdNetworkReportSender adNetworkReportSender;
 
 	/**
 	 * Create a new publisher report manager
 	 * 
-	 * @param publisherReportSender
-	 *            The {@link AdxPublisherReportSender}.
+	 * @param adNetworkReportSender
+	 *            The {@link AdNetworkReportSender}.
 	 */
 	public AdNetworkReportManagerImpl(
-			AdxPublisherReportSender publisherReportSender) {
-		this.publisherReportSender = publisherReportSender;
+			AdNetworkReportSender adNetworkReportSender) {
+		this.adNetworkReportSender = adNetworkReportSender;
 		log.info("AdxQueryReportManager created.");
 	}
 
@@ -69,7 +68,7 @@ public class AdNetworkReportManagerImpl implements AdxPublisherReportManager {
 	 */
 	@Override
 	public int size() {
-		return publisherReport.size();
+		return adNetworkReport.size();
 	}
 
 	/**
@@ -77,24 +76,27 @@ public class AdNetworkReportManagerImpl implements AdxPublisherReportManager {
 	 */
 	@Override
 	public void queryIssued(AdxQuery query) {
-		publisherReport.addQuery(query);
+		// No implementation needed.
 	}
 
 	/**
+	 * @param auctionResult
+	 * @param query
+	 * @param user
 	 * @see tau.tac.adx.users.AdxUserEventListener#adViewed(tau.tac.adx.props.AdxQuery,
 	 *      edu.umich.eecs.tac.props.Ad, java.lang.String)
 	 */
 	@Override
-	public void adViewed(AdxQuery query, Ad ad, String advertiserName) {
-		// TODO Auto-generated method stub
-
+	public void auctionPerformed(AdxAuctionResult auctionResult,
+			AdxQuery query, AdxUser user) {
+		adNetworkReport.addBid(auctionResult, query, user);
 	}
 
 	/**
-	 * @see tau.tac.adx.report.publisher.AdxPublisherReportManager#sendQueryReportToAll()
+	 * @see tau.tac.adx.report.publisher.AdxPublisherReportManager#sendReportsToAll()
 	 */
 	@Override
-	public void sendQueryReportToAll() {
-		publisherReportSender.broadcastReport(publisherReport);
+	public void sendReportsToAll() {
+		adNetworkReportSender.broadcastReport(adNetworkReport);
 	}
 }

@@ -27,6 +27,8 @@ package tau.tac.adx.sim;
 import java.util.logging.Logger;
 
 import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.report.adn.AdNetworkReport;
+import tau.tac.adx.report.adn.AdNetworkReportSender;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 import tau.tac.adx.report.publisher.AdxPublisherReportSender;
 import tau.tac.adx.users.AdxUserEventListener;
@@ -36,7 +38,7 @@ import edu.umich.eecs.tac.sim.PublisherInfoSender;
  * @author Lee Callender, Patrick Jordan
  */
 public abstract class AdxUsers extends Builtin implements
-		AdxPublisherReportSender {
+		AdxPublisherReportSender, AdNetworkReportSender {
 	private static final String CONF = "adxusers.";
 
 	protected Logger log = Logger.getLogger(AdxUsers.class.getName());
@@ -64,7 +66,7 @@ public abstract class AdxUsers extends Builtin implements
 	public abstract boolean removeUserEventListener(
 			AdxUserEventListener listener);
 
-	public abstract void sendPublisherReportToAll();
+	public abstract void sendReportsToAll();
 
 	protected void transact(String advertiser, double amount) {
 		getSimulation().transaction(getAddress(), advertiser, amount);
@@ -75,6 +77,14 @@ public abstract class AdxUsers extends Builtin implements
 	 */
 	@Override
 	public void broadcastReport(AdxPublisherReport report) {
+		getSimulation().broadcastReport(report);
+	}
+
+	/**
+	 * @see tau.tac.adx.report.adn.AdNetworkReportSender#broadcastReport(tau.tac.adx.report.adn.AdNetworkReport)
+	 */
+	@Override
+	public void broadcastReport(AdNetworkReport report) {
 		getSimulation().broadcastReport(report);
 	}
 }

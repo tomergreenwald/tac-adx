@@ -29,6 +29,9 @@ import java.util.Random;
 import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.report.adn.AdNetworkReportManager;
+import tau.tac.adx.report.adn.AdNetworkReportManagerImpl;
+import tau.tac.adx.report.adn.AdNetworkReportSender;
 import tau.tac.adx.report.publisher.AdxPublisherReportManager;
 import tau.tac.adx.report.publisher.AdxPublisherReportManagerImpl;
 import tau.tac.adx.report.publisher.AdxPublisherReportSender;
@@ -94,6 +97,16 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	AdxPublisherReportSender publisherReportSender;
 
 	/**
+	 * {@link AdNetworkReportManager}.
+	 */
+	AdNetworkReportManager adNetworkReportManager;
+
+	/**
+	 * {@link AdNetworkReportSender}.
+	 */
+	AdNetworkReportSender adNetworkReportSender;
+
+	/**
 	 * @param config
 	 *            {@link ConfigProxy} used to configure an instance.
 	 * @param agentRepository
@@ -101,10 +114,13 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	 *            {@link Agent} s.
 	 * @param publisherReportSender
 	 *            {@link AdxPublisherReportSender}.
+	 * @param adNetworkReportSender
+	 *            {@link AdNetworkReportSender}.
 	 */
 	public DefaultAdxUsersBehavior(ConfigProxy config,
 			AdxAgentRepository agentRepository,
-			AdxPublisherReportSender publisherReportSender) {
+			AdxPublisherReportSender publisherReportSender,
+			AdNetworkReportSender adNetworkReportSender) {
 
 		if (config == null) {
 			throw new NullPointerException("config cannot be null");
@@ -124,6 +140,13 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		}
 
 		this.publisherReportSender = publisherReportSender;
+
+		if (adNetworkReportSender == null) {
+			throw new NullPointerException(
+					"Ad Network report sender cannot be null");
+		}
+
+		this.adNetworkReportSender = adNetworkReportSender;
 	}
 
 	/**
@@ -164,10 +187,23 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-		publisherReportManager = createQueryReportManager();
+		publisherReportManager = createPublisherReportManager();
+		adNetworkReportManager = createAdNetworkReportManager();
 	}
 
-	private AdxPublisherReportManager createQueryReportManager() {
+	private AdNetworkReportManager createAdNetworkReportManager() {
+		AdNetworkReportManager adNetworkReportManager = new AdNetworkReportManagerImpl(
+				adNetworkReportSender);
+
+		for (SimulationAgent agent : agentRepository.getAdxUsers()) {
+			AdxUsers users = (AdxUsers) agent.getAgent();
+			users.addUserEventListener(adNetworkReportManager);
+		}
+
+		return adNetworkReportManager;
+	}
+
+	private AdxPublisherReportManager createPublisherReportManager() {
 		AdxPublisherReportManager queryReportManager = new AdxPublisherReportManagerImpl(
 				publisherReportSender);
 
@@ -253,11 +289,12 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	}
 
 	/**
-	 * @see tau.tac.adx.users.AdxUsersBehavior#sendQueryReportsToAll()
+	 * @see tau.tac.adx.users.AdxUsersBehavior#sendReportsToAll()
 	 */
 	@Override
-	public void sendQueryReportsToAll() {
-		publisherReportManager.sendQueryReportToAll();
+	public void sendReportsToAll() {
+		publisherReportManager.sendReportsToAll();
+		adNetworkReportManager.sendReportsToAll();
 	}
 
 }

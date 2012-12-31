@@ -1,7 +1,7 @@
 package tau.tac.adx.users;
 
+import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.props.AdxQuery;
-import edu.umich.eecs.tac.props.Ad;
 
 /**
  * Adx user event listener interface.
@@ -16,14 +16,16 @@ public interface AdxUserEventListener {
 	void queryIssued(AdxQuery query);
 
 	/**
-	 * Viewed {@link Ad}.
+	 * Auction was performed by the <b>ADX</b> and results are given as
+	 * parameters.
 	 * 
+	 * @param auctionResult
+	 *            {@link AdxAuctionResult}.
 	 * @param query
-	 *            {@link AdxQuery} which issued the <b>auction</b>.
-	 * @param ad
-	 *            {@link Ad}.
-	 * @param advertiser
-	 *            Advertiser name.
+	 *            Issuing {@link AdxQuery}.
+	 * @param user
+	 *            Participating {@link AdxUser}.
 	 */
-	void adViewed(AdxQuery query, Ad ad, String advertiser);
+	void auctionPerformed(AdxAuctionResult auctionResult, AdxQuery query,
+			AdxUser user);
 }

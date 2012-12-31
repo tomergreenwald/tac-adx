@@ -156,7 +156,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	 * @param user
 	 *            An {@link AdxUser} to generate a query for.
 	 */
-	private boolean handleSearch(AdxUser user) {
+	private void handleSearch(AdxUser user) {
 
 		boolean transacted = false;
 
@@ -166,16 +166,14 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			List<AdxAuctionResult> auctionResults = auctioneer
 					.runAuction(query);
 			for (AdxAuctionResult auctionResult : auctionResults) {
-				transacted = handleImpression(query, auctionResult, user);
+				handleImpression(query, auctionResult, user);
 			}
 		}
-
-		return transacted;
 	}
 
-	private boolean handleImpression(AdxQuery query,
+	private void handleImpression(AdxQuery query,
 			AdxAuctionResult auctionResult, AdxUser user) {
-		return viewManager.processImpression(user, query, auctionResult);
+		viewManager.processImpression(user, query, auctionResult);
 	}
 
 	private AdxQuery generateQuery(AdxUser user) {

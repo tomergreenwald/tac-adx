@@ -61,7 +61,7 @@ public class DefaultAdxUsers extends AdxUsers {
 	 */
 	public DefaultAdxUsers() {
 		usersBehavior = new DefaultAdxUsersBehavior(new UsersConfigProxy(),
-				new AgentRepositoryProxy(), this);
+				new AgentRepositoryProxy(), this, this);
 	}
 
 	/**
@@ -324,10 +324,10 @@ public class DefaultAdxUsers extends AdxUsers {
 	}
 
 	/**
-	 * @see tau.tac.adx.sim.AdxUsers#sendPublisherReportToAll()
+	 * @see tau.tac.adx.sim.AdxUsers#sendReportsToAll()
 	 */
 	@Override
-	public void sendPublisherReportToAll() {
-		usersBehavior.sendQueryReportsToAll();
+	public void sendReportsToAll() {
+		usersBehavior.sendReportsToAll();
 	}
 }

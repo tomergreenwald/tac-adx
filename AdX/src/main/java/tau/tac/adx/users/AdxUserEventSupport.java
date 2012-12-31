@@ -27,7 +27,7 @@ package tau.tac.adx.users;
 import java.util.ArrayList;
 import java.util.List;
 
-import tau.tac.adx.props.AdLink;
+import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.props.AdxQuery;
 
 /**
@@ -61,9 +61,21 @@ public class AdxUserEventSupport {
 		}
 	}
 
-	public void fireAdViewed(AdxQuery query, AdLink ad) {
+	/**
+	 * Auction was performed by the <b>ADX</b> and results are given as
+	 * parameters.
+	 * 
+	 * @param auctionResult
+	 *            {@link AdxAuctionResult}.
+	 * @param query
+	 *            Issuing {@link AdxQuery}.
+	 * @param user
+	 *            Participating {@link AdxUser}.
+	 */
+	public void fireAuctionPerformed(AdxAuctionResult auctionResult,
+			AdxQuery query, AdxUser user) {
 		for (AdxUserEventListener listener : listeners) {
-			listener.adViewed(query, ad.getAd(), ad.getAdvertiser());
+			listener.auctionPerformed(auctionResult, query, user);
 		}
 	}
 

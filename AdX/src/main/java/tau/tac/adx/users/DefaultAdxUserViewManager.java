@@ -29,8 +29,6 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import tau.tac.adx.auction.AdxAuctionResult;
-import tau.tac.adx.auction.AuctionState;
-import tau.tac.adx.props.AdLink;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
@@ -102,18 +100,17 @@ public class DefaultAdxUserViewManager implements AdxUserViewManager {
 
 	}
 
+	/**
+	 * @see tau.tac.adx.users.AdxUserViewManager#processImpression(tau.tac.adx.users.AdxUser,
+	 *      tau.tac.adx.props.AdxQuery, tau.tac.adx.auction.AdxAuctionResult)
+	 */
 	@Override
-	public boolean processImpression(AdxUser user, AdxQuery query,
+	public void processImpression(AdxUser user, AdxQuery query,
 			AdxAuctionResult auctionResult) {
 		fireQueryIssued(query);
 
 		AdxAuctionResult adxAuctionResult = auctionResult;
-		if (adxAuctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
-			fireAdViewed(query, (AdLink) adxAuctionResult.getWinningBidInfo()
-					.getBidProduct());
-			return true;
-		}
-		return false;
+		fireAuctionPerformed(adxAuctionResult, query, user);
 	}
 
 	@Override
@@ -135,8 +132,20 @@ public class DefaultAdxUserViewManager implements AdxUserViewManager {
 		eventSupport.fireQueryIssued(query);
 	}
 
-	private void fireAdViewed(AdxQuery query, AdLink ad) {
-		eventSupport.fireAdViewed(query, ad);
+	/**
+	 * Auction was performed by the <b>ADX</b> and results are given as
+	 * parameters.
+	 * 
+	 * @param auctionResult
+	 *            {@link AdxAuctionResult}.
+	 * @param query
+	 *            Issuing {@link AdxQuery}.
+	 * @param user
+	 *            Participating {@link AdxUser}.
+	 */
+	private void fireAuctionPerformed(AdxAuctionResult auctionResult,
+			AdxQuery query, AdxUser user) {
+		eventSupport.fireAuctionPerformed(auctionResult, query, user);
 	}
 
 }

@@ -33,7 +33,7 @@ import tau.tac.adx.props.AdxQuery;
  */
 public interface AdxUserViewManager extends TimeListener {
 
-	public boolean processImpression(AdxUser user, AdxQuery query,
+	public void processImpression(AdxUser user, AdxQuery query,
 			AdxAuctionResult auctionResult);
 
 	public boolean addUserEventListener(AdxUserEventListener listener);

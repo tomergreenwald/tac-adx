@@ -45,7 +45,7 @@ public interface AdxUsersBehavior {
 
 	Ranking getRanking(Query query, Auctioneer auctioneer);
 
-	void sendQueryReportsToAll();
+	void sendReportsToAll();
 
 	boolean addUserEventListener(AdxUserEventListener listener);
 
