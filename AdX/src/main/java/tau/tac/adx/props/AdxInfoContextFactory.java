@@ -32,6 +32,9 @@ import se.sics.tasim.props.Ping;
 import se.sics.tasim.props.ServerConfig;
 import se.sics.tasim.props.SimulationStatus;
 import se.sics.tasim.props.StartInfo;
+import tau.tac.adx.report.adn.AdNetworkKey;
+import tau.tac.adx.report.adn.AdNetworkReport;
+import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 import tau.tac.adx.report.publisher.AdxPublisherReportEntry;
 import edu.umich.eecs.tac.props.Ad;
@@ -137,8 +140,11 @@ public class AdxInfoContextFactory implements ContextFactory {
 		con.addTransportable(new AdxQuery());
 		con.addTransportable(new PublisherCatalog());
 		con.addTransportable(new PublisherCatalogEntry());
-		con.addTransportable(new AdxPublisherReportEntry(null));
+		con.addTransportable(new AdxPublisherReportEntry());
 		con.addTransportable(new AdxPublisherReport());
+		con.addTransportable(new AdNetworkReportEntry());
+		con.addTransportable(new AdNetworkReport());
+		con.addTransportable(new AdNetworkKey());
 
 		// Cache the last context
 		lastContext = con;

@@ -24,6 +24,8 @@ public class AdNetworkReportEntry extends
 	private static final String WIN_COUNT = "WIN_COUNT";
 	/** COST_COUNT. */
 	private static final String COST_COUNT = "COST_COUNT";
+	/** KEY_TRANSPORT_NAME. */
+	private static final String KEY_NODE_TRANSPORT_NAME = "KEY_TRANSPORT_NAME";
 	/**
 	 * Total number of bids.
 	 */
@@ -43,6 +45,11 @@ public class AdNetworkReportEntry extends
 	 */
 	public AdNetworkReportEntry(AdNetworkKey key) {
 		setKey(key);
+	}
+
+	/**
+	 */
+	public AdNetworkReportEntry() {
 	}
 
 	/**
@@ -103,7 +110,9 @@ public class AdNetworkReportEntry extends
 			throws ParseException {
 		bidCount = reader.getAttributeAsInt(BID_COUNT);
 		winCount = reader.getAttributeAsInt(WIN_COUNT);
-		cost = reader.getAttributeAsInt(COST_COUNT);
+		cost = reader.getAttributeAsDouble(COST_COUNT);
+		reader.nextNode(AdNetworkKey.class.getSimpleName(), true);
+		setKey((AdNetworkKey) reader.readTransportable());
 	}
 
 	/**
@@ -117,6 +126,7 @@ public class AdNetworkReportEntry extends
 		writer.attr(BID_COUNT, bidCount);
 		writer.attr(WIN_COUNT, winCount);
 		writer.attr(COST_COUNT, cost);
+		writer.write(getKey());
 	}
 
 	/**
@@ -139,6 +149,52 @@ public class AdNetworkReportEntry extends
 			cost += auctionResult.getWinningPrice();
 		}
 		bidCount++;
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + bidCount;
+		long temp;
+		temp = Double.doubleToLongBits(cost);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + winCount;
+		return result;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AdNetworkReportEntry other = (AdNetworkReportEntry) obj;
+		if (bidCount != other.bidCount)
+			return false;
+		if (Double.doubleToLongBits(cost) != Double
+				.doubleToLongBits(other.cost))
+			return false;
+		if (winCount != other.winCount)
+			return false;
+		return true;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "AdNetworkReportEntry [bidCount=" + bidCount + ", winCount="
+				+ winCount + ", cost=" + cost + "]";
 	}
 
 }

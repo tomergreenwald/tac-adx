@@ -66,6 +66,9 @@ public class AdNetworkKey implements Transportable {
 		this.adType = adType;
 	}
 
+	public AdNetworkKey() {
+	}
+
 	/**
 	 * @return the segment
 	 */
