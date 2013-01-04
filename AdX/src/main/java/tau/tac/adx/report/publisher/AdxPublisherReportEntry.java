@@ -34,9 +34,10 @@ public class AdxPublisherReportEntry extends
 	private static final String AD_TYPE_ORIENTATION_ENTRY_TRANSPORT_NAME = "AdTypeOrientation";
 
 	/**
-	 * {@link AdxPublisher}'s name.
+	 * The {@link PublisherCatalogEntry} transport name.
 	 */
-	private String publisherName;
+	private static final String PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME = "PublisherCatalogEntry";
+
 	/**
 	 * {@link AdxPublisher}'s popularity - number of visits to the publisher.
 	 */
@@ -47,24 +48,29 @@ public class AdxPublisherReportEntry extends
 	private Map<AdType, Integer> adTypeOrientation;
 
 	/**
-	 * @param publisherName
 	 * @param key
 	 */
-	public AdxPublisherReportEntry(String publisherName,
-			PublisherCatalogEntry key) {
+	public AdxPublisherReportEntry(PublisherCatalogEntry key) {
 		super();
-		this.publisherName = publisherName;
 		adTypeOrientation = new HashMap<AdType, Integer>();
 		adTypeOrientation.put(AdType.text, 0);
 		adTypeOrientation.put(AdType.video, 0);
 		setKey(key);
 	}
 
+	public AdxPublisherReportEntry() {
+		super();
+		adTypeOrientation = new HashMap<AdType, Integer>();
+		adTypeOrientation.put(AdType.text, 0);
+		adTypeOrientation.put(AdType.video, 0);
+
+	}
+
 	/**
 	 * @return the publisherName
 	 */
 	public String getPublisherName() {
-		return publisherName;
+		return getKey().getPublisherName();
 	}
 
 	/**
@@ -79,14 +85,6 @@ public class AdxPublisherReportEntry extends
 	 */
 	public Map<AdType, Integer> getAdTypeOrientation() {
 		return adTypeOrientation;
-	}
-
-	/**
-	 * @param publisherName
-	 *            the publisherName to set
-	 */
-	public void setPublisherName(String publisherName) {
-		this.publisherName = publisherName;
 	}
 
 	/**
@@ -117,9 +115,13 @@ public class AdxPublisherReportEntry extends
 	protected final void readEntry(final TransportReader reader)
 			throws ParseException {
 		adTypeOrientation.clear();
+		String attribute = reader
+				.getAttribute(PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME);
+		setKey(new PublisherCatalogEntry(attribute));
 		while (reader.nextNode(AD_TYPE_ORIENTATION_ENTRY_TRANSPORT_NAME, false)) {
 			readAdTypeEntry(reader);
 		}
+
 	}
 
 	/**
@@ -130,6 +132,9 @@ public class AdxPublisherReportEntry extends
 	 */
 	@Override
 	protected final void writeEntry(final TransportWriter writer) {
+		writer.attr(PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME, getKey()
+				.getPublisherName());
+
 		for (Entry<AdType, Integer> entry : adTypeOrientation.entrySet()) {
 			writeAdTypeEntry(writer, entry.getValue(), entry.getKey());
 		}
@@ -169,7 +174,7 @@ public class AdxPublisherReportEntry extends
 
 		int orientation = reader.getAttributeAsInt("Oreintation", 0);
 
-		reader.nextNode(AdType.class.getSimpleName(), true);
+		// reader.nextNode(AdType.class.getSimpleName(), true);
 
 		AdType adType = AdType.valueOf(reader.getAttribute("AdType"));
 		adTypeOrientation.put(adType, orientation);
@@ -195,6 +200,57 @@ public class AdxPublisherReportEntry extends
 		this.popularity++;
 		adTypeOrientation.put(query.getAdType(),
 				adTypeOrientation.get(query.getAdType()) + 1);
+	}
+
+	/**
+	 * Returns the string representation of the sales report entry.
+	 * 
+	 * @return the string representation of the sales report entry.
+	 */
+	@Override
+	public final String toString() {
+		return String.format(
+				"(publisher: %s popularity: %d video: %d text: %d)",
+				getPublisherName(), getPopularity(), getAdTypeOrientation()
+						.get(AdType.video),
+				getAdTypeOrientation().get(AdType.text));
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((adTypeOrientation == null) ? 0 : adTypeOrientation
+						.hashCode());
+		result = prime * result + popularity;
+		return result;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AdxPublisherReportEntry other = (AdxPublisherReportEntry) obj;
+		if (adTypeOrientation == null) {
+			if (other.adTypeOrientation != null)
+				return false;
+		} else if (!adTypeOrientation.equals(other.adTypeOrientation))
+			return false;
+		if (popularity != other.popularity)
+			return false;
+		return true;
 	}
 
 }

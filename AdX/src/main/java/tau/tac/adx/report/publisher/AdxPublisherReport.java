@@ -61,8 +61,7 @@ public class AdxPublisherReport extends
 	 */
 	@Override
 	protected AdxPublisherReportEntry createEntry(PublisherCatalogEntry key) {
-		AdxPublisherReportEntry entry = new AdxPublisherReportEntry(
-				key.getPublisherName(), key);
+		AdxPublisherReportEntry entry = new AdxPublisherReportEntry(key);
 		return entry;
 	}
 
@@ -81,7 +80,6 @@ public class AdxPublisherReport extends
 		lockCheck();
 		int index = addKey(publisher);
 		AdxPublisherReportEntry entry = getEntry(index);
-		entry.setPublisherName(publisher.getPublisherName());
 		entry.setPopularity(publisherReportEntry.getPopularity());
 		entry.setAdTypeOrientation(publisherReportEntry.getAdTypeOrientation());
 	}
@@ -129,7 +127,7 @@ public class AdxPublisherReport extends
 		AdxPublisherReportEntry publisherReportEntry = getPublisherReportEntry(publisherCatalogEntry);
 		if (publisherReportEntry == null) {
 			publisherReportEntry = new AdxPublisherReportEntry(
-					query.getPublisher(), publisherCatalogEntry);
+					publisherCatalogEntry);
 			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
 		}
 		publisherReportEntry.addQuery(query);
