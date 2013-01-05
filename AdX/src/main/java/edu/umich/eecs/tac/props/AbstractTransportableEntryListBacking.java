@@ -209,8 +209,7 @@ public abstract class AbstractTransportableEntryListBacking<S extends Transporta
 	 *             if the index is out of range
 	 *             <code>(index < 0 || index >= size())</code>.
 	 */
-	protected final S getEntry(final int index)
-			throws IndexOutOfBoundsException {
+	public final S getEntry(final int index) throws IndexOutOfBoundsException {
 		return entries.get(index);
 	}
 
@@ -224,8 +223,7 @@ public abstract class AbstractTransportableEntryListBacking<S extends Transporta
 	 * @throws IllegalStateException
 	 *             if the object is locked
 	 */
-	protected final void removeEntry(final int index)
-			throws IllegalStateException {
+	public final void removeEntry(final int index) throws IllegalStateException {
 		beforeRemoveEntry(index);
 		lockCheck();
 
