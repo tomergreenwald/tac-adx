@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.sim.TACAASimulation;
 
 /**
  * Adx managing class.
@@ -22,6 +23,7 @@ public class AdxManager {
 	 * {@link AdxPublisher}s.
 	 */
 	private static Map<String, AdxPublisher> publishersNamingMap = new HashMap<String, AdxPublisher>();
+	private static TACAASimulation simulation;
 
 	/**
 	 * @param publisherName
@@ -45,5 +47,17 @@ public class AdxManager {
 	 */
 	public static void addPublisher(AdxPublisher publisher) {
 		publishersNamingMap.put(publisher.getName(), publisher);
+	}
+
+	public static TACAASimulation getSimulation() {
+		return simulation;
+	}
+
+	/**
+	 * @param simulation
+	 *            the simulation to set
+	 */
+	public static void setSimulation(TACAASimulation simulation) {
+		AdxManager.simulation = simulation;
 	}
 }

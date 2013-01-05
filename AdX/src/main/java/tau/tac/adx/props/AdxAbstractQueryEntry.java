@@ -1,5 +1,5 @@
 /*
- * UsersBehavior.java
+ * AbstractQueryEntry.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,36 +22,49 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.props;
 
-import se.sics.tasim.aw.Message;
+import edu.umich.eecs.tac.props.AbstractTransportableEntry;
 import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ranking;
-import edu.umich.eecs.tac.sim.Auctioneer;
+import edu.umich.eecs.tac.props.QueryEntry;
 
 /**
+ * This class provides a skeletal implementation of the {@link QueryEntry}
+ * interface.
+ * 
  * @author Patrick Jordan
  */
-public interface AdxUsersBehavior {
-	void nextTimeUnit(int date);
+public abstract class AdxAbstractQueryEntry extends
+		AbstractTransportableEntry<AdxQuery> implements AdxQueryEntry {
 
-	void setup();
+	/**
+	 * Returns the query key.
+	 * 
+	 * @return the query key.
+	 */
+	@Override
+	public final AdxQuery getQuery() {
+		return getKey();
+	}
 
-	void stopped();
+	/**
+	 * Sets the key to the given query.
+	 * 
+	 * @param query
+	 *            the query key.
+	 */
+	public final void setQuery(final AdxQuery query) {
+		setKey(query);
+	}
 
-	void shutdown();
-
-	void messageReceived(Message message);
-
-	Ranking getRanking(Query query, Auctioneer auctioneer);
-
-	void sendReportsToAll();
-
-	boolean addUserEventListener(AdxUserEventListener listener);
-
-	boolean containsUserEventListener(AdxUserEventListener listener);
-
-	boolean removeUserEventListener(AdxUserEventListener listener);
-
-	void applyBidUpdates();
+	/**
+	 * Returns the transport name of the query key for externalization.
+	 * 
+	 * @return the {@link Class#getSimpleName() simple name} of the
+	 *         {@link Query} class.
+	 */
+	@Override
+	protected final String keyNodeName() {
+		return AdxQuery.class.getSimpleName();
+	}
 }

@@ -88,4 +88,9 @@ public abstract class AdxUsers extends Builtin implements
 	public void broadcastReport(int adNetworkId, AdNetworkReport report) {
 		getSimulation().broadcastReport(adNetworkId, report);
 	}
+
+	/**
+	 * Applies bid updates.
+	 */
+	public abstract void applyBidUpdates();
 }

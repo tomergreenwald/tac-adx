@@ -34,7 +34,7 @@ import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
-import tau.tac.adx.sim.SimpleAdxAuctioneer;
+import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
@@ -65,20 +65,21 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final DefaultAdxUserViewManager viewManager;
 
-	private final SimpleAdxAuctioneer auctioneer = new SimpleAdxAuctioneer();
+	private final AdxAuctioneer auctioneer;
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			List<AdxUser> users, UserTransitionManager transitionManager,
 			AdxUserQueryManager queryManager,
-			DefaultAdxUserViewManager viewManager, int populationSize) {
+			DefaultAdxUserViewManager viewManager, int populationSize,
+			AdxAuctioneer auctioneer) {
 		this(publisherCatalog, users, queryManager, viewManager,
-				populationSize, new Random());
+				populationSize, new Random(), auctioneer);
 	}
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			List<AdxUser> users, AdxUserQueryManager queryManager,
 			DefaultAdxUserViewManager viewManager, int populationSize,
-			Random random) {
+			Random random, AdxAuctioneer auctioneer) {
 		lock = new Object();
 
 		if (publisherCatalog == null) {
@@ -107,11 +108,16 @@ public class DefaultAdxUserManager implements AdxUserManager {
 					"Random number generator cannot be null");
 		}
 
+		if (auctioneer == null) {
+			throw new NullPointerException("Auctioneer cannot be null");
+		}
+
 		this.publisherCatalog = publisherCatalog;
 		this.random = random;
 		this.queryManager = queryManager;
 		this.viewManager = viewManager;
 		this.users = users;
+		this.auctioneer = auctioneer;
 	}
 
 	@Override
@@ -163,11 +169,8 @@ public class DefaultAdxUserManager implements AdxUserManager {
 		AdxQuery query = generateQuery(user);
 
 		if (query != null) {
-			List<AdxAuctionResult> auctionResults = auctioneer
-					.runAuction(query);
-			for (AdxAuctionResult auctionResult : auctionResults) {
-				handleImpression(query, auctionResult, user);
-			}
+			AdxAuctionResult auctionResult = auctioneer.runAuction(query);
+			handleImpression(query, auctionResult, user);
 		}
 	}
 

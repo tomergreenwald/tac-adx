@@ -1,5 +1,5 @@
 /*
- * UsersBehavior.java
+ * BidManager.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,36 +22,34 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.auction.manager;
 
-import se.sics.tasim.aw.Message;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ranking;
-import edu.umich.eecs.tac.sim.Auctioneer;
+import java.util.Set;
+
+import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.props.AdLink;
+import tau.tac.adx.props.AdxBidBundle;
+import tau.tac.adx.props.AdxQuery;
 
 /**
  * @author Patrick Jordan
  */
-public interface AdxUsersBehavior {
-	void nextTimeUnit(int date);
+public interface AdxBidManager extends TimeListener {
+	/**
+	 * Add the advertiser
+	 * 
+	 * @param advertiser
+	 *            the advertiser
+	 */
+	void addAdvertiser(String advertiser);
 
-	void setup();
+	double getBid(String advertiser, AdxQuery query);
 
-	void stopped();
+	AdLink getAdLink(String advertiser, AdxQuery query);
 
-	void shutdown();
-
-	void messageReceived(Message message);
-
-	Ranking getRanking(Query query, Auctioneer auctioneer);
-
-	void sendReportsToAll();
-
-	boolean addUserEventListener(AdxUserEventListener listener);
-
-	boolean containsUserEventListener(AdxUserEventListener listener);
-
-	boolean removeUserEventListener(AdxUserEventListener listener);
+	void updateBids(String advertiser, AdxBidBundle bundle);
 
 	void applyBidUpdates();
+
+	Set<String> advertisers();
 }

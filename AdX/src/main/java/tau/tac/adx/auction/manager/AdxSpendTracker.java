@@ -1,5 +1,5 @@
 /*
- * UsersBehavior.java
+ * SpendTracker.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,36 +22,66 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.auction.manager;
 
-import se.sics.tasim.aw.Message;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ranking;
-import edu.umich.eecs.tac.sim.Auctioneer;
+import tau.tac.adx.props.AdxQuery;
 
 /**
+ * The spend tracker tracks the daily spend each advertiser incurs.
+ * 
  * @author Patrick Jordan
  */
-public interface AdxUsersBehavior {
-	void nextTimeUnit(int date);
+public interface AdxSpendTracker {
+	/**
+	 * Adds the advertiser
+	 * 
+	 * @param advertiser
+	 *            the advertiser
+	 */
+	void addAdvertiser(String advertiser);
 
-	void setup();
+	/**
+	 * Returns the daily spend the advertiser incurred.
+	 * 
+	 * @param advertiser
+	 *            the advertiser
+	 * 
+	 * @return the daily spend the advertiser incurred.
+	 */
+	double getDailyCost(String advertiser);
 
-	void stopped();
+	/**
+	 * Returns the daily spend the advertiser incurred for a given query.
+	 * 
+	 * @param advertiser
+	 *            the advertiser
+	 * @param query
+	 *            the query
+	 * @return the daily spend the advertiser incurred for a given query.
+	 */
+	double getDailyCost(String advertiser, AdxQuery query);
 
-	void shutdown();
+	/**
+	 * Sets the current cost to zero for all advertisers.
+	 */
+	void reset();
 
-	void messageReceived(Message message);
+	/**
+	 * Adds the cost to the advertiser and query.
+	 * 
+	 * @param advertiser
+	 *            the advertiser
+	 * @param query
+	 *            the query
+	 * @param cost
+	 *            the cost to add
+	 */
+	void addCost(String advertiser, AdxQuery query, double cost);
 
-	Ranking getRanking(Query query, Auctioneer auctioneer);
-
-	void sendReportsToAll();
-
-	boolean addUserEventListener(AdxUserEventListener listener);
-
-	boolean containsUserEventListener(AdxUserEventListener listener);
-
-	boolean removeUserEventListener(AdxUserEventListener listener);
-
-	void applyBidUpdates();
+	/**
+	 * Get the number of advertisers tracked.
+	 * 
+	 * @return the number of advertisers tracked.
+	 */
+	int size();
 }

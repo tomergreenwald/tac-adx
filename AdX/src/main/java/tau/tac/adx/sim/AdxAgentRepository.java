@@ -142,4 +142,9 @@ public interface AdxAgentRepository extends AgentRepository {
 	 * @return {@link AdType} distribution {@link Map}.
 	 */
 	Map<AdType, Integer> getAdTypeDistributionMap();
+
+	/**
+	 * @return {@link AdxAuctioneer}.
+	 */
+	AdxAuctioneer getAuctioneer();
 }

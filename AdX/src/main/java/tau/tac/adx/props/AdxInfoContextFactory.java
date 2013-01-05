@@ -145,6 +145,8 @@ public class AdxInfoContextFactory implements ContextFactory {
 		con.addTransportable(new AdNetworkReportEntry());
 		con.addTransportable(new AdNetworkReport());
 		con.addTransportable(new AdNetworkKey());
+		con.addTransportable(new AdxBidBundle());
+		con.addTransportable(new AdxBidBundle.BidEntry());
 
 		// Cache the last context
 		lastContext = con;

@@ -70,7 +70,7 @@ public class DefaultAdxUserManagerBuilder implements
 					+ '.' + POPULATION_SIZE_KEY, POPULATION_SIZE_DEFAULT);
 			return new DefaultAdxUserManager(repository.getPublisherCatalog(),
 					repository.getUserPopulation(), queryManager, viewManager,
-					populationSize, random);
+					populationSize, random, repository.getAuctioneer());
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (InstantiationException e) {

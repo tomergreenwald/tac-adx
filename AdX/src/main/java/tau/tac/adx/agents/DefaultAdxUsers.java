@@ -32,10 +32,14 @@ import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.agents.behaviors.DefaultAdxUsersBehavior;
+import tau.tac.adx.auction.AdxBidBundleWriter;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.sim.AdxAgentRepository;
+import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.sim.AdxUsers;
+import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUsersBehavior;
@@ -61,7 +65,8 @@ public class DefaultAdxUsers extends AdxUsers {
 	 */
 	public DefaultAdxUsers() {
 		usersBehavior = new DefaultAdxUsersBehavior(new UsersConfigProxy(),
-				new AgentRepositoryProxy(), this, this);
+				new AgentRepositoryProxy(), this, this,
+				new BidBundleWriterProxy());
 	}
 
 	/**
@@ -321,6 +326,11 @@ public class DefaultAdxUsers extends AdxUsers {
 		public RetailCatalog getRetailCatalog() {
 			return getSimulation().getRetailCatalog();
 		}
+
+		@Override
+		public AdxAuctioneer getAuctioneer() {
+			return getSimulation().getAuctioneer();
+		}
 	}
 
 	/**
@@ -329,5 +339,21 @@ public class DefaultAdxUsers extends AdxUsers {
 	@Override
 	public void sendReportsToAll() {
 		usersBehavior.sendReportsToAll();
+	}
+
+	@Override
+	public void applyBidUpdates() {
+		usersBehavior.applyBidUpdates();
+	}
+
+	protected class BidBundleWriterProxy implements AdxBidBundleWriter {
+		@Override
+		public void writeBundle(String advertiser, AdxBidBundle bundle) {
+
+			int agentIndex = getSimulation().agentIndex(advertiser);
+
+			getEventWriter().dataUpdated(agentIndex,
+					TACAdxConstants.DU_ADX_BIDS, bundle);
+		}
 	}
 }

@@ -25,10 +25,20 @@
 package tau.tac.adx.agents.behaviors;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
+import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.auction.AdxBidBundleWriter;
+import tau.tac.adx.auction.manager.AdxBidManager;
+import tau.tac.adx.auction.manager.AdxBidManagerImpl;
+import tau.tac.adx.auction.manager.AdxBidTracker;
+import tau.tac.adx.auction.manager.AdxBidTrackerImpl;
+import tau.tac.adx.auction.manager.AdxSpendTracker;
+import tau.tac.adx.auction.manager.AdxSpendTrackerImpl;
+import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.report.adn.AdNetworkReportManager;
 import tau.tac.adx.report.adn.AdNetworkReportManagerImpl;
 import tau.tac.adx.report.adn.AdNetworkReportSender;
@@ -42,6 +52,8 @@ import tau.tac.adx.users.AdxUserBehaviorBuilder;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUsersBehavior;
+import edu.umich.eecs.tac.auction.BidManager;
+import edu.umich.eecs.tac.auction.DefaultPublisherBehavior;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.sim.AgentRepository;
@@ -107,6 +119,28 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	AdNetworkReportSender adNetworkReportSender;
 
 	/**
+	 * {@link BidManager}.
+	 */
+	private AdxBidManager bidManager;
+
+	/**
+	 * {@link Logger}.
+	 */
+	private Logger log;
+
+	private final AdxBidBundleWriter bidBundleWriter;
+
+	/**
+	 * {@link AdxSpendTracker}.
+	 */
+	private AdxSpendTracker spendTracker;
+
+	/**
+	 * {@link AdxBidTracker}.
+	 */
+	private AdxBidTracker bidTracker;
+
+	/**
 	 * @param config
 	 *            {@link ConfigProxy} used to configure an instance.
 	 * @param agentRepository
@@ -116,11 +150,16 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	 *            {@link AdxPublisherReportSender}.
 	 * @param adNetworkReportSender
 	 *            {@link AdNetworkReportSender}.
+	 * @param bidManager
+	 *            {@link AdxBidManager}.
+	 * @param bidBundleWriter
+	 *            {@link AdxBidBundleWriter}.
 	 */
 	public DefaultAdxUsersBehavior(ConfigProxy config,
 			AdxAgentRepository agentRepository,
 			AdxPublisherReportSender publisherReportSender,
-			AdNetworkReportSender adNetworkReportSender) {
+			AdNetworkReportSender adNetworkReportSender,
+			AdxBidBundleWriter bidBundleWriter) {
 
 		if (config == null) {
 			throw new NullPointerException("config cannot be null");
@@ -147,6 +186,27 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		}
 
 		this.adNetworkReportSender = adNetworkReportSender;
+
+		if (bidBundleWriter == null) {
+			throw new NullPointerException("Bid Bundle Writer cannot be null");
+		}
+
+		this.bidBundleWriter = bidBundleWriter;
+	}
+
+	private AdxBidManager createBidManager(AdxBidTracker bidTracker,
+			AdxSpendTracker spendTracker) {
+
+		AdxBidManager bidManager = new AdxBidManagerImpl(bidTracker,
+				spendTracker);
+
+		// All advertisers should be known to the bidManager
+		String[] advertisers = agentRepository.getAdvertiserAddresses();
+		for (int i = 0, n = advertisers.length; i < n; i++) {
+			bidManager.addAdvertiser(advertisers[i]);
+		}
+
+		return bidManager;
 	}
 
 	/**
@@ -171,7 +231,11 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	 */
 	@Override
 	public void setup() {
+		log = Logger.getLogger(DefaultPublisherBehavior.class.getName());
 		virtualDays = config.getPropertyAsInt("virtual_days", 0);
+		spendTracker = createSpendTracker();
+		bidTracker = createBidTracker();
+		bidManager = createBidManager(bidTracker, spendTracker);
 
 		try {
 			// Create the user manager
@@ -189,6 +253,18 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		}
 		publisherReportManager = createPublisherReportManager();
 		adNetworkReportManager = createAdNetworkReportManager();
+	}
+
+	private AdxBidTracker createBidTracker() {
+		AdxBidTracker bidTracker = new AdxBidTrackerImpl(0);
+
+		return bidTracker;
+	}
+
+	private AdxSpendTracker createSpendTracker() {
+		AdxSpendTracker spendTracker = new AdxSpendTrackerImpl(0);
+
+		return spendTracker;
 	}
 
 	private AdNetworkReportManager createAdNetworkReportManager() {
@@ -231,6 +307,18 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 				"tau.tac.adx.users.DefaultAdxUserManagerBuilder");
 	}
 
+	private void handleBidBundle(String advertiser, AdxBidBundle bidBundle) {
+		if (bidManager == null) {
+			// Not yet initialized => ignore the RFQ
+			log.warning("Received BidBundle from " + advertiser
+					+ " before initialization");
+		} else {
+			bidManager.updateBids(advertiser, bidBundle);
+
+			bidBundleWriter.writeBundle(advertiser, bidBundle);
+		}
+	}
+
 	/**
 	 * @see edu.umich.eecs.tac.user.UsersBehavior#stopped()
 	 */
@@ -262,6 +350,12 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	@Override
 	public void messageReceived(Message message) {
 		userManager.messageReceived(message);
+		String sender = message.getSender();
+		Transportable content = message.getContent();
+
+		if (content instanceof AdxBidBundle) {
+			handleBidBundle(sender, (AdxBidBundle) content);
+		}
 	}
 
 	/**
@@ -295,6 +389,11 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	public void sendReportsToAll() {
 		publisherReportManager.sendReportsToAll();
 		adNetworkReportManager.sendReportsToAll();
+	}
+
+	@Override
+	public void applyBidUpdates() {
+		bidManager.applyBidUpdates();
 	}
 
 }

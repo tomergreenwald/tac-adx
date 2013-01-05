@@ -24,8 +24,8 @@
  */
 package tau.tac.adx.sim;
 
-import static tau.tac.adx.sim.TACAAConstants.TYPE_MESSAGE;
-import static tau.tac.adx.sim.TACAAConstants.TYPE_WARNING;
+import static tau.tac.adx.sim.TACAdxConstants.TYPE_MESSAGE;
+import static tau.tac.adx.sim.TACAdxConstants.TYPE_WARNING;
 
 import java.util.Random;
 

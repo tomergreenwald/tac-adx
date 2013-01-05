@@ -33,11 +33,11 @@ import tau.tac.adx.report.publisher.AdxPublisherReport;
  * 
  * @author SICS, Patrick Jordan, Lee Callender
  */
-public final class TACAAConstants {
+public final class TACAdxConstants {
 	/**
 	 * Sole constructor (should not be invoked).
 	 */
-	private TACAAConstants() {
+	private TACAdxConstants() {
 	}
 
 	/**
@@ -132,6 +132,10 @@ public final class TACAAConstants {
 	 * @see {@link AdNetworkReport}.
 	 */
 	public static final int DU_AD_NETWORK_REPORT = 401;
+	/**
+	 * The bid of an advertiser.
+	 */
+	public static final int DU_ADX_BIDS = 402;
 
 	/**
 	 * The TAC AA Publisher role.

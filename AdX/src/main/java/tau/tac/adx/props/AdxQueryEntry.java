@@ -1,5 +1,5 @@
 /*
- * UsersBehavior.java
+ * QueryEntry.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,36 +22,22 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.props;
 
-import se.sics.tasim.aw.Message;
-import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.Ranking;
-import edu.umich.eecs.tac.sim.Auctioneer;
+import edu.umich.eecs.tac.props.KeyedEntry;
 
 /**
+ * This interface designates a {@link edu.umich.eecs.tac.props.KeyedEntry keyed
+ * entry} whose key is a query.
+ * 
  * @author Patrick Jordan
  */
-public interface AdxUsersBehavior {
-	void nextTimeUnit(int date);
+public interface AdxQueryEntry extends KeyedEntry<AdxQuery> {
 
-	void setup();
-
-	void stopped();
-
-	void shutdown();
-
-	void messageReceived(Message message);
-
-	Ranking getRanking(Query query, Auctioneer auctioneer);
-
-	void sendReportsToAll();
-
-	boolean addUserEventListener(AdxUserEventListener listener);
-
-	boolean containsUserEventListener(AdxUserEventListener listener);
-
-	boolean removeUserEventListener(AdxUserEventListener listener);
-
-	void applyBidUpdates();
+	/**
+	 * Returns the query for the entry.
+	 * 
+	 * @return the query for the entry.
+	 */
+	AdxQuery getQuery();
 }
