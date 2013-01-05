@@ -119,7 +119,11 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 	 */
 	@Override
 	public AdxQuery generateQuery(AdxUser user) {
-		return querySamplers.get(user).getSample();
+		Sampler<AdxQuery> sampler = querySamplers.get(user);
+		if (sampler == null) {
+			return null;
+		}
+		return sampler.getSample();
 	}
 
 	/**
