@@ -31,6 +31,7 @@ import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.AdxBidBundleWriter;
 import tau.tac.adx.auction.manager.AdxBidManager;
 import tau.tac.adx.auction.manager.AdxBidManagerImpl;
@@ -47,7 +48,6 @@ import tau.tac.adx.report.publisher.AdxPublisherReportManagerImpl;
 import tau.tac.adx.report.publisher.AdxPublisherReportSender;
 import tau.tac.adx.sim.AdxAgentRepository;
 import tau.tac.adx.sim.AdxUsers;
-import tau.tac.adx.sim.Publisher;
 import tau.tac.adx.users.AdxUserBehaviorBuilder;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
@@ -221,9 +221,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 
 		userManager.nextTimeUnit(date);
 
-		userManager
-				.triggerBehavior((Publisher) agentRepository.getPublishers()[0]
-						.getAgent());
+		userManager.triggerBehavior(AdxManager.getSimulation().getAuctioneer());
 	}
 
 	/**

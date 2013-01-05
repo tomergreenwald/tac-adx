@@ -37,6 +37,9 @@ import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.util.EnumGenerator;
+
+import com.google.inject.Inject;
+
 import edu.umich.eecs.tac.user.User;
 import edu.umich.eecs.tac.util.sampling.Sampler;
 import edu.umich.eecs.tac.util.sampling.WheelSampler;
@@ -71,20 +74,21 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 	 *            {@link PublisherCatalog}.
 	 * @param users
 	 *            {@link List} of {@link AdxUser}s.
-	 * @param deviceDeistributionMap
+	 * @param deviceDistributionMap
 	 *            {@link Device} distribution map. Each {@link Device} is
 	 *            associated with its relative popularity.
-	 * @param adTypeDeistributionMap
+	 * @param adTypeDistributionMap
 	 *            {@link AdType} distribution map. Each {@link AdType} is
 	 *            associated with its relative popularity.
 	 * @param random
 	 *            {@link Random}.
 	 */
+	@Inject
 	public DefaultAdxUserQueryManager(PublisherCatalog catalog,
-			List<AdxUser> users, Map<Device, Integer> deviceDeistributionMap,
-			Map<AdType, Integer> adTypeDeistributionMap, Random random) {
+			List<AdxUser> users, Map<Device, Integer> deviceDistributionMap,
+			Map<AdType, Integer> adTypeDistributionMap, Random random) {
 		if (catalog == null) {
-			throw new NullPointerException("Retail catalog cannot be null");
+			throw new NullPointerException("Publisher catalog cannot be null");
 		}
 
 		if (users == null) {
@@ -96,17 +100,17 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 					"Random number generator cannot be null");
 		}
 
-		if (deviceDeistributionMap == null) {
+		if (deviceDistributionMap == null) {
 			throw new NullPointerException(
 					"Device distribution map cannot be null");
 		}
 
-		if (adTypeDeistributionMap == null) {
+		if (adTypeDistributionMap == null) {
 			throw new NullPointerException(
 					"Ad Type distribution map cannot be null");
 		}
-		this.deviceDeistributionMap = deviceDeistributionMap;
-		this.adTypeDeistributionMap = adTypeDeistributionMap;
+		this.deviceDeistributionMap = deviceDistributionMap;
+		this.adTypeDeistributionMap = adTypeDistributionMap;
 		querySamplers = buildQuerySamplers(catalog, users, random);
 	}
 

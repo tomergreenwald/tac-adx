@@ -46,6 +46,20 @@ public class TestModule extends AbstractModule {
 		return users;
 	}
 
+	// /**
+	// * Generates the {@link Collection} of {@link AdxUser users} that will be
+	// * used across the {@link AdX} system.<br>
+	// * The collection will be a {@link Singleton}.
+	// *
+	// * @return A {@link Collection} of {@link AdxUser users}.
+	// */
+	// @Provides
+	// @Singleton
+	// public Map<Device, Integer> getDeviceDistributionMap() {
+	// Map<Device, Integer> map = new HashMap<Device, Integer>();
+	// return map;
+	// }
+
 	/**
 	 * @see com.google.inject.AbstractModule#configure()
 	 */

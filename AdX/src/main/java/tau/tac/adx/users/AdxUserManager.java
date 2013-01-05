@@ -27,8 +27,7 @@ package tau.tac.adx.users;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.props.PublisherCatalog;
-import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.sim.Auctioneer;
+import tau.tac.adx.sim.AdxAuctioneer;
 
 /**
  * UserManager provides a public interface for triggering and managing agent
@@ -40,28 +39,13 @@ public interface AdxUserManager extends TimeListener {
 
 	public void initialize(int virtualDays);
 
-	public void triggerBehavior(Auctioneer auctioneer);
+	public void triggerBehavior(AdxAuctioneer auctioneer);
 
 	public boolean addUserEventListener(AdxUserEventListener listener);
 
 	public boolean containsUserEventListener(AdxUserEventListener listener);
 
 	public boolean removeUserEventListener(AdxUserEventListener listener);
-
-	/**
-	 * Gathers the state distribution over all product populations
-	 * 
-	 * @return
-	 */
-	public int[] getStateDistribution();
-
-	/**
-	 * Gathers the state distribution over the given product population
-	 * 
-	 * @param product
-	 * @return
-	 */
-	public int[] getStateDistribution(Product product);
 
 	public PublisherCatalog getPublisherCatalog();
 

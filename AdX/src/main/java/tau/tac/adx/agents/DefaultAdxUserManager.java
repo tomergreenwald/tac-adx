@@ -39,12 +39,7 @@ import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUserQueryManager;
-import tau.tac.adx.users.DefaultAdxUserViewManager;
-import edu.umich.eecs.tac.props.Product;
-import edu.umich.eecs.tac.sim.Auctioneer;
-import edu.umich.eecs.tac.user.QueryState;
-import edu.umich.eecs.tac.user.User;
-import edu.umich.eecs.tac.user.UserTransitionManager;
+import tau.tac.adx.users.AdxUserViewManager;
 
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
@@ -63,23 +58,18 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final AdxUserQueryManager queryManager;
 
-	private final DefaultAdxUserViewManager viewManager;
-
-	private final AdxAuctioneer auctioneer;
+	private final AdxUserViewManager viewManager;
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
-			List<AdxUser> users, UserTransitionManager transitionManager,
-			AdxUserQueryManager queryManager,
-			DefaultAdxUserViewManager viewManager, int populationSize,
-			AdxAuctioneer auctioneer) {
+			List<AdxUser> users, AdxUserQueryManager queryManager,
+			AdxUserViewManager viewManager, int populationSize) {
 		this(publisherCatalog, users, queryManager, viewManager,
-				populationSize, new Random(), auctioneer);
+				populationSize, new Random());
 	}
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			List<AdxUser> users, AdxUserQueryManager queryManager,
-			DefaultAdxUserViewManager viewManager, int populationSize,
-			Random random, AdxAuctioneer auctioneer) {
+			AdxUserViewManager viewManager, int populationSize, Random random) {
 		lock = new Object();
 
 		if (publisherCatalog == null) {
@@ -108,16 +98,11 @@ public class DefaultAdxUserManager implements AdxUserManager {
 					"Random number generator cannot be null");
 		}
 
-		if (auctioneer == null) {
-			throw new NullPointerException("Auctioneer cannot be null");
-		}
-
 		this.publisherCatalog = publisherCatalog;
 		this.random = random;
 		this.queryManager = queryManager;
 		this.viewManager = viewManager;
 		this.users = users;
-		this.auctioneer = auctioneer;
 	}
 
 	@Override
@@ -125,7 +110,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	}
 
 	@Override
-	public void triggerBehavior(Auctioneer auctioneer) {
+	public void triggerBehavior(AdxAuctioneer auctioneer) {
 
 		synchronized (lock) {
 			log.finest("START OF USER TRIGGER");
@@ -133,7 +118,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			Collections.shuffle(users, random);
 
 			for (AdxUser user : users) {
-				handleUserActivity(user);
+				handleUserActivity(user, auctioneer);
 			}
 			// update publishers' reserve price
 			log.finest("FINISH OF USER TRIGGER");
@@ -147,10 +132,11 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	 * {@link AdxPublisher}) each time after that.
 	 * 
 	 * @param user
+	 * @param auctioneer
 	 */
-	private void handleUserActivity(AdxUser user) {
+	private void handleUserActivity(AdxUser user, AdxAuctioneer auctioneer) {
 		do {
-			handleSearch(user);
+			handleSearch(user, auctioneer);
 		} while (user.getpContinue() > random.nextDouble());
 	}
 
@@ -161,8 +147,9 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	 * 
 	 * @param user
 	 *            An {@link AdxUser} to generate a query for.
+	 * @param auctioneer
 	 */
-	private void handleSearch(AdxUser user) {
+	private void handleSearch(AdxUser user, AdxAuctioneer auctioneer) {
 
 		boolean transacted = false;
 
@@ -208,30 +195,6 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	public void nextTimeUnit(int timeUnit) {
 		viewManager.nextTimeUnit(timeUnit);
 		queryManager.nextTimeUnit(timeUnit);
-	}
-
-	@Override
-	public int[] getStateDistribution() {
-		int[] distribution = new int[QueryState.values().length];
-
-		for (User user : users) {
-			distribution[user.getState().ordinal()]++;
-		}
-
-		return distribution;
-	}
-
-	@Override
-	public int[] getStateDistribution(Product product) {
-		int[] distribution = new int[QueryState.values().length];
-
-		for (User user : users) {
-			if (user.getProduct() == product) {
-				distribution[user.getState().ordinal()]++;
-			}
-		}
-
-		return distribution;
 	}
 
 	@Override
