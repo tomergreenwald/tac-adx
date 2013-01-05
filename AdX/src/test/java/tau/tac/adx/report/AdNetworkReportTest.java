@@ -41,18 +41,13 @@ import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
-import tau.tac.adx.ads.properties.generators.AdTypeGenerator;
-import tau.tac.adx.ads.properties.generators.SimpleAdTypeGenerator;
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.auction.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.devices.Device;
-import tau.tac.adx.devices.generators.DeviceGenerator;
-import tau.tac.adx.devices.generators.SimpleDeviceGenerator;
 import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.generators.AdxQueryGenerator;
-import tau.tac.adx.props.generators.SimpleAdxQueryGenerator;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.publishers.generators.AdxPublisherGenerator;
 import tau.tac.adx.publishers.generators.SimplePublisherGenerator;
@@ -62,6 +57,7 @@ import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
+import tau.tac.adx.util.TestUtils;
 
 /**
  * @author Patrick Jordan
@@ -184,11 +180,8 @@ public class AdNetworkReportTest {
 				winningBidInfo, winningPrice);
 		SimpleUserGenerator userGenerator = new SimpleUserGenerator();
 		AdxUser user = userGenerator.generate(1).get(0);
-		DeviceGenerator deviceGenerator = new SimpleDeviceGenerator();
-		AdTypeGenerator adTypeGenerator = new SimpleAdTypeGenerator();
-		AdxQueryGenerator generator = new SimpleAdxQueryGenerator(
-				userGenerator, publisherGenerator, deviceGenerator,
-				adTypeGenerator);
+		AdxQueryGenerator generator = TestUtils.getInjector().getInstance(
+				AdxQueryGenerator.class);
 		AdxQuery query = generator.generate(1).iterator().next();
 		report.addBid(auctionResult, query, user);
 		report.lock();
