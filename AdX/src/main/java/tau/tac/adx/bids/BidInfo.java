@@ -67,4 +67,47 @@ public class BidInfo implements Cloneable {
 	public Object clone() {
 		return new BidInfo(bid, bidder, bidProduct);
 	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(bid);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result
+				+ ((bidProduct == null) ? 0 : bidProduct.hashCode());
+		result = prime * result + ((bidder == null) ? 0 : bidder.hashCode());
+		return result;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BidInfo other = (BidInfo) obj;
+		if (Double.doubleToLongBits(bid) != Double.doubleToLongBits(other.bid))
+			return false;
+		if (bidProduct == null) {
+			if (other.bidProduct != null)
+				return false;
+		} else if (!bidProduct.equals(other.bidProduct))
+			return false;
+		if (bidder == null) {
+			if (other.bidder != null)
+				return false;
+		} else if (!bidder.equals(other.bidder))
+			return false;
+		return true;
+	}
 }

@@ -38,6 +38,8 @@ import tau.tac.adx.props.AdLink;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 
+import com.google.inject.Inject;
+
 /**
  * @author Patrick Jordan, Lee Callender
  */
@@ -56,6 +58,7 @@ public class AdxBidManagerImpl implements AdxBidManager {
 
 	private final AdxSpendTracker spendTracker;
 
+	@Inject
 	public AdxBidManagerImpl(AdxBidTracker bidTracker,
 			AdxSpendTracker spendTracker) {
 

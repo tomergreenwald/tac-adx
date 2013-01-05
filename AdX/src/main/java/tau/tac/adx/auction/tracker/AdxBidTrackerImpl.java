@@ -32,6 +32,7 @@ import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 
 import com.botbox.util.ArrayUtils;
+import com.google.inject.Inject;
 
 import edu.umich.eecs.tac.props.Ad;
 
@@ -51,6 +52,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 	private AdxQueryBid[] queryBid;
 	private AdxQuery[] querySpace;
 
+	@Inject
 	public AdxBidTrackerImpl() {
 		this(0);
 	}

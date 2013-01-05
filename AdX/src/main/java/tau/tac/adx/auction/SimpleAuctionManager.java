@@ -9,6 +9,8 @@ import tau.tac.adx.auction.data.AuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 
+import com.google.inject.Inject;
+
 /**
  * A simple implementation for the {@link AuctionManager} interface.
  * 
@@ -16,6 +18,13 @@ import tau.tac.adx.bids.BidInfo;
  * 
  */
 public class SimpleAuctionManager implements AuctionManager {
+
+	/**
+	 * Empty constructor.
+	 */
+	@Inject
+	public SimpleAuctionManager() {
+	}
 
 	/**
 	 * @see AuctionManager#runAuction(AuctionData)

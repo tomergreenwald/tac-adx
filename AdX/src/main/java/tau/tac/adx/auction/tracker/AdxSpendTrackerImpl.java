@@ -29,6 +29,7 @@ import java.util.Arrays;
 import tau.tac.adx.props.AdxQuery;
 
 import com.botbox.util.ArrayUtils;
+import com.google.inject.Inject;
 
 /**
  * @author Patrick Jordan
@@ -38,6 +39,7 @@ public class AdxSpendTrackerImpl implements AdxSpendTracker {
 	private int advertisersCount;
 	private QueryBudget[] queryBudget;
 
+	@Inject
 	public AdxSpendTrackerImpl() {
 		this(0);
 	}

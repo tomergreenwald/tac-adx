@@ -23,6 +23,10 @@ import tau.tac.adx.bids.Bidder;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
 
+import com.google.inject.Inject;
+
+import edu.umich.eecs.tac.auction.BidManager;
+
 /**
  * Simple {@link TacAuctioneer} for {@link Adx}.
  * 
@@ -31,14 +35,26 @@ import tau.tac.adx.publishers.reserve.ReservePriceManager;
  */
 public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 
+	/**
+	 * {@link AuctionManager}.
+	 */
 	private final AuctionManager auctionManager;
-	private AdxBidManager bidManager;
+	/**
+	 * {@link BidManager}.
+	 */
+	private final AdxBidManager bidManager;
 
 	/**
 	 * @param auctionManager
+	 *            {@link AuctionManager}.
+	 * @param bidManager
+	 *            {@link BidManager}.
 	 */
-	public SimpleAdxAuctioneer(AuctionManager auctionManager) {
+	@Inject
+	public SimpleAdxAuctioneer(AuctionManager auctionManager,
+			AdxBidManager bidManager) {
 		this.auctionManager = auctionManager;
+		this.bidManager = bidManager;
 	}
 
 	/**

@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import tau.tac.adx.auction.AdxAuctionResult;
+import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.users.AdxUser;
 
@@ -92,13 +93,15 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	@Override
 	public void auctionPerformed(AdxAuctionResult auctionResult,
 			AdxQuery query, AdxUser user) {
-		int bidder = auctionResult.getWinningBidInfo().getBidder().getId();
-		AdNetworkReport report = adNetworkReports.get(bidder);
-		if (report == null) {
-			report = new AdNetworkReport();
-			adNetworkReports.put(bidder, report);
+		if (auctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
+			int bidder = auctionResult.getWinningBidInfo().getBidder().getId();
+			AdNetworkReport report = adNetworkReports.get(bidder);
+			if (report == null) {
+				report = new AdNetworkReport();
+				adNetworkReports.put(bidder, report);
+			}
+			report.addBid(auctionResult, query, user);
 		}
-		report.addBid(auctionResult, query, user);
 	}
 
 	/**
