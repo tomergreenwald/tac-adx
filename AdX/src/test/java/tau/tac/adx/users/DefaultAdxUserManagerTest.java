@@ -51,7 +51,7 @@ import edu.umich.eecs.tac.props.Product;
  * @author Patrick Jordan
  * @author greenwald
  */
-public class DefaultUserManagerTest {
+public class DefaultAdxUserManagerTest {
 	private DefaultAdxUserManager userManager;
 
 	private AdxUserQueryManager queryManager;
