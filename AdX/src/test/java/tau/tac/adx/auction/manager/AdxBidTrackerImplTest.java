@@ -34,6 +34,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import tau.tac.adx.auction.tracker.AdxBidTrackerImpl;
 import tau.tac.adx.props.AdLink;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;

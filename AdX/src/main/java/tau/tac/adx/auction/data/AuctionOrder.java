@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tau.tac.adx.auction;
+package tau.tac.adx.auction.data;
 
 /**
  * Auction winner selection order. Possible values are:

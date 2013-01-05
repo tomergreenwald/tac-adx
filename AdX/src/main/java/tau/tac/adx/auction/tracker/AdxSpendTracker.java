@@ -1,5 +1,5 @@
 /*
- * BidTracker.java
+ * SpendTracker.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,20 +22,18 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.auction.manager;
+package tau.tac.adx.auction.tracker;
 
-import java.util.Set;
-
-import tau.tac.adx.props.AdLink;
-import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 
 /**
+ * The spend tracker tracks the daily spend each advertiser incurs.
+ * 
  * @author Patrick Jordan
  */
-public interface AdxBidTracker {
+public interface AdxSpendTracker {
 	/**
-	 * Add the advertiser
+	 * Adds the advertiser
 	 * 
 	 * @param advertiser
 	 *            the advertiser
@@ -43,65 +41,42 @@ public interface AdxBidTracker {
 	void addAdvertiser(String advertiser);
 
 	/**
-	 * Sets the query space for the bids
-	 * 
-	 * @param space
-	 *            the query space
-	 */
-	void initializeQuerySpace(Set<AdxQuery> space);
-
-	/**
-	 * Get the daily spend limit for the advertiser.
+	 * Returns the daily spend the advertiser incurred.
 	 * 
 	 * @param advertiser
 	 *            the advertiser
 	 * 
-	 * @return the daily spend limit for the advertiser.
+	 * @return the daily spend the advertiser incurred.
 	 */
-	double getDailySpendLimit(String advertiser);
+	double getDailyCost(String advertiser);
 
 	/**
-	 * Get the bid for the advertiser for a given query.
+	 * Returns the daily spend the advertiser incurred for a given query.
 	 * 
 	 * @param advertiser
 	 *            the advertiser
 	 * @param query
 	 *            the query
-	 * @return the bid for the advertiser for a given query.
+	 * @return the daily spend the advertiser incurred for a given query.
 	 */
-	double getBid(String advertiser, AdxQuery query);
+	double getDailyCost(String advertiser, AdxQuery query);
 
 	/**
-	 * Get the daily spend limit for the advertiser for a given query.
+	 * Sets the current cost to zero for all advertisers.
+	 */
+	void reset();
+
+	/**
+	 * Adds the cost to the advertiser and query.
 	 * 
 	 * @param advertiser
 	 *            the advertiser
 	 * @param query
 	 *            the query
-	 * @return the daily spend limit for the advertiser for a given query.
+	 * @param cost
+	 *            the cost to add
 	 */
-	double getDailySpendLimit(String advertiser, AdxQuery query);
-
-	/**
-	 * Get the ad link for the given advertiser and query
-	 * 
-	 * @param advertiser
-	 *            the advertiser
-	 * @param query
-	 *            the query
-	 * @return the ad link for the given advertiser and query
-	 */
-	AdLink getAdLink(String advertiser, AdxQuery query);
-
-	/**
-	 * Update the bid information
-	 * 
-	 * @param advertiser
-	 *            the advertiser
-	 * @param bundle
-	 *            the bid bundle
-	 */
-	void updateBids(String advertiser, AdxBidBundle bundle);
+	void addCost(String advertiser, AdxQuery query, double cost);
 
 	/**
 	 * Get the number of advertisers tracked.

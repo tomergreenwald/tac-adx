@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tau.tac.adx.auction;
+package tau.tac.adx.auction.data;
 
 /**
  * Auction state after an auction was performed.

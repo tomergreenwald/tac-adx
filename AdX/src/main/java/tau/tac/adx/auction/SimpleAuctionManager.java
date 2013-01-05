@@ -3,6 +3,10 @@
  */
 package tau.tac.adx.auction;
 
+import tau.tac.adx.auction.data.AuctionData;
+import tau.tac.adx.auction.data.AuctionOrder;
+import tau.tac.adx.auction.data.AuctionResult;
+import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 
 /**

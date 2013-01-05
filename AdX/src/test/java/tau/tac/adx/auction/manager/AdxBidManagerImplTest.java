@@ -40,6 +40,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import tau.tac.adx.auction.tracker.AdxBidTracker;
+import tau.tac.adx.auction.tracker.AdxSpendTracker;
 import tau.tac.adx.props.AdLink;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;

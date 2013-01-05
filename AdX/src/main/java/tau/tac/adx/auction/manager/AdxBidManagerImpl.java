@@ -32,6 +32,8 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
+import tau.tac.adx.auction.tracker.AdxBidTracker;
+import tau.tac.adx.auction.tracker.AdxSpendTracker;
 import tau.tac.adx.props.AdLink;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;

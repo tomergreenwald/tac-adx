@@ -3,6 +3,9 @@
  */
 package tau.tac.adx.auction;
 
+import tau.tac.adx.auction.data.AuctionData;
+import tau.tac.adx.auction.data.AuctionResult;
+
 /**
  * An <b>auction manager</b> runs auction according to given {@link AuctionData}
  * .

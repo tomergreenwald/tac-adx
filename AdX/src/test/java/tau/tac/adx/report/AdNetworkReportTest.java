@@ -42,7 +42,7 @@ import se.sics.isl.transport.BinaryTransportWriter;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.auction.AdxAuctionResult;
-import tau.tac.adx.auction.AuctionState;
+import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxInfoContextFactory;

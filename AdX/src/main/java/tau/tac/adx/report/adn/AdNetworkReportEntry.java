@@ -5,7 +5,7 @@ import java.text.ParseException;
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
 import tau.tac.adx.auction.AdxAuctionResult;
-import tau.tac.adx.auction.AuctionState;
+import tau.tac.adx.auction.data.AuctionState;
 import edu.umich.eecs.tac.props.AbstractTransportableEntry;
 
 /**

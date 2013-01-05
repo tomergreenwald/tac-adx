@@ -4,6 +4,8 @@
 package tau.tac.adx.auction;
 
 import tau.tac.adx.Adx;
+import tau.tac.adx.auction.data.AuctionResult;
+import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 
 /**
