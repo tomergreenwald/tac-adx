@@ -91,6 +91,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 			};
 			BidProduct bidProduct = bidManager.getAdLink(advertiser, query);
 			BidInfo bidInfo = new BidInfo(bid, bidder, bidProduct);
+			bidInfoCollection.add(bidInfo);
 		}
 		return bidInfoCollection;
 	}

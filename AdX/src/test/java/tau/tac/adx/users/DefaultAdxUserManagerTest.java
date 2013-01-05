@@ -80,11 +80,11 @@ public class DefaultAdxUserManagerTest {
 		publisherCatalog = new PublisherCatalog();
 		publisherCatalog.addPublisher(mock(AdxPublisher.class));
 		Map<Device, Integer> deviceDistributionMap = new HashMap<Device, Integer>();
-		deviceDistributionMap.put(Device.pc, random.nextInt(10));
-		deviceDistributionMap.put(Device.mobile, random.nextInt(10));
+		deviceDistributionMap.put(Device.pc, random.nextInt(10) + 1);
+		deviceDistributionMap.put(Device.mobile, random.nextInt(10) + 1);
 		Map<AdType, Integer> adTypeDistributionMap = new HashMap<AdType, Integer>();
-		adTypeDistributionMap.put(AdType.text, random.nextInt(10));
-		adTypeDistributionMap.put(AdType.video, random.nextInt(10));
+		adTypeDistributionMap.put(AdType.text, random.nextInt(10) + 1);
+		adTypeDistributionMap.put(AdType.video, random.nextInt(10) + 1);
 		queryManager = new DefaultAdxUserQueryManager(publisherCatalog, users,
 				deviceDistributionMap, adTypeDistributionMap, random);
 		// queryManager = mock(AdxUserQueryManager.class);

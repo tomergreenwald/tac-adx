@@ -4,6 +4,8 @@
 package tau.tac.adx.props;
 
 import java.text.ParseException;
+import java.util.LinkedList;
+import java.util.List;
 
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
@@ -11,7 +13,11 @@ import tau.tac.adx.Adx;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.users.AdxUser;
+
+import com.google.inject.Inject;
+
 import edu.umich.eecs.tac.props.AbstractTransportable;
 
 /**
@@ -44,7 +50,7 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	/**
 	 * The publisher key.
 	 */
-	private static final String USER_KEY = "USER_KEY";
+	private static final String MARKET_SEGMENT_KEY = "USER_KEY";
 
 	/**
 	 * serialVersionUID
@@ -61,9 +67,9 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	private String publisher;
 
 	/**
-	 * {@link AdxUser} who this {@link AdxQuery} relates to.
+	 * {@link MarketSegment}s which this {@link AdxQuery} relates to.
 	 */
-	private int userId;
+	private List<MarketSegment> marketSegments;
 
 	/**
 	 * Accessing {@link Device} used for the query.
@@ -80,17 +86,18 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	 * 
 	 * @param publisher
 	 *            The queried {@link AdxPublisher}.
-	 * @param userId
-	 *            {@link AdxUser} who this {@link AdxQuery} relates to.
+	 * @param marketSegments
+	 *            {@link MarketSegment} which this {@link AdxQuery} relates to.
 	 * @param device
 	 *            Accessing {@link Device} used for the query.
 	 * @param adType
 	 *            Requested {@link AdType} for the query.
 	 */
-	public AdxQuery(String publisher, int userId, Device device, AdType adType) {
+	public AdxQuery(String publisher, List<MarketSegment> marketSegments,
+			Device device, AdType adType) {
 		super();
 		this.publisher = publisher;
-		this.userId = userId;
+		this.marketSegments = marketSegments;
 		this.device = device;
 		this.adType = adType;
 		calculateHashCode();
@@ -101,6 +108,7 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	 */
 	public AdxQuery() {
 		super();
+		marketSegments = new LinkedList<MarketSegment>();
 	}
 
 	/**
@@ -115,11 +123,33 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	 * @param adType
 	 *            Requested {@link AdType} for the query.
 	 */
+	@Inject
 	public AdxQuery(AdxPublisher publisher, AdxUser user, Device device,
 			AdType adType) {
 		super();
 		this.publisher = publisher.getName();
-		this.userId = user.getUniqueId();
+		this.marketSegments = MarketSegment.extractSegment(user);
+		this.device = device;
+		this.adType = adType;
+		calculateHashCode();
+	}
+
+	/**
+	 * Class constructor.
+	 * 
+	 * @param publisher
+	 *            The queried {@link AdxPublisher}'s name.
+	 * @param user
+	 *            {@link AdxUser} who this {@link AdxQuery} relates to.
+	 * @param device
+	 *            Accessing {@link Device} used for the query.
+	 * @param adType
+	 *            Requested {@link AdType} for the query.
+	 */
+	public AdxQuery(String publisher, AdxUser user, Device device, AdType adType) {
+		super();
+		this.publisher = publisher;
+		this.marketSegments = MarketSegment.extractSegment(user);
 		this.device = device;
 		this.adType = adType;
 		calculateHashCode();
@@ -138,21 +168,6 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	 */
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
-	}
-
-	/**
-	 * @return the user
-	 */
-	public int getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId
-	 *            the user to set
-	 */
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	/**
@@ -186,6 +201,21 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	}
 
 	/**
+	 * @return the marketSegments
+	 */
+	public List<MarketSegment> getMarketSegments() {
+		return marketSegments;
+	}
+
+	/**
+	 * @param marketSegments
+	 *            the marketSegments to set
+	 */
+	public void setMarketSegments(List<MarketSegment> marketSegments) {
+		this.marketSegments = marketSegments;
+	}
+
+	/**
 	 * @see edu.umich.eecs.tac.props.AbstractTransportable#readWithLock(se.sics.isl.transport.TransportReader)
 	 */
 	@Override
@@ -193,7 +223,10 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		this.setAdType(AdType.valueOf(reader.getAttribute(AD_TYPE_KEY, null)));
 		this.setDevice(Device.valueOf(reader.getAttribute(DEVICE_KEY, null)));
 		this.setPublisher(reader.getAttribute(PUBLISHER_KEY, null));
-		this.setUserId(reader.getAttributeAsInt(USER_KEY));
+		while (reader.nextNode(MARKET_SEGMENT_KEY, false)) {
+			marketSegments.add(MarketSegment.valueOf(reader
+					.getAttribute(MARKET_SEGMENT_KEY)));
+		}
 		calculateHashCode();
 	}
 
@@ -211,8 +244,10 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		if (getPublisher() != null) {
 			writer.attr(PUBLISHER_KEY, getPublisher());
 		}
-		if (getUserId() != 0) {
-			writer.attr(USER_KEY, getUserId());
+		for (MarketSegment marketSegment : marketSegments) {
+			writer.node(MARKET_SEGMENT_KEY)
+					.attr(MARKET_SEGMENT_KEY, marketSegment.toString())
+					.endNode(MARKET_SEGMENT_KEY);
 		}
 	}
 
