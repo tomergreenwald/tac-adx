@@ -12,12 +12,12 @@ import tau.tac.adx.devices.Device;
 import tau.tac.adx.generators.GenericGenerator;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
-import tau.tac.adx.util.AdxConstants;
 import tau.tac.adx.util.MapGenerator;
 
 /**
@@ -163,7 +163,8 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 	 * @return A random generated {@link ReservePriceManager}.
 	 */
 	private ReservePriceManager randomReservePriceManager() {
-		double dailyBaselineAverage = Math.random() * AdxConstants.MAX_AD_PRICE;
+		double dailyBaselineAverage = Math.random()
+				* TACAdxConstants.MAX_SIMPLE_PUBLISHER_AD_PRICE;
 		double baselineRange = Math.random() * MAX_BASELINE_RANGE;
 		double updateCoefficient = Math.random();
 		ReservePriceManager reservePriceManager = new ReservePriceManager(

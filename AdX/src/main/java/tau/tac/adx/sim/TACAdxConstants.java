@@ -27,6 +27,8 @@ package tau.tac.adx.sim;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 
+import com.google.common.eventbus.EventBus;
+
 /**
  * TACAAConstants is used to define any constants used by the TAC AA
  * Simulations.
@@ -39,6 +41,16 @@ public final class TACAdxConstants {
 	 */
 	private TACAdxConstants() {
 	}
+
+	/**
+	 * System-wide {@link EventBus} name.
+	 */
+	public static final String ADX_EVENT_BUS_NAME = "AdX";
+
+	/**
+	 * The price range is between 0 and 100. Was chosen arbitrary.
+	 */
+	public static final double MAX_SIMPLE_PUBLISHER_AD_PRICE = 100;
 
 	/**
 	 * The simulation supported types.
