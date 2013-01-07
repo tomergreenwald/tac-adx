@@ -41,8 +41,10 @@ import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.sim.AdxUsers;
 import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUsersBehavior;
+
+import com.google.common.eventbus.EventBus;
+
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
@@ -111,30 +113,6 @@ public class DefaultAdxUsers extends AdxUsers {
 	@Override
 	protected void messageReceived(Message message) {
 		usersBehavior.messageReceived(message);
-	}
-
-	/**
-	 * @see edu.umich.eecs.tac.sim.Users#addUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
-	 */
-	@Override
-	public boolean addUserEventListener(AdxUserEventListener listener) {
-		return usersBehavior.addUserEventListener(listener);
-	}
-
-	/**
-	 * @see edu.umich.eecs.tac.sim.Users#containsUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
-	 */
-	@Override
-	public boolean containsUserEventListener(AdxUserEventListener listener) {
-		return usersBehavior.containsUserEventListener(listener);
-	}
-
-	/**
-	 * @see edu.umich.eecs.tac.sim.Users#removeUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
-	 */
-	@Override
-	public boolean removeUserEventListener(AdxUserEventListener listener) {
-		return usersBehavior.removeUserEventListener(listener);
 	}
 
 	/**
@@ -330,6 +308,11 @@ public class DefaultAdxUsers extends AdxUsers {
 		@Override
 		public AdxAuctioneer getAuctioneer() {
 			return getSimulation().getAuctioneer();
+		}
+
+		@Override
+		public EventBus getEventBus() {
+			return getSimulation().getEventBus();
 		}
 	}
 

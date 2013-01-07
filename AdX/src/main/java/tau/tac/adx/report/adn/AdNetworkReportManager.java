@@ -24,14 +24,13 @@
  */
 package tau.tac.adx.report.adn;
 
-import tau.tac.adx.users.AdxUserEventListener;
 
 /**
  * The query report manager stores and distributes the query reports.
  * 
  * @author greenwald
  */
-public interface AdNetworkReportManager extends AdxUserEventListener {
+public interface AdNetworkReportManager {
 	/**
 	 * Distributed all of the query reports to the advertisers.
 	 */

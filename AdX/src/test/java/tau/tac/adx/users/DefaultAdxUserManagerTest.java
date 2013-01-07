@@ -43,8 +43,12 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.AdxAuctioneer;
+import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.users.generators.AdxUserGenerator;
 import tau.tac.adx.util.TestUtils;
+
+import com.google.common.eventbus.EventBus;
+
 import edu.umich.eecs.tac.props.Product;
 
 /**
@@ -56,8 +60,6 @@ public class DefaultAdxUserManagerTest {
 
 	private AdxUserQueryManager queryManager;
 
-	private AdxUserViewManager viewManager;
-
 	private int populationSize;
 
 	private Random random;
@@ -67,6 +69,8 @@ public class DefaultAdxUserManagerTest {
 	private PublisherCatalog publisherCatalog;
 	private List<AdxUser> users;
 	private AdxAuctioneer auctioneer;
+
+	private EventBus eventBus;
 
 	@Before
 	public void setup() {
@@ -88,48 +92,42 @@ public class DefaultAdxUserManagerTest {
 		queryManager = new DefaultAdxUserQueryManager(publisherCatalog, users,
 				deviceDistributionMap, adTypeDistributionMap, random);
 		// queryManager = mock(AdxUserQueryManager.class);
-		viewManager = mock(AdxUserViewManager.class);
 		auctioneer = mock(AdxAuctioneer.class);
 
+		eventBus = new EventBus(TACAdxConstants.ADX_EVENT_BUS_NAME);
 		userManager = new DefaultAdxUserManager(publisherCatalog, users,
-				queryManager, viewManager, populationSize);
+				queryManager, populationSize, eventBus);
 	}
 
 	@Test
 	public void testConstuctor() {
 		assertNotNull(userManager);
 		assertNotNull(new DefaultAdxUserManager(publisherCatalog, users,
-				queryManager, viewManager, populationSize));
+				queryManager, populationSize, eventBus));
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testConstuctorPublisherCatalogNull() {
-		new DefaultAdxUserManager(null, users, queryManager, viewManager,
-				populationSize);
+		new DefaultAdxUserManager(null, users, queryManager, populationSize,
+				eventBus);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testConstuctorUsersNull() {
 		new DefaultAdxUserManager(publisherCatalog, null, queryManager,
-				viewManager, populationSize);
+				populationSize, eventBus);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testConstuctorQueryManagerNull() {
-		new DefaultAdxUserManager(publisherCatalog, users, null, viewManager,
-				populationSize);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testConstuctorViewManagerNull() {
-		new DefaultAdxUserManager(publisherCatalog, users, queryManager, null,
-				populationSize);
+		new DefaultAdxUserManager(publisherCatalog, users, null,
+				populationSize, eventBus);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testConstuctorNegativePopulationSize() {
-		new DefaultAdxUserManager(publisherCatalog, users, queryManager,
-				viewManager, -1);
+		new DefaultAdxUserManager(publisherCatalog, users, queryManager, -1,
+				eventBus);
 	}
 
 	@Test
@@ -139,15 +137,6 @@ public class DefaultAdxUserManagerTest {
 		userManager.triggerBehavior(auctioneer);
 		Mockito.verify(auctioneer, Mockito.atLeast(populationSize)).runAuction(
 				(AdxQuery) Mockito.any());
-	}
-
-	@Test
-	public void testListener() {
-		AdxUserEventListener listener = mock(AdxUserEventListener.class);
-
-		userManager.addUserEventListener(listener);
-		userManager.containsUserEventListener(listener);
-		userManager.removeUserEventListener(listener);
 	}
 
 }

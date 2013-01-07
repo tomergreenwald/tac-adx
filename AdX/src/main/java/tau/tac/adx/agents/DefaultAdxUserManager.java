@@ -31,15 +31,16 @@ import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.auction.AdxAuctionResult;
+import tau.tac.adx.messages.AuctionMessage;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUserQueryManager;
-import tau.tac.adx.users.AdxUserViewManager;
+
+import com.google.common.eventbus.EventBus;
 
 /**
  * @author Patrick Jordan, Ben Cassell, Lee Callender
@@ -58,18 +59,14 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final AdxUserQueryManager queryManager;
 
-	private final AdxUserViewManager viewManager;
+	/**
+	 * Global {@link EventBus}.
+	 */
+	private final EventBus eventBus;
 
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			List<AdxUser> users, AdxUserQueryManager queryManager,
-			AdxUserViewManager viewManager, int populationSize) {
-		this(publisherCatalog, users, queryManager, viewManager,
-				populationSize, new Random());
-	}
-
-	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
-			List<AdxUser> users, AdxUserQueryManager queryManager,
-			AdxUserViewManager viewManager, int populationSize, Random random) {
+			int populationSize, EventBus eventBus) {
 		lock = new Object();
 
 		if (publisherCatalog == null) {
@@ -84,25 +81,20 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			throw new NullPointerException("User query manager cannot be null");
 		}
 
-		if (viewManager == null) {
-			throw new NullPointerException("User view manager cannot be null");
-		}
-
 		if (populationSize < 0) {
 			throw new IllegalArgumentException(
 					"Population size cannot be negative");
 		}
 
-		if (random == null) {
-			throw new NullPointerException(
-					"Random number generator cannot be null");
+		if (eventBus == null) {
+			throw new NullPointerException("Event bus cannot be null");
 		}
 
 		this.publisherCatalog = publisherCatalog;
-		this.random = random;
+		this.random = new Random();
 		this.queryManager = queryManager;
-		this.viewManager = viewManager;
 		this.users = users;
+		this.eventBus = eventBus;
 	}
 
 	@Override
@@ -157,13 +149,8 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 		if (query != null) {
 			AdxAuctionResult auctionResult = auctioneer.runAuction(query);
-			handleImpression(query, auctionResult, user);
+			eventBus.post(new AuctionMessage(auctionResult, query, user));
 		}
-	}
-
-	private void handleImpression(AdxQuery query,
-			AdxAuctionResult auctionResult, AdxUser user) {
-		viewManager.processImpression(user, query, auctionResult);
 	}
 
 	private AdxQuery generateQuery(AdxUser user) {
@@ -171,29 +158,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	}
 
 	@Override
-	public boolean addUserEventListener(AdxUserEventListener listener) {
-		synchronized (lock) {
-			return viewManager.addUserEventListener(listener);
-		}
-	}
-
-	@Override
-	public boolean containsUserEventListener(AdxUserEventListener listener) {
-		synchronized (lock) {
-			return viewManager.containsUserEventListener(listener);
-		}
-	}
-
-	@Override
-	public boolean removeUserEventListener(AdxUserEventListener listener) {
-		synchronized (lock) {
-			return viewManager.removeUserEventListener(listener);
-		}
-	}
-
-	@Override
 	public void nextTimeUnit(int timeUnit) {
-		viewManager.nextTimeUnit(timeUnit);
 		queryManager.nextTimeUnit(timeUnit);
 	}
 

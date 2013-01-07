@@ -41,8 +41,6 @@ public class DefaultAdxUserManagerBuilder implements
 	private static final String POPULATION_SIZE_KEY = "populationsize";
 	private static final int POPULATION_SIZE_DEFAULT = 10000;
 	private static final String VIEW_MANAGER_KEY = "viewmanager";
-	private static final String VIEW_MANAGER_DEFAULT = DefaultAdxUserViewManagerBuilder.class
-			.getName();
 	private static final String QUERY_MANAGER_KEY = "querymanager";
 	private static final String ADX_QUERY_MANAGER_DEFAULT = AdxUserQueryManagerBuilder.class
 			.getName();
@@ -60,17 +58,11 @@ public class DefaultAdxUserManagerBuilder implements
 			DefaultAdxUserQueryManager queryManager = queryBuilder.build(
 					userConfigProxy, repository, random);
 
-			AdxUserBehaviorBuilder<DefaultAdxUserViewManager> viewBuilder = ConfigProxyUtils
-					.createObjectFromProperty(userConfigProxy, ADX_BASE + '.'
-							+ VIEW_MANAGER_KEY, VIEW_MANAGER_DEFAULT);
-			DefaultAdxUserViewManager viewManager = viewBuilder.build(
-					userConfigProxy, repository, random);
-
 			int populationSize = userConfigProxy.getPropertyAsInt(ADX_BASE
 					+ '.' + POPULATION_SIZE_KEY, POPULATION_SIZE_DEFAULT);
 			return new DefaultAdxUserManager(repository.getPublisherCatalog(),
-					repository.getUserPopulation(), queryManager, viewManager,
-					populationSize, random);
+					repository.getUserPopulation(), queryManager,
+					populationSize, repository.getEventBus());
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (InstantiationException e) {

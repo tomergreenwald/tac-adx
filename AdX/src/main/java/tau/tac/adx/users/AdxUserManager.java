@@ -41,12 +41,6 @@ public interface AdxUserManager extends TimeListener {
 
 	public void triggerBehavior(AdxAuctioneer auctioneer);
 
-	public boolean addUserEventListener(AdxUserEventListener listener);
-
-	public boolean containsUserEventListener(AdxUserEventListener listener);
-
-	public boolean removeUserEventListener(AdxUserEventListener listener);
-
 	public PublisherCatalog getPublisherCatalog();
 
 	public void messageReceived(Message message);

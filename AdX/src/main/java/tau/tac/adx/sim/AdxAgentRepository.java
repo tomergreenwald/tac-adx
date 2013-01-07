@@ -32,6 +32,9 @@ import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.users.AdxUser;
+
+import com.google.common.eventbus.EventBus;
+
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
@@ -147,4 +150,9 @@ public interface AdxAgentRepository extends AgentRepository {
 	 * @return {@link AdxAuctioneer}.
 	 */
 	AdxAuctioneer getAuctioneer();
+
+	/**
+	 * @return {@link EventBus}.
+	 */
+	EventBus getEventBus();
 }
