@@ -24,13 +24,13 @@
  */
 package edu.umich.eecs.tac.viewer.auction;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.ViewListener;
 import se.sics.isl.transport.Transportable;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.util.*;
@@ -81,7 +81,7 @@ public class ResultsPageModel extends AbstractListModel implements ViewListener 
     }
 
     public void dataUpdated(final int agent, int type, Transportable value) {
-        if (type == TACAAConstants.DU_QUERY_REPORT &&
+        if (type == TACAdxConstants.DU_QUERY_REPORT &&
                 value.getClass().equals(QueryReport.class)) {
 
             final QueryReport queryReport = (QueryReport) value;
@@ -128,7 +128,7 @@ public class ResultsPageModel extends AbstractListModel implements ViewListener 
     }
 
     public void participant(int agent, int role, String name, int participantID) {
-        if (role == TACAAConstants.ADVERTISER) {
+        if (role == TACAdxConstants.ADVERTISER) {
             names.put(agent, name);
         }
     }

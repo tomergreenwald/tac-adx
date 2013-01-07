@@ -37,7 +37,7 @@ import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.PublisherInfo;
-import static edu.umich.eecs.tac.TACAAConstants.*;
+import static tau.tac.adx.sim.TACAdxConstants.*;
 
 /**
  * @author Patrick Jordan, Lee Callender

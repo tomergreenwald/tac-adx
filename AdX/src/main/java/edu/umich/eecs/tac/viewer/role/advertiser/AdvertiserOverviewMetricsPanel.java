@@ -24,7 +24,6 @@
  */
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.props.SalesReport;
@@ -32,6 +31,7 @@ import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import se.sics.isl.transport.Transportable;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -81,7 +81,7 @@ public class AdvertiserOverviewMetricsPanel extends JPanel {
 
             simulationPanel.addViewListener(new ViewAdaptor() {
                 public void participant(int agent, int role, String name, int participantID) {
-                    if (role == TACAAConstants.ADVERTISER) {
+                    if (role == TACAdxConstants.ADVERTISER) {
                         if (!agents.containsKey(agent)) {
                             AdvertiserMetricsItem item = new AdvertiserMetricsItem(agent,
                                     name,
@@ -251,13 +251,13 @@ public class AdvertiserOverviewMetricsPanel extends JPanel {
                 public void run() {
                     if (agent == item.getAgent()) {
                         switch (type) {
-                            case TACAAConstants.DU_IMPRESSIONS:
+                            case TACAdxConstants.DU_IMPRESSIONS:
                                 item.addImpressions(value);
                                 break;
-                            case TACAAConstants.DU_CLICKS:
+                            case TACAdxConstants.DU_CLICKS:
                                 item.addClicks(value);
                                 break;
-                            case TACAAConstants.DU_CONVERSIONS:
+                            case TACAdxConstants.DU_CONVERSIONS:
                                 item.addConversions(value);
                                 break;
                         }
@@ -272,13 +272,13 @@ public class AdvertiserOverviewMetricsPanel extends JPanel {
                 public void run() {
                     if (agent == item.getAgent()) {
                         switch (type) {
-                            case TACAAConstants.DU_SALES_REPORT:
+                            case TACAdxConstants.DU_SALES_REPORT:
                                 handleSalesReport((SalesReport) value);
                                 break;
-                            case TACAAConstants.DU_QUERY_REPORT:
+                            case TACAdxConstants.DU_QUERY_REPORT:
                                 handleQueryReport((QueryReport) value);
                                 break;
-                            case TACAAConstants.DU_ADVERTISER_INFO:
+                            case TACAdxConstants.DU_ADVERTISER_INFO:
                                 handleAdvertiserInfo((AdvertiserInfo) value);
                                 break;
                         }

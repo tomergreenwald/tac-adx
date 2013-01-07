@@ -25,7 +25,6 @@
 
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.props.SalesReport;
@@ -39,6 +38,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -128,10 +128,10 @@ public class AdvertiserQueryCountPanel extends JPanel {
                 public void run() {
                     if (agent == AdvertiserQueryCountPanel.this.agent) {
                         switch (type) {
-                            case TACAAConstants.DU_QUERY_REPORT:
+                            case TACAdxConstants.DU_QUERY_REPORT:
                                 handleQueryReport((QueryReport) value);
                                 break;
-                            case TACAAConstants.DU_SALES_REPORT:
+                            case TACAdxConstants.DU_SALES_REPORT:
                                 handleSalesReport((SalesReport) value);
                                 break;
                         }

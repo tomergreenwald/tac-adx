@@ -25,13 +25,13 @@
 
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.viewer.GraphicUtils;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import se.sics.isl.transport.Transportable;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +67,7 @@ public class AdvertiserPropertiesPanel extends JPanel {
     private class AdvertiserInfoListener extends ViewAdaptor {
 
         public void dataUpdated(int agent, int type, Transportable value) {
-            if (agent == AdvertiserPropertiesPanel.this.agent && type == TACAAConstants.DU_ADVERTISER_INFO && value.getClass() == AdvertiserInfo.class) {
+            if (agent == AdvertiserPropertiesPanel.this.agent && type == TACAdxConstants.DU_ADVERTISER_INFO && value.getClass() == AdvertiserInfo.class) {
                 AdvertiserInfo info = (AdvertiserInfo) value;
                 String component = info.getComponentSpecialty();
                 String manufacturer = info.getManufacturerSpecialty();

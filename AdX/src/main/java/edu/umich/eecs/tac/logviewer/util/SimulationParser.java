@@ -36,7 +36,7 @@ import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.tasim.props.ServerConfig;
 import se.sics.tasim.props.StartInfo;
-import edu.umich.eecs.tac.TACAAConstants;
+import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.*;
 import edu.umich.eecs.tac.logviewer.monitor.ParserMonitor;
 import edu.umich.eecs.tac.logviewer.info.Advertiser;
@@ -98,9 +98,9 @@ public class SimulationParser extends Parser{
 
     for (int i = 0, n = participants.length; i < n; i++) {
       switch(participants[i].getRole()) {
-        case TACAAConstants.PUBLISHER : newParticipantIndex[i] = publisherCount++; break;
-        case TACAAConstants.ADVERTISER : newParticipantIndex[i] = advertiserCount++; break;
-        case TACAAConstants.USERS : newParticipantIndex[i] = usersCount++; break;
+        case TACAdxConstants.PUBLISHER : newParticipantIndex[i] = publisherCount++; break;
+        case TACAdxConstants.ADVERTISER : newParticipantIndex[i] = advertiserCount++; break;
+        case TACAdxConstants.USERS : newParticipantIndex[i] = usersCount++; break;
       }
     }
   }
@@ -175,7 +175,7 @@ public class SimulationParser extends Parser{
   }
 
   private void handleMessage(int sender, int receiver, BankStatus content){
-    if(participants[receiver].getRole() == TACAAConstants.ADVERTISER){
+    if(participants[receiver].getRole() == TACAdxConstants.ADVERTISER){
       int index = newParticipantIndex[receiver];
       advertisers[index].setAccountBalance(currentDay - 1, content.getAccountBalance());
     }
@@ -186,7 +186,7 @@ public class SimulationParser extends Parser{
   }
 
   private void handleMessage(int sender, int receiver, AdvertiserInfo content){
-    if(participants[receiver].getRole() == TACAAConstants.ADVERTISER){
+    if(participants[receiver].getRole() == TACAdxConstants.ADVERTISER){
       int index = newParticipantIndex[receiver];
       advertisers[index].setManufacturerSpecialty(content.getManufacturerSpecialty());
       advertisers[index].setComponentSpecialty(content.getComponentSpecialty());
@@ -196,21 +196,21 @@ public class SimulationParser extends Parser{
   }
 
   private void handleMessage(int sender, int receiver, BidBundle content){
-    if(participants[sender].getRole() == TACAAConstants.ADVERTISER){
+    if(participants[sender].getRole() == TACAdxConstants.ADVERTISER){
       int index = newParticipantIndex[sender];
       advertisers[index].setBidBundle(content, currentDay);
     }
   }
 
   private void handleMessage(int sender, int receiver, QueryReport content){
-    if(participants[receiver].getRole() == TACAAConstants.ADVERTISER){
+    if(participants[receiver].getRole() == TACAdxConstants.ADVERTISER){
       int index = newParticipantIndex[receiver];
       advertisers[index].setQueryReport(content, currentDay);
     }
   }
 
   private void handleMessage(int sender, int receiver, SalesReport content){
-   if(participants[receiver].getRole() == TACAAConstants.ADVERTISER){
+   if(participants[receiver].getRole() == TACAdxConstants.ADVERTISER){
       int index = newParticipantIndex[receiver];
       advertisers[index].setSalesReport(content, currentDay);
     }
@@ -453,15 +453,15 @@ public class SimulationParser extends Parser{
     for (int i = 0, n = participants.length; i < n; i++) {
       switch(participants[i].getRole()) {
 
-        case TACAAConstants.ADVERTISER :
+        case TACAdxConstants.ADVERTISER :
 	        advertisers[newParticipantIndex[i]] = new Advertiser(participants[i].getIndex(),
 			              participants[i].getAddress(),participants[i].getName(),
                     numberOfDays, c_array[newParticipantIndex[i]]);
 
 	        break;
-        case TACAAConstants.PUBLISHER :
+        case TACAdxConstants.PUBLISHER :
 	        break;
-        case TACAAConstants.USERS :
+        case TACAdxConstants.USERS :
 	        break;
 
       }

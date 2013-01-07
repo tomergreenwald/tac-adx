@@ -25,7 +25,6 @@
 
 package edu.umich.eecs.tac.viewer.role.publisher;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.BidBundle;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -38,6 +37,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -78,7 +78,7 @@ public class SeriesPanel extends JComponent {
         int count = seriesTabPanel.getAgentCount();
 
         for (int index = 0; index < count; index++) {
-            if (seriesTabPanel.getRole(index) == TACAAConstants.ADVERTISER) {
+            if (seriesTabPanel.getRole(index) == TACAdxConstants.ADVERTISER) {
                 XYSeries series = new XYSeries(seriesTabPanel
                         .getAgentName(index));
 
@@ -106,7 +106,7 @@ public class SeriesPanel extends JComponent {
         public void dataUpdated(final int agent, final int type, final Transportable value) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    if (type == TACAAConstants.DU_BIDS
+                    if (type == TACAdxConstants.DU_BIDS
                             && value.getClass().equals(BidBundle.class)) {
                         int index = seriesTabPanel.indexOfAgent(agent);
                         String name = index < 0 ? null : seriesTabPanel

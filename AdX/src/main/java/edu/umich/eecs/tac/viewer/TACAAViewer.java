@@ -25,7 +25,7 @@
 
 package edu.umich.eecs.tac.viewer;
 
-import static edu.umich.eecs.tac.TACAAConstants.ROLE_NAME;
+import static tau.tac.adx.sim.TACAdxConstants.ROLE_NAME;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.SimulationViewer;
 import se.sics.tasim.viewer.ViewerPanel;

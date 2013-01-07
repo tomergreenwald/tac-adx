@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.sim.Publisher;
-import edu.umich.eecs.tac.TACAAConstants;
+import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.auction.BidBundleWriter;
 import edu.umich.eecs.tac.auction.ClickCharger;
 import edu.umich.eecs.tac.auction.DefaultPublisherBehavior;
@@ -200,7 +200,7 @@ public class DefaultPublisher extends Publisher {
 					advertiser);
 
 			DefaultPublisher.this.getEventWriter().dataUpdated(agentIndex,
-					TACAAConstants.DU_BIDS, bundle);
+					TACAdxConstants.DU_BIDS, bundle);
 		}
 	}
 }

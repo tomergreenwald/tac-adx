@@ -19,13 +19,13 @@
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.props.SalesReport;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import se.sics.isl.transport.Transportable;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -203,13 +203,13 @@ public class AdvertiserRateMetricsPanel extends JPanel {
                 public void run() {
                     if (agent == AdvertiserRateMetricsPanel.this.agent) {
                         switch (type) {
-                            case TACAAConstants.DU_IMPRESSIONS:
+                            case TACAdxConstants.DU_IMPRESSIONS:
                                 addImpressions(value);
                                 break;
-                            case TACAAConstants.DU_CLICKS:
+                            case TACAdxConstants.DU_CLICKS:
                                 addClicks(value);
                                 break;
-                            case TACAAConstants.DU_CONVERSIONS:
+                            case TACAdxConstants.DU_CONVERSIONS:
                                 addConversions(value);
                                 break;
                         }
@@ -224,10 +224,10 @@ public class AdvertiserRateMetricsPanel extends JPanel {
                 public void run() {
                     if (agent == AdvertiserRateMetricsPanel.this.agent) {
                         switch (type) {
-                            case TACAAConstants.DU_SALES_REPORT:
+                            case TACAdxConstants.DU_SALES_REPORT:
                                 handleSalesReport((SalesReport) value);
                                 break;
-                            case TACAAConstants.DU_QUERY_REPORT:
+                            case TACAdxConstants.DU_QUERY_REPORT:
                                 handleQueryReport((QueryReport) value);
                                 break;
                         }

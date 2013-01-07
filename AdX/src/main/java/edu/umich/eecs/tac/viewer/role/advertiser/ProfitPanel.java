@@ -25,7 +25,6 @@
 
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -36,6 +35,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -105,7 +105,7 @@ public class ProfitPanel extends SimulationTabPanel {
         public void dataUpdated(final int agent, final int type, final double value) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    if (type == TACAAConstants.DU_BANK_ACCOUNT && agent == ProfitPanel.this.agent) {
+                    if (type == TACAdxConstants.DU_BANK_ACCOUNT && agent == ProfitPanel.this.agent) {
                         series.addOrUpdate(currentDay, value);
                     }
                 }

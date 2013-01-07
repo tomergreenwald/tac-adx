@@ -26,7 +26,6 @@
 package edu.umich.eecs.tac.viewer.role;
 
 import com.botbox.util.ArrayUtils;
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -36,6 +35,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,7 +111,7 @@ public class OverviewPanel extends SimulationTabPanel {
 		names[index] = name;
 		participants[index] = participantID;
 
-		if (series[index] == null && TACAAConstants.ADVERTISER == roles[index]) {
+		if (series[index] == null && TACAdxConstants.ADVERTISER == roles[index]) {
 			series[index] = new XYSeries(name);
 			seriescollection.addSeries(series[index]);
 		}
@@ -125,7 +125,7 @@ public class OverviewPanel extends SimulationTabPanel {
 	protected void dataUpdated(int agent, int type, double value) {
 		int index = ArrayUtils.indexOf(agents, 0, agentCount, agent);
 		if (index < 0 || series[index] == null
-				|| type != TACAAConstants.DU_BANK_ACCOUNT) {
+				|| type != TACAdxConstants.DU_BANK_ACCOUNT) {
 			return;
 		}
 

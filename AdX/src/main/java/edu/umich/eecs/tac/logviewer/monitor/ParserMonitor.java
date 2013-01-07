@@ -244,7 +244,7 @@ abstract public class ParserMonitor {
    * @param agent the agent for which the data was updated
    * @param type the type of the data
    * @param value the data value
-   * @see edu.umich.eecs.tac.TACAAConstants
+   * @see tau.tac.adx.sim.TACAdxConstants
    */
   public void dataUpdated(int agent, int type, int value) {
   }
@@ -255,7 +255,7 @@ abstract public class ParserMonitor {
    * @param agent the agent for which the data was updated
    * @param type the type of the data
    * @param value the data value
-   * @see edu.umich.eecs.tac.TACAAConstants
+   * @see tau.tac.adx.sim.TACAdxConstants
    */
   public void dataUpdated(int agent, int type, long value) {
   }
@@ -266,7 +266,7 @@ abstract public class ParserMonitor {
    * @param agent the agent for which the data was updated
    * @param type the type of the data
    * @param value the data value
-   * @see edu.umich.eecs.tac.TACAAConstants
+   * @see tau.tac.adx.sim.TACAdxConstants
    */
   public void dataUpdated(int agent, int type, float value) {
   }
@@ -277,7 +277,7 @@ abstract public class ParserMonitor {
    * @param agent the agent for which the data was updated
    * @param type the type of the data
    * @param value the data value
-   * @see edu.umich.eecs.tac.TACAAConstants
+   * @see tau.tac.adx.sim.TACAdxConstants
    */
   public void dataUpdated(int agent, int type, String value) {
   }
@@ -288,7 +288,7 @@ abstract public class ParserMonitor {
    * @param agent the agent for which the data was updated
    * @param type the type of the data
    * @param content the content sent
-   * @see edu.umich.eecs.tac.TACAAConstants
+   * @see tau.tac.adx.sim.TACAdxConstants
    */
   public void dataUpdated(int agent, int type, Transportable content) {
   }
@@ -300,7 +300,7 @@ abstract public class ParserMonitor {
    *
    * @param type the type of the data
    * @param content the content sent
-   * @see edu.umich.eecs.tac.TACAAConstants
+   * @see tau.tac.adx.sim.TACAdxConstants
    * @see edu.umich.eecs.tac.props.RetailCatalog
    * (See other props classes sent to everyone)
    */

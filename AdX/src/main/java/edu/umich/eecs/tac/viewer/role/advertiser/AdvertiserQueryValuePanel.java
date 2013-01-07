@@ -25,7 +25,6 @@
 
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.props.SalesReport;
@@ -39,6 +38,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -115,7 +115,7 @@ public class AdvertiserQueryValuePanel extends JPanel {
         public void dataUpdated(final int agent, final int type, final Transportable value) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    if (type == TACAAConstants.DU_QUERY_REPORT &&
+                    if (type == TACAdxConstants.DU_QUERY_REPORT &&
                             value.getClass().equals(QueryReport.class) &&
                             agent == AdvertiserQueryValuePanel.this.agent) {
 
@@ -124,7 +124,7 @@ public class AdvertiserQueryValuePanel extends JPanel {
                         costSeries.addOrUpdate(currentDay, getDayCost(queryReport));
                     }
 
-                    if (type == TACAAConstants.DU_SALES_REPORT &&
+                    if (type == TACAdxConstants.DU_SALES_REPORT &&
                             value.getClass().equals(SalesReport.class) &&
                             agent == AdvertiserQueryValuePanel.this.agent) {
 

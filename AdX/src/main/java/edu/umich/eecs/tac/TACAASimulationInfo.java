@@ -24,8 +24,8 @@
  */
 package edu.umich.eecs.tac;
 
-import static edu.umich.eecs.tac.TACAAConstants.ADVERTISER;
-import static edu.umich.eecs.tac.TACAAConstants.DU_BANK_ACCOUNT;
+import static tau.tac.adx.sim.TACAdxConstants.ADVERTISER;
+import static tau.tac.adx.sim.TACAdxConstants.DU_BANK_ACCOUNT;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -37,6 +37,7 @@ import se.sics.isl.transport.Transportable;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.tasim.props.ServerConfig;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import com.botbox.util.ArrayUtils;
 
@@ -236,16 +237,16 @@ public class TACAASimulationInfo extends Parser {
 
 	protected void dataUpdated(int agentIndex, int type, int value) {
 		switch (type) {
-		case TACAAConstants.DU_IMPRESSIONS:
+		case TACAdxConstants.DU_IMPRESSIONS:
 			impressions(agentIndex, value);
 			break;
-		case TACAAConstants.DU_CLICKS:
+		case TACAdxConstants.DU_CLICKS:
 			clicks(agentIndex, value);
 			break;
-		case TACAAConstants.DU_CONVERSIONS:
+		case TACAdxConstants.DU_CONVERSIONS:
 			conversions(agentIndex, value);
 			break;
-		case TACAAConstants.DU_BANK_ACCOUNT:
+		case TACAdxConstants.DU_BANK_ACCOUNT:
 			Participant p = getParticipant(agentIndex);
 			p.setResult(value);
 			break;

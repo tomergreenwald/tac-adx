@@ -25,7 +25,7 @@
 package edu.umich.eecs.tac.user;
 
 import se.sics.tasim.is.EventWriter;
-import edu.umich.eecs.tac.TACAAConstants;
+import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.props.UserPopulationState;
 
@@ -60,29 +60,29 @@ public class DefaultDistributionBroadcaster implements DistributionBroadcaster {
 			switch (states[i]) {
 			case NON_SEARCHING:
 				eventWriter.dataUpdated(usersIndex,
-						TACAAConstants.DU_NON_SEARCHING, distribution[i]);
+						TACAdxConstants.DU_NON_SEARCHING, distribution[i]);
 				break;
 			case INFORMATIONAL_SEARCH:
 				eventWriter
 						.dataUpdated(usersIndex,
-								TACAAConstants.DU_INFORMATIONAL_SEARCH,
+								TACAdxConstants.DU_INFORMATIONAL_SEARCH,
 								distribution[i]);
 				break;
 			case FOCUS_LEVEL_ZERO:
 				eventWriter.dataUpdated(usersIndex,
-						TACAAConstants.DU_FOCUS_LEVEL_ZERO, distribution[i]);
+						TACAdxConstants.DU_FOCUS_LEVEL_ZERO, distribution[i]);
 				break;
 			case FOCUS_LEVEL_ONE:
 				eventWriter.dataUpdated(usersIndex,
-						TACAAConstants.DU_FOCUS_LEVEL_ONE, distribution[i]);
+						TACAdxConstants.DU_FOCUS_LEVEL_ONE, distribution[i]);
 				break;
 			case FOCUS_LEVEL_TWO:
 				eventWriter.dataUpdated(usersIndex,
-						TACAAConstants.DU_FOCUS_LEVEL_TWO, distribution[i]);
+						TACAdxConstants.DU_FOCUS_LEVEL_TWO, distribution[i]);
 				break;
 			case TRANSACTED:
 				eventWriter.dataUpdated(usersIndex,
-						TACAAConstants.DU_TRANSACTED, distribution[i]);
+						TACAdxConstants.DU_TRANSACTED, distribution[i]);
 				break;
 			default:
 				break;
@@ -97,6 +97,6 @@ public class DefaultDistributionBroadcaster implements DistributionBroadcaster {
     }
     ups.lock();
 
-    eventWriter.dataUpdated(usersIndex, TACAAConstants.TYPE_NONE, ups);
+    eventWriter.dataUpdated(usersIndex, TACAdxConstants.TYPE_NONE, ups);
   }
 }

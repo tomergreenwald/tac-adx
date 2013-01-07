@@ -25,11 +25,11 @@
 
 package edu.umich.eecs.tac.viewer.role.publisher;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.*;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import se.sics.isl.transport.Transportable;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -123,18 +123,18 @@ public class RankingPanel extends JPanel {
     private class AuctionListener extends ViewAdaptor {
 
         public void dataUpdated(int agent, int type, Transportable value) {
-            if (type == TACAAConstants.DU_QUERY_REPORT && value.getClass().equals(QueryReport.class)) {
+            if (type == TACAdxConstants.DU_QUERY_REPORT && value.getClass().equals(QueryReport.class)) {
 
                 handleQueryReport(agent, (QueryReport) value);
 
-            } else if (type == TACAAConstants.DU_BIDS && value.getClass().equals(BidBundle.class)) {
+            } else if (type == TACAdxConstants.DU_BIDS && value.getClass().equals(BidBundle.class)) {
 
                 handleBidBundle(agent, (BidBundle) value);
             }
         }
 
         public void participant(int agent, int role, String name, int participantID) {
-            if (role == TACAAConstants.ADVERTISER) {
+            if (role == TACAdxConstants.ADVERTISER) {
                 RankingPanel.this.names.put(agent, name);
                 int size = RankingPanel.this.names.size();
                 RankingPanel.this.colors.put(name, TACAAViewerConstants.LEGEND_COLORS[size - 1]);

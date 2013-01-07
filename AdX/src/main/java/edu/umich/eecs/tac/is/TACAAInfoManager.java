@@ -27,7 +27,7 @@ package edu.umich.eecs.tac.is;
 import se.sics.tasim.is.common.InfoManager;
 import se.sics.tasim.is.common.ResultManager;
 import se.sics.tasim.is.common.ViewerCache;
-import edu.umich.eecs.tac.TACAAConstants;
+import tau.tac.adx.sim.TACAdxConstants;
 
 /**
  * @author Lee Callender, Patrick Jordan
@@ -37,8 +37,8 @@ public class TACAAInfoManager extends InfoManager {
 	}
 
 	protected void init() {
-		for (int i = 0, n = TACAAConstants.SUPPORTED_TYPES.length; i < n; i++) {
-			registerType(TACAAConstants.SUPPORTED_TYPES[i]);
+		for (int i = 0, n = TACAdxConstants.SUPPORTED_TYPES.length; i < n; i++) {
+			registerType(TACAdxConstants.SUPPORTED_TYPES[i]);
 		}
 	}
 

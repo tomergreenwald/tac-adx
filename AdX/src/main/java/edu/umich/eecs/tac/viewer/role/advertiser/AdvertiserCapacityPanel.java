@@ -25,7 +25,6 @@
 
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.RetailCatalog;
@@ -42,6 +41,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -167,13 +167,13 @@ public class AdvertiserCapacityPanel extends SimulationTabPanel {
 
         public void dataUpdated(int agent, int type, Transportable value) {
             if (AdvertiserCapacityPanel.this.agent == agent
-                    && type == TACAAConstants.DU_ADVERTISER_INFO &&
+                    && type == TACAdxConstants.DU_ADVERTISER_INFO &&
                     value.getClass() == AdvertiserInfo.class) {
                 handleAdvertiserInfo((AdvertiserInfo) value);
             }
 
             if (AdvertiserCapacityPanel.this.agent == agent &&
-                    type == TACAAConstants.DU_SALES_REPORT &&
+                    type == TACAdxConstants.DU_SALES_REPORT &&
                     value.getClass() == SalesReport.class) {
                 handleSalesReport((SalesReport) value);
             }

@@ -25,13 +25,15 @@
 
 package edu.umich.eecs.tac.viewer.role;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
+import tau.tac.adx.sim.TACAdxConstants;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +68,7 @@ public class RevCostPanel extends SimulationTabPanel {
 
         public void participant(int agent, int role, String name, int participantID) {
             if (!agentPanels.containsKey(name)
-                && role == TACAAConstants.ADVERTISER) {
+                && role == TACAdxConstants.ADVERTISER) {
                 AgentRevCostPanel agentRevCostPanel = new AgentRevCostPanel(
                                                   agent, name, getSimulationPanel(), false);
 

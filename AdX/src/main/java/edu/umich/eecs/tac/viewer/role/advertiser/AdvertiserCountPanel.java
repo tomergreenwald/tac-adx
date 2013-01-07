@@ -25,7 +25,6 @@
 
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -35,6 +34,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -123,13 +123,13 @@ public class AdvertiserCountPanel extends JPanel {
                 public void run() {
                     if (agent == AdvertiserCountPanel.this.agent) {
                         switch (type) {
-                            case TACAAConstants.DU_IMPRESSIONS:
+                            case TACAdxConstants.DU_IMPRESSIONS:
                                 addImpressions(value);
                                 break;
-                            case TACAAConstants.DU_CLICKS:
+                            case TACAdxConstants.DU_CLICKS:
                                 addClicks(value);
                                 break;
-                            case TACAAConstants.DU_CONVERSIONS:
+                            case TACAdxConstants.DU_CONVERSIONS:
                                 addConversions(value);
                                 break;
                         }

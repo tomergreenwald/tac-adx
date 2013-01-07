@@ -25,7 +25,6 @@
 
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -36,6 +35,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,13 +118,13 @@ public class AdvertiserCountTabPanel extends SimulationTabPanel {
 
                     if (agentAddress != null) {
                         switch (type) {
-                            case TACAAConstants.DU_IMPRESSIONS:
+                            case TACAdxConstants.DU_IMPRESSIONS:
                                 addImpressions(agentAddress, value);
                                 break;
-                            case TACAAConstants.DU_CLICKS:
+                            case TACAdxConstants.DU_CLICKS:
                                 addClicks(agentAddress, value);
                                 break;
-                            case TACAAConstants.DU_CONVERSIONS:
+                            case TACAdxConstants.DU_CONVERSIONS:
                                 addConversions(agentAddress, value);
                                 break;
                         }
@@ -161,7 +161,7 @@ public class AdvertiserCountTabPanel extends SimulationTabPanel {
     }
 
     private void handleParticipant(int agent, int role, String name, int participantID) {
-        if (!agents.containsKey(agent) && role == TACAAConstants.ADVERTISER) {
+        if (!agents.containsKey(agent) && role == TACAdxConstants.ADVERTISER) {
             agents.put(agent, name);
             XYSeries impressionsSeries = new XYSeries(name);
             XYSeries clicksSeries = new XYSeries(name);

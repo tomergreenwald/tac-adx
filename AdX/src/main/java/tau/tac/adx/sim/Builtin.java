@@ -46,14 +46,14 @@ public abstract class Builtin extends Agent implements TimeListener {
 	private ConfigManager config;
 	private String configName;
 
-	private TACAASimulation simulation;
+	private TACAdxSimulation simulation;
 	private int index;
 
 	protected Builtin(String baseConfigName) {
 		this.baseConfigName = baseConfigName;
 	}
 
-	protected TACAASimulation getSimulation() {
+	protected TACAdxSimulation getSimulation() {
 		return simulation;
 	}
 
@@ -74,7 +74,7 @@ public abstract class Builtin extends Agent implements TimeListener {
 	protected final void simulationSetup() {
 	}
 
-	public final void simulationSetup(TACAASimulation simulation, int index) {
+	public final void simulationSetup(TACAdxSimulation simulation, int index) {
 		this.index = index;
 		this.simulation = simulation;
 		this.config = simulation.getConfig();

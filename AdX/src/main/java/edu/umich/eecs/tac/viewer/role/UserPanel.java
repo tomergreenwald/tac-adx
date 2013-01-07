@@ -25,11 +25,12 @@
 
 package edu.umich.eecs.tac.viewer.role;
 
-import static edu.umich.eecs.tac.TACAAConstants.*;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import static edu.umich.eecs.tac.viewer.ViewerChartFactory.createDaySeriesChartWithColors;
+import static tau.tac.adx.sim.TACAdxConstants.*;
+
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;

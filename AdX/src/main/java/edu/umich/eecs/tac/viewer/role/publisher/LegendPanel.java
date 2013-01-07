@@ -25,11 +25,13 @@
 
 package edu.umich.eecs.tac.viewer.role.publisher;
 
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+
+import tau.tac.adx.sim.TACAdxConstants;
+
 import java.awt.*;
 
 /**
@@ -62,7 +64,7 @@ public class LegendPanel extends JPanel {
         }
         int advertiser = 0;
         for (int index = 0; index < count; index++) {
-            if (seriesTabPanel.getRole(index) == TACAAConstants.ADVERTISER) {
+            if (seriesTabPanel.getRole(index) == TACAdxConstants.ADVERTISER) {
                 table.getColumnModel().getColumn(advertiser * 2 + 1).setCellRenderer(
                         new LegendTextRenderer(seriesTabPanel.getAgentName(index)));
                 advertiser++;

@@ -9,6 +9,7 @@ import se.sics.tasim.is.common.InfoServer;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.isl.util.FormatUtils;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import java.io.IOException;
 import java.io.FileWriter;
@@ -18,7 +19,6 @@ import java.util.Arrays;
 import com.botbox.html.HtmlWriter;
 import com.botbox.html.HtmlUtils;
 import edu.umich.eecs.tac.props.AAInfo;
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.Participant;
 import edu.umich.eecs.tac.TACAASimulationInfo;
 
@@ -59,7 +59,7 @@ public class TACAAResultManager extends ResultManager {
 		HtmlWriter html = new HtmlWriter(new FileWriter(destinationFile));
 
 		Participant[] participants = simInfo
-				.getParticipantsByRole(TACAAConstants.ADVERTISER);
+				.getParticipantsByRole(TACAdxConstants.ADVERTISER);
 
 		if (participants != null) {
 			participants = participants.clone();

@@ -38,11 +38,10 @@ import se.sics.tasim.is.common.SimServer;
 import se.sics.tasim.sim.Simulation;
 import se.sics.tasim.sim.SimulationManager;
 import se.sics.tasim.sim.Admin;
-import edu.umich.eecs.tac.TACAAConstants;
 
-public class TACAAManager extends SimulationManager {
+public class TACAdxManager extends SimulationManager {
 
-    private final static Logger log = Logger.getLogger(TACAAManager.class.getName());
+    private final static Logger log = Logger.getLogger(TACAdxManager.class.getName());
 
     /**
      * The default simulation length if not specified in configuration file
@@ -57,7 +56,7 @@ public class TACAAManager extends SimulationManager {
 
     private static Hashtable<String, Config> configTable = new Hashtable<String, Config>();
 
-    public TACAAManager() {
+    public TACAdxManager() {
     }
 
     /**
@@ -65,8 +64,8 @@ public class TACAAManager extends SimulationManager {
      * all supported simulation types.
      */
     protected void init() {
-        for (int i = 0, n = TACAAConstants.SUPPORTED_TYPES.length; i < n; i++) {
-            init(TACAAConstants.SUPPORTED_TYPES[i]);
+        for (int i = 0, n = TACAdxConstants.SUPPORTED_TYPES.length; i < n; i++) {
+            init(TACAdxConstants.SUPPORTED_TYPES[i]);
         }
     }
 
@@ -112,9 +111,9 @@ public class TACAAManager extends SimulationManager {
         // Initialize the config if not already done.
         getSimulationConfig(simConfig);
 
-        if ((role == TACAAConstants.ADVERTISER) && !info.isFull()
+        if ((role == TACAdxConstants.ADVERTISER) && !info.isFull()
                 && info.getParticipantCount() < simConfig.numberOfAdvertisers) {
-            info.addParticipant(agentID, TACAAConstants.ADVERTISER);
+            info.addParticipant(agentID, TACAdxConstants.ADVERTISER);
             // The number of participants should be taken from parameters! FIX
             // THIS!!!
             if (info.getParticipantCount() >= simConfig.numberOfAdvertisers) {
@@ -126,13 +125,13 @@ public class TACAAManager extends SimulationManager {
     }
 
     public String getSimulationRoleName(String type, int simRole) {
-        return configTable.get(type) != null ? TACAASimulation
+        return configTable.get(type) != null ? TACAdxSimulation
                 .getSimulationRoleName(simRole) : null;
     }
 
     public int getSimulationRoleID(String type, String simRole) {
-        return configTable.get(type) != null ? (simRole == null ? TACAAConstants.ADVERTISER
-                : TACAASimulation.getSimulationRole(simRole))
+        return configTable.get(type) != null ? (simRole == null ? TACAdxConstants.ADVERTISER
+                : TACAdxSimulation.getSimulationRole(simRole))
                 : 0;
     }
 
@@ -160,7 +159,7 @@ public class TACAAManager extends SimulationManager {
         // Find the competition in which the simulation is running, if any.
         Competition competition = findContainingCompetition(info.getSimulationID());
 
-        return new TACAASimulation(config, competition);
+        return new TACAdxSimulation(config, competition);
     }
 
 

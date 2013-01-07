@@ -24,12 +24,11 @@
  */
 package tau.tac.adx.sim;
 
-import static edu.umich.eecs.tac.TACAAConstants.ADVERTISER;
+import static tau.tac.adx.sim.TACAdxConstants.ADVERTISER;
 
 import java.util.logging.Logger;
 
 import se.sics.isl.transport.Transportable;
-import edu.umich.eecs.tac.TACAAConstants;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.sim.Auctioneer;
 import edu.umich.eecs.tac.sim.PublisherInfoSender;
@@ -83,7 +82,7 @@ public abstract class Publisher extends Builtin implements QueryReportSender,
 
 		getEventWriter().dataUpdated(
 				getSimulation().agentIndex(this.getAddress()),
-				TACAAConstants.DU_PUBLISHER_INFO, getPublisherInfo());
+				TACAdxConstants.DU_PUBLISHER_INFO, getPublisherInfo());
 	}
 
 	@Override
