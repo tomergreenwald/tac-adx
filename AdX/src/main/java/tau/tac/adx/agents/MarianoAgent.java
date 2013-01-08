@@ -1,5 +1,5 @@
 /*
- * Users.java
+ * DefaultUsers.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,56 +22,60 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.sim;
+package tau.tac.adx.agents;
 
 import java.util.logging.Logger;
 
-import tau.tac.adx.report.adn.AdNetworkReport;
-import tau.tac.adx.report.adn.AdNetworkReportSender;
-import tau.tac.adx.report.publisher.AdxPublisherReport;
-import tau.tac.adx.report.publisher.AdxPublisherReportSender;
-import edu.umich.eecs.tac.sim.PublisherInfoSender;
+import se.sics.tasim.aw.Message;
+import tau.tac.adx.sim.Builtin;
 
-/**
- * @author Lee Callender, Patrick Jordan
- */
-public abstract class AdxUsers extends Builtin implements
-		AdxPublisherReportSender, AdNetworkReportSender {
-	public static final String ADX_AGENT_NAME = "adxusers";
+//Mariano
+public class MarianoAgent extends Builtin {
 
-	protected Logger log = Logger.getLogger(AdxUsers.class.getName());
+	public static final String MARIANO_AGENT_NAME = "mariano";
+	private Logger log;
 
-	PublisherInfoSender[] publishers;
-
-	public AdxUsers() {
-		super(ADX_AGENT_NAME);
+	/**
+	 * Default constructor.
+	 */
+	public MarianoAgent() {
+		super(MARIANO_AGENT_NAME);
 	}
 
+	/**
+	 * @see se.sics.tasim.aw.TimeListener#nextTimeUnit(int)
+	 */
+	@Override
+	public void nextTimeUnit(int date) {
+	}
+
+	/**
+	 * @see edu.umich.eecs.tac.sim.Users#setup()
+	 */
 	@Override
 	protected void setup() {
+		this.log = Logger.getLogger(MarianoAgent.class.getName());
 	}
 
-	public abstract void sendReportsToAll();
-
 	/**
-	 * @see tau.tac.adx.report.publisher.AdxPublisherReportSender#broadcastReport(tau.tac.adx.report.publisher.AdxPublisherReport)
+	 * @see Builtin#stopped()
 	 */
 	@Override
-	public void broadcastReport(AdxPublisherReport report) {
-		getSimulation().broadcastReport(report);
+	protected void stopped() {
 	}
 
 	/**
-	 * @see tau.tac.adx.report.adn.AdNetworkReportSender#broadcastReport(int,
-	 *      AdNetworkReport)
+	 * @see Builtin#shutdown()
 	 */
 	@Override
-	public void broadcastReport(int adNetworkId, AdNetworkReport report) {
-		getSimulation().broadcastReport(adNetworkId, report);
+	protected void shutdown() {
 	}
 
 	/**
-	 * Applies bid updates.
+	 * @see se.sics.tasim.aw.Agent#messageReceived(se.sics.tasim.aw.Message)
 	 */
-	public abstract void applyBidUpdates();
+	@Override
+	protected void messageReceived(Message message) {
+	}
+
 }

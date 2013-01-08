@@ -95,13 +95,6 @@ public interface AdxAgentRepository extends AgentRepository {
 	SimulationAgent[] getUsers();
 
 	/**
-	 * Get the list of user agents.
-	 * 
-	 * @return the list of user agents.
-	 */
-	SimulationAgent[] getAdxUsers();
-
-	/**
 	 * Get the sales analyst.
 	 * 
 	 * @return the sales analyst.

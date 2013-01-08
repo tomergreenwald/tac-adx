@@ -281,11 +281,6 @@ public class DefaultAdxUsers extends AdxUsers {
 		}
 
 		@Override
-		public SimulationAgent[] getAdxUsers() {
-			return getSimulation().getAdxUsers();
-		}
-
-		@Override
 		public List<AdxUser> getUserPopulation() {
 			return getSimulation().getUserPopulation();
 		}
