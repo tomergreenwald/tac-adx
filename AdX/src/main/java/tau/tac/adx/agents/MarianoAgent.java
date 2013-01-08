@@ -1,5 +1,5 @@
 /*
- * UserViewManager.java
+ * DefaultUsers.java
  *
  * COPYRIGHT  2008
  * THE REGENTS OF THE UNIVERSITY OF MICHIGAN
@@ -22,23 +22,60 @@
  * RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.agents;
 
-import se.sics.tasim.aw.TimeListener;
-import tau.tac.adx.auction.AdxAuctionResult;
-import tau.tac.adx.props.AdxQuery;
+import java.util.logging.Logger;
 
-/**
- * @author Patrick Jordan
- */
-public interface AdxUserViewManager extends TimeListener {
+import se.sics.tasim.aw.Message;
+import tau.tac.adx.sim.Builtin;
 
-	public void processImpression(AdxUser user, AdxQuery query,
-			AdxAuctionResult auctionResult);
+//Mariano
+public class MarianoAgent extends Builtin {
 
-	public boolean addUserEventListener(AdxUserEventListener listener);
+	public static final String MARIANO_AGENT_NAME = "mariano";
+	private Logger log;
 
-	public boolean containsUserEventListener(AdxUserEventListener listener);
+	/**
+	 * Default constructor.
+	 */
+	public MarianoAgent() {
+		super(MARIANO_AGENT_NAME);
+	}
 
-	public boolean removeUserEventListener(AdxUserEventListener listener);
+	/**
+	 * @see se.sics.tasim.aw.TimeListener#nextTimeUnit(int)
+	 */
+	@Override
+	public void nextTimeUnit(int date) {
+	}
+
+	/**
+	 * @see edu.umich.eecs.tac.sim.Users#setup()
+	 */
+	@Override
+	protected void setup() {
+		this.log = Logger.getLogger(MarianoAgent.class.getName());
+	}
+
+	/**
+	 * @see Builtin#stopped()
+	 */
+	@Override
+	protected void stopped() {
+	}
+
+	/**
+	 * @see Builtin#shutdown()
+	 */
+	@Override
+	protected void shutdown() {
+	}
+
+	/**
+	 * @see se.sics.tasim.aw.Agent#messageReceived(se.sics.tasim.aw.Message)
+	 */
+	@Override
+	protected void messageReceived(Message message) {
+	}
+
 }

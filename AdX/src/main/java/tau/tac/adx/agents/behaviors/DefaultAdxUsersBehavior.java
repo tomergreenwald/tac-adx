@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
-import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.AdxBidBundleWriter;
 import tau.tac.adx.auction.manager.AdxBidManager;
@@ -47,9 +46,7 @@ import tau.tac.adx.report.publisher.AdxPublisherReportManager;
 import tau.tac.adx.report.publisher.AdxPublisherReportManagerImpl;
 import tau.tac.adx.report.publisher.AdxPublisherReportSender;
 import tau.tac.adx.sim.AdxAgentRepository;
-import tau.tac.adx.sim.AdxUsers;
 import tau.tac.adx.users.AdxUserBehaviorBuilder;
-import tau.tac.adx.users.AdxUserEventListener;
 import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUsersBehavior;
 import edu.umich.eecs.tac.auction.BidManager;
@@ -267,24 +264,14 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 
 	private AdNetworkReportManager createAdNetworkReportManager() {
 		AdNetworkReportManager adNetworkReportManager = new AdNetworkReportManagerImpl(
-				adNetworkReportSender);
-
-		for (SimulationAgent agent : agentRepository.getAdxUsers()) {
-			AdxUsers users = (AdxUsers) agent.getAgent();
-			users.addUserEventListener(adNetworkReportManager);
-		}
+				adNetworkReportSender, agentRepository.getEventBus());
 
 		return adNetworkReportManager;
 	}
 
 	private AdxPublisherReportManager createPublisherReportManager() {
 		AdxPublisherReportManager queryReportManager = new AdxPublisherReportManagerImpl(
-				publisherReportSender);
-
-		for (SimulationAgent agent : agentRepository.getAdxUsers()) {
-			AdxUsers users = (AdxUsers) agent.getAgent();
-			users.addUserEventListener(queryReportManager);
-		}
+				publisherReportSender, agentRepository.getEventBus());
 
 		return queryReportManager;
 	}
@@ -354,30 +341,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		if (content instanceof AdxBidBundle) {
 			handleBidBundle(sender, (AdxBidBundle) content);
 		}
-	}
-
-	/**
-	 * @see edu.umich.eecs.tac.user.UsersBehavior#addUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
-	 */
-	@Override
-	public boolean addUserEventListener(AdxUserEventListener listener) {
-		return userManager.addUserEventListener(listener);
-	}
-
-	/**
-	 * @see edu.umich.eecs.tac.user.UsersBehavior#containsUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
-	 */
-	@Override
-	public boolean containsUserEventListener(AdxUserEventListener listener) {
-		return userManager.containsUserEventListener(listener);
-	}
-
-	/**
-	 * @see edu.umich.eecs.tac.user.UsersBehavior#removeUserEventListener(edu.umich.eecs.tac.user.UserEventListener)
-	 */
-	@Override
-	public boolean removeUserEventListener(AdxUserEventListener listener) {
-		return userManager.removeUserEventListener(listener);
 	}
 
 	/**

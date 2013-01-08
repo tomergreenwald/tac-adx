@@ -47,11 +47,5 @@ public interface AdxUsersBehavior {
 
 	void sendReportsToAll();
 
-	boolean addUserEventListener(AdxUserEventListener listener);
-
-	boolean containsUserEventListener(AdxUserEventListener listener);
-
-	boolean removeUserEventListener(AdxUserEventListener listener);
-
 	void applyBidUpdates();
 }

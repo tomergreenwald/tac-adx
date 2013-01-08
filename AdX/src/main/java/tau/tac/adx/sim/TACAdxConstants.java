@@ -162,9 +162,14 @@ public final class TACAdxConstants {
 	 */
 	public static final int USERS = 2;
 	/**
-	 * The TAC AA User role.
+	 * The TAC Adx role.
 	 */
-	public static final int ADX_USERS = 3;
+	public static final int ADX_AGENT_ROLE_ID = 3;
+	// Mariano
+	/**
+	 * The Mariano role.
+	 */
+	public static final int MARIANO_AGENT_ROLE_ID = 4;
 	/**
 	 * The TAC AA participant roles as human readable names.
 	 */

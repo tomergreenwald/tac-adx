@@ -29,10 +29,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
-import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.messages.AuctionMessage;
+
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 
 /**
  * @author Patrick Jordan, Lee Callender, Akshat Kaul
@@ -59,10 +60,13 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 * 
 	 * @param adNetworkReportSender
 	 *            The {@link AdNetworkReportSender}.
+	 * @param eventBus
+	 *            {@link EventBus}.
 	 */
 	public AdNetworkReportManagerImpl(
-			AdNetworkReportSender adNetworkReportSender) {
+			AdNetworkReportSender adNetworkReportSender, EventBus eventBus) {
 		this.adNetworkReportSender = adNetworkReportSender;
+		eventBus.register(this);
 		log.info("AdxQueryReportManager created.");
 	}
 
@@ -76,31 +80,21 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	}
 
 	/**
-	 * @see tau.tac.adx.users.AdxUserEventListener#queryIssued(tau.tac.adx.props.AdxQuery)
+	 * @param message
+	 *            {@link AuctionMessage}.
 	 */
-	@Override
-	public void queryIssued(AdxQuery query) {
-		// No implementation needed.
-	}
-
-	/**
-	 * @param auctionResult
-	 * @param query
-	 * @param user
-	 * @see tau.tac.adx.users.AdxUserEventListener#auctionPerformed(AdxAuctionResult,
-	 *      AdxQuery, AdxUser)
-	 */
-	@Override
-	public void auctionPerformed(AdxAuctionResult auctionResult,
-			AdxQuery query, AdxUser user) {
-		if (auctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
-			int bidder = auctionResult.getWinningBidInfo().getBidder().getId();
+	@Subscribe
+	public void auctionPerformed(AuctionMessage message) {
+		if (message.getAuctionResult().getAuctionState() == AuctionState.AUCTION_COPMLETED) {
+			int bidder = message.getAuctionResult().getWinningBidInfo()
+					.getBidder().getId();
 			AdNetworkReport report = adNetworkReports.get(bidder);
 			if (report == null) {
 				report = new AdNetworkReport();
 				adNetworkReports.put(bidder, report);
 			}
-			report.addBid(auctionResult, query, user);
+			report.addBid(message.getAuctionResult(), message.getQuery(),
+					message.getUser());
 		}
 	}
 

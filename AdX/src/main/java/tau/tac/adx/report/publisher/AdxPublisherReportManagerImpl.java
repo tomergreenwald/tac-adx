@@ -26,9 +26,10 @@ package tau.tac.adx.report.publisher;
 
 import java.util.logging.Logger;
 
-import tau.tac.adx.auction.AdxAuctionResult;
-import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.messages.AuctionMessage;
+
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 
 /**
  * @author Patrick Jordan, Lee Callender, Akshat Kaul
@@ -55,10 +56,13 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	 * 
 	 * @param publisherReportSender
 	 *            The {@link AdxPublisherReportSender}.
+	 * @param eventBus
+	 *            Global {@link EventBus}.
 	 */
 	public AdxPublisherReportManagerImpl(
-			AdxPublisherReportSender publisherReportSender) {
+			AdxPublisherReportSender publisherReportSender, EventBus eventBus) {
 		this.publisherReportSender = publisherReportSender;
+		eventBus.register(this);
 		log.info("AdxQueryReportManager created.");
 	}
 
@@ -72,11 +76,12 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	}
 
 	/**
-	 * @see tau.tac.adx.users.AdxUserEventListener#queryIssued(tau.tac.adx.props.AdxQuery)
+	 * @param message
+	 *            {@link AuctionMessage}.
 	 */
-	@Override
-	public void queryIssued(AdxQuery query) {
-		publisherReport.addQuery(query);
+	@Subscribe
+	public void queryIssued(AuctionMessage message) {
+		publisherReport.addQuery(message.getQuery());
 	}
 
 	/**
@@ -87,13 +92,4 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 		publisherReportSender.broadcastReport(publisherReport);
 	}
 
-	/**
-	 * @see tau.tac.adx.users.AdxUserEventListener#auctionPerformed(tau.tac.adx.auction.AdxAuctionResult,
-	 *      tau.tac.adx.props.AdxQuery, tau.tac.adx.users.AdxUser)
-	 */
-	@Override
-	public void auctionPerformed(AdxAuctionResult auctionResult,
-			AdxQuery query, AdxUser user) {
-		// No implementation needed.
-	}
 }

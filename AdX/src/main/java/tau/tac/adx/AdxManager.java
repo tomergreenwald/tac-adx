@@ -8,10 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tau.tac.adx.publishers.AdxPublisher;
-import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.sim.TACAdxSimulation;
-
-import com.google.common.eventbus.EventBus;
 
 /**
  * @author greenwald
@@ -25,19 +22,6 @@ public class AdxManager {
 	 */
 	private static Map<String, AdxPublisher> publishersNamingMap = new HashMap<String, AdxPublisher>();
 	private static TACAdxSimulation simulation;
-
-	/**
-	 * The system's main event bus.
-	 */
-	private static EventBus eventBus = new EventBus(
-			TACAdxConstants.ADX_EVENT_BUS_NAME);
-
-	/**
-	 * @return the eventBus
-	 */
-	public static EventBus getEventBus() {
-		return eventBus;
-	}
 
 	/**
 	 * @param publisherName
