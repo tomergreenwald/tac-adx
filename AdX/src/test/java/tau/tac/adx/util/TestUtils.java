@@ -21,7 +21,7 @@ public class TestUtils {
 	 * Initializes an {@link Injector} with an {@link AbstractModule}
 	 * implementation.
 	 */
-	static Injector injector = Guice.createInjector(new AdxModule());
+	static Injector injector = Guice.createInjector(new AdxTestModule());
 	/**
 	 * {@link Random} instance.
 	 */
@@ -52,4 +52,7 @@ public class TestUtils {
 		}
 		return weights;
 	}
+	
+	
+	
 }
