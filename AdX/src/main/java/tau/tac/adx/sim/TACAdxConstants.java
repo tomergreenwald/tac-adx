@@ -149,6 +149,25 @@ public final class TACAdxConstants {
 	 */
 	public static final int DU_ADX_BIDS = 402;
 
+	
+	/**
+	 * The initial campaign allocated to an advertiser.
+	 */
+	public static final int DU_INITIAL_CAMPAIGN = 403;
+
+	/**
+	 * The campaign opportunity announced to the advertisers.
+	 */
+	public static final int DU_CAMPAIGN_OPPORTUNITY = 404;
+
+	/**
+	 * The campaign report announced to each advertiser.
+	 */
+	public static final int DU_CAMPAIGN_REPORT = 405;
+
+	
+	
+	
 	/**
 	 * The TAC AA Publisher role.
 	 */
@@ -169,7 +188,7 @@ public final class TACAdxConstants {
 	/**
 	 * The Mariano role.
 	 */
-	public static final int MARIANO_AGENT_ROLE_ID = 4;
+	public static final int DEMAND_AGENT_ROLE_ID = 4;
 	/**
 	 * The TAC AA participant roles as human readable names.
 	 */

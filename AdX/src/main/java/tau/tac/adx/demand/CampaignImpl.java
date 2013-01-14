@@ -21,6 +21,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	/* maintains quality score - notified upon campaign end*/
 	protected QualityManager qualityManager;
 	
+	int id;
 	/* contract attributes */
 	Long reachImps;
 	int dayStart;
@@ -51,6 +52,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		if (qualityManager == null)
 			throw new NullPointerException("qualityManager cannot be null");
 
+		id = hashCode();
 		dayStats = new TreeMap<Integer,CampaignStats>();
 		advertisersBids = new HashMap<String,Long>();
 	    budget = null;
@@ -75,6 +77,31 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 
+	public Long getReachImps() {
+		return reachImps;
+	}
+	public int getDayStart(){
+		return dayStart;
+		
+	}
+	public int getDayEnd(){
+		return dayStart;
+		
+	}
+	public int getTargetSegment(){
+		return targetSegment;
+		
+	}
+	public double getVideoCoef(){
+		return videoCoef;
+		
+	}
+	public double getMobileCoef(){
+		return mobileCoef;
+		
+	}
+
+	
 	public void impress(int segment, boolean video, boolean mobile, long costMillis) {
 		if (isAllocated()) {
   		    todays.cost += costMillis/1000.0;
@@ -201,6 +228,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	public CampaignStats accumulate(CampaignStats interim, CampaignStats next) {
 		return interim.add(next);
+	}
+
+
+	@Override
+	public int getId() {
+		return id;
 	}
 
 

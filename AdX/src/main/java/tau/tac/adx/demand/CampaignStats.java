@@ -4,20 +4,30 @@ public class CampaignStats {
 	double tartgetedImps;
 	double otherImps;
 	double cost;
-	CampaignStats(double timps, double oimps, double cost) {
+
+	
+	
+	public CampaignStats(double timps, double oimps, double cost) {
 		this.tartgetedImps = timps;
 		this.otherImps = oimps;
 		this.cost = cost;
 	}
-	double getTargetedImps() {
+	public double getTargetedImps() {
 		return tartgetedImps;
 	}
-	double getOtherImps() {
+	public double getOtherImps() {
 		return otherImps;
 	}
-	double getCost() {
+	public double getCost() {
 		return cost;
 	}
+	
+	public void setValues(CampaignStats other) {
+		this.tartgetedImps = other.tartgetedImps;
+		this.otherImps = other.otherImps;
+		this.cost = other.cost;
+	}
+
 	
 	CampaignStats add(CampaignStats other) {
 		if (other != null) {

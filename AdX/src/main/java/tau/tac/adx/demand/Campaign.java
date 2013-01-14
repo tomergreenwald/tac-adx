@@ -89,5 +89,13 @@ public interface Campaign extends TimeListener {
 
 
 	CampaignStats getTodayStats();
+	
+	Long getReachImps();
+	int getDayStart();
+	int getDayEnd();
+	int getTargetSegment();
+	double getVideoCoef();
+	double getMobileCoef();
+	int getId();
 
 }
