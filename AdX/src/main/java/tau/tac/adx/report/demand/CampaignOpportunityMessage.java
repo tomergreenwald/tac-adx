@@ -6,6 +6,7 @@ import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
 import se.sics.tasim.props.SimpleContent;
 import tau.tac.adx.demand.Campaign;
+import tau.tac.adx.report.adn.MarketSegment;
 
 public class CampaignOpportunityMessage extends SimpleContent {
 	private static final long serialVersionUID = -2501549665857756943L;
@@ -14,7 +15,8 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	private Long reachImps;
 	private int dayStart;
 	private int dayEnd;
-	private int targetSegment;
+	private String targetSegmentName;
+	private MarketSegment targetSegment;
 	private double videoCoef;
 	private double mobileCoef;
 	
@@ -33,7 +35,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 
 	
 	public CampaignOpportunityMessage(int id, Long reachImps, int dayStart, int dayEnd,
-			int targetSegment, double videoCoef, double mobileCoef) {
+			MarketSegment targetSegment, double videoCoef, double mobileCoef) {
 				
 		this.id = id;
 		this.reachImps = reachImps;
@@ -60,7 +62,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		return dayEnd;
 	}
 
-	public int getTargetSegment() {
+	public MarketSegment getTargetSegment() {
 		return targetSegment;
 	}
 
@@ -104,7 +106,8 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		reachImps = reader.getAttributeAsLong("reachImps");
 		dayStart = reader.getAttributeAsInt("dayStart");
 		dayEnd = reader.getAttributeAsInt("dayEnd");
-		targetSegment = reader.getAttributeAsInt("targetSegment");
+		targetSegmentName = reader.getAttribute("targetSegment");
+		targetSegment = MarketSegment.valueOf(targetSegmentName);
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
 		super.read(reader);
@@ -113,7 +116,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	
 	public void write(TransportWriter writer) {
 		writer.attr("id", id).attr("reachImps", reachImps).attr("dayStart", dayStart).attr(
-				"dayEnd", dayEnd).attr("targetSegment",targetSegment).
+				"dayEnd", dayEnd).attr("targetSegment",targetSegment.name()).
 				attr("videoCoef", videoCoef).attr("mobileCoef",mobileCoef);
 		super.write(writer);
 	}

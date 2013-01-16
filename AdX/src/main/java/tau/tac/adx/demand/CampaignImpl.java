@@ -10,6 +10,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
+import tau.tac.adx.report.adn.MarketSegment;
+
 
 public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private Logger log = Logger.getLogger(CampaignImpl.class.getName());	
@@ -26,7 +28,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	Long reachImps;
 	int dayStart;
 	int dayEnd;
-	int targetSegment;
+	MarketSegment targetSegment;
 	double videoCoef;
 	double mobileCoef;
 	
@@ -47,7 +49,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	
 	
 	public CampaignImpl(QualityManager qualityManager, Long reachImps, int dayStart, int dayEnd,
-			int targetSegment, double videoCoef, double mobileCoef) {
+			MarketSegment targetSegment, double videoCoef, double mobileCoef) {
 		
 		if (qualityManager == null)
 			throw new NullPointerException("qualityManager cannot be null");
@@ -88,7 +90,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		return dayStart;
 		
 	}
-	public int getTargetSegment(){
+	public MarketSegment getTargetSegment(){
 		return targetSegment;
 		
 	}
@@ -102,7 +104,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	
-	public void impress(int segment, boolean video, boolean mobile, long costMillis) {
+	public void impress(MarketSegment segment, boolean video, boolean mobile, long costMillis) {
 		if (isAllocated()) {
   		    todays.cost += costMillis/1000.0;
 
@@ -235,6 +237,5 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	public int getId() {
 		return id;
 	}
-
 
 }

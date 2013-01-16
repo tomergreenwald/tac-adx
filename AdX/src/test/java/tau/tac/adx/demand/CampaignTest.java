@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import tau.tac.adx.report.adn.MarketSegment;
+
 
 
 /**
@@ -18,8 +20,8 @@ public class CampaignTest {
   Long reachImps = 100L;
   int dayStart = 5;
   int dayEnd = 12;
-  int targetSegment = 1;
-  int nonTargetSegment = 2;
+  MarketSegment targetSegment = MarketSegment.FEMALE_HIGH_INCOME;
+  MarketSegment nonTargetSegment = MarketSegment.OLD_HIGH_INCOME;
 
   double vcoef = 2.5;
   double mcoef = 0.8;

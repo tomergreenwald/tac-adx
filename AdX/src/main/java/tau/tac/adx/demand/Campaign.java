@@ -10,6 +10,7 @@ package tau.tac.adx.demand;
 import java.util.Map;
 
 import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.report.adn.MarketSegment;
 
 public interface Campaign extends TimeListener {
 /**
@@ -58,7 +59,7 @@ public interface Campaign extends TimeListener {
  * @param mobile
  * @param costMillis : paid to the Publisher as determined by AdX auction (in milli units)
  */
-	void impress(int segment, boolean video, boolean mobile, long costMillis);
+	void impress(MarketSegment segment, boolean video, boolean mobile, long costMillis);
 
 /**
  * 	
@@ -91,11 +92,17 @@ public interface Campaign extends TimeListener {
 	CampaignStats getTodayStats();
 	
 	Long getReachImps();
+	
 	int getDayStart();
+	
 	int getDayEnd();
-	int getTargetSegment();
+	
+	MarketSegment getTargetSegment();
+	
 	double getVideoCoef();
+	
 	double getMobileCoef();
+	
 	int getId();
 
 }

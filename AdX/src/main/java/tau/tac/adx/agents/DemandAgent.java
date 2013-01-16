@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
@@ -19,7 +21,10 @@ import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignImpl;
 import tau.tac.adx.demand.QualityManager;
 import tau.tac.adx.demand.QualityManagerImpl;
+import tau.tac.adx.messages.AuctionMessage;
+import tau.tac.adx.messages.CampaignNotification;
 import tau.tac.adx.props.AdxBidBundle;
+import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.CampaignBidMessage;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
@@ -32,7 +37,9 @@ public class DemandAgent extends Builtin {
 	private static final Long ALOC_CMP_REACH = 30000L;
 	private static final int  ALOC_CMP_START_DAY = 1;
 	private static final int ALOC_CMP_END_DAY = 5;
-	private static final int ALOC_CMP_SGMNT = 3;
+	
+	//FEMALE_YOUNG, FEMALE_OLD, MALE_YOUNG, MALE_OLD, YOUNG_HIGH_INCOME, OLD_HIGH_INCOME, YOUNG_LOW_INCOME, OLD_LOW_INCOME, FEMALE_LOW_INCOME, FEMALE_HIGH_INCOME, MALE_HIGH_INCOME, MALE_LOW_INCOME	
+	private static final MarketSegment ALOC_CMP_SGMNT = MarketSegment.FEMALE_HIGH_INCOME;
 	private static final double ALOC_CMP_VC = 2.5;
 	private static final double ALOC_CMP_MC = 3.5;
 
@@ -63,8 +70,13 @@ public class DemandAgent extends Builtin {
 		 */
 		if (pendingCampaign != null) {
 			pendingCampaign.auction();
-			if (pendingCampaign.isAllocated())
+			if (pendingCampaign.isAllocated()) {
 			  adNetCampaigns.put(pendingCampaign.getAdvertiser(), pendingCampaign);
+			  
+			  /* notify regarding newly allocate campaign */
+			  getSimulation().getEventBus().post(new CampaignNotification(pendingCampaign));
+			  
+			}
 		}
 		
 		for (Campaign campaign : adNetCampaigns.values()) 
@@ -88,7 +100,7 @@ public class DemandAgent extends Builtin {
 	  	}
 				
 		/*
-		 * Create next campaign opportunity and notify 
+		 * Create next campaign opportunity and notify competing adNetwork agents
 		 */
 		pendingCampaign = new CampaignImpl(qualityManager,
 				ALOC_CMP_REACH, ALOC_CMP_START_DAY, 
@@ -105,6 +117,8 @@ public class DemandAgent extends Builtin {
 	protected void setup() {
 		this.log = Logger.getLogger(DemandAgent.class.getName());
 		
+		getSimulation().getEventBus().register(this);
+
 		adNetCampaigns = ArrayListMultimap.create();
 		
 		qualityManager = new QualityManagerImpl();
@@ -156,5 +170,14 @@ public class DemandAgent extends Builtin {
 		}
 		
 	}
+	
+	@Subscribe
+	public void impressed(AuctionMessage message) {
+		/* fetch campaign */
+		//Campaign cmpn = message.getCampaign(); 
+		//		
+	    //cmpn.impress(message.getMarketSegment(), message.isVideo(), message.isMobile, message.getCost());
+	}
+	
 
 }

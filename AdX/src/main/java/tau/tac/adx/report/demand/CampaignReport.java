@@ -1,6 +1,5 @@
 package tau.tac.adx.report.demand;
 
-import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignStats;
 import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
 
