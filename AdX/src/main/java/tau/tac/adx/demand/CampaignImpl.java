@@ -34,7 +34,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	
 	/* auction info */
 	private final static double RESERVE_BUDGET_FACTOR = 1.0;
-	private HashMap<String,Long> advertisersBids;
+	private Map<String,Long> advertisersBids;
 	
 	/* set upon campaign allocation/auction*/
 	Double budget;

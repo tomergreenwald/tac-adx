@@ -165,6 +165,11 @@ public final class TACAdxConstants {
 	 */
 	public static final int DU_CAMPAIGN_REPORT = 405;
 
+	/**
+	 * The user classification auction result announced to each advertiser.
+	 */
+	public static final int DU_UCS_REPORT = 406;
+
 	
 	
 	

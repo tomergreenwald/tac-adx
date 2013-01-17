@@ -2,38 +2,35 @@
  */
 package tau.tac.adx.agents;
 
-import static tau.tac.adx.sim.TACAdxConstants.ADVERTISER;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
-import se.sics.tasim.props.StartInfo;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignImpl;
 import tau.tac.adx.demand.QualityManager;
 import tau.tac.adx.demand.QualityManagerImpl;
+import tau.tac.adx.demand.UserClassificationService;
 import tau.tac.adx.messages.AuctionMessage;
 import tau.tac.adx.messages.CampaignNotification;
-import tau.tac.adx.props.AdxBidBundle;
+import tau.tac.adx.messages.UserClassificationServiceNotification;
 import tau.tac.adx.report.adn.MarketSegment;
-import tau.tac.adx.report.demand.CampaignBidMessage;
+import tau.tac.adx.report.demand.AdNetBidMessage;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
+import tau.tac.adx.report.demand.UserClassificationServiceLevelNotification;
 import tau.tac.adx.sim.Builtin;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.eventbus.Subscribe;
 
 
 public class DemandAgent extends Builtin {
 
+	private int day;
+	
 	private static final Long ALOC_CMP_REACH = 30000L;
 	private static final int  ALOC_CMP_START_DAY = 1;
 	private static final int ALOC_CMP_END_DAY = 5;
@@ -49,9 +46,10 @@ public class DemandAgent extends Builtin {
 
 	private QualityManager qualityManager; 
 	private ListMultimap<String, Campaign> adNetCampaigns;
-	//private Map<String, Campaign> pendingCampaigns;
 	private Campaign pendingCampaign;
 	
+
+	private UserClassificationService ucs;
 	
 	/**
 	 * Default constructor.
@@ -65,6 +63,8 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	public void nextTimeUnit(int date) {
+		day = date;
+		
 		/*
 		 * Auction campaign and add to repository
 		 */
@@ -79,15 +79,22 @@ public class DemandAgent extends Builtin {
 			}
 		}
 		
+		/*
+		 * auction user classification service and announce results to built-in agents
+		 */
+		ucs.auction(day);	
+		getSimulation().getEventBus().post(new UserClassificationServiceNotification(ucs));
+
+		
+		
 		for (Campaign campaign : adNetCampaigns.values()) 
 			campaign.nextTimeUnit(date);
-		
-		
 		/*
-		 * report result and campaigns stats to adNet agents
+		 * report auctions result and campaigns stats to adNet agents
 		 */
 
 		for (String advertiser : getAdvertiserAddresses()) {
+
 		   CampaignReport report = new CampaignReport();
 		   for (Campaign campaign : adNetCampaigns.values()) { 
 		      if (campaign.isAllocated() && (advertiser.equals(campaign.getAdvertiser()))) {
@@ -96,7 +103,9 @@ public class DemandAgent extends Builtin {
 		   }
 		   
 		   getSimulation().sendCampaignReport(advertiser, report);		
-		   
+		   	   
+		   UserClassificationServiceLevelNotification ucsNotification = new UserClassificationServiceLevelNotification(ucs.getAdNetData(advertiser));
+   		   getSimulation().sendUserClassificationAuctionResult(advertiser, ucsNotification);
 	  	}
 				
 		/*
@@ -160,13 +169,17 @@ public class DemandAgent extends Builtin {
 		String sender = message.getSender();
 		Transportable content = message.getContent();
 
-		if (content instanceof CampaignBidMessage) {			
-			CampaignBidMessage cbm = (CampaignBidMessage) content;
+		if (content instanceof AdNetBidMessage) {			
+			AdNetBidMessage cbm = (AdNetBidMessage) content;
 			/*
 			 * collect campaign bids for campaign opportunities 
 			 */			
-			if ((pendingCampaign != null)&&((pendingCampaign.getId() == cbm.getId()))) 
-				pendingCampaign.addAdvertiserBid(sender, cbm.getBudget());
+			if ((pendingCampaign != null)&&((pendingCampaign.getId() == cbm.getCampaignId()))) 
+				pendingCampaign.addAdvertiserBid(sender, cbm.getCampaignBudget());
+			/*
+			 * update adNet ucs bid
+			 */
+			ucs.updateAdvertiserBid(sender, cbm.getUcsBid(), day);
 		}
 		
 	}
