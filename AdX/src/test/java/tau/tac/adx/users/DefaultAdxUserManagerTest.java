@@ -78,7 +78,7 @@ public class DefaultAdxUserManagerTest {
 		random = new Random();
 		AdxUserGenerator userGenerator = TestUtils.getInjector().getInstance(
 				AdxUserGenerator.class);
-		populationSize = 2;
+		populationSize = 10;
 		users = (List<AdxUser>) userGenerator.generate(populationSize);
 
 		publisherCatalog = new PublisherCatalog();
