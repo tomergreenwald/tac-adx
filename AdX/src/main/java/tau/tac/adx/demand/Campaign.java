@@ -10,6 +10,8 @@ package tau.tac.adx.demand;
 import java.util.Map;
 
 import se.sics.tasim.aw.TimeListener;
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
 
 public interface Campaign extends TimeListener {
@@ -55,11 +57,11 @@ public interface Campaign extends TimeListener {
 /**
  * Update an impression allocated to this campaign
  * @param segment
- * @param video
- * @param mobile
- * @param costMillis : paid to the Publisher as determined by AdX auction (in milli units)
+ * @param adType
+ * @param device
+ * @param double1 : paid to the Publisher as determined by AdX auction (in milli units)
  */
-	void impress(MarketSegment segment, boolean video, boolean mobile, long costMillis);
+	void impress(MarketSegment segment, AdType adType, Device device, long double1);
 
 /**
  * 	

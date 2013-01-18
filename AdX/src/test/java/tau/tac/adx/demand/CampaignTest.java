@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
 
 
@@ -123,9 +125,9 @@ public class CampaignTest {
 	void multiImpress(Campaign cpgn, boolean targeted, long costMillis, int multi) {
 		for (int i=0; i < multi; i++)
 			if (targeted)
-				cpgn.impress(targetSegment, false, false, costMillis);
+				cpgn.impress(targetSegment, AdType.text, Device.pc, costMillis);
 			else
-				cpgn.impress(nonTargetSegment, false, false, costMillis);
+				cpgn.impress(nonTargetSegment, AdType.text, Device.pc, costMillis);
 	}
 	
 	

@@ -9,6 +9,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
+import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
 
 
@@ -103,11 +105,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	
-	public void impress(MarketSegment segment, boolean video, boolean mobile, long costMillis) {
+	public void impress(MarketSegment segment, AdType adType, Device device, long costMillis) {
 		if (isAllocated()) {
   		    todays.cost += costMillis/1000.0;
 
-  		    double imps = (mobile ? mobileCoef : 1) * (video ? videoCoef : 1);
+  		    double imps = (device == Device.mobile ? mobileCoef : 1) * (adType == AdType.video ? videoCoef : 1);
 			
   		    if (segment == targetSegment) 
 			  todays.tartgetedImps +=  imps;

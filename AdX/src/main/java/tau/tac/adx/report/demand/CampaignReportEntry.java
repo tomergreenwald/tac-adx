@@ -16,7 +16,7 @@ public class CampaignReportEntry extends AbstractTransportableEntry<CampaignRepo
 	private static final String NTG_IMPS = "NTG_IMPS";
 	private static final String COST = "COST";
 	
-	private CampaignStats stats;
+	private CampaignStats stats = new CampaignStats(0, 0, 0);
 
 	/**
 	 * @param key

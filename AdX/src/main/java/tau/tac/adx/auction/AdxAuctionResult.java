@@ -81,6 +81,9 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	 * @return the campaign
 	 */
 	public Campaign getCampaign() {
+		if (winningBidInfo == null) {
+			return null;
+		}
 		return winningBidInfo.getCampaign();
 	}
 }
