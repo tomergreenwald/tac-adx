@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import tau.tac.adx.bids.Bidder;
+import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.TACAdxSimulation;
 
@@ -21,6 +23,8 @@ public class AdxManager {
 	 * {@link AdxPublisher}s.
 	 */
 	private static Map<String, AdxPublisher> publishersNamingMap = new HashMap<String, AdxPublisher>();
+	private static Map<Integer, Campaign> campaignMap = new HashMap<Integer, Campaign>();
+	private static Map<Integer, Bidder> bidderMap = new HashMap<Integer, Bidder>();
 	private static TACAdxSimulation simulation;
 
 	/**
@@ -47,6 +51,22 @@ public class AdxManager {
 		publishersNamingMap.put(publisher.getName(), publisher);
 	}
 
+	public static void addCampaign(Campaign campaign) {
+		campaignMap.put(campaign.getId(), campaign);
+	}
+
+	public static Campaign getCampaign(int campaignId) {
+		return campaignMap.get(campaignId);
+	}
+
+	public static void addBidder(Bidder bidder) {
+		bidderMap.put(bidder.getId(), bidder);
+	}
+
+	public static Bidder getBidder(int advertiserId) {
+		return bidderMap.get(advertiserId);
+	}
+
 	public static TACAdxSimulation getSimulation() {
 		return simulation;
 	}
@@ -58,4 +78,5 @@ public class AdxManager {
 	public static void setSimulation(TACAdxSimulation simulation) {
 		AdxManager.simulation = simulation;
 	}
+
 }

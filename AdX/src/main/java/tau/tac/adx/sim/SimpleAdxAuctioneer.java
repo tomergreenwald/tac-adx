@@ -18,8 +18,6 @@ import tau.tac.adx.auction.data.AuctionPriceType;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.auction.manager.AdxBidManager;
 import tau.tac.adx.bids.BidInfo;
-import tau.tac.adx.bids.BidProduct;
-import tau.tac.adx.bids.Bidder;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
 
@@ -81,17 +79,10 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 		Collection<BidInfo> bidInfoCollection = new HashSet<BidInfo>();
 		Set<String> advertisers = bidManager.advertisers();
 		for (final String advertiser : advertisers) {
-			double bid = bidManager.getBid(advertiser, query);
-			Bidder bidder = new Bidder() {
-
-				@Override
-				public int getId() {
-					return AdxManager.getSimulation().agentIndex(advertiser);
-				}
-			};
-			BidProduct bidProduct = bidManager.getAdLink(advertiser, query);
-			BidInfo bidInfo = new BidInfo(bid, bidder, bidProduct);
-			bidInfoCollection.add(bidInfo);
+			BidInfo bidInfo = bidManager.getBidInfo(advertiser, query);
+			if (bidInfo != null) {
+				bidInfoCollection.add(bidInfo);
+			}
 		}
 		return bidInfoCollection;
 	}

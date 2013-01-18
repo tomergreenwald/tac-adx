@@ -7,6 +7,8 @@ import tau.tac.adx.Adx;
 import tau.tac.adx.auction.data.AuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
+import tau.tac.adx.demand.Campaign;
+import tau.tac.adx.report.adn.MarketSegment;
 
 /**
  * Result of an <b>auction</b>.
@@ -19,17 +21,17 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	/**
 	 * {@link AuctionState}.
 	 */
-	private AuctionState auctionState;
+	private final AuctionState auctionState;
 
 	/**
 	 * Winning {@link BidInfo}.
 	 */
-	private BidInfo winningBidInfo;
+	private final BidInfo winningBidInfo;
 
 	/**
 	 * Actual winning price.
 	 */
-	private Double winningPrice;
+	private final Double winningPrice;
 
 	/**
 	 * @param auctionState
@@ -37,7 +39,7 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	 * @param winningBidInfo
 	 *            Winning {@link BidInfo}.
 	 * @param winningPrice
-	 *            Winnin price.
+	 *            Wining price.
 	 */
 	public AdxAuctionResult(AuctionState auctionState, BidInfo winningBidInfo,
 			Double winningPrice) {
@@ -48,18 +50,17 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	}
 
 	/**
+	 * @return the marketSegment
+	 */
+	public MarketSegment getMarketSegment() {
+		return winningBidInfo.getMarketSegment();
+	}
+
+	/**
 	 * @return the auctionState
 	 */
 	public AuctionState getAuctionState() {
 		return auctionState;
-	}
-
-	/**
-	 * @param auctionState
-	 *            the auctionState to set
-	 */
-	public void setAuctionState(AuctionState auctionState) {
-		this.auctionState = auctionState;
 	}
 
 	/**
@@ -70,14 +71,6 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	}
 
 	/**
-	 * @param winningBidInfo
-	 *            the winningBidInfo to set
-	 */
-	public void setWinningBidInfo(BidInfo winningBidInfo) {
-		this.winningBidInfo = winningBidInfo;
-	}
-
-	/**
 	 * @return the winningPrice
 	 */
 	public Double getWinningPrice() {
@@ -85,11 +78,9 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	}
 
 	/**
-	 * @param winningPrice
-	 *            the winningPrice to set
+	 * @return the campaign
 	 */
-	public void setWinningPrice(Double winningPrice) {
-		this.winningPrice = winningPrice;
+	public Campaign getCampaign() {
+		return winningBidInfo.getCampaign();
 	}
-
 }
