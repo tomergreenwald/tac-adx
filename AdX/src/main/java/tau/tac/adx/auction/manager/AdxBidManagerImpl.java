@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.auction.tracker.AdxBidTracker;
 import tau.tac.adx.auction.tracker.AdxSpendTracker;
-import tau.tac.adx.props.AdLink;
+import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 
@@ -82,18 +82,13 @@ public class AdxBidManagerImpl implements AdxBidManager {
 	 * auctions are computed for EVERY query and not cached.
 	 */
 	@Override
-	public double getBid(String advertiser, AdxQuery query) {
-		double bid = bidTracker.getBid(advertiser, query);
+	public BidInfo getBidInfo(String advertiser, AdxQuery query) {
+		BidInfo bidInfo = bidTracker.getBidInfo(advertiser, query);
 
-		if (isOverspent(bid, advertiser, query))
-			return 0.0;
+		if (isOverspent(bidInfo.getBid(), advertiser, query))
+			return null;
 		else
-			return bid;
-	}
-
-	@Override
-	public AdLink getAdLink(String advertiser, AdxQuery query) {
-		return bidTracker.getAdLink(advertiser, query);
+			return bidInfo;
 	}
 
 	@Override
@@ -132,9 +127,11 @@ public class AdxBidManagerImpl implements AdxBidManager {
 	}
 
 	private boolean isOverspent(double bid, String advertiser, AdxQuery query) {
-		return (bid >= bidTracker.getDailySpendLimit(advertiser, query)
-				- spendTracker.getDailyCost(advertiser, query))
-				|| (bid >= bidTracker.getDailySpendLimit(advertiser)
-						- spendTracker.getDailyCost(advertiser));
+		return false;
+		// TODO: uncomment me
+		// return (bid >= bidTracker.getDailySpendLimit(advertiser, query)
+		// - spendTracker.getDailyCost(advertiser, query))
+		// || (bid >= bidTracker.getDailySpendLimit(advertiser)
+		// - spendTracker.getDailyCost(advertiser));
 	}
 }

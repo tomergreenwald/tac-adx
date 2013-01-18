@@ -27,7 +27,7 @@ package tau.tac.adx.auction.manager;
 import java.util.Set;
 
 import se.sics.tasim.aw.TimeListener;
-import tau.tac.adx.props.AdLink;
+import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 
@@ -43,9 +43,7 @@ public interface AdxBidManager extends TimeListener {
 	 */
 	void addAdvertiser(String advertiser);
 
-	double getBid(String advertiser, AdxQuery query);
-
-	AdLink getAdLink(String advertiser, AdxQuery query);
+	BidInfo getBidInfo(String advertiser, AdxQuery query);
 
 	void updateBids(String advertiser, AdxBidBundle bundle);
 

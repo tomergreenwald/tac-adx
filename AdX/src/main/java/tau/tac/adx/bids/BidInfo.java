@@ -1,5 +1,7 @@
 package tau.tac.adx.bids;
 
+import tau.tac.adx.demand.Campaign;
+import tau.tac.adx.report.adn.MarketSegment;
 import edu.umich.eecs.tac.props.Ad;
 
 /**
@@ -25,6 +27,12 @@ public class BidInfo implements Cloneable {
 	 */
 	private final BidProduct bidProduct;
 
+	/** Associated {@link MarketSegment}. */
+	private MarketSegment marketSegment;
+
+	/** Associated {@link Campaign}. */
+	private Campaign campaign;
+
 	/**
 	 * @param bidPrice
 	 *            bid price
@@ -32,11 +40,18 @@ public class BidInfo implements Cloneable {
 	 *            {@link Bidder}
 	 * @param bidProduct
 	 *            {@link BidProduct}
+	 * @param marketSegment
+	 *            Associated {@link MarketSegment}
+	 * @param campaign
+	 *            Associated {@link Campaign}
 	 */
-	public BidInfo(double bidPrice, Bidder bidder, BidProduct bidProduct) {
+	public BidInfo(double bidPrice, Bidder bidder, BidProduct bidProduct,
+			MarketSegment marketSegment, Campaign campaign) {
 		this.bid = bidPrice;
 		this.bidder = bidder;
 		this.bidProduct = bidProduct;
+		this.marketSegment = marketSegment;
+		this.campaign = campaign;
 	}
 
 	/**
@@ -61,11 +76,41 @@ public class BidInfo implements Cloneable {
 	}
 
 	/**
+	 * @return the marketSegment
+	 */
+	public MarketSegment getMarketSegment() {
+		return marketSegment;
+	}
+
+	/**
+	 * @param marketSegment
+	 *            the marketSegment to set
+	 */
+	public void setMarketSegment(MarketSegment marketSegment) {
+		this.marketSegment = marketSegment;
+	}
+
+	/**
+	 * @return the campaign
+	 */
+	public Campaign getCampaign() {
+		return campaign;
+	}
+
+	/**
+	 * @param campaign
+	 *            the campaign to set
+	 */
+	public void setCampaign(Campaign campaign) {
+		this.campaign = campaign;
+	}
+
+	/**
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
 	public Object clone() {
-		return new BidInfo(bid, bidder, bidProduct);
+		return new BidInfo(bid, bidder, bidProduct, marketSegment, campaign);
 	}
 
 	/**

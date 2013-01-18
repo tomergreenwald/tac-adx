@@ -135,6 +135,14 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	}
 
 	/**
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public AdxQuery clone() {
+		return new AdxQuery(publisher, marketSegments, device, adType);
+	}
+
+	/**
 	 * Class constructor.
 	 * 
 	 * @param publisher

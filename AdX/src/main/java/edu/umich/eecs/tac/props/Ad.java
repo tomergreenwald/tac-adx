@@ -24,127 +24,158 @@
  */
 package edu.umich.eecs.tac.props;
 
+import java.text.ParseException;
+
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
-
-import java.text.ParseException;
+import tau.tac.adx.bids.BidProduct;
 
 /**
  * This class represents an advertisement in the TAC/AA scenario. Advertisements
  * can be generic or targeted depending on whether the ad specifies a product.
- * Advertisers will primarily use this class with {@link BidBundle} in specifying
- * which advertisements to display for individual queries.
- *
- *
+ * Advertisers will primarily use this class with {@link BidBundle} in
+ * specifying which advertisements to display for individual queries.
+ * 
+ * 
  * @author Patrick Jordan, Lee Callender
  */
-public class Ad extends AbstractTransportable {
-    /**
-     * The product the ad uses to determine targeting.  A generic Ad has a <code>null</code> product.
-     */
-    private Product product;
+public class Ad extends AbstractTransportable implements BidProduct {
+	/**
+	 * The product the ad uses to determine targeting. A generic Ad has a
+	 * <code>null</code> product.
+	 */
+	private Product product;
 
-    /**
-     * Creates a generic ad.
-     */
-    public Ad() {
-    }
+	/**
+	 * Creates a generic ad.
+	 */
+	public Ad() {
+	}
 
-    /**
-     * Creates a targeted ad if <code>product</code> is not null. The ad is generic if the <code>product</code> is null.
-     * @param product the targeting product. The ad is generic if the <code>product</code> is null.
-     */
-    public Ad(final Product product) {
-        this.product = product;
-    }
+	/**
+	 * Creates a targeted ad if <code>product</code> is not null. The ad is
+	 * generic if the <code>product</code> is null.
+	 * 
+	 * @param product
+	 *            the targeting product. The ad is generic if the
+	 *            <code>product</code> is null.
+	 */
+	public Ad(final Product product) {
+		this.product = product;
+	}
 
-    /**
-     * Returns <code>true</code> if the ad is generic and <code>false</code> if the ad is targeted.
-     *
-     * @return <code>true</code> if the ad is generic and <code>false</code> if the ad is targeted.
-     */
-    public final boolean isGeneric() {
-        return product == null;
-    }
+	/**
+	 * Returns <code>true</code> if the ad is generic and <code>false</code> if
+	 * the ad is targeted.
+	 * 
+	 * @return <code>true</code> if the ad is generic and <code>false</code> if
+	 *         the ad is targeted.
+	 */
+	public final boolean isGeneric() {
+		return product == null;
+	}
 
-    /**
-     * Returns the product the ad is targeting. The product is <code>null</code> if the ad is generic.
-     *
-     * @return the product the ad is targeting. The product is <code>null</code> if the ad is generic.
-     */
-    public final Product getProduct() {
-        return product;
-    }
+	/**
+	 * Returns the product the ad is targeting. The product is <code>null</code>
+	 * if the ad is generic.
+	 * 
+	 * @return the product the ad is targeting. The product is <code>null</code>
+	 *         if the ad is generic.
+	 */
+	public final Product getProduct() {
+		return product;
+	}
 
-    /**
-     * Sets the product for the ad. Setting the product to <code>null</code> sets the ad as generic.
-     *
-     * @param product the product for the ad. Setting the product to <code>null</code> sets the ad as generic.
-     * @throws IllegalStateException if the ad is locked.
-     */
-    public final void setProduct(final Product product) throws IllegalStateException {
-        lockCheck();
-        this.product = product;
-    }
+	/**
+	 * Sets the product for the ad. Setting the product to <code>null</code>
+	 * sets the ad as generic.
+	 * 
+	 * @param product
+	 *            the product for the ad. Setting the product to
+	 *            <code>null</code> sets the ad as generic.
+	 * @throws IllegalStateException
+	 *             if the ad is locked.
+	 */
+	public final void setProduct(final Product product)
+			throws IllegalStateException {
+		lockCheck();
+		this.product = product;
+	}
 
-    /**
-     * Reads the product from the reader.
-     * @param reader the reader to read data from.
-     * @throws ParseException if there was an exception reading the product.
-     */
-    @Override
-    protected final void readWithLock(final TransportReader reader) throws ParseException {
-        if (reader.nextNode(Product.class.getSimpleName(), false)) {
-            this.product = (Product) reader.readTransportable();
-        }
-    }
+	/**
+	 * Reads the product from the reader.
+	 * 
+	 * @param reader
+	 *            the reader to read data from.
+	 * @throws ParseException
+	 *             if there was an exception reading the product.
+	 */
+	@Override
+	protected final void readWithLock(final TransportReader reader)
+			throws ParseException {
+		if (reader.nextNode(Product.class.getSimpleName(), false)) {
+			this.product = (Product) reader.readTransportable();
+		}
+	}
 
-    /**
-     * Writes the product to the writer.
-     * @param writer the writer to write data to.
-     */
-    @Override
-    protected final void writeWithLock(final TransportWriter writer) {
-        if (product != null) {
-            writer.write(product);
-        }
-    }
+	/**
+	 * Writes the product to the writer.
+	 * 
+	 * @param writer
+	 *            the writer to write data to.
+	 */
+	@Override
+	protected final void writeWithLock(final TransportWriter writer) {
+		if (product != null) {
+			writer.write(product);
+		}
+	}
 
-    /**
-     * Creates a string that displays whether the ad is generic and the product, if targeted.
-     * @return a string that displays whether the ad is generic and the product, if targeted.
-     */
-    @Override
-    public final String toString() {
-        return String.format("(Ad generic:%s product:%s)", isGeneric(), getProduct());
-    }
+	/**
+	 * Creates a string that displays whether the ad is generic and the product,
+	 * if targeted.
+	 * 
+	 * @return a string that displays whether the ad is generic and the product,
+	 *         if targeted.
+	 */
+	@Override
+	public final String toString() {
+		return String.format("(Ad generic:%s product:%s)", isGeneric(),
+				getProduct());
+	}
 
-    /**
-     * Returns <code>true</code> if the object is an Ad and has the same product or lack thereof.
-     * @param o the object to compare.
-     * @return <code>true</code> if the object is an Ad and has the same product or lack thereof.
-     */
-    @Override
-    public final boolean equals(final Object o) {
-        if (this == o)  {
-            return true;
-        }
+	/**
+	 * Returns <code>true</code> if the object is an Ad and has the same product
+	 * or lack thereof.
+	 * 
+	 * @param o
+	 *            the object to compare.
+	 * @return <code>true</code> if the object is an Ad and has the same product
+	 *         or lack thereof.
+	 */
+	@Override
+	public final boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
 
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-        Ad ad = (Ad) o;
+		Ad ad = (Ad) o;
 
-        return !(product != null ? !product.equals(ad.product) : ad.product != null);
-    }
+		return !(product != null ? !product.equals(ad.product)
+				: ad.product != null);
+	}
 
-    /**
-     * Returns a hash code based on the contained product.
-     * @return a hash code based on the contained product.
-     */
-    @Override
-    public final int hashCode() {
-        return (product != null ? product.hashCode() : 0);
-    }
+	/**
+	 * Returns a hash code based on the contained product.
+	 * 
+	 * @return a hash code based on the contained product.
+	 */
+	@Override
+	public final int hashCode() {
+		return (product != null ? product.hashCode() : 0);
+	}
 }

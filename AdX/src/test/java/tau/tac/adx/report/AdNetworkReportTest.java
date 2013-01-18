@@ -174,7 +174,8 @@ public class AdNetworkReportTest {
 		AuctionState auctionState = AuctionState.values()[random
 				.nextInt(AuctionState.values().length - 1)];
 		double bidPrice = random.nextDouble();
-		BidInfo winningBidInfo = new BidInfo(bidPrice, null, null);
+		BidInfo winningBidInfo = new BidInfo(bidPrice, null, null, segment,
+				null);
 		Double winningPrice = random.nextDouble();
 		AdxAuctionResult auctionResult = new AdxAuctionResult(auctionState,
 				winningBidInfo, winningPrice);

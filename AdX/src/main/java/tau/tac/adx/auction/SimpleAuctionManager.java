@@ -145,9 +145,9 @@ public class SimpleAuctionManager implements AuctionManager {
 	protected BidInfo initializeByAuctionOrder(AuctionOrder auctionOrder) {
 		switch (auctionOrder) {
 		case HIGHEST_WINS:
-			return new BidInfo(Double.MIN_VALUE, null, null);
+			return new BidInfo(Double.MIN_VALUE, null, null, null, null);
 		case LOWEST_WINS:
-			return new BidInfo(Double.MAX_VALUE, null, null);
+			return new BidInfo(Double.MAX_VALUE, null, null, null, null);
 		default:
 			throw switchCaseException(auctionOrder);
 		}

@@ -4,6 +4,7 @@
 package tau.tac.adx.sim;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,11 +19,15 @@ import tau.tac.adx.auction.data.AuctionPriceType;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.auction.manager.AdxBidManager;
 import tau.tac.adx.bids.BidInfo;
-import tau.tac.adx.bids.BidProduct;
-import tau.tac.adx.bids.Bidder;
+import tau.tac.adx.demand.UserClassificationService;
+import tau.tac.adx.demand.UserClassificationServiceAdNetData;
+import tau.tac.adx.messages.UserClassificationServiceNotification;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.report.adn.MarketSegment;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import edu.umich.eecs.tac.auction.BidManager;
@@ -45,16 +50,24 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	private final AdxBidManager bidManager;
 
 	/**
+	 * {@link UserClassificationService}.
+	 */
+	private UserClassificationService classificationService;
+
+	/**
 	 * @param auctionManager
 	 *            {@link AuctionManager}.
 	 * @param bidManager
 	 *            {@link BidManager}.
+	 * @param eventBus
+	 *            {@link EventBus}.
 	 */
 	@Inject
 	public SimpleAdxAuctioneer(AuctionManager auctionManager,
-			AdxBidManager bidManager) {
+			AdxBidManager bidManager, EventBus eventBus) {
 		this.auctionManager = auctionManager;
 		this.bidManager = bidManager;
+		eventBus.register(this);
 	}
 
 	/**
@@ -81,19 +94,25 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 		Collection<BidInfo> bidInfoCollection = new HashSet<BidInfo>();
 		Set<String> advertisers = bidManager.advertisers();
 		for (final String advertiser : advertisers) {
-			double bid = bidManager.getBid(advertiser, query);
-			Bidder bidder = new Bidder() {
-
-				@Override
-				public int getId() {
-					return AdxManager.getSimulation().agentIndex(advertiser);
-				}
-			};
-			BidProduct bidProduct = bidManager.getAdLink(advertiser, query);
-			BidInfo bidInfo = new BidInfo(bid, bidder, bidProduct);
-			bidInfoCollection.add(bidInfo);
+			AdxQuery classifiedQuery = getClassifiedQuery(advertiser, query);
+			BidInfo bidInfo = bidManager
+					.getBidInfo(advertiser, classifiedQuery);
+			if (bidInfo != null) {
+				bidInfoCollection.add(bidInfo);
+			}
 		}
 		return bidInfoCollection;
+	}
+
+	private AdxQuery getClassifiedQuery(String advertiser, AdxQuery query) {
+		UserClassificationServiceAdNetData adNetData = classificationService
+				.getAdNetData(advertiser);
+		if (adNetData.getServiceLevel() > 0) {
+			return query;
+		}
+		AdxQuery clone = query.clone();
+		clone.setMarketSegments(Collections.singletonList(MarketSegment.NONE));
+		return clone;
 	}
 
 	@Override
@@ -105,5 +124,11 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	@Override
 	public void applyBidUpdates() {
 		bidManager.applyBidUpdates();
+	}
+
+	@Subscribe
+	public void updateUserClassificationService(
+			UserClassificationServiceNotification notification) {
+		classificationService = notification.getUserClassificationService();
 	}
 }

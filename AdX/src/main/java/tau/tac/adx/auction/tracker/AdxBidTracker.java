@@ -26,7 +26,7 @@ package tau.tac.adx.auction.tracker;
 
 import java.util.Set;
 
-import tau.tac.adx.props.AdLink;
+import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 
@@ -61,7 +61,7 @@ public interface AdxBidTracker {
 	double getDailySpendLimit(String advertiser);
 
 	/**
-	 * Get the bid for the advertiser for a given query.
+	 * Get a {@link BidInfo} for the advertiser for a given query.
 	 * 
 	 * @param advertiser
 	 *            the advertiser
@@ -69,7 +69,7 @@ public interface AdxBidTracker {
 	 *            the query
 	 * @return the bid for the advertiser for a given query.
 	 */
-	double getBid(String advertiser, AdxQuery query);
+	BidInfo getBidInfo(String advertiser, AdxQuery query);
 
 	/**
 	 * Get the daily spend limit for the advertiser for a given query.
@@ -80,7 +80,7 @@ public interface AdxBidTracker {
 	 *            the query
 	 * @return the daily spend limit for the advertiser for a given query.
 	 */
-	double getDailySpendLimit(String advertiser, AdxQuery query);
+	// double getDailySpendLimit(String advertiser, AdxQuery query);
 
 	/**
 	 * Get the ad link for the given advertiser and query
@@ -91,7 +91,7 @@ public interface AdxBidTracker {
 	 *            the query
 	 * @return the ad link for the given advertiser and query
 	 */
-	AdLink getAdLink(String advertiser, AdxQuery query);
+	// AdLink getAdLink(String advertiser, AdxQuery query);
 
 	/**
 	 * Update the bid information
