@@ -16,5 +16,5 @@ public interface AdNetworkReportSender {
 	 * @param report
 	 *            {@link AdNetworkReport} to be broadcasted.
 	 */
-	public void broadcastReport(int adNetworkId, AdNetworkReport report);
+	public void broadcastAdNetowrkReport(String adNetworkId, AdNetworkReport report);
 }

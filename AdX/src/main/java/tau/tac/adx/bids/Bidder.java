@@ -18,5 +18,5 @@ public interface Bidder {
 	/**
 	 * @return Bidder's id.
 	 */
-	public int getId();
+	public String getName();
 }

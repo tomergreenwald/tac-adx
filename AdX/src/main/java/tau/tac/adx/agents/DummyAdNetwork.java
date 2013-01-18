@@ -42,6 +42,10 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.report.demand.AdNetBidMessage;
+import tau.tac.adx.report.demand.InitialCampaignMessage;
+import tau.tac.adx.sim.TACAdxConstants;
+import tau.tac.adx.sim.TACAdxSimulation;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 
@@ -51,7 +55,7 @@ import edu.umich.eecs.tac.props.AdvertiserInfo;
 
 public class DummyAdNetwork extends Agent {
 
-	private final Logger log = Logger.global;
+	private final Logger log = Logger.getLogger(DummyAdNetwork.class.getName());
 
 	private PublisherCatalog publisherCatalog;
 	private String publisherAddress;
@@ -70,6 +74,9 @@ public class DummyAdNetwork extends Agent {
 	protected void messageReceived(Message message) {
 		try {
 			Transportable content = message.getContent();
+			if (content instanceof InitialCampaignMessage) {
+				handleInitialCampaignMessage((InitialCampaignMessage) content);
+			}
 			// if (content instanceof AdNetworkReport) {
 			// // log.info("Dummy got AdxQuery");
 			// handleAdNetworkReport((AdNetworkReport) content);
@@ -86,6 +93,17 @@ public class DummyAdNetwork extends Agent {
 			this.log.log(Level.SEVERE, "Null Message received.");
 			return;
 		}
+	}
+
+	private void handleInitialCampaignMessage(
+			InitialCampaignMessage campaignMessage) {
+		log.info(campaignMessage.toString());
+//		MarketSegment targetSegment = campaignMessage.getTargetSegment();
+//		AdNetBidMessage adNetBidMessage = new AdNetBidMessage(
+//				campaignMessage.getId(), (long)(Math.random()
+//						* campaignMessage.getReachImps()));
+//		sendMessage(TACAdxConstants.DEMAND_AGENT_NAME, adNetBidMessage);
+//		log.fine("Sent bid message");
 	}
 
 	private void handleSimulationStatus(SimulationStatus simulationStatus) {

@@ -1,5 +1,40 @@
-18/01 09:35:07 INFO file.FileDatabase|infodb: database opened as /specific/fprivate/ml/tomerg1/git/tac-adx/AdX/aa-server-10.1.0.0/infodb
-18/01 09:35:07 INFO common.BlockingViewerServer|viewer server started at *:4042
-18/01 07:35:07 INFO sim.Admin|adding manager for simulation type tac09aa
-18/01 07:35:07 INFO server.TACTGateway|TACT Server started at *:6502
-18/01 07:37:43 SEVERE tact.TACTConnection|admin@viewer-1: closed from other side
+18/01 12:45:00 INFO file.FileDatabase|infodb: database opened as /specific/fprivate/ml/tomerg1/git/tac-adx/AdX/aa-server-10.1.0.0/infodb
+18/01 12:45:00 INFO common.BlockingViewerServer|viewer server started at *:4042
+18/01 10:45:00 INFO sim.Admin|adding manager for simulation type tac09aa
+18/01 10:45:00 INFO server.TACTGateway|TACT Server started at *:6502
+18/01 10:45:03 INFO sim.Admin|created simulation 103
+18/01 10:46:00 FINE util.$Stopwatch|Module execution: 116ms
+18/01 10:46:00 FINE util.$Stopwatch|Interceptors creation: 1ms
+18/01 10:46:00 FINE util.$Stopwatch|TypeListeners creation: 3ms
+18/01 10:46:00 FINE util.$Stopwatch|Scopes creation: 3ms
+18/01 10:46:00 FINE util.$Stopwatch|Converters creation: 0ms
+18/01 10:46:00 FINE util.$Stopwatch|Binding creation: 8ms
+18/01 10:46:00 FINE util.$Stopwatch|Private environment creation: 1ms
+18/01 10:46:00 FINE util.$Stopwatch|Injector construction: 0ms
+18/01 10:46:00 FINE util.$Stopwatch|Binding initialization: 0ms
+18/01 10:46:00 FINE util.$Stopwatch|Binding indexing: 0ms
+18/01 10:46:00 FINE util.$Stopwatch|Collecting injection requests: 0ms
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.props.generators.SimpleAdxQueryGenerator FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.users.generators.SimpleUserGenerator FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.publishers.generators.SimplePublisherGenerator FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.ads.properties.generators.SimpleAdTypeGenerator FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.devices.generators.SimpleDeviceGenerator FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class com.google.common.eventbus.EventBus FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.sim.SimpleAdxAuctioneer FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.auction.manager.AdxBidManagerImpl FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.auction.tracker.AdxSpendTrackerImpl FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.auction.tracker.AdxBidTrackerImpl FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE internal.BytecodeGen|Loading class tau.tac.adx.auction.SimpleAuctionManager FastClass with sun.misc.Launcher$AppClassLoader@138d107f
+18/01 10:46:00 FINE util.$Stopwatch|Binding validation: 115ms
+18/01 10:46:00 FINE util.$Stopwatch|Static validation: 0ms
+18/01 10:46:00 FINE util.$Stopwatch|Instance member validation: 1ms
+18/01 10:46:00 FINE util.$Stopwatch|Provider verification: 0ms
+18/01 10:46:00 FINE util.$Stopwatch|Static member injection: 0ms
+18/01 10:46:00 FINE util.$Stopwatch|Instance injection: 1ms
+18/01 10:46:00 FINE util.$Stopwatch|Preloading singletons: 1ms
+18/01 10:46:00 FINE sim.Admin|Entering log for simulation 100
+************************************************************
+* Entering log for simulation 100
+************************************************************
+
+

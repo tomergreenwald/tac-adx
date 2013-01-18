@@ -224,6 +224,10 @@ public abstract class Builtin extends Agent implements TimeListener {
 	protected String[] getAdvertiserAddresses() {
 		return simulation.getAdvertiserAddresses();
 	}
+	
+	protected String[] getAdxAdvertiserAddresses() {
+		return simulation.getAdxAdvertiserAddresses();
+	}
 
 	final void sendMessage(String sender, String receiver, Transportable content) {
 

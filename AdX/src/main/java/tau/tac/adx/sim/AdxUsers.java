@@ -37,14 +37,12 @@ import edu.umich.eecs.tac.sim.PublisherInfoSender;
  */
 public abstract class AdxUsers extends Builtin implements
 		AdxPublisherReportSender, AdNetworkReportSender {
-	public static final String ADX_AGENT_NAME = "adxusers";
-
 	protected Logger log = Logger.getLogger(AdxUsers.class.getName());
 
 	PublisherInfoSender[] publishers;
 
 	public AdxUsers() {
-		super(ADX_AGENT_NAME);
+		super(TACAdxConstants.ADX_AGENT_NAME);
 	}
 
 	@Override
@@ -54,24 +52,29 @@ public abstract class AdxUsers extends Builtin implements
 	public abstract void sendReportsToAll();
 
 	/**
-	 * @see tau.tac.adx.report.publisher.AdxPublisherReportSender#broadcastReport(tau.tac.adx.report.publisher.AdxPublisherReport)
+	 * @see tau.tac.adx.report.publisher.AdxPublisherReportSender#broadcastPublisherReport(tau.tac.adx.report.publisher.AdxPublisherReport)
 	 */
 	@Override
-	public void broadcastReport(AdxPublisherReport report) {
-		getSimulation().broadcastReport(report);
+	public void broadcastPublisherReport(AdxPublisherReport report) {
+		getSimulation().broadcastPublisherReport(report);
 	}
 
 	/**
-	 * @see tau.tac.adx.report.adn.AdNetworkReportSender#broadcastReport(int,
+	 * @see tau.tac.adx.report.adn.AdNetworkReportSender#broadcastAdNetowrkReport(int,
 	 *      AdNetworkReport)
 	 */
 	@Override
-	public void broadcastReport(int adNetworkId, AdNetworkReport report) {
-		getSimulation().broadcastReport(adNetworkId, report);
+	public void broadcastAdNetowrkReport(String adNetworkName, AdNetworkReport report) {
+		getSimulation().broadcastAdNetowrkReport(adNetworkName, report);
 	}
 
 	/**
 	 * Applies bid updates.
 	 */
 	public abstract void applyBidUpdates();
+	
+	public void nextTimeUnit(int date) {
+		sendReportsToAll();
+		applyBidUpdates();
+	}
 }

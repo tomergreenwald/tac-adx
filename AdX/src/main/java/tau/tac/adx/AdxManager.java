@@ -6,9 +6,15 @@ package tau.tac.adx;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+
+import tau.tac.adx.agents.DemandAgent;
 import tau.tac.adx.bids.Bidder;
 import tau.tac.adx.demand.Campaign;
+import tau.tac.adx.messages.CampaignNotification;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.TACAdxSimulation;
 
@@ -22,24 +28,39 @@ public class AdxManager {
 	 * {@link Map} between publisher names and the coresponding
 	 * {@link AdxPublisher}s.
 	 */
-	private static Map<String, AdxPublisher> publishersNamingMap = new HashMap<String, AdxPublisher>();
-	private static Map<Integer, Campaign> campaignMap = new HashMap<Integer, Campaign>();
-	private static Map<Integer, Bidder> bidderMap = new HashMap<Integer, Bidder>();
-	private static TACAdxSimulation simulation;
+	private Map<String, AdxPublisher> publishersNamingMap = new HashMap<String, AdxPublisher>();
+	private Map<Integer, Campaign> campaignMap = new HashMap<Integer, Campaign>();
+	private Map<String, Bidder> bidderMap = new HashMap<String, Bidder>();
+	private TACAdxSimulation simulation;
+	private static AdxManager instance;
+	private Logger log = Logger.getLogger(AdxManager.class.getName());
+	
+	private AdxManager(){}
+	
+	public static AdxManager getInstance(){
+		if (instance==null) {
+			instance = new AdxManager();
+		}
+		return instance;
+	}
+	
+	public void setup(){
+		simulation.getEventBus().register(this);
+	}
 
 	/**
 	 * @param publisherName
 	 *            {@link AdxPublisher}'s name.
 	 * @return Corresponding {@link AdxPublisher}.
 	 */
-	public static AdxPublisher getPublisher(String publisherName) {
+	public AdxPublisher getPublisher(String publisherName) {
 		return publishersNamingMap.get(publisherName);
 	}
 
 	/**
 	 * @return {@link Collection} of all {@link AdxPublisher publishers}.
 	 */
-	public static Collection<AdxPublisher> getPublishers() {
+	public Collection<AdxPublisher> getPublishers() {
 		return publishersNamingMap.values();
 	}
 
@@ -47,27 +68,29 @@ public class AdxManager {
 	 * @param publisher
 	 *            {@link AdxPublisher} to map.
 	 */
-	public static void addPublisher(AdxPublisher publisher) {
+	public void addPublisher(AdxPublisher publisher) {
 		publishersNamingMap.put(publisher.getName(), publisher);
 	}
 
-	public static void addCampaign(Campaign campaign) {
-		campaignMap.put(campaign.getId(), campaign);
+	@Subscribe
+	public void addCampaign(CampaignNotification campaign) {
+		campaignMap.put(campaign.getCampaign().getId(), campaign.getCampaign());
+		log.fine(campaign.toString());
 	}
 
-	public static Campaign getCampaign(int campaignId) {
+	public Campaign getCampaign(int campaignId) {
 		return campaignMap.get(campaignId);
 	}
 
-	public static void addBidder(Bidder bidder) {
-		bidderMap.put(bidder.getId(), bidder);
+	public void addBidder(Bidder bidder) {
+		bidderMap.put(bidder.getName(), bidder);
 	}
 
-	public static Bidder getBidder(int advertiserId) {
+	public Bidder getBidder(int advertiserId) {
 		return bidderMap.get(advertiserId);
 	}
 
-	public static TACAdxSimulation getSimulation() {
+	public TACAdxSimulation getSimulation() {
 		return simulation;
 	}
 
@@ -75,8 +98,8 @@ public class AdxManager {
 	 * @param simulation
 	 *            the simulation to set
 	 */
-	public static void setSimulation(TACAdxSimulation simulation) {
-		AdxManager.simulation = simulation;
+	public void setSimulation(TACAdxSimulation simulation) {
+		this.simulation = simulation;
 	}
 
 }

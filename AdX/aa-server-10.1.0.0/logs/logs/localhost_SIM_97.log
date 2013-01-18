@@ -1,0 +1,71 @@
+18/01 10:29:00 FINE sim.Admin|Log for simulation 97 started
+************************************************************
+* Log for simulation 97 started
+************************************************************
+
+
+18/01 10:29:00 INFO sim.TACAdxSimulation|TACAA Simulation 97 is setting up...
+18/01 10:29:00 INFO sim.TACAdxSimulation|Created Adx Agent
+18/01 10:29:00 INFO sim.TACAdxSimulation|Created Demand Agent
+18/01 10:29:00 INFO sim.TACAdxSimulation|Created 1 users
+18/01 10:29:00 INFO sim.TACAdxSimulation|Created 1 publishers
+18/01 10:29:00 FINE generators.SimpleUserGenerator|Generated 10000 tau.tac.adx.users.AdxUsers
+18/01 10:29:00 FINE DummyAdvertiser.Dummy|dummy Dummy simulationSetup
+18/01 10:29:00 FINE DummyAdvertiser.Dummy-2|dummy Dummy-2 simulationSetup
+18/01 10:29:00 FINE DummyAdvertiser.Dummy-3|dummy Dummy-3 simulationSetup
+18/01 10:29:00 FINE DummyAdvertiser.Dummy-4|dummy Dummy-4 simulationSetup
+18/01 10:29:00 FINE DummyAdvertiser.Dummy-5|dummy Dummy-5 simulationSetup
+18/01 10:29:00 FINE DummyAdvertiser.Dummy-6|dummy Dummy-6 simulationSetup
+18/01 10:29:00 FINE DummyAdvertiser.Dummy-7|dummy Dummy-7 simulationSetup
+18/01 10:29:00 FINE DummyAdvertiser.Dummy-8|dummy Dummy-8 simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-2 simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-3 simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-4 simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-5 simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-6 simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-7 simulationSetup
+18/01 10:29:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-8 simulationSetup
+18/01 10:29:00 INFO sim.TACAdxSimulation|Using random capacity assigments
+18/01 10:29:00 INFO auction.QueryReportManagerImpl|QueryReportManager reset
+18/01 10:29:00 INFO publisher.AdxPublisherReportManagerImpl|AdxQueryReportManager created.
+18/01 10:29:00 INFO adn.AdNetworkReportManagerImpl|AdxQueryReportManager created.
+18/01 10:29:00 INFO agents.DemandAgent|setting up...
+18/01 10:29:00 FINE agents.DemandAgent|Finished setup
+18/01 10:29:00 INFO sim.Simulation|***** START OF TIME 0 *****
+18/01 10:29:00 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@7284aa02
+18/01 10:29:16 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@5dac13d7
+18/01 10:29:16 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@3d89acb5
+18/01 10:29:16 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@4959d87f
+18/01 10:29:16 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@5c71949b
+18/01 10:29:16 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@3852eef4
+18/01 10:29:16 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@5796de29
+18/01 10:29:16 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:16 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@71a2f5b1
+18/01 10:29:16 INFO sim.Simulation|***** START OF TIME 0 COMPLETE *****
+18/01 10:29:16 INFO sim.Simulation|***** START OF TIME 1 *****
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@3ca681c8
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@5751cfcf
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@6f9fe6d5
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@2491601c
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@78d93242
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@2cecad30
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@3614b037
+18/01 10:29:17 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:29:17 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@22a27133
+18/01 10:29:17 INFO sim.Simulation|***** START OF TIME 1 COMPLETE *****
+18/01 10:38:11 INFO sim.Simulation|***** START OF TIME 2 *****

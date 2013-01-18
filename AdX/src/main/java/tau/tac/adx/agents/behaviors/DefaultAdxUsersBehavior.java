@@ -214,11 +214,11 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 
 		if (date == 0) {
 			userManager.initialize(virtualDays);
+		} else {
+			userManager.nextTimeUnit(date);
+			userManager.triggerBehavior(AdxManager.getInstance()
+					.getSimulation().getAuctioneer());
 		}
-
-		userManager.nextTimeUnit(date);
-
-		userManager.triggerBehavior(AdxManager.getSimulation().getAuctioneer());
 	}
 
 	/**

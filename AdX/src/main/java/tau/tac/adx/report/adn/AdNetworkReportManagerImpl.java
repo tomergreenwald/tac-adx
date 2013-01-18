@@ -48,7 +48,7 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	/**
 	 * {@link AdNetworkReport}s, each matches and <b>AdNetwork</b>.
 	 */
-	private final Map<Integer, AdNetworkReport> adNetworkReports = new HashMap<Integer, AdNetworkReport>();
+	private final Map<String, AdNetworkReport> adNetworkReports = new HashMap<String, AdNetworkReport>();
 
 	/**
 	 * The {@link AdNetworkReportSender}.
@@ -86,8 +86,8 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	@Subscribe
 	public void auctionPerformed(AuctionMessage message) {
 		if (message.getAuctionResult().getAuctionState() == AuctionState.AUCTION_COPMLETED) {
-			int bidder = message.getAuctionResult().getWinningBidInfo()
-					.getBidder().getId();
+			String bidder = message.getAuctionResult().getWinningBidInfo()
+					.getBidder().getName();
 			AdNetworkReport report = adNetworkReports.get(bidder);
 			if (report == null) {
 				report = new AdNetworkReport();
@@ -103,9 +103,9 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 */
 	@Override
 	public void sendReportsToAll() {
-		for (Entry<Integer, AdNetworkReport> entry : adNetworkReports
+		for (Entry<String, AdNetworkReport> entry : adNetworkReports
 				.entrySet()) {
-			adNetworkReportSender.broadcastReport(entry.getKey(),
+			adNetworkReportSender.broadcastAdNetowrkReport(entry.getKey(),
 					entry.getValue());
 		}
 	}

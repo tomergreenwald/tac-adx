@@ -358,8 +358,8 @@ public class AdxBidBundle extends
 		}
 		BidEntry bidEntry = getEntry(index);
 		BidInfo bidInfo = new BidInfo(bidEntry.getBid(),
-				AdxManager.getBidder(advertiserId), bidEntry.getAd(),
-				bidEntry.getMarketSegment(), AdxManager.getCampaign(bidEntry
+				AdxManager.getInstance().getBidder(advertiserId), bidEntry.getAd(),
+				bidEntry.getMarketSegment(), AdxManager.getInstance().getCampaign(bidEntry
 						.getCampaignId()));
 		return bidInfo;
 	}

@@ -157,7 +157,7 @@ public class AdNetworkReportTest {
 		AdxPublisherGenerator publisherGenerator = new SimplePublisherGenerator();
 		AdxPublisher publisher = publisherGenerator.generate(1).iterator()
 				.next();
-		AdxManager.addPublisher(publisher);
+		AdxManager.getInstance().addPublisher(publisher);
 		Random random = new Random();
 		String publisherName = "publisher #" + random.nextInt();
 		MarketSegment segment = MarketSegment.values()[random

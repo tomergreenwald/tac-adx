@@ -12,5 +12,5 @@ public interface AdxPublisherReportSender {
 	 * @param report
 	 *            {@link AdxPublisherReport} to be broadcasted.
 	 */
-	public void broadcastReport(AdxPublisherReport report);
+	public void broadcastPublisherReport(AdxPublisherReport report);
 }

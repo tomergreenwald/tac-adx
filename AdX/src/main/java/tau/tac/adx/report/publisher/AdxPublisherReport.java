@@ -118,7 +118,7 @@ public class AdxPublisherReport extends
 	 * @return Corresponding {@link PublisherCatalogEntry}.
 	 */
 	private PublisherCatalogEntry getPublisherCatalogEntry(String publisher) {
-		return new PublisherCatalogEntry(AdxManager.getPublisher(publisher));
+		return new PublisherCatalogEntry(AdxManager.getInstance().getPublisher(publisher));
 	}
 
 	public void addQuery(AdxQuery query) {

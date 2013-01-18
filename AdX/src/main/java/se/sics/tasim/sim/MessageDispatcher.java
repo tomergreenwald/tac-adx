@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import com.botbox.util.ArrayQueue;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
+import tau.tac.adx.report.demand.InitialCampaignMessage;
 
 final class MessageDispatcher extends Thread {
 
@@ -85,6 +86,9 @@ final class MessageDispatcher extends Thread {
 					break;
 
 				} else if (message instanceof Message) {
+					if (((Message)message).getContent() instanceof InitialCampaignMessage) {
+						int i =1;
+					}
 					deliverMessage((Message) message);
 
 				} else if (message instanceof Delivery) {

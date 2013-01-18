@@ -89,7 +89,7 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	 */
 	@Override
 	public void sendReportsToAll() {
-		publisherReportSender.broadcastReport(publisherReport);
+		publisherReportSender.broadcastPublisherReport(publisherReport);
 	}
 
 }

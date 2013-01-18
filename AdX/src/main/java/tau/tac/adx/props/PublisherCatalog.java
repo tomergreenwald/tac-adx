@@ -53,7 +53,7 @@ public class PublisherCatalog extends
 	 */
 	public void addPublisher(AdxPublisher publisher) {
 		addEntry(new PublisherCatalogEntry(publisher.getName()));
-		AdxManager.addPublisher(publisher);
+		AdxManager.getInstance().addPublisher(publisher);
 	}
 
 	/**

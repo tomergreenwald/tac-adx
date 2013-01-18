@@ -1,0 +1,41 @@
+18/01 08:30:00 FINE sim.Admin|Log for simulation 85 started
+************************************************************
+* Log for simulation 85 started
+************************************************************
+
+
+18/01 08:30:00 INFO sim.TACAdxSimulation|TACAA Simulation 85 is setting up...
+18/01 08:30:00 INFO sim.TACAdxSimulation|Created Adx Agent
+18/01 08:30:00 INFO sim.TACAdxSimulation|Created Demand Agent
+18/01 08:30:00 INFO sim.TACAdxSimulation|Created 1 users
+18/01 08:30:00 INFO sim.TACAdxSimulation|Created 1 publishers
+18/01 08:30:00 FINE generators.SimpleUserGenerator|Generated 10000 tau.tac.adx.users.AdxUsers
+18/01 08:30:00 FINE DummyAdvertiser.Dummy|dummy Dummy simulationSetup
+18/01 08:30:00 FINE DummyAdvertiser.Dummy-2|dummy Dummy-2 simulationSetup
+18/01 08:30:00 FINE DummyAdvertiser.Dummy-3|dummy Dummy-3 simulationSetup
+18/01 08:30:00 FINE DummyAdvertiser.Dummy-4|dummy Dummy-4 simulationSetup
+18/01 08:30:00 FINE DummyAdvertiser.Dummy-5|dummy Dummy-5 simulationSetup
+18/01 08:30:00 FINE DummyAdvertiser.Dummy-6|dummy Dummy-6 simulationSetup
+18/01 08:30:00 FINE DummyAdvertiser.Dummy-7|dummy Dummy-7 simulationSetup
+18/01 08:30:00 FINE DummyAdvertiser.Dummy-8|dummy Dummy-8 simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork-2 simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork-3 simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork-4 simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork-5 simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork-6 simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork-7 simulationSetup
+18/01 08:30:24 FINE global|dummy DummyAdnetwork-8 simulationSetup
+18/01 08:30:24 INFO sim.TACAdxSimulation|Using random capacity assigments
+18/01 08:30:24 INFO auction.QueryReportManagerImpl|QueryReportManager reset
+18/01 08:30:24 INFO publisher.AdxPublisherReportManagerImpl|AdxQueryReportManager created.
+18/01 08:30:24 INFO adn.AdNetworkReportManagerImpl|AdxQueryReportManager created.
+18/01 08:30:24 INFO agents.DemandAgent|setting up...
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns
+18/01 08:30:24 INFO agents.DemandAgent|allocating initial campaigns

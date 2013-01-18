@@ -1,0 +1,132 @@
+18/01 10:58:00 FINE sim.Admin|Log for simulation 102 started
+************************************************************
+* Log for simulation 102 started
+************************************************************
+
+
+18/01 10:58:00 INFO sim.TACAdxSimulation|TACAA Simulation 102 is setting up...
+18/01 10:58:00 INFO sim.TACAdxSimulation|Created Adx Agent
+18/01 10:58:00 INFO sim.TACAdxSimulation|Created Demand Agent
+18/01 10:58:00 INFO sim.TACAdxSimulation|Created 1 users
+18/01 10:58:00 INFO sim.TACAdxSimulation|Created 1 publishers
+18/01 10:58:00 FINE generators.SimpleUserGenerator|Generated 10000 tau.tac.adx.users.AdxUsers
+18/01 10:58:00 FINE DummyAdvertiser.Dummy|dummy Dummy simulationSetup
+18/01 10:58:00 FINE DummyAdvertiser.Dummy-2|dummy Dummy-2 simulationSetup
+18/01 10:58:00 FINE DummyAdvertiser.Dummy-3|dummy Dummy-3 simulationSetup
+18/01 10:58:00 FINE DummyAdvertiser.Dummy-4|dummy Dummy-4 simulationSetup
+18/01 10:58:00 FINE DummyAdvertiser.Dummy-5|dummy Dummy-5 simulationSetup
+18/01 10:58:00 FINE DummyAdvertiser.Dummy-6|dummy Dummy-6 simulationSetup
+18/01 10:58:00 FINE DummyAdvertiser.Dummy-7|dummy Dummy-7 simulationSetup
+18/01 10:58:00 FINE DummyAdvertiser.Dummy-8|dummy Dummy-8 simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-2 simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-3 simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-4 simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-5 simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-6 simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-7 simulationSetup
+18/01 10:58:00 FINE agents.DummyAdNetwork|dummy DummyAdnetwork-8 simulationSetup
+18/01 10:58:00 INFO sim.TACAdxSimulation|Using random capacity assigments
+18/01 10:58:00 INFO auction.QueryReportManagerImpl|QueryReportManager reset
+18/01 10:58:00 INFO publisher.AdxPublisherReportManagerImpl|AdxQueryReportManager created.
+18/01 10:58:00 INFO adn.AdNetworkReportManagerImpl|AdxQueryReportManager created.
+18/01 10:58:00 INFO agents.DemandAgent|setting up...
+18/01 10:58:00 FINE agents.DemandAgent|Finished setup
+18/01 10:58:00 INFO sim.Simulation|***** START OF TIME 0 *****
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@6ce931d9
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@66f9104a
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@29909385
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@92ca580
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@1abbbd0e
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@20ca5bff
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@12d28dfa
+18/01 10:58:35 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:35 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@3dd81ec9
+18/01 10:58:35 INFO sim.Simulation|***** START OF TIME 0 COMPLETE *****
+18/01 10:58:35 INFO sim.Simulation|***** START OF TIME 1 *****
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@5bc539f2
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@302aa00f
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@43440592
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@d3167d7
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@5c7fb90e
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@22092971
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@56f3b98c
+18/01 10:58:36 INFO agents.DemandAgent|allocating initial campaigns
+18/01 10:58:36 FINE adx.AdxManager|tau.tac.adx.messages.CampaignNotification@7a636960
+18/01 10:58:36 INFO sim.Simulation|***** START OF TIME 1 COMPLETE *****
+18/01 10:58:36 INFO sim.Simulation|***** START OF TIME 2 *****
+18/01 10:58:37 INFO agents.DemandAgent|new day 2 . Auction pending campaign
+18/01 10:58:37 INFO agents.DemandAgent|Auction user classification service
+18/01 10:58:37 INFO agents.DemandAgent|Reporting auction results...
+18/01 10:58:37 INFO agents.DemandAgent|Notifying new campaign opportunity..
+18/01 10:58:37 INFO sim.Simulation|***** START OF TIME 2 COMPLETE *****
+18/01 10:58:37 INFO sim.Simulation|***** START OF TIME 3 *****
+18/01 10:58:37 INFO agents.DemandAgent|new day 3 . Auction pending campaign
+18/01 10:58:37 INFO agents.DemandAgent|Auction user classification service
+18/01 10:58:37 INFO agents.DemandAgent|Reporting auction results...
+18/01 10:58:37 INFO agents.DemandAgent|Notifying new campaign opportunity..
+18/01 10:58:37 INFO sim.Simulation|***** START OF TIME 3 COMPLETE *****
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[516678529,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[1902079471,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[1047679357,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[650761918,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[647518981,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[1162769811,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[125815596,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:37 INFO agents.DummyAdNetwork|InitialCampaign[454738669,30000,1,1,FEMALE_HIGH_INCOME,2.5,3.5,[]]
+18/01 10:58:37 FINE agents.DummyAdNetwork|Sent bid message
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,516678529,26186,[]]
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,1902079471,17332,[]]
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,1047679357,5957,[]]
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,650761918,25778,[]]
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,647518981,4983,[]]
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,1162769811,4399,[]]
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,125815596,11931,[]]
+18/01 10:58:38 INFO agents.DemandAgent|Got message..
+18/01 10:58:38 INFO agents.DemandAgent|..AdNetBidMessage: AdNetBid[0.0,454738669,11927,[]]
+18/01 10:58:40 INFO sim.Simulation|***** START OF TIME 4 *****
+18/01 10:58:40 INFO agents.DemandAgent|new day 4 . Auction pending campaign
+18/01 10:58:40 INFO agents.DemandAgent|Auction user classification service
+18/01 10:58:40 INFO agents.DemandAgent|Reporting auction results...
+18/01 10:58:40 INFO agents.DemandAgent|Notifying new campaign opportunity..
+18/01 10:58:40 INFO sim.Simulation|***** START OF TIME 4 COMPLETE *****
+18/01 10:58:50 INFO sim.Simulation|***** START OF TIME 5 *****
+18/01 10:58:50 INFO agents.DemandAgent|new day 5 . Auction pending campaign
+18/01 10:58:50 INFO agents.DemandAgent|Auction user classification service
+18/01 10:58:50 INFO agents.DemandAgent|Reporting auction results...
+18/01 10:58:50 INFO agents.DemandAgent|Notifying new campaign opportunity..
+18/01 10:58:50 INFO sim.Simulation|***** START OF TIME 5 COMPLETE *****
+18/01 10:59:00 INFO sim.Simulation|***** START OF TIME 6 *****
+18/01 10:59:00 INFO agents.DemandAgent|new day 6 . Auction pending campaign
+18/01 10:59:00 INFO agents.DemandAgent|Auction user classification service
+18/01 10:59:00 INFO agents.DemandAgent|Reporting auction results...
+18/01 10:59:00 INFO agents.DemandAgent|Notifying new campaign opportunity..
+18/01 10:59:00 INFO sim.Simulation|***** START OF TIME 6 COMPLETE *****

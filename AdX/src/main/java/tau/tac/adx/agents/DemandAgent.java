@@ -23,6 +23,7 @@ import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.demand.UserClassificationServiceLevelNotification;
 import tau.tac.adx.sim.Builtin;
+import tau.tac.adx.sim.TACAdxConstants;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -43,12 +44,12 @@ public class DemandAgent extends Builtin {
 	private static final double ALOC_CMP_VC = 2.5;
 	private static final double ALOC_CMP_MC = 3.5;
 
-	public static final String DEMAND_AGENT_NAME = "demand";
 	private Logger log;
 
 	private QualityManager qualityManager;
 	private ListMultimap<String, Campaign> adNetCampaigns;
 	private Campaign pendingCampaign;
+	private Campaign tommorrowsPendingCampaign;
 
 	private UserClassificationService ucs;
 
@@ -56,52 +57,51 @@ public class DemandAgent extends Builtin {
 	 * Default constructor.
 	 */
 	public DemandAgent() {
-		super(DEMAND_AGENT_NAME);
+		super(TACAdxConstants.DEMAND_AGENT_NAME);
 	}
 
-	/**
-	 * @see se.sics.tasim.aw.TimeListener#nextTimeUnit(int)
-	 */
-	@Override
-	public void nextTimeUnit(int date) {
+	public void preNextTimeUnit(int date) {
 		day = date;
+		if (date == 0) {
+			zeroDayInitialization();
+		} else {
+			pendingCampaign = tommorrowsPendingCampaign;
+			auctionTomorrowsCampaign(date);
+			ucs.auction(day);
+			getSimulation().getEventBus().post(
+					new UserClassificationServiceNotification(ucs));
 
-		/*
-		 * Auction campaign and add to repository
-		 */
-		log.log(Level.INFO, "new day " + date + " . Auction pending campaign");
-		if (pendingCampaign != null) {
-			pendingCampaign.auction();
-			if (pendingCampaign.isAllocated()) {
-				adNetCampaigns.put(pendingCampaign.getAdvertiser(),
-						pendingCampaign);
+			consolidateCmpaignStatistics(date);
+			reportAuctionResutls(date);
 
-				/* notify regarding newly allocate campaign */
-				getSimulation().getEventBus().post(
-						new CampaignNotification(pendingCampaign));
-
-			}
 		}
+		createAndPublishTomorrowsPendingCampaign();
+	}
 
+	private void createAndPublishTomorrowsPendingCampaign() {
 		/*
-		 * auction user classification service and announce results to built-in
+		 * Create next campaign opportunity and notify competing adNetwork
 		 * agents
 		 */
-		log.log(Level.INFO, "Auction user classification service");
+		tommorrowsPendingCampaign = new CampaignImpl(qualityManager,
+				ALOC_CMP_REACH, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
+				ALOC_CMP_SGMNT /*
+				 * TODO: randomize
+				 */, ALOC_CMP_VC, ALOC_CMP_MC);
+		
+		log.log(Level.INFO, "Notifying new campaign opportunity..");
+		getSimulation().sendCampaignOpportunity(
+				new CampaignOpportunityMessage(tommorrowsPendingCampaign));
+	}
 
-		ucs.auction(day);
-		getSimulation().getEventBus().post(
-				new UserClassificationServiceNotification(ucs));
-
-		for (Campaign campaign : adNetCampaigns.values())
-			campaign.nextTimeUnit(date);
+	private void reportAuctionResutls(int date) {
 		/*
 		 * report auctions result and campaigns stats to adNet agents
 		 */
 
 		log.log(Level.INFO, "Reporting auction results...");
 
-		for (String advertiser : getAdvertiserAddresses()) {
+		for (String advertiser : getAdxAdvertiserAddresses()) {
 
 			CampaignReport report = new CampaignReport();
 			for (Campaign campaign : adNetCampaigns.values()) {
@@ -119,22 +119,37 @@ public class DemandAgent extends Builtin {
 			getSimulation().sendUserClassificationAuctionResult(advertiser,
 					ucsNotification);
 		}
+	}
+
+	private void consolidateCmpaignStatistics(int date) {
+		for (Campaign campaign : adNetCampaigns.values())
+			campaign.nextTimeUnit(date);
+	}
+
+	private void auctionTomorrowsCampaign(int date) {
+		/*
+		 * Auction campaign and add to repository
+		 */
+		log.log(Level.INFO, "new day " + date
+				+ " . Auction pending campaign");
+		if (pendingCampaign != null) {
+			pendingCampaign.auction();
+			if (pendingCampaign.isAllocated()) {
+				adNetCampaigns.put(pendingCampaign.getAdvertiser(),
+						pendingCampaign);
+
+				/* notify regarding newly allocate campaign */
+				getSimulation().getEventBus().post(
+						new CampaignNotification(pendingCampaign));
+
+			}
+		}
 
 		/*
-		 * Create next campaign opportunity and notify competing adNetwork
-		 * agents
+		 * auction user classification service and announce results to
+		 * built-in agents
 		 */
-		pendingCampaign = new CampaignImpl(qualityManager, ALOC_CMP_REACH,
-				ALOC_CMP_START_DAY, ALOC_CMP_END_DAY, ALOC_CMP_SGMNT /*
-																	 * TODO:
-																	 * randomize
-																	 */,
-				ALOC_CMP_VC, ALOC_CMP_MC);
-
-		log.log(Level.INFO, "Notifying new campaign opportunity..");
-		getSimulation().sendCampaignOpportunity(
-				new CampaignOpportunityMessage(pendingCampaign));
-
+		log.log(Level.INFO, "Auction user classification service");
 	}
 
 	/**
@@ -154,10 +169,14 @@ public class DemandAgent extends Builtin {
 
 		ucs = new UserClassificationServiceImpl();
 
+		log.fine("Finished setup");
+	}
+
+	private void zeroDayInitialization() {
 		/*
 		 * Allocate an initial campaign to each competing adNet agent and notify
 		 */
-		for (String advertiser : getAdvertiserAddresses()) {
+		for (String advertiser : getAdxAdvertiserAddresses()) {
 			log.log(Level.INFO, "allocating initial campaigns");
 			qualityManager.addAdvertiser(advertiser);
 			Campaign campaign = new CampaignImpl(qualityManager,
@@ -169,6 +188,8 @@ public class DemandAgent extends Builtin {
 			adNetCampaigns.put(advertiser, campaign);
 			getSimulation().sendInitialCampaign(advertiser,
 					new InitialCampaignMessage(campaign));
+			getSimulation().getEventBus().post(
+					new CampaignNotification(campaign));
 			ucs.updateAdvertiserBid(advertiser, 0, 0);
 		}
 	}
@@ -231,6 +252,12 @@ public class DemandAgent extends Builtin {
 					message.getQuery().getDevice(),
 					(long) (message.getAuctionResult().getWinningPrice() * 1000));
 		}
+	}
+
+	@Override
+	public void nextTimeUnit(int timeUnit) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

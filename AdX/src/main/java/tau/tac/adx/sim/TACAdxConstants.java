@@ -24,6 +24,7 @@
  */
 package tau.tac.adx.sim;
 
+import tau.tac.adx.agents.DemandAgent;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 
@@ -36,6 +37,7 @@ import com.google.common.eventbus.EventBus;
  * @author SICS, Patrick Jordan, Lee Callender
  */
 public final class TACAdxConstants {
+
 	/**
 	 * Sole constructor (should not be invoked).
 	 */
@@ -149,7 +151,6 @@ public final class TACAdxConstants {
 	 */
 	public static final int DU_ADX_BIDS = 402;
 
-	
 	/**
 	 * The initial campaign allocated to an advertiser.
 	 */
@@ -170,9 +171,6 @@ public final class TACAdxConstants {
 	 */
 	public static final int DU_UCS_REPORT = 406;
 
-	
-	
-	
 	/**
 	 * The TAC AA Publisher role.
 	 */
@@ -191,12 +189,20 @@ public final class TACAdxConstants {
 	public static final int ADX_AGENT_ROLE_ID = 3;
 	// Mariano
 	/**
-	 * The Mariano role.
+	 * The {@link DemandAgent} role.
 	 */
 	public static final int DEMAND_AGENT_ROLE_ID = 4;
+	/**
+	 * The ad network role.
+	 */
+	public static final int AD_NETOWRK_ROLE_ID = 5;
+	/** {@link DemandAgent} name. */
+	public static final String DEMAND_AGENT_NAME = "demand";
+	/** {@link AdxUsers} name. */
+	public static final String ADX_AGENT_NAME = "adxusers";
 	/**
 	 * The TAC AA participant roles as human readable names.
 	 */
 	public static final String[] ROLE_NAME = { "Publisher", "Advertiser",
-			"User" };
+			"User", "ADX Agent", "Demand Agent", "Ad Newtork" };
 }

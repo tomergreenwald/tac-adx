@@ -71,11 +71,7 @@ public class DefaultAdxUsers extends AdxUsers {
 				new BidBundleWriterProxy());
 	}
 
-	/**
-	 * @see se.sics.tasim.aw.TimeListener#nextTimeUnit(int)
-	 */
-	@Override
-	public void nextTimeUnit(int date) {
+	public void preNextTimeUnit(int date) {
 		usersBehavior.nextTimeUnit(date);
 	}
 

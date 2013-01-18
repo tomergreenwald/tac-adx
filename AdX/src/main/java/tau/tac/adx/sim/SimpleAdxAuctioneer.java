@@ -77,7 +77,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	public AdxAuctionResult runAuction(AdxQuery query) {
 		Collection<BidInfo> bidInfoCollection = generateBidInfos(query);
 
-		ReservePriceManager reservePriceManager = AdxManager.getPublisher(
+		ReservePriceManager reservePriceManager = AdxManager.getInstance().getPublisher(
 				query.getPublisher()).getReservePriceManager();
 		Double reservePrice = reservePriceManager.generateReservePrice();
 		AuctionData auctionData = new AuctionData(AuctionOrder.HIGHEST_WINS,

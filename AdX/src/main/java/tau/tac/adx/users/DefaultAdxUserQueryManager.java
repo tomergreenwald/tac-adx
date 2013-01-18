@@ -162,7 +162,7 @@ public class DefaultAdxUserQueryManager implements AdxUserQueryManager {
 				AdType adType = adTypeGenerator.randomType();
 				AdxQuery query = new AdxQuery(
 						publisherEntry.getPublisherName(), user, device, adType);
-				AdxPublisher publisher = AdxManager.getPublisher(publisherEntry
+				AdxPublisher publisher = AdxManager.getInstance().getPublisher(publisherEntry
 						.getPublisherName());
 				double weight = publisher.userAffiliation(user);
 				sampler.addState(weight, query);
