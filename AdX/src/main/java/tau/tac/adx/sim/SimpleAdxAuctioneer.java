@@ -59,6 +59,8 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	 *            {@link AuctionManager}.
 	 * @param bidManager
 	 *            {@link BidManager}.
+	 * @param eventBus
+	 *            {@link EventBus}.
 	 */
 	@Inject
 	public SimpleAdxAuctioneer(AuctionManager auctionManager,
