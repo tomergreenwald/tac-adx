@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import se.sics.isl.transport.Transportable;
+import se.sics.isl.util.ConfigManager;
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignImpl;
@@ -33,7 +34,9 @@ public class DemandAgent extends Builtin {
 
 	private int day;
 
-	private static final Long ALOC_CMP_REACH = 30000L;
+	private static final int ALOC_CMP_REACH = 10000;
+	private static int aloc_cmp_reach;
+	
 	private static final int ALOC_CMP_START_DAY = 1;
 	private static final int ALOC_CMP_END_DAY = 5;
 
@@ -84,7 +87,7 @@ public class DemandAgent extends Builtin {
 		 * agents
 		 */
 		tommorrowsPendingCampaign = new CampaignImpl(qualityManager,
-				ALOC_CMP_REACH, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
+				aloc_cmp_reach, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
 				ALOC_CMP_SGMNT /*
 				 * TODO: randomize
 				 */, ALOC_CMP_VC, ALOC_CMP_MC);
@@ -157,6 +160,9 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	protected void setup() {
+		//ConfigManager config = getSimulation().getConfig();
+		aloc_cmp_reach = getSimulation().getConfig().getPropertyAsInt("adxusers.population_size", ALOC_CMP_REACH);
+		
 		this.log = Logger.getLogger(DemandAgent.class.getName());
 
 		log.info("setting up...");
@@ -180,7 +186,7 @@ public class DemandAgent extends Builtin {
 			log.log(Level.INFO, "allocating initial campaigns");
 			qualityManager.addAdvertiser(advertiser);
 			Campaign campaign = new CampaignImpl(qualityManager,
-					ALOC_CMP_REACH, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
+					aloc_cmp_reach, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
 					ALOC_CMP_SGMNT /* TODO: randomize */, ALOC_CMP_VC,
 					ALOC_CMP_MC);
 

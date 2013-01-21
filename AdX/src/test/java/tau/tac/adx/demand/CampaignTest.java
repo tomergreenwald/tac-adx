@@ -19,7 +19,7 @@ import tau.tac.adx.report.adn.MarketSegment;
  * @author mariano
  */
 public class CampaignTest {
-  Long reachImps = 100L;
+  int reachImps = 100;
   int dayStart = 5;
   int dayEnd = 12;
   MarketSegment targetSegment = MarketSegment.FEMALE_HIGH_INCOME;

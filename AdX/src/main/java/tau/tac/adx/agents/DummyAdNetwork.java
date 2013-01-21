@@ -98,12 +98,12 @@ public class DummyAdNetwork extends Agent {
 	private void handleInitialCampaignMessage(
 			InitialCampaignMessage campaignMessage) {
 		log.info(campaignMessage.toString());
-//		MarketSegment targetSegment = campaignMessage.getTargetSegment();
-//		AdNetBidMessage adNetBidMessage = new AdNetBidMessage(
-//				campaignMessage.getId(), (long)(Math.random()
-//						* campaignMessage.getReachImps()));
-//		sendMessage(TACAdxConstants.DEMAND_AGENT_NAME, adNetBidMessage);
-//		log.fine("Sent bid message");
+		// MarketSegment targetSegment = campaignMessage.getTargetSegment();
+		// AdNetBidMessage adNetBidMessage = new AdNetBidMessage(
+		// campaignMessage.getId(), (long)(Math.random()
+		// * campaignMessage.getReachImps()));
+		// sendMessage(TACAdxConstants.DEMAND_AGENT_NAME, adNetBidMessage);
+		// log.fine("Sent bid message");
 	}
 
 	private void handleSimulationStatus(SimulationStatus simulationStatus) {

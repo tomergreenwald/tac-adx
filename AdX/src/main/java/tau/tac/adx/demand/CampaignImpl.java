@@ -49,7 +49,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	
 	
 	
-	public CampaignImpl(QualityManager qualityManager, Long reachImps, int dayStart, int dayEnd,
+	public CampaignImpl(QualityManager qualityManager, int reachImps, int dayStart, int dayEnd,
 			MarketSegment targetSegment, double videoCoef, double mobileCoef) {
 		
 		if (qualityManager == null)
@@ -64,7 +64,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		day = 0;
 		
 		this.qualityManager = qualityManager;
-		this.reachImps = reachImps;
+		this.reachImps = (long)reachImps;
 		this.dayStart = dayStart;
 		this.dayEnd = dayEnd;
 		this.targetSegment = targetSegment;
