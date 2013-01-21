@@ -19,23 +19,25 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	private MarketSegment targetSegment;
 	private double videoCoef;
 	private double mobileCoef;
+	private int day;
 	
 	public CampaignOpportunityMessage() {
 	}
 
-	public CampaignOpportunityMessage(Campaign campaign) {
+	public CampaignOpportunityMessage(Campaign campaign, int day) {
 		this.id = campaign.getId();
 		this.reachImps = campaign.getReachImps();
 		this.dayStart = campaign.getDayStart();
 		this.dayEnd = campaign.getDayEnd();
 		this.targetSegment = campaign.getTargetSegment();
 		this.videoCoef = campaign.getVideoCoef();
-		this.mobileCoef = campaign.getMobileCoef();		
+		this.mobileCoef = campaign.getMobileCoef();
+		this.day = day;
 	}
 
 	
 	public CampaignOpportunityMessage(int id, Long reachImps, int dayStart, int dayEnd,
-			MarketSegment targetSegment, double videoCoef, double mobileCoef) {
+			MarketSegment targetSegment, double videoCoef, double mobileCoef, int day) {
 				
 		this.id = id;
 		this.reachImps = reachImps;
@@ -44,6 +46,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		this.targetSegment = targetSegment;
 		this.videoCoef = videoCoef;
 		this.mobileCoef = mobileCoef;
+		this.day = day;
 	}
 
 	public int getId() {
@@ -73,14 +76,19 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	public double getMobileCoef() {
 		return mobileCoef;
 	}
+
+	public int getDay() {
+		return day;
+	}
 	
 	
 	
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
 				.append('[').append(id).append(',').append(reachImps).append(',').append(dayStart)
-				.append(',').append(dayEnd).append(',').append(targetSegment).
-				append(',').append(videoCoef).append(',').append(mobileCoef).append(',');
+				.append(',').append(dayEnd).append(',').append(targetSegment)
+				.append(',').append(videoCoef).append(',').append(mobileCoef).append(',')
+				.append(day).append(',');
 		return params(buf).append(']').toString();
 	}
 
@@ -110,6 +118,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		targetSegment = MarketSegment.valueOf(targetSegmentName);
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
+		day = reader.getAttributeAsInt("day");
 		super.read(reader);
 	}
 	
@@ -117,7 +126,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	public void write(TransportWriter writer) {
 		writer.attr("id", id).attr("reachImps", reachImps).attr("dayStart", dayStart).attr(
 				"dayEnd", dayEnd).attr("targetSegment",targetSegment.name()).
-				attr("videoCoef", videoCoef).attr("mobileCoef",mobileCoef);
+				attr("videoCoef", videoCoef).attr("mobileCoef",mobileCoef).attr("day",day);
 		super.write(writer);
 	}
 

@@ -25,7 +25,9 @@
 package tau.tac.adx.agents;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
@@ -41,11 +43,14 @@ import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
+import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.AdNetBidMessage;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
+import tau.tac.adx.report.demand.CampaignOpportunityMessage;
+import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
-import tau.tac.adx.sim.TACAdxConstants;
-import tau.tac.adx.sim.TACAdxSimulation;
+import tau.tac.adx.report.publisher.AdxPublisherReport;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 
@@ -58,7 +63,7 @@ public class DummyAdNetwork extends Agent {
 	private final Logger log = Logger.getLogger(DummyAdNetwork.class.getName());
 
 	private PublisherCatalog publisherCatalog;
-	private String publisherAddress;
+	private String ServerAddress;
 	private AdxBidBundle bidBundle;
 
 	private AdxQuery[] queries;
@@ -66,6 +71,18 @@ public class DummyAdNetwork extends Agent {
 	private double[] clicks;
 	private double[] conversions;
 	private double[] values;
+
+	private Random randomGenerator;
+	private InitialCampaignMessage initialCampaignMessage;
+	private CampaignOpportunityMessage campaignOpportunityMessage;
+	private CampaignReport campaignReport;
+	private AdNetworkDailyNotification adNetworkDailyNotification;
+
+	private CampaignData pendingCampaign;
+
+	private Map<Integer, CampaignData> myCampaigns;
+	
+	private int day;
 
 	public DummyAdNetwork() {
 	}
@@ -76,34 +93,102 @@ public class DummyAdNetwork extends Agent {
 			Transportable content = message.getContent();
 			if (content instanceof InitialCampaignMessage) {
 				handleInitialCampaignMessage((InitialCampaignMessage) content);
-			}
-			// if (content instanceof AdNetworkReport) {
-			// // log.info("Dummy got AdxQuery");
+			} else if (content instanceof CampaignOpportunityMessage) {
+				handleICampaignOpportunityMessage((CampaignOpportunityMessage) content);
+			} else 	if (content instanceof CampaignReport) {
+				handleCampaignReport((CampaignReport) content);
+			} else	if (content instanceof AdNetworkDailyNotification) {
+				handleAdNetworkDailyNotification((AdNetworkDailyNotification) content);
+			} else if (content instanceof AdxPublisherReport) {	
+				handleAdxPublisherReport((AdxPublisherReport) content);
+			} else if (content instanceof SimulationStatus) {
+				handleSimulationStatus((SimulationStatus) content);				
+			}	
 			// handleAdNetworkReport((AdNetworkReport) content);
-			// } else if (content instanceof AdxPublisherReport) {
-			// handleSalesReport((AdNetworkReport) content);
 			// } else if (content instanceof SimulationStatus) {
-			// handleSimulationStatus((SimulationStatus) content);
-			// } else if (content instanceof PublisherCatalog) {
-			// handleRetailCatalog((PublisherCatalog) content);
-			// } else if (content instanceof AdvertiserInfo) {
-			// handleAdvertiserInfo((AdvertiserInfo) content);
-			// }
+			
 		} catch (NullPointerException e) {
 			this.log.log(Level.SEVERE, "Null Message received.");
 			return;
 		}
 	}
 
+	private void handleAdxPublisherReport(AdxPublisherReport content) {
+		// TODO Auto-generated method stub
+	}
+
+	private void handleAdNetworkDailyNotification(
+			AdNetworkDailyNotification adNetNotificationMessage) {
+
+		adNetworkDailyNotification = adNetNotificationMessage;
+		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId()) &&
+				getName().equals(adNetNotificationMessage.getWinner())) {
+			/* We are the winners : ) add campaign to list */
+			myCampaigns.put(pendingCampaign.id, pendingCampaign);
+		}
+	}
+
+	private void handleCampaignReport(CampaignReport CampaignReport) {
+		this.campaignReport = CampaignReport;
+		/* ... */
+	}
+
+	
+	private void updateCampaignDataOpportunity(CampaignOpportunityMessage campaignOpportunityMessage,
+			CampaignData campaignData) {
+		campaignData.dayStart = campaignOpportunityMessage.getDayStart();
+		campaignData.dayEnd = campaignOpportunityMessage.getDayEnd();
+		campaignData.id = campaignOpportunityMessage.getId();
+		campaignData.reachImps = campaignOpportunityMessage.getReachImps();
+		campaignData.targetSegment = campaignOpportunityMessage
+				.getTargetSegment();
+		campaignData.mobileCoef = campaignOpportunityMessage.getMobileCoef();
+		campaignData.videoCoef = campaignOpportunityMessage.getVideoCoef();
+	}
+	
+	private void handleICampaignOpportunityMessage(
+			CampaignOpportunityMessage com) {
+
+        day = com.getDay();
+
+		campaignOpportunityMessage = com;
+		pendingCampaign = new CampaignData();
+	
+		updateCampaignDataOpportunity(com, pendingCampaign);
+
+		long cmpBid = randomGenerator.nextLong()
+				% campaignOpportunityMessage.getReachImps();
+
+		AdNetBidMessage bids = new AdNetBidMessage(
+				randomGenerator.nextInt(100), pendingCampaign.id, cmpBid);
+
+		sendMessage(ServerAddress, bids);		
+	}
+
+	private void updateCampaignData(InitialCampaignMessage campaignMessage,
+			CampaignData campaignData) {
+		campaignData.reachImps = campaignMessage.getReachImps();
+		campaignData.dayStart = campaignMessage.getDayStart();
+		campaignData.dayEnd = campaignMessage.getDayEnd();
+		campaignData.targetSegment = campaignMessage.getTargetSegment();
+		campaignData.videoCoef = campaignMessage.getVideoCoef();
+		campaignData.mobileCoef = campaignMessage.getMobileCoef();
+		campaignData.id = campaignMessage.getId();
+	}
+
 	private void handleInitialCampaignMessage(
 			InitialCampaignMessage campaignMessage) {
 		log.info(campaignMessage.toString());
-		// MarketSegment targetSegment = campaignMessage.getTargetSegment();
-		// AdNetBidMessage adNetBidMessage = new AdNetBidMessage(
-		// campaignMessage.getId(), (long)(Math.random()
-		// * campaignMessage.getReachImps()));
-		// sendMessage(TACAdxConstants.DEMAND_AGENT_NAME, adNetBidMessage);
-		// log.fine("Sent bid message");
+		
+		day = 0;
+
+		initialCampaignMessage = campaignMessage;
+		ServerAddress = campaignMessage.getServerId();
+
+		CampaignData campaignData = new CampaignData();
+		updateCampaignData(initialCampaignMessage, campaignData);
+
+		myCampaigns.put(initialCampaignMessage.getId(), campaignData);
 	}
 
 	private void handleSimulationStatus(SimulationStatus simulationStatus) {
@@ -116,7 +201,7 @@ public class DummyAdNetwork extends Agent {
 	}
 
 	private void handleAdvertiserInfo(AdvertiserInfo advertiserInfo) {
-		publisherAddress = advertiserInfo.getPublisherId();
+		ServerAddress = advertiserInfo.getPublisherId();
 
 	}
 
@@ -147,7 +232,13 @@ public class DummyAdNetwork extends Agent {
 	@Override
 	protected void simulationSetup() {
 
+		day = 0;
+		
 		bidBundle = new AdxBidBundle();
+
+		myCampaigns = new HashMap<Integer, CampaignData>();
+
+		randomGenerator = new Random();
 
 		// Add the advertiser name to the logger name for convenient
 		// logging. Note: this is usually a bad idea because the logger
@@ -165,8 +256,21 @@ public class DummyAdNetwork extends Agent {
 	}
 
 	protected void sendBidAndAds() {
-		// log.info("dummy bidding");
+
 		bidBundle = new AdxBidBundle();
+		
+		for (CampaignData campaign : myCampaigns.values()) {
+			if (((day+1) >= campaign.dayStart) && (day < campaign.dayEnd)) {
+			   /* add entry w.r.t. this campaign */	
+			}
+		}
+
+		
+		
+		
+		
+		/* TODO: Remove legacy code below*/
+		
 		Ad ad = new Ad(null);
 
 		for (int i = 0; i < queries.length; i++) {
@@ -174,8 +278,8 @@ public class DummyAdNetwork extends Agent {
 			// bidBundle.addAdxQuery(queries[i], 100, ad);
 		}
 
-		if (bidBundle != null && publisherAddress != null) {
-			sendMessage(publisherAddress, bidBundle);
+		if (bidBundle != null && ServerAddress != null) {
+			sendMessage(ServerAddress, bidBundle);
 		}
 	}
 
@@ -227,4 +331,15 @@ public class DummyAdNetwork extends Agent {
 			}
 		}
 	}
+
+	private class CampaignData {
+		Long reachImps;
+		long dayStart;
+		long dayEnd;
+		MarketSegment targetSegment;
+		double videoCoef;
+		double mobileCoef;
+		int id;
+	}
+
 }

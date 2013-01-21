@@ -22,7 +22,7 @@ import tau.tac.adx.report.demand.AdNetBidMessage;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
-import tau.tac.adx.report.demand.UserClassificationServiceLevelNotification;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.sim.Builtin;
 import tau.tac.adx.sim.TACAdxConstants;
 
@@ -94,7 +94,7 @@ public class DemandAgent extends Builtin {
 		
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
 		getSimulation().sendCampaignOpportunity(
-				new CampaignOpportunityMessage(tommorrowsPendingCampaign));
+				new CampaignOpportunityMessage(tommorrowsPendingCampaign, day));
 	}
 
 	private void reportAuctionResutls(int date) {
@@ -117,10 +117,12 @@ public class DemandAgent extends Builtin {
 
 			getSimulation().sendCampaignReport(advertiser, report);
 
-			UserClassificationServiceLevelNotification ucsNotification = new UserClassificationServiceLevelNotification(
-					ucs.getAdNetData(advertiser));
+			AdNetworkDailyNotification adNetworkNotification = new AdNetworkDailyNotification(
+					ucs.getAdNetData(advertiser), pendingCampaign);
+			
+			/* TODO: erase campaign winner and cost for non-winning advertisers */
 			getSimulation().sendUserClassificationAuctionResult(advertiser,
-					ucsNotification);
+					adNetworkNotification);
 		}
 	}
 
@@ -192,10 +194,13 @@ public class DemandAgent extends Builtin {
 
 			campaign.allocateToAdvertiser(advertiser);
 			adNetCampaigns.put(advertiser, campaign);
+			
 			getSimulation().sendInitialCampaign(advertiser,
-					new InitialCampaignMessage(campaign));
+					new InitialCampaignMessage(campaign, this.getAddress()));
+			
 			getSimulation().getEventBus().post(
 					new CampaignNotification(campaign));
+			
 			ucs.updateAdvertiserBid(advertiser, 0, 0);
 		}
 	}

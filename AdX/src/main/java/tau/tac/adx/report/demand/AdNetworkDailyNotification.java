@@ -5,29 +5,45 @@ import java.text.ParseException;
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
 import se.sics.tasim.props.SimpleContent;
+import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.UserClassificationServiceAdNetData;
 
-public class UserClassificationServiceLevelNotification extends SimpleContent {
+public class AdNetworkDailyNotification extends SimpleContent {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2893212570481112391L;
 
+	/* user classification service data */
 	int    effectiveDay;
 	double serviceLevel;
 	double price;
+	
+	/* campaign allocation data */
+	int campaignId;
+	String winner;
+	double cost;
+	
 
-	public UserClassificationServiceLevelNotification(int effectiveDay, double serviceLevel, double price) {
+	public AdNetworkDailyNotification(int effectiveDay, double serviceLevel, double price,
+			int campaignId, String winner, long cost) {
 		this.effectiveDay = effectiveDay;
 		this.serviceLevel = serviceLevel;
 		this.price = price;		
+		this.campaignId = campaignId;
+		this.winner = winner;
+		this. cost = cost;
 	}
 	
-	public UserClassificationServiceLevelNotification(UserClassificationServiceAdNetData ucsData) {
+	public AdNetworkDailyNotification(UserClassificationServiceAdNetData ucsData,
+			Campaign campaign) {
 		this.effectiveDay = ucsData.getEffectiveDay();
 		this.serviceLevel = ucsData.getServiceLevel();
-		this.price = ucsData.getPrice();				
+		this.price = ucsData.getPrice();
+		this.campaignId = campaign.getId();
+		this.winner = campaign.getAdvertiser();
+		this. cost = campaign.getBudget();
 	}
 	
 	
@@ -43,11 +59,24 @@ public class UserClassificationServiceLevelNotification extends SimpleContent {
 	public double getPrice() {
 		return price;
 	}
-	
+
+	public int getCampaignId() {
+		return campaignId;
+	}
+
+	public String getWinner() {
+		return winner;
+	}
+  
+	public double getCost() {
+		return cost;
+	}
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
-				.append('[').append(effectiveDay).append(',').append(serviceLevel).append(',').append(price).
-				append(',');
+				.append('[').append(effectiveDay).append(',').append(serviceLevel).append(',').append(price)
+				.append(campaignId).append(',').append(winner).append(',').append(cost)
+				.append(',');
 		return params(buf).append(']').toString();
 	}
 
@@ -58,12 +87,17 @@ public class UserClassificationServiceLevelNotification extends SimpleContent {
 		effectiveDay = reader.getAttributeAsInt("effectiveDay");
 		serviceLevel = reader.getAttributeAsDouble("serviceLevel");
 		price = reader.getAttributeAsDouble("price");
+		campaignId = reader.getAttributeAsInt("campaignId");
+		winner = reader.getAttribute("winner");
+		cost = reader.getAttributeAsDouble("cost");
+
 		super.read(reader);
 	}
 	
 	
 	public void write(TransportWriter writer) {
-		writer.attr("effectiveDay", effectiveDay).attr("serviceLevel", serviceLevel).attr("price", price);
+		writer.attr("effectiveDay", effectiveDay).attr("serviceLevel", serviceLevel).attr("price", price)
+		.attr("campaignId", campaignId).attr("winner", winner).attr("cost", cost);
 		super.write(writer);
 	}
 

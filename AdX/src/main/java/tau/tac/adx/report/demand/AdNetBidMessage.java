@@ -14,7 +14,10 @@ public class AdNetBidMessage extends SimpleContent {
 	private int campaignId;
 	private Long campaignBudgetBid;
 	
-	public AdNetBidMessage() {
+	public AdNetBidMessage(double ucsBid, int campaignId, Long campaignBudgetBid) {
+		this.ucsBid = ucsBid;
+		this.campaignId = campaignId;
+		this.campaignBudgetBid = campaignBudgetBid;
 	}
 	
 	public AdNetBidMessage(int id, Long budget) {				

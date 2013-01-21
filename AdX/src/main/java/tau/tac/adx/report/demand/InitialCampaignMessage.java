@@ -20,18 +20,20 @@ public class InitialCampaignMessage extends SimpleContent {
 	private String targetSegmentName;
 	private double videoCoef;
 	private double mobileCoef;
+	private String serverId;
 	
 	public InitialCampaignMessage() {
 	}
 
-	public InitialCampaignMessage(Campaign campaign) {
+	public InitialCampaignMessage(Campaign campaign, String address) {
 		this.id = campaign.getId();
 		this.reachImps = campaign.getReachImps();
 		this.dayStart = campaign.getDayStart();
 		this.dayEnd = campaign.getDayEnd();
 		this.targetSegment = campaign.getTargetSegment();
 		this.videoCoef = campaign.getVideoCoef();
-		this.mobileCoef = campaign.getMobileCoef();		
+		this.mobileCoef = campaign.getMobileCoef();	
+		this.serverId = address;
 	}
 
 	
@@ -75,13 +77,18 @@ public class InitialCampaignMessage extends SimpleContent {
 		return mobileCoef;
 	}
 	
+	public String getServerId() {
+		return serverId;
+	}
 	
+
 	
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
 				.append('[').append(id).append(',').append(reachImps).append(',').append(dayStart)
-				.append(',').append(dayEnd).append(',').append(targetSegment).
-				append(',').append(videoCoef).append(',').append(mobileCoef).append(',');
+				.append(',').append(dayEnd).append(',').append(targetSegment)
+				.append(',').append(videoCoef).append(',').append(mobileCoef).append(',')
+				.append(serverId).append(',');
 		return params(buf).append(']').toString();
 	}
 
@@ -111,6 +118,7 @@ public class InitialCampaignMessage extends SimpleContent {
 		targetSegment = MarketSegment.valueOf(targetSegmentName);
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
+		serverId = reader.getAttribute("serverId");
 		super.read(reader);
 	}
 	
@@ -118,8 +126,10 @@ public class InitialCampaignMessage extends SimpleContent {
 	public void write(TransportWriter writer) {
 		writer.attr("id", id).attr("reachImps", reachImps).attr("dayStart", dayStart).attr(
 				"dayEnd", dayEnd).attr("targetSegment",targetSegment.name()).
-				attr("videoCoef", videoCoef).attr("mobileCoef",mobileCoef);
+				attr("videoCoef", videoCoef).attr("mobileCoef",mobileCoef).attr("serverId",serverId);
 		super.write(writer);
 	}
+
+	
 
 }
