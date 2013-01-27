@@ -24,9 +24,10 @@
  */
 package tau.tac.adx.agents;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -44,6 +45,7 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
 import tau.tac.adx.report.adn.AdNetworkReport;
+import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.AdNetBidMessage;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
@@ -55,7 +57,7 @@ import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 
 /**
- * @author Lee Callender, Patrick Jordan
+ * @author Mariano Schain
  */
 
 public class DummyAdNetwork extends Agent {
@@ -66,11 +68,11 @@ public class DummyAdNetwork extends Agent {
 	private String ServerAddress;
 	private AdxBidBundle bidBundle;
 
+	/*
+	 * we maintain a list of queries - each characterized by the web site (the
+	 * publisher), the device type, the ad type, and the user market segment
+	 */
 	private AdxQuery[] queries;
-	private double[] impressions;
-	private double[] clicks;
-	private double[] conversions;
-	private double[] values;
 
 	private Random randomGenerator;
 	private InitialCampaignMessage initialCampaignMessage;
@@ -81,7 +83,7 @@ public class DummyAdNetwork extends Agent {
 	private CampaignData pendingCampaign;
 
 	private Map<Integer, CampaignData> myCampaigns;
-	
+
 	private int day;
 
 	public DummyAdNetwork() {
@@ -95,18 +97,23 @@ public class DummyAdNetwork extends Agent {
 				handleInitialCampaignMessage((InitialCampaignMessage) content);
 			} else if (content instanceof CampaignOpportunityMessage) {
 				handleICampaignOpportunityMessage((CampaignOpportunityMessage) content);
-			} else 	if (content instanceof CampaignReport) {
+			} else if (content instanceof CampaignReport) {
 				handleCampaignReport((CampaignReport) content);
-			} else	if (content instanceof AdNetworkDailyNotification) {
+			} else if (content instanceof AdNetworkDailyNotification) {
 				handleAdNetworkDailyNotification((AdNetworkDailyNotification) content);
-			} else if (content instanceof AdxPublisherReport) {	
+			} else if (content instanceof AdxPublisherReport) {
 				handleAdxPublisherReport((AdxPublisherReport) content);
 			} else if (content instanceof SimulationStatus) {
-				handleSimulationStatus((SimulationStatus) content);				
-			}	
+				handleSimulationStatus((SimulationStatus) content);
+			} else if (content instanceof PublisherCatalog) {
+				handleRetailCatalog((PublisherCatalog) content);
+			} else if (content instanceof AdNetworkReport) {
+				handleAdNetworkReport((AdNetworkReport) content);
+			}
+
 			// handleAdNetworkReport((AdNetworkReport) content);
 			// } else if (content instanceof SimulationStatus) {
-			
+
 		} catch (NullPointerException e) {
 			this.log.log(Level.SEVERE, "Null Message received.");
 			return;
@@ -121,8 +128,8 @@ public class DummyAdNetwork extends Agent {
 			AdNetworkDailyNotification adNetNotificationMessage) {
 
 		adNetworkDailyNotification = adNetNotificationMessage;
-		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId()) &&
-				getName().equals(adNetNotificationMessage.getWinner())) {
+		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId())
+				&& getName().equals(adNetNotificationMessage.getWinner())) {
 			/* We are the winners : ) add campaign to list */
 			myCampaigns.put(pendingCampaign.id, pendingCampaign);
 		}
@@ -133,8 +140,8 @@ public class DummyAdNetwork extends Agent {
 		/* ... */
 	}
 
-	
-	private void updateCampaignDataOpportunity(CampaignOpportunityMessage campaignOpportunityMessage,
+	private void updateCampaignDataOpportunity(
+			CampaignOpportunityMessage campaignOpportunityMessage,
 			CampaignData campaignData) {
 		campaignData.dayStart = campaignOpportunityMessage.getDayStart();
 		campaignData.dayEnd = campaignOpportunityMessage.getDayEnd();
@@ -145,15 +152,15 @@ public class DummyAdNetwork extends Agent {
 		campaignData.mobileCoef = campaignOpportunityMessage.getMobileCoef();
 		campaignData.videoCoef = campaignOpportunityMessage.getVideoCoef();
 	}
-	
+
 	private void handleICampaignOpportunityMessage(
 			CampaignOpportunityMessage com) {
 
-        day = com.getDay();
+		day = com.getDay();
 
 		campaignOpportunityMessage = com;
 		pendingCampaign = new CampaignData();
-	
+
 		updateCampaignDataOpportunity(com, pendingCampaign);
 
 		long cmpBid = randomGenerator.nextLong()
@@ -162,7 +169,7 @@ public class DummyAdNetwork extends Agent {
 		AdNetBidMessage bids = new AdNetBidMessage(
 				randomGenerator.nextInt(100), pendingCampaign.id, cmpBid);
 
-		sendMessage(ServerAddress, bids);		
+		sendMessage(ServerAddress, bids);
 	}
 
 	private void updateCampaignData(InitialCampaignMessage campaignMessage,
@@ -179,7 +186,7 @@ public class DummyAdNetwork extends Agent {
 	private void handleInitialCampaignMessage(
 			InitialCampaignMessage campaignMessage) {
 		log.info(campaignMessage.toString());
-		
+
 		day = 0;
 
 		initialCampaignMessage = campaignMessage;
@@ -205,17 +212,23 @@ public class DummyAdNetwork extends Agent {
 
 	}
 
-	// private void handleAdNetworkReport(AdNetworkReport queryReport) {
-	// for (int i = 0; i < queries.length; i++) {
-	// AdxQuery query = queries[i];
-	// queryReport.g
-	// int index = queryReport.indexForEntry(query);
-	// if (index >= 0) {
-	// impressions[i] += queryReport.getImpressions(index);
-	// clicks[i] += queryReport.getClicks(index);
-	// }
-	// }
-	// }
+	private void handleAdNetworkReport(AdNetworkReport queryReport) {
+		this.log.log(Level.INFO, queryReport.toString());
+		
+		/*
+		AdNetworkReportEntry entry = queryReport.getAdNetworkReportEntry(getName());
+		
+		for (int i = 0; i < queries.length; i++) {
+	        AdxQuery query = queries[i];
+	        queryReport.
+	        int index = queryReport.indexForEntry(query);
+	     if (index >= 0) {
+	         impressions[i] += queryReport.getImpressions(index);
+	         clicks[i] += queryReport.getClicks(index);
+	     }
+	   }*/
+		
+	 }
 
 	// private void handleSalesReport(SalesReport salesReport) {
 	// for (int i = 0; i < queries.length; i++) {
@@ -233,7 +246,7 @@ public class DummyAdNetwork extends Agent {
 	protected void simulationSetup() {
 
 		day = 0;
-		
+
 		bidBundle = new AdxBidBundle();
 
 		myCampaigns = new HashMap<Integer, CampaignData>();
@@ -258,24 +271,33 @@ public class DummyAdNetwork extends Agent {
 	protected void sendBidAndAds() {
 
 		bidBundle = new AdxBidBundle();
-		
+
+		/*
+		 * create a uniform probability over active campaigns
+		 */
 		for (CampaignData campaign : myCampaigns.values()) {
-			if (((day+1) >= campaign.dayStart) && (day < campaign.dayEnd)) {
-			   /* add entry w.r.t. this campaign */	
+			int dayBiddingFor = day + 1;
+			if ((dayBiddingFor >= campaign.dayStart)
+					&& (dayBiddingFor <= campaign.dayEnd)) {
+				/* add entry w.r.t. this campaign */
+
+				/*
+				 * for each matching publisher and opportunity context (segment,
+				 * device, ad type) combination: (TODO: add a probability vector
+				 * over the active campaigns)
+				 */
+
+				Random rnd = new Random();
+
+				for (int i = 0; i < queries.length; i++) {
+					List<MarketSegment> segmentsList = queries[i]
+							.getMarketSegments();
+					if (campaign.targetSegment == segmentsList.get(0))
+						bidBundle.addQuery(queries[i], rnd.nextLong() % 1000,
+								new Ad(null));
+				}
+
 			}
-		}
-
-		
-		
-		
-		
-		/* TODO: Remove legacy code below*/
-		
-		Ad ad = new Ad(null);
-
-		for (int i = 0; i < queries.length; i++) {
-			bidBundle.addQuery(queries[i], values[i] / clicks[i], ad);
-			// bidBundle.addAdxQuery(queries[i], 100, ad);
 		}
 
 		if (bidBundle != null && ServerAddress != null) {
@@ -286,49 +308,36 @@ public class DummyAdNetwork extends Agent {
 	private void generateAdxQuerySpace() {
 		if (publisherCatalog != null && queries == null) {
 			Set<AdxQuery> queryList = new HashSet<AdxQuery>();
-			Random random = new Random();
+
+			/*
+			 * for each web site (publisher) we generate all possible variations
+			 * of device type, ad type, and user market segment segment
+			 */
 			for (PublisherCatalogEntry publisherCatalogEntry : publisherCatalog) {
-				// Create f0
-				AdxQuery f0 = new AdxQuery();
+				for (MarketSegment userSegment : MarketSegment.values()) {
+					List<MarketSegment> marketSegments = new ArrayList<MarketSegment>();
+					marketSegments.add(userSegment);
 
-				// Create f1's
-				AdxQuery f1_manufacturer = new AdxQuery(
-						publisherCatalogEntry.getPublisherName(),
-						Collections.singletonList(MarketSegment.values()[random
-								.nextInt(MarketSegment.values().length)]),
-						null, null);
-				AdxQuery f1_component = new AdxQuery(
-						publisherCatalogEntry.getPublisherName(),
-						Collections.singletonList(MarketSegment.values()[random
-								.nextInt(MarketSegment.values().length)]),
-						Device.values()[random.nextInt(Device.values().length)],
-						AdType.values()[random.nextInt(AdType.values().length)]);
+					queryList.add(new AdxQuery(publisherCatalogEntry
+							.getPublisherName(), marketSegments, Device.mobile,
+							AdType.text));
 
-				// Create f2
-				AdxQuery f2 = new AdxQuery(
-						publisherCatalogEntry.getPublisherName(),
-						Collections.singletonList(MarketSegment.values()[random
-								.nextInt(MarketSegment.values().length)]),
-						Device.values()[random.nextInt(Device.values().length)],
-						AdType.values()[random.nextInt(AdType.values().length)]);
+					queryList.add(new AdxQuery(publisherCatalogEntry
+							.getPublisherName(), marketSegments, Device.pc,
+							AdType.text));
 
-				queryList.add(f0);
-				queryList.add(f1_manufacturer);
-				queryList.add(f1_component);
-				queryList.add(f2);
+					queryList.add(new AdxQuery(publisherCatalogEntry
+							.getPublisherName(), marketSegments, Device.mobile,
+							AdType.video));
+
+					queryList.add(new AdxQuery(publisherCatalogEntry
+							.getPublisherName(), marketSegments, Device.pc,
+							AdType.video));
+
+				}
+
 			}
 
-			queries = queryList.toArray(new AdxQuery[0]);
-			impressions = new double[queries.length];
-			clicks = new double[queries.length];
-			conversions = new double[queries.length];
-			values = new double[queries.length];
-
-			for (int i = 0; i < queries.length; i++) {
-				impressions[i] = 100;
-				clicks[i] = 9;
-				conversions[i] = 1;
-			}
 		}
 	}
 

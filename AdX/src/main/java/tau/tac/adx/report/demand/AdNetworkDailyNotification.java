@@ -16,42 +16,48 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	private static final long serialVersionUID = -2893212570481112391L;
 
 	/* user classification service data */
-	int    effectiveDay;
+	int effectiveDay;
 	double serviceLevel;
 	double price;
-	
+
 	/* campaign allocation data */
 	int campaignId;
 	String winner;
 	double cost;
-	
 
-	public AdNetworkDailyNotification(int effectiveDay, double serviceLevel, double price,
-			int campaignId, String winner, long cost) {
+	public AdNetworkDailyNotification(int effectiveDay, double serviceLevel,
+			double price, int campaignId, String winner, long cost) {
 		this.effectiveDay = effectiveDay;
 		this.serviceLevel = serviceLevel;
-		this.price = price;		
+		this.price = price;
 		this.campaignId = campaignId;
 		this.winner = winner;
-		this. cost = cost;
+		this.cost = cost;
 	}
-	
-	public AdNetworkDailyNotification(UserClassificationServiceAdNetData ucsData,
-			Campaign campaign) {
-		this.effectiveDay = ucsData.getEffectiveDay();
-		this.serviceLevel = ucsData.getServiceLevel();
-		this.price = ucsData.getPrice();
-		this.campaignId = campaign.getId();
-		this.winner = campaign.getAdvertiser();
-		this. cost = campaign.getBudget();
+
+	public AdNetworkDailyNotification(
+			UserClassificationServiceAdNetData ucsData, Campaign campaign) {
+		if (ucsData != null) {
+			this.effectiveDay = ucsData.getEffectiveDay();
+			this.serviceLevel = ucsData.getServiceLevel();
+			this.price = ucsData.getPrice();
+		} else {
+			this.effectiveDay = 0;			
+		}
+
+		if (campaign != null) {
+			this.campaignId = campaign.getId();
+			this.winner = campaign.getAdvertiser();
+			this.cost = campaign.getBudget();
+		} else {
+			this.campaignId = 0;			
+		}
 	}
-	
-	
-	
+
 	public int getEffectiveDay() {
 		return effectiveDay;
 	}
-	
+
 	public double getServiceLevel() {
 		return serviceLevel;
 	}
@@ -67,16 +73,17 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	public String getWinner() {
 		return winner;
 	}
-  
+
 	public double getCost() {
 		return cost;
 	}
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
-				.append('[').append(effectiveDay).append(',').append(serviceLevel).append(',').append(price)
-				.append(campaignId).append(',').append(winner).append(',').append(cost)
-				.append(',');
+				.append('[').append(effectiveDay).append(',')
+				.append(serviceLevel).append(',').append(price)
+				.append(campaignId).append(',').append(winner).append(',')
+				.append(cost).append(',');
 		return params(buf).append(']').toString();
 	}
 
@@ -93,15 +100,15 @@ public class AdNetworkDailyNotification extends SimpleContent {
 
 		super.read(reader);
 	}
-	
-	
+
 	public void write(TransportWriter writer) {
-		writer.attr("effectiveDay", effectiveDay).attr("serviceLevel", serviceLevel).attr("price", price)
-		.attr("campaignId", campaignId).attr("winner", winner).attr("cost", cost);
+		writer.attr("effectiveDay", effectiveDay)
+				.attr("serviceLevel", serviceLevel).attr("price", price)
+				.attr("campaignId", campaignId).attr("winner", winner)
+				.attr("cost", cost);
 		super.write(writer);
 	}
 
-	
 	@Override
 	public String getTransportName() {
 		return "UserClassificationServiceBidNotification";
