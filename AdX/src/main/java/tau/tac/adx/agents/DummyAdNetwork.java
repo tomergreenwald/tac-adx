@@ -93,6 +93,7 @@ public class DummyAdNetwork extends Agent {
 	protected void messageReceived(Message message) {
 		try {
 			Transportable content = message.getContent();
+			log.fine(message.getContent().getClass().toString());
 			if (content instanceof InitialCampaignMessage) {
 				handleInitialCampaignMessage((InitialCampaignMessage) content);
 			} else if (content instanceof CampaignOpportunityMessage) {
@@ -115,7 +116,7 @@ public class DummyAdNetwork extends Agent {
 			// } else if (content instanceof SimulationStatus) {
 
 		} catch (NullPointerException e) {
-			this.log.log(Level.SEVERE, "Null Message received.");
+			this.log.log(Level.SEVERE, "Null Message received. "+e);
 			return;
 		}
 	}

@@ -164,7 +164,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	public void auction() {
 		double bsecond;
 		int advCount = advertisersBids.size();
-		
+		advertiser = "";
 		if (advCount > 0) {			
 			String[] advNames = new String[advCount];
 			double[] qualityScores = new double[advCount];
