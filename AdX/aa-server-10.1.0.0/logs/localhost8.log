@@ -1,4 +1,0 @@
-18/01 12:27:40 INFO file.FileDatabase|infodb: database opened as /specific/fprivate/ml/tomerg1/git/tac-adx/AdX/aa-server-10.1.0.0/infodb
-18/01 12:27:40 INFO common.BlockingViewerServer|viewer server started at *:4042
-18/01 10:27:40 INFO sim.Admin|adding manager for simulation type tac09aa
-18/01 10:27:40 INFO server.TACTGateway|TACT Server started at *:6502
