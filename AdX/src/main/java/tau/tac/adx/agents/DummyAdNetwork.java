@@ -107,7 +107,7 @@ public class DummyAdNetwork extends Agent {
 			} else if (content instanceof SimulationStatus) {
 				handleSimulationStatus((SimulationStatus) content);
 			} else if (content instanceof PublisherCatalog) {
-				handleRetailCatalog((PublisherCatalog) content);
+				handlePublisherCatalog((PublisherCatalog) content);
 			} else if (content instanceof AdNetworkReport) {
 				handleAdNetworkReport((AdNetworkReport) content);
 			}
@@ -116,7 +116,7 @@ public class DummyAdNetwork extends Agent {
 			// } else if (content instanceof SimulationStatus) {
 
 		} catch (NullPointerException e) {
-			this.log.log(Level.SEVERE, "Null Message received. "+e);
+			this.log.log(Level.SEVERE, "Null Message received. "+e.getStackTrace());
 			return;
 		}
 	}
@@ -127,7 +127,7 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleAdNetworkDailyNotification(
 			AdNetworkDailyNotification adNetNotificationMessage) {
-
+		log.log(Level.INFO, getName()+" Campaign result: "+adNetNotificationMessage);
 		adNetworkDailyNotification = adNetNotificationMessage;
 		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId())
 				&& getName().equals(adNetNotificationMessage.getWinner())) {
@@ -169,7 +169,7 @@ public class DummyAdNetwork extends Agent {
 
 		AdNetBidMessage bids = new AdNetBidMessage(
 				randomGenerator.nextInt(100), pendingCampaign.id, cmpBid);
-
+		log.fine("sent campaign bid");
 		sendMessage(ServerAddress, bids);
 	}
 
@@ -203,14 +203,9 @@ public class DummyAdNetwork extends Agent {
 		sendBidAndAds();
 	}
 
-	private void handleRetailCatalog(PublisherCatalog publisherCatalog) {
+	private void handlePublisherCatalog(PublisherCatalog publisherCatalog) {
 		this.publisherCatalog = publisherCatalog;
 		generateAdxQuerySpace();
-	}
-
-	private void handleAdvertiserInfo(AdvertiserInfo advertiserInfo) {
-		ServerAddress = advertiserInfo.getPublisherId();
-
 	}
 
 	private void handleAdNetworkReport(AdNetworkReport queryReport) {
@@ -295,7 +290,7 @@ public class DummyAdNetwork extends Agent {
 							.getMarketSegments();
 					if (campaign.targetSegment == segmentsList.get(0))
 						bidBundle.addQuery(queries[i], rnd.nextLong() % 1000,
-								new Ad(null));
+								new Ad(null), campaign.id, 1);
 				}
 
 			}
@@ -338,7 +333,8 @@ public class DummyAdNetwork extends Agent {
 				}
 
 			}
-
+			queries = new AdxQuery[queryList.size()];
+			queryList.toArray(queries);
 		}
 	}
 

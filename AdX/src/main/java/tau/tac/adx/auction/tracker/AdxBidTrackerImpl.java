@@ -192,6 +192,8 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			// queryBid[index].setSpendLimit(query, dailyLimit);
 			// }
 		}
+		
+//		queryBid[index].updateBidSampler(campaignDistribution)
 	}
 
 	@Override

@@ -73,6 +73,8 @@ public class AdxBidBundle extends
 	 */
 	public static final Ad PERSISTENT_AD = null;
 
+	private static final int PERSISTENT_WEIGHT = 1;
+
 	/**
 	 * Advertiser's wishing to have no spend limit should use the given
 	 * NO_SPEND_LIMIT value.
@@ -146,8 +148,8 @@ public class AdxBidBundle extends
 	 *            the ad to be used.
 	 */
 	public final void addQuery(final AdxQuery query, final double bid,
-			final Ad ad) {
-		addQuery(query, bid, ad, PERSISTENT_SPEND_LIMIT);
+			final Ad ad, int campaignId, int weight) {
+		addQuery(query, bid, ad, campaignId, weight, PERSISTENT_SPEND_LIMIT);
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class AdxBidBundle extends
 	 *            the daily limit.
 	 */
 	public final void addQuery(final AdxQuery query, final double bid,
-			final Ad ad, final double dailyLimit) {
+			final Ad ad, int campaignId, int weight, final double dailyLimit) {
 		int index = addQuery(query);
 		BidEntry entry = getEntry(index);
 		entry.setQuery(query);
@@ -339,6 +341,54 @@ public class AdxBidBundle extends
 	}
 
 	/**
+	 * Returns the weight for the associated query.
+	 * 
+	 * @param query
+	 *            the query.
+	 * @return the weight.
+	 */
+	public final double getWeight(final AdxQuery query) {
+		int index = indexForEntry(query);
+
+		return index < 0 ? PERSISTENT_BID : getWeight(index);
+	}
+
+	/**
+	 * Returns the weight for the associated query.
+	 * 
+	 * @param index
+	 *            the index of the query.
+	 * @return the weight.
+	 */
+	public final double getWeight(final int index) {
+		return getEntry(index).getWeight();
+	}
+
+	/**
+	 * Returns the campaign id for the associated query.
+	 * 
+	 * @param query
+	 *            the query.
+	 * @return the weight.
+	 */
+	public final double getCampaignId(final AdxQuery query) {
+		int index = indexForEntry(query);
+
+		return index < 0 ? PERSISTENT_BID : getCampaignId(index);
+	}
+
+	/**
+	 * Returns the campaign id for the associated query.
+	 * 
+	 * @param index
+	 *            the index of the query.
+	 * @return the campaign id.
+	 */
+	public final double getCampaignId(final int index) {
+		return getEntry(index).getCampaignId();
+	}
+
+	/**
 	 * Returns the ad for the associated query.
 	 * 
 	 * @param query
@@ -357,10 +407,10 @@ public class AdxBidBundle extends
 			return null;
 		}
 		BidEntry bidEntry = getEntry(index);
-		BidInfo bidInfo = new BidInfo(bidEntry.getBid(),
-				AdxManager.getInstance().getBidder(advertiserId), bidEntry.getAd(),
-				bidEntry.getMarketSegment(), AdxManager.getInstance().getCampaign(bidEntry
-						.getCampaignId()));
+		BidInfo bidInfo = new BidInfo(bidEntry.getBid(), AdxManager
+				.getInstance().getBidder(advertiserId), bidEntry.getAd(),
+				bidEntry.getMarketSegment(), AdxManager.getInstance()
+						.getCampaign(bidEntry.getCampaignId()));
 		return bidInfo;
 	}
 
@@ -490,6 +540,11 @@ public class AdxBidBundle extends
 		private int campaignId;
 
 		/**
+		 * Campaign weight
+		 */
+		private int weight;
+
+		/**
 		 * {@link MarketSegment}.
 		 */
 		private MarketSegment marketSegment = MarketSegment.NONE;
@@ -501,6 +556,15 @@ public class AdxBidBundle extends
 			this.bid = PERSISTENT_BID;
 			this.dailyLimit = PERSISTENT_SPEND_LIMIT;
 			this.ad = PERSISTENT_AD;
+			this.weight = PERSISTENT_WEIGHT;
+		}
+
+		public int getWeight() {
+			return weight;
+		}
+
+		public void setWeight(int weight) {
+			this.weight = weight;
 		}
 
 		/**
@@ -590,6 +654,7 @@ public class AdxBidBundle extends
 			this.campaignId = reader.getAttributeAsInt("campaignId", 0);
 			this.marketSegment = MarketSegment.valueOf(reader.getAttribute(
 					"marketSegment", null));
+			this.weight = reader.getAttributeAsInt("weight", 1);
 			if (reader.nextNode("Ad", false)) {
 				this.ad = (Ad) reader.readTransportable();
 			}
@@ -607,6 +672,7 @@ public class AdxBidBundle extends
 			writer.attr("dailyLimit", dailyLimit);
 			writer.attr("campaignId", campaignId);
 			writer.attr("marketSegment", marketSegment.toString());
+			writer.attr("weight", weight);
 			if (ad != null) {
 				writer.write(ad);
 			}

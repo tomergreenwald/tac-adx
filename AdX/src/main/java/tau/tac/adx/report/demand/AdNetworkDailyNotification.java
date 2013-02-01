@@ -78,14 +78,6 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		return cost;
 	}
 
-	public String toString() {
-		StringBuffer buf = new StringBuffer().append(getTransportName())
-				.append('[').append(effectiveDay).append(',')
-				.append(serviceLevel).append(',').append(price)
-				.append(campaignId).append(',').append(winner).append(',')
-				.append(cost).append(',');
-		return params(buf).append(']').toString();
-	}
 
 	public void read(TransportReader reader) throws ParseException {
 		if (isLocked()) {
@@ -112,6 +104,14 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	@Override
 	public String getTransportName() {
 		return "UserClassificationServiceBidNotification";
+	}
+
+	@Override
+	public String toString() {
+		return "AdNetworkDailyNotification [effectiveDay=" + effectiveDay
+				+ ", serviceLevel=" + serviceLevel + ", price=" + price
+				+ ", campaignId=" + campaignId + ", winner=" + winner
+				+ ", cost=" + cost + "]";
 	}
 
 }

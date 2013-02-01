@@ -239,4 +239,17 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		return id;
 	}
 
+
+	@Override
+	public String toString() {
+		return "CampaignImpl [qualityManager=" + qualityManager + ", id=" + id
+				+ ", reachImps=" + reachImps + ", dayStart=" + dayStart
+				+ ", dayEnd=" + dayEnd + ", targetSegment=" + targetSegment
+				+ ", videoCoef=" + videoCoef + ", mobileCoef=" + mobileCoef
+				+ ", advertisersBids=" + advertisersBids + ", budget=" + budget
+				+ ", advertiser=" + advertiser + ", day=" + day + ", todays="
+				+ todays + ", totals=" + totals + ", dayStats=" + dayStats
+				+ "]";
+	}
+
 }

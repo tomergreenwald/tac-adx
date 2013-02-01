@@ -52,7 +52,6 @@ public class DemandAgent extends Builtin {
 	private QualityManager qualityManager;
 	private ListMultimap<String, Campaign> adNetCampaigns;
 	private Campaign pendingCampaign;
-	private Campaign tommorrowsPendingCampaign;
 
 	private UserClassificationService ucs;
 
@@ -68,7 +67,6 @@ public class DemandAgent extends Builtin {
 		if (date == 0) {
 			zeroDayInitialization();
 		} else {
-			pendingCampaign = tommorrowsPendingCampaign;
 			auctionTomorrowsCampaign(date);
 			ucs.auction(day);
 			getSimulation().getEventBus().post(
@@ -76,7 +74,6 @@ public class DemandAgent extends Builtin {
 
 			consolidateCmpaignStatistics(date);
 			reportAuctionResutls(date);
-
 		}
 		createAndPublishTomorrowsPendingCampaign();
 	}
@@ -86,7 +83,7 @@ public class DemandAgent extends Builtin {
 		 * Create next campaign opportunity and notify competing adNetwork
 		 * agents
 		 */
-		tommorrowsPendingCampaign = new CampaignImpl(qualityManager,
+		pendingCampaign = new CampaignImpl(qualityManager,
 				aloc_cmp_reach, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
 				ALOC_CMP_SGMNT /*
 				 * TODO: randomize
@@ -94,15 +91,16 @@ public class DemandAgent extends Builtin {
 		
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
 		getSimulation().sendCampaignOpportunity(
-				new CampaignOpportunityMessage(tommorrowsPendingCampaign, day));
+				new CampaignOpportunityMessage(pendingCampaign, day));
 	}
 
 	private void reportAuctionResutls(int date) {
 		/*
 		 * report auctions result and campaigns stats to adNet agents
 		 */
-
 		log.log(Level.INFO, "Reporting auction results...");
+		log.log(Level.INFO, "Pending campaign: "+pendingCampaign);
+
 
 		for (String advertiser : getAdxAdvertiserAddresses()) {
 

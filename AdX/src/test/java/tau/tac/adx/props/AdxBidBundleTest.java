@@ -33,6 +33,7 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -59,9 +60,12 @@ public class AdxBidBundleTest {
 		Product product = new Product();
 		product.setComponent("c1");
 		ad.setProduct(product);
-
+		Random random = new Random();
 		double bid = 20.1;
-		bundle.addQuery(query, bid, ad);
+		
+		int campaignID = random.nextInt();
+		int weight = random.nextInt();
+		bundle.addQuery(query, bid, ad, campaignID, weight);
 
 		AdxQuery query2 = queryGenerator.generate(1).iterator().next();
 		Ad ad2 = new Ad();
@@ -70,7 +74,7 @@ public class AdxBidBundleTest {
 		ad2.setProduct(product2);
 
 		double bid2 = 50.5;
-		bundle.addQuery(query2, bid2, ad2, AdxBidBundle.PERSISTENT_SPEND_LIMIT);
+		bundle.addQuery(query2, bid2, ad2, campaignID, weight,AdxBidBundle.PERSISTENT_SPEND_LIMIT);
 
 		assertEquals(bundle.size(), 2);
 
@@ -87,6 +91,9 @@ public class AdxBidBundleTest {
 		assertEquals(bundle.getCampaignDailySpendLimit(), 100.5, 0);
 		assertEquals(bundle.getDailyLimit(query), 15.0, 0);
 		assertEquals(bundle.getDailyLimit(1), 200.0, 0);
+		assertEquals(campaignID, bundle.getCampaignId(index));
+		assertEquals(weight, bundle.getWeight(index));
+		
 
 		bundle.setBid(query, 100.0);
 		assertEquals(bundle.getBid(query), 100.0, 0);
@@ -166,7 +173,10 @@ public class AdxBidBundleTest {
 		product.setComponent("c1");
 		product.setManufacturer("man1");
 		ad.setProduct(product);
-		bundle.addQuery(q, 100.5, ad);
+		Random random = new Random();
+		int campaignId = random.nextInt();
+		int weight = random.nextInt();
+		bundle.addQuery(q, 100.5, ad, campaignId, weight);
 
 		assertEquals(bundle.size(), 2);
 
