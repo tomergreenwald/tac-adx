@@ -64,17 +64,13 @@ public abstract class AdxUsers extends Builtin implements
 	 *      AdNetworkReport)
 	 */
 	@Override
-	public void broadcastAdNetowrkReport(String adNetworkName, AdNetworkReport report) {
+	public void broadcastAdNetowrkReport(String adNetworkName,
+			AdNetworkReport report) {
 		getSimulation().broadcastAdNetowrkReport(adNetworkName, report);
 	}
 
-	/**
-	 * Applies bid updates.
-	 */
-	public abstract void applyBidUpdates();
-	
+	@Override
 	public void nextTimeUnit(int date) {
 		sendReportsToAll();
-		applyBidUpdates();
 	}
 }

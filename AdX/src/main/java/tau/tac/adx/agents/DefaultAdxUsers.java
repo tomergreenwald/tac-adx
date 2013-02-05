@@ -24,32 +24,16 @@
  */
 package tau.tac.adx.agents;
 
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
-import se.sics.tasim.sim.SimulationAgent;
-import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.agents.behaviors.DefaultAdxUsersBehavior;
 import tau.tac.adx.auction.AdxBidBundleWriter;
-import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxBidBundle;
-import tau.tac.adx.props.PublisherCatalog;
-import tau.tac.adx.sim.AdxAgentRepository;
-import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.sim.AdxUsers;
 import tau.tac.adx.sim.TACAdxConstants;
-import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUsersBehavior;
-
-import com.google.common.eventbus.EventBus;
-
-import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.SlotInfo;
-import edu.umich.eecs.tac.sim.AgentRepository;
-import edu.umich.eecs.tac.sim.SalesAnalyst;
 import edu.umich.eecs.tac.user.UsersBehavior;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
@@ -67,7 +51,7 @@ public class DefaultAdxUsers extends AdxUsers {
 	 */
 	public DefaultAdxUsers() {
 		usersBehavior = new DefaultAdxUsersBehavior(new UsersConfigProxy(),
-				new AgentRepositoryProxy(), this, this,
+				AdxManager.getInstance().getSimulation(), this, this,
 				new BidBundleWriterProxy());
 	}
 
@@ -208,116 +192,11 @@ public class DefaultAdxUsers extends AdxUsers {
 	}
 
 	/**
-	 * {@link AgentRepository} proxy implementation.
-	 * 
-	 * @author Lee Callender, Patrick Jordan
-	 * 
-	 */
-	protected class AgentRepositoryProxy implements AdxAgentRepository {
-
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getAuctionInfo()
-		 */
-		@Override
-		public SlotInfo getAuctionInfo() {
-			return getSimulation().getAuctionInfo();
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getAdvertiserInfo()
-		 */
-		@Override
-		public Map<String, AdvertiserInfo> getAdvertiserInfo() {
-			return getSimulation().getAdvertiserInfo();
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getPublishers()
-		 */
-		@Override
-		public SimulationAgent[] getPublishers() {
-			return getSimulation().getPublishers();
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getUsers()
-		 */
-		@Override
-		public SimulationAgent[] getUsers() {
-			return getSimulation().getUsers();
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getSalesAnalyst()
-		 */
-		@Override
-		public SalesAnalyst getSalesAnalyst() {
-			return getSimulation().getSalesAnalyst();
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getNumberOfAdvertisers()
-		 */
-		@Override
-		public int getNumberOfAdvertisers() {
-			return getSimulation().getNumberOfAdvertisers();
-		}
-
-		/**
-		 * @see edu.umich.eecs.tac.sim.AgentRepository#getAdvertiserAddresses()
-		 */
-		@Override
-		public String[] getAdvertiserAddresses() {
-			return getSimulation().getAdvertiserAddresses();
-		}
-
-		@Override
-		public PublisherCatalog getPublisherCatalog() {
-			return getSimulation().getPublisherCatalog();
-		}
-
-		@Override
-		public List<AdxUser> getUserPopulation() {
-			return getSimulation().getUserPopulation();
-		}
-
-		@Override
-		public Map<Device, Integer> getDeviceDistributionMap() {
-			return getSimulation().getDeviceDistributionMap();
-		}
-
-		@Override
-		public Map<AdType, Integer> getAdTypeDistributionMap() {
-			return getSimulation().getAdTypeDistributionMap();
-		}
-
-		@Override
-		public RetailCatalog getRetailCatalog() {
-			return getSimulation().getRetailCatalog();
-		}
-
-		@Override
-		public AdxAuctioneer getAuctioneer() {
-			return getSimulation().getAuctioneer();
-		}
-
-		@Override
-		public EventBus getEventBus() {
-			return getSimulation().getEventBus();
-		}
-	}
-
-	/**
 	 * @see tau.tac.adx.sim.AdxUsers#sendReportsToAll()
 	 */
 	@Override
 	public void sendReportsToAll() {
 		usersBehavior.sendReportsToAll();
-	}
-
-	@Override
-	public void applyBidUpdates() {
-		usersBehavior.applyBidUpdates();
 	}
 
 	protected class BidBundleWriterProxy implements AdxBidBundleWriter {

@@ -85,7 +85,7 @@ public class AdxBidManagerImpl implements AdxBidManager {
 	public BidInfo getBidInfo(String advertiser, AdxQuery query) {
 		BidInfo bidInfo = bidTracker.getBidInfo(advertiser, query);
 
-		if (isOverspent(bidInfo.getBid(), advertiser, query))
+		if (bidInfo == null || isOverspent(bidInfo.getBid(), advertiser, query))
 			return null;
 		else
 			return bidInfo;
@@ -103,7 +103,7 @@ public class AdxBidManagerImpl implements AdxBidManager {
 
 	@Override
 	public Set<String> advertisers() {
-		return advertisersView;
+		return advertisers;
 	}
 
 	@Override

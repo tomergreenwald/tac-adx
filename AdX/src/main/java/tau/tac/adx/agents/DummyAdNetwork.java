@@ -45,7 +45,6 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
 import tau.tac.adx.report.adn.AdNetworkReport;
-import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.AdNetBidMessage;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
@@ -53,8 +52,8 @@ import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
+import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Ad;
-import edu.umich.eecs.tac.props.AdvertiserInfo;
 
 /**
  * @author Mariano Schain
@@ -116,7 +115,8 @@ public class DummyAdNetwork extends Agent {
 			// } else if (content instanceof SimulationStatus) {
 
 		} catch (NullPointerException e) {
-			this.log.log(Level.SEVERE, "Null Message received. "+e.getStackTrace());
+			this.log.log(Level.SEVERE,
+					"Null Message received. " + e.getStackTrace());
 			return;
 		}
 	}
@@ -127,7 +127,8 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleAdNetworkDailyNotification(
 			AdNetworkDailyNotification adNetNotificationMessage) {
-		log.log(Level.INFO, getName()+" Campaign result: "+adNetNotificationMessage);
+		log.log(Level.INFO, getName() + " Campaign result: "
+				+ adNetNotificationMessage);
 		adNetworkDailyNotification = adNetNotificationMessage;
 		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId())
 				&& getName().equals(adNetNotificationMessage.getWinner())) {
@@ -210,21 +211,19 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleAdNetworkReport(AdNetworkReport queryReport) {
 		this.log.log(Level.INFO, queryReport.toString());
-		
+
 		/*
-		AdNetworkReportEntry entry = queryReport.getAdNetworkReportEntry(getName());
-		
-		for (int i = 0; i < queries.length; i++) {
-	        AdxQuery query = queries[i];
-	        queryReport.
-	        int index = queryReport.indexForEntry(query);
-	     if (index >= 0) {
-	         impressions[i] += queryReport.getImpressions(index);
-	         clicks[i] += queryReport.getClicks(index);
-	     }
-	   }*/
-		
-	 }
+		 * AdNetworkReportEntry entry =
+		 * queryReport.getAdNetworkReportEntry(getName());
+		 * 
+		 * for (int i = 0; i < queries.length; i++) { AdxQuery query =
+		 * queries[i]; queryReport. int index =
+		 * queryReport.indexForEntry(query); if (index >= 0) { impressions[i] +=
+		 * queryReport.getImpressions(index); clicks[i] +=
+		 * queryReport.getClicks(index); } }
+		 */
+
+	}
 
 	// private void handleSalesReport(SalesReport salesReport) {
 	// for (int i = 0; i < queries.length; i++) {
@@ -297,7 +296,7 @@ public class DummyAdNetwork extends Agent {
 		}
 
 		if (bidBundle != null && ServerAddress != null) {
-			sendMessage(ServerAddress, bidBundle);
+			sendToRole(TACAdxConstants.ADX_AGENT_ROLE_ID, bidBundle);
 		}
 	}
 

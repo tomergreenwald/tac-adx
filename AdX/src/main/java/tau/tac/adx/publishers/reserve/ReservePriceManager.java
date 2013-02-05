@@ -165,7 +165,6 @@ public class ReservePriceManager {
 				bestReservePriceImpresssions = entry.getValue().get();
 			}
 		}
-		System.out.println("imporessions: " + bestReservePriceImpresssions);
 		return bestReservePrice;
 	}
 }

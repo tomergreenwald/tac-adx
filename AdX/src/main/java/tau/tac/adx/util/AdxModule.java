@@ -66,10 +66,15 @@ public class AdxModule extends AbstractModule {
 		bind(AdxPublisherGenerator.class).to(SimplePublisherGenerator.class);
 		bind(AdTypeGenerator.class).to(SimpleAdTypeGenerator.class);
 		bind(DeviceGenerator.class).to(SimpleDeviceGenerator.class);
-		bind(AdxAuctioneer.class).to(SimpleAdxAuctioneer.class);
-		bind(AdxBidManager.class).to(AdxBidManagerImpl.class);
-		bind(AdxSpendTracker.class).to(AdxSpendTrackerImpl.class);
-		bind(AdxBidTracker.class).to(AdxBidTrackerImpl.class);
-		bind(AuctionManager.class).to(SimpleAuctionManager.class);
+		bind(AdxAuctioneer.class).to(SimpleAdxAuctioneer.class).in(
+				Singleton.class);
+		bind(AdxBidManager.class).to(AdxBidManagerImpl.class).in(
+				Singleton.class);
+		bind(AdxSpendTracker.class).to(AdxSpendTrackerImpl.class).in(
+				Singleton.class);
+		bind(AdxBidTracker.class).to(AdxBidTrackerImpl.class).in(
+				Singleton.class);
+		bind(AuctionManager.class).to(SimpleAuctionManager.class).in(
+				Singleton.class);
 	}
 }

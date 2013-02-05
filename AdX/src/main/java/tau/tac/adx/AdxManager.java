@@ -8,15 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
-
-import tau.tac.adx.agents.DemandAgent;
 import tau.tac.adx.bids.Bidder;
 import tau.tac.adx.demand.Campaign;
+import tau.tac.adx.demand.UserClassificationService;
 import tau.tac.adx.messages.CampaignNotification;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.TACAdxSimulation;
+
+import com.google.common.eventbus.Subscribe;
 
 /**
  * @author greenwald
@@ -28,23 +27,42 @@ public class AdxManager {
 	 * {@link Map} between publisher names and the coresponding
 	 * {@link AdxPublisher}s.
 	 */
-	private Map<String, AdxPublisher> publishersNamingMap = new HashMap<String, AdxPublisher>();
-	private Map<Integer, Campaign> campaignMap = new HashMap<Integer, Campaign>();
-	private Map<String, Bidder> bidderMap = new HashMap<String, Bidder>();
+	private final Map<String, AdxPublisher> publishersNamingMap = new HashMap<String, AdxPublisher>();
+	private final Map<Integer, Campaign> campaignMap = new HashMap<Integer, Campaign>();
+	private final Map<String, Bidder> bidderMap = new HashMap<String, Bidder>();
 	private TACAdxSimulation simulation;
 	private static AdxManager instance;
-	private Logger log = Logger.getLogger(AdxManager.class.getName());
-	
-	private AdxManager(){}
-	
-	public static AdxManager getInstance(){
-		if (instance==null) {
+	private UserClassificationService userClassificationService;
+
+	/**
+	 * @return the userClassificationService
+	 */
+	public UserClassificationService getUserClassificationService() {
+		return userClassificationService;
+	}
+
+	/**
+	 * @param userClassificationService
+	 *            the userClassificationService to set
+	 */
+	public void setUserClassificationService(
+			UserClassificationService userClassificationService) {
+		this.userClassificationService = userClassificationService;
+	}
+
+	private final Logger log = Logger.getLogger(AdxManager.class.getName());
+
+	private AdxManager() {
+	}
+
+	public static AdxManager getInstance() {
+		if (instance == null) {
 			instance = new AdxManager();
 		}
 		return instance;
 	}
-	
-	public void setup(){
+
+	public void setup() {
 		simulation.getEventBus().register(this);
 	}
 

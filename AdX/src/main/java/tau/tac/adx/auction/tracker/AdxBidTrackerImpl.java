@@ -25,15 +25,22 @@
 package tau.tac.adx.auction.tracker;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.hamcrest.Matchers;
+
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.bids.BidInfo;
-import tau.tac.adx.demand.Campaign;
+import tau.tac.adx.bids.Bidder;
 import tau.tac.adx.props.AdxBidBundle;
+import tau.tac.adx.props.AdxBidBundle.BidEntry;
 import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.report.adn.MarketSegment;
+import ch.lambdaj.Lambda;
 
 import com.botbox.util.ArrayUtils;
 import com.google.inject.Inject;
@@ -180,11 +187,11 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			queryBid[index].setCampaignSpendLimit(bundle
 					.getCampaignDailySpendLimit());
 		}
-
-		for (AdxQuery query : querySpace) {
-			BidInfo bidInfo = bundle.getBidInfo(query);
-			if (bidInfo != null) {
-				queryBid[index].doAddQuery(bidInfo, query);
+		queryBid[index].clearQueries();
+		for (AdxQuery query : bundle) {
+			BidEntry entry = bundle.getEntry(query);
+			if (entry != null) {
+				queryBid[index].doAddQuery(entry);
 			}
 
 			// TODO: uncomment me
@@ -192,8 +199,8 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			// queryBid[index].setSpendLimit(query, dailyLimit);
 			// }
 		}
-		
-//		queryBid[index].updateBidSampler(campaignDistribution)
+
+		// queryBid[index].updateBidSampler(campaignDistribution)
 	}
 
 	@Override
@@ -204,32 +211,58 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 	private static class AdxQueryBid {
 		private final String advertiser;
 		private final double[] spendLimits;
-		private WheelSampler<Map<AdxQuery, BidInfo>> bidsSampler;
-		Map<Campaign, Map<AdxQuery, BidInfo>> campaignMap;
+		private final Set<BidEntry> querySet = new HashSet<AdxBidBundle.BidEntry>();
+		private final Map<AdxQuery, WheelSampler<BidEntry>> queryMap = new HashMap<AdxQuery, WheelSampler<BidEntry>>();
 		private final int queryCount;
 		private double campaignSpendLimit;
+		private final Bidder bidder;
 
-		public AdxQueryBid(String advertiser, int queryCount) {
+		public AdxQueryBid(final String advertiser, int queryCount) {
 			this.advertiser = advertiser;
 			spendLimits = new double[queryCount];
-			bidsSampler = new WheelSampler<Map<AdxQuery, BidInfo>>();
 			this.queryCount = queryCount;
 			campaignSpendLimit = DEFAULT_SPEND_LIMIT;
-			campaignMap = new HashMap<Campaign, Map<AdxQuery, BidInfo>>();
+			bidder = new Bidder() {
+
+				@Override
+				public String getName() {
+					return advertiser;
+				}
+			};
+		}
+
+		public void clearQueries() {
+			querySet.clear();
+			queryMap.clear();
 		}
 
 		public BidInfo generateBid(AdxQuery query) {
-			return bidsSampler.getSample().get(query);
+			WheelSampler<BidEntry> sampler = queryMap.get(query);
+			if (sampler == null) {
+				sampler = new WheelSampler<AdxBidBundle.BidEntry>();
+				queryMap.put(query, sampler);
+				for (MarketSegment marketSegment : query.getMarketSegments()) {
+					List<BidEntry> select = Lambda.select(querySet, Lambda
+							.having(Lambda.on(BidEntry.class)
+									.getMarketSegment(), Matchers
+									.equalTo(marketSegment)));
+					for (BidEntry bidEntry : select) {
+						sampler.addState(bidEntry.getWeight(), bidEntry);
+					}
+				}
+			}
+			BidEntry sample = sampler.getSample();
+			if (sample == null) {
+				return null;
+			}
+			BidInfo bidInfo = new BidInfo(sample.getBid(), bidder,
+					sample.getAd(), sample.getMarketSegment(), AdxManager
+							.getInstance().getCampaign(sample.getCampaignId()));
+			return bidInfo;
 		}
 
-		private synchronized void doAddQuery(BidInfo bidInfo, AdxQuery query) {
-			Map<AdxQuery, BidInfo> campaignBids = campaignMap.get(bidInfo
-					.getCampaign());
-			if (campaignBids == null) {
-				campaignBids = new HashMap<AdxQuery, BidInfo>();
-				campaignMap.put(bidInfo.getCampaign(), campaignBids);
-			}
-			campaignBids.put(query, bidInfo);
+		private synchronized void doAddQuery(BidEntry entry) {
+			querySet.add(entry);
 		}
 
 		// TODO: uncomment me
@@ -252,15 +285,6 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		//
 		// return this.spendLimits[index];
 		// }
-
-		public void updateBidSampler(Map<Campaign, Integer> campaignDistribution) {
-			bidsSampler = new WheelSampler<Map<AdxQuery, BidInfo>>();
-			for (Entry<Campaign, Integer> entry : campaignDistribution
-					.entrySet()) {
-				bidsSampler.addState(entry.getValue(),
-						campaignMap.get(entry.getKey()));
-			}
-		}
 
 		public double getCampaignSpendLimit() {
 			return campaignSpendLimit;

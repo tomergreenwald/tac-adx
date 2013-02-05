@@ -6,8 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import se.sics.isl.transport.Transportable;
-import se.sics.isl.util.ConfigManager;
 import se.sics.tasim.aw.Message;
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignImpl;
 import tau.tac.adx.demand.QualityManager;
@@ -19,10 +19,10 @@ import tau.tac.adx.messages.CampaignNotification;
 import tau.tac.adx.messages.UserClassificationServiceNotification;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.AdNetBidMessage;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
-import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.sim.Builtin;
 import tau.tac.adx.sim.TACAdxConstants;
 
@@ -36,7 +36,7 @@ public class DemandAgent extends Builtin {
 
 	private static final int ALOC_CMP_REACH = 10000;
 	private static int aloc_cmp_reach;
-	
+
 	private static final int ALOC_CMP_START_DAY = 1;
 	private static final int ALOC_CMP_END_DAY = 5;
 
@@ -69,12 +69,12 @@ public class DemandAgent extends Builtin {
 		} else {
 			auctionTomorrowsCampaign(date);
 			ucs.auction(day);
-			getSimulation().getEventBus().post(
-					new UserClassificationServiceNotification(ucs));
 
 			consolidateCmpaignStatistics(date);
 			reportAuctionResutls(date);
 		}
+		getSimulation().getEventBus().post(
+				new UserClassificationServiceNotification(ucs));
 		createAndPublishTomorrowsPendingCampaign();
 	}
 
@@ -83,12 +83,13 @@ public class DemandAgent extends Builtin {
 		 * Create next campaign opportunity and notify competing adNetwork
 		 * agents
 		 */
-		pendingCampaign = new CampaignImpl(qualityManager,
-				aloc_cmp_reach, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
-				ALOC_CMP_SGMNT /*
-				 * TODO: randomize
-				 */, ALOC_CMP_VC, ALOC_CMP_MC);
-		
+		pendingCampaign = new CampaignImpl(qualityManager, aloc_cmp_reach,
+				ALOC_CMP_START_DAY, ALOC_CMP_END_DAY, ALOC_CMP_SGMNT /*
+																	 * TODO:
+																	 * randomize
+																	 */,
+				ALOC_CMP_VC, ALOC_CMP_MC);
+
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
 		getSimulation().sendCampaignOpportunity(
 				new CampaignOpportunityMessage(pendingCampaign, day));
@@ -99,8 +100,7 @@ public class DemandAgent extends Builtin {
 		 * report auctions result and campaigns stats to adNet agents
 		 */
 		log.log(Level.INFO, "Reporting auction results...");
-		log.log(Level.INFO, "Pending campaign: "+pendingCampaign);
-
+		log.log(Level.INFO, "Pending campaign: " + pendingCampaign);
 
 		for (String advertiser : getAdxAdvertiserAddresses()) {
 
@@ -117,7 +117,7 @@ public class DemandAgent extends Builtin {
 
 			AdNetworkDailyNotification adNetworkNotification = new AdNetworkDailyNotification(
 					ucs.getAdNetData(advertiser), pendingCampaign);
-			
+
 			/* TODO: erase campaign winner and cost for non-winning advertisers */
 			getSimulation().sendUserClassificationAuctionResult(advertiser,
 					adNetworkNotification);
@@ -133,8 +133,7 @@ public class DemandAgent extends Builtin {
 		/*
 		 * Auction campaign and add to repository
 		 */
-		log.log(Level.INFO, "new day " + date
-				+ " . Auction pending campaign");
+		log.log(Level.INFO, "new day " + date + " . Auction pending campaign");
 		if (pendingCampaign != null) {
 			pendingCampaign.auction();
 			if (pendingCampaign.isAllocated()) {
@@ -149,8 +148,8 @@ public class DemandAgent extends Builtin {
 		}
 
 		/*
-		 * auction user classification service and announce results to
-		 * built-in agents
+		 * auction user classification service and announce results to built-in
+		 * agents
 		 */
 		log.log(Level.INFO, "Auction user classification service");
 	}
@@ -160,9 +159,10 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	protected void setup() {
-		//ConfigManager config = getSimulation().getConfig();
-		aloc_cmp_reach = getSimulation().getConfig().getPropertyAsInt("adxusers.population_size", ALOC_CMP_REACH);
-		
+		// ConfigManager config = getSimulation().getConfig();
+		aloc_cmp_reach = getSimulation().getConfig().getPropertyAsInt(
+				"adxusers.population_size", ALOC_CMP_REACH);
+
 		this.log = Logger.getLogger(DemandAgent.class.getName());
 
 		log.info("setting up...");
@@ -174,6 +174,7 @@ public class DemandAgent extends Builtin {
 		qualityManager = new QualityManagerImpl();
 
 		ucs = new UserClassificationServiceImpl();
+		AdxManager.getInstance().setUserClassificationService(ucs);
 
 		log.fine("Finished setup");
 	}
@@ -192,13 +193,13 @@ public class DemandAgent extends Builtin {
 
 			campaign.allocateToAdvertiser(advertiser);
 			adNetCampaigns.put(advertiser, campaign);
-			
+
 			getSimulation().sendInitialCampaign(advertiser,
 					new InitialCampaignMessage(campaign, this.getAddress()));
-			
+
 			getSimulation().getEventBus().post(
 					new CampaignNotification(campaign));
-			
+
 			ucs.updateAdvertiserBid(advertiser, 0, 0);
 		}
 	}

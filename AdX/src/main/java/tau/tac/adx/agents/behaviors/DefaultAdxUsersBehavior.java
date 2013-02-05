@@ -33,11 +33,6 @@ import se.sics.tasim.aw.Message;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.AdxBidBundleWriter;
 import tau.tac.adx.auction.manager.AdxBidManager;
-import tau.tac.adx.auction.manager.AdxBidManagerImpl;
-import tau.tac.adx.auction.tracker.AdxBidTracker;
-import tau.tac.adx.auction.tracker.AdxBidTrackerImpl;
-import tau.tac.adx.auction.tracker.AdxSpendTracker;
-import tau.tac.adx.auction.tracker.AdxSpendTrackerImpl;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.report.adn.AdNetworkReportManager;
 import tau.tac.adx.report.adn.AdNetworkReportManagerImpl;
@@ -118,7 +113,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	/**
 	 * {@link BidManager}.
 	 */
-	private AdxBidManager bidManager;
+	private final AdxBidManager bidManager;
 
 	/**
 	 * {@link Logger}.
@@ -126,16 +121,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	private Logger log;
 
 	private final AdxBidBundleWriter bidBundleWriter;
-
-	/**
-	 * {@link AdxSpendTracker}.
-	 */
-	private AdxSpendTracker spendTracker;
-
-	/**
-	 * {@link AdxBidTracker}.
-	 */
-	private AdxBidTracker bidTracker;
 
 	/**
 	 * @param config
@@ -189,21 +174,17 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		}
 
 		this.bidBundleWriter = bidBundleWriter;
+
+		this.bidManager = agentRepository.getAdxBidManager();
 	}
 
-	private AdxBidManager createBidManager(AdxBidTracker bidTracker,
-			AdxSpendTracker spendTracker) {
-
-		AdxBidManager bidManager = new AdxBidManagerImpl(bidTracker,
-				spendTracker);
-
+	private void setupBidManager() {
 		// All advertisers should be known to the bidManager
-		String[] advertisers = agentRepository.getAdvertiserAddresses();
+		String[] advertisers = AdxManager.getInstance().getSimulation()
+				.getAdxAdvertiserAddresses();
 		for (int i = 0, n = advertisers.length; i < n; i++) {
 			bidManager.addAdvertiser(advertisers[i]);
 		}
-
-		return bidManager;
 	}
 
 	/**
@@ -228,9 +209,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	public void setup() {
 		log = Logger.getLogger(DefaultPublisherBehavior.class.getName());
 		virtualDays = config.getPropertyAsInt("virtual_days", 0);
-		spendTracker = createSpendTracker();
-		bidTracker = createBidTracker();
-		bidManager = createBidManager(bidTracker, spendTracker);
+		setupBidManager();
 
 		try {
 			// Create the user manager
@@ -248,18 +227,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		}
 		publisherReportManager = createPublisherReportManager();
 		adNetworkReportManager = createAdNetworkReportManager();
-	}
-
-	private AdxBidTracker createBidTracker() {
-		AdxBidTracker bidTracker = new AdxBidTrackerImpl(0);
-
-		return bidTracker;
-	}
-
-	private AdxSpendTracker createSpendTracker() {
-		AdxSpendTracker spendTracker = new AdxSpendTrackerImpl(0);
-
-		return spendTracker;
 	}
 
 	private AdNetworkReportManager createAdNetworkReportManager() {
@@ -290,18 +257,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		return ConfigProxyUtils.createObjectFromProperty(config,
 				"adxusermanger.builder",
 				"tau.tac.adx.users.DefaultAdxUserManagerBuilder");
-	}
-
-	private void handleBidBundle(String advertiser, AdxBidBundle bidBundle) {
-		if (bidManager == null) {
-			// Not yet initialized => ignore the RFQ
-			log.warning("Received BidBundle from " + advertiser
-					+ " before initialization");
-		} else {
-			bidManager.updateBids(advertiser, bidBundle);
-
-			bidBundleWriter.writeBundle(advertiser, bidBundle);
-		}
 	}
 
 	/**
@@ -337,9 +292,9 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		userManager.messageReceived(message);
 		String sender = message.getSender();
 		Transportable content = message.getContent();
-
 		if (content instanceof AdxBidBundle) {
-			handleBidBundle(sender, (AdxBidBundle) content);
+			AdxBidBundle bundle = (AdxBidBundle) content;
+			bidManager.updateBids(message.getSender(), bundle);
 		}
 	}
 
@@ -350,11 +305,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	public void sendReportsToAll() {
 		publisherReportManager.sendReportsToAll();
 		adNetworkReportManager.sendReportsToAll();
-	}
-
-	@Override
-	public void applyBidUpdates() {
-		bidManager.applyBidUpdates();
 	}
 
 }

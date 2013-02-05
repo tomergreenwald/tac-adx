@@ -58,10 +58,6 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	private static final long serialVersionUID = -7210442551464879289L;
 
 	/**
-	 * Cached hashcode.
-	 */
-	private int hashCode;
-	/**
 	 * The queried {@link AdxPublisher}.
 	 */
 	private String publisher;
@@ -100,7 +96,6 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		this.marketSegments = marketSegments;
 		this.device = device;
 		this.adType = adType;
-		calculateHashCode();
 	}
 
 	/**
@@ -131,7 +126,6 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		this.marketSegments = MarketSegment.extractSegment(user);
 		this.device = device;
 		this.adType = adType;
-		calculateHashCode();
 	}
 
 	/**
@@ -160,7 +154,6 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		this.marketSegments = MarketSegment.extractSegment(user);
 		this.device = device;
 		this.adType = adType;
-		calculateHashCode();
 	}
 
 	/**
@@ -235,7 +228,6 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 			marketSegments.add(MarketSegment.valueOf(reader
 					.getAttribute(MARKET_SEGMENT_KEY)));
 		}
-		calculateHashCode();
 	}
 
 	/**
@@ -259,44 +251,30 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		}
 	}
 
-	/*	*//**
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "AdxQuery [publisher=" + publisher + ", marketSegments="
+				+ marketSegments + ", device=" + device + ", adType=" + adType
+				+ "]";
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
-	/*
-	 * @Override public int hashCode() { final int prime = 31; int result = 1;
-	 * result = prime * result + ((publisher == null) ? 0 :
-	 * publisher.hashCode()); return result; }
-	 */
-	/**
-	 * Returns the precalculated hash code.
-	 * 
-	 * @return precalculated hash code.
-	 */
 	@Override
-	public final int hashCode() {
-		return hashCode;
-	}
-
-	/**
-	 * Returns the calculated hash code.
-	 */
-	protected final void calculateHashCode() {
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((adType == null) ? 0 : adType.hashCode());
+		result = prime * result + ((device == null) ? 0 : device.hashCode());
+		result = prime * result
+				+ ((marketSegments == null) ? 0 : marketSegments.hashCode());
 		result = prime * result
 				+ ((publisher == null) ? 0 : publisher.hashCode());
-		hashCode = result;
-	}
-
-	/**
-	 * Returns a string representation of the query and the publisher.
-	 * 
-	 * @return a string representation of the query and the publisher.
-	 */
-	@Override
-	public final String toString() {
-		return String.format("(%s (%s))", this.getClass().getSimpleName(),
-				getPublisher());
+		return result;
 	}
 
 	/**
@@ -311,6 +289,15 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		if (getClass() != obj.getClass())
 			return false;
 		AdxQuery other = (AdxQuery) obj;
+		if (adType != other.adType)
+			return false;
+		if (device != other.device)
+			return false;
+		if (marketSegments == null) {
+			if (other.marketSegments != null)
+				return false;
+		} else if (!marketSegments.equals(other.marketSegments))
+			return false;
 		if (publisher == null) {
 			if (other.publisher != null)
 				return false;

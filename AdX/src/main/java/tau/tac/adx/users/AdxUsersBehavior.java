@@ -46,6 +46,4 @@ public interface AdxUsersBehavior {
 	Ranking getRanking(Query query, Auctioneer auctioneer);
 
 	void sendReportsToAll();
-
-	void applyBidUpdates();
 }

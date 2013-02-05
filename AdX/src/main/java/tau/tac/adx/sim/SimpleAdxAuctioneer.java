@@ -6,7 +6,6 @@ package tau.tac.adx.sim;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 
 import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.Adx;
@@ -21,13 +20,11 @@ import tau.tac.adx.auction.manager.AdxBidManager;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.demand.UserClassificationService;
 import tau.tac.adx.demand.UserClassificationServiceAdNetData;
-import tau.tac.adx.messages.UserClassificationServiceNotification;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.report.adn.MarketSegment;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import edu.umich.eecs.tac.auction.BidManager;
@@ -48,11 +45,6 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	 * {@link BidManager}.
 	 */
 	private final AdxBidManager bidManager;
-
-	/**
-	 * {@link UserClassificationService}.
-	 */
-	private UserClassificationService classificationService;
 
 	/**
 	 * @param auctionManager
@@ -77,8 +69,8 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	public AdxAuctionResult runAuction(AdxQuery query) {
 		Collection<BidInfo> bidInfoCollection = generateBidInfos(query);
 
-		ReservePriceManager reservePriceManager = AdxManager.getInstance().getPublisher(
-				query.getPublisher()).getReservePriceManager();
+		ReservePriceManager reservePriceManager = AdxManager.getInstance()
+				.getPublisher(query.getPublisher()).getReservePriceManager();
 		Double reservePrice = reservePriceManager.generateReservePrice();
 		AuctionData auctionData = new AuctionData(AuctionOrder.HIGHEST_WINS,
 				AuctionPriceType.GENERALIZED_SECOND_PRICE, bidInfoCollection,
@@ -92,7 +84,8 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 
 	private Collection<BidInfo> generateBidInfos(AdxQuery query) {
 		Collection<BidInfo> bidInfoCollection = new HashSet<BidInfo>();
-		Set<String> advertisers = bidManager.advertisers();
+		String[] advertisers = AdxManager.getInstance().getSimulation()
+				.getAdxAdvertiserAddresses();
 		for (final String advertiser : advertisers) {
 			AdxQuery classifiedQuery = getClassifiedQuery(advertiser, query);
 			BidInfo bidInfo = bidManager
@@ -105,20 +98,21 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	}
 
 	private AdxQuery getClassifiedQuery(String advertiser, AdxQuery query) {
-		UserClassificationServiceAdNetData adNetData = classificationService
+		UserClassificationService userClassificationService = AdxManager
+				.getInstance().getUserClassificationService();
+		UserClassificationServiceAdNetData adNetData = userClassificationService
 				.getAdNetData(advertiser);
 		if (adNetData.getServiceLevel() > 0) {
 			return query;
 		}
 		AdxQuery clone = query.clone();
 		clone.setMarketSegments(Collections.singletonList(MarketSegment.NONE));
-		return clone;
+		// return clone;
+		return query;
 	}
 
 	@Override
 	public void nextTimeUnit(int timeUnit) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -126,9 +120,4 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 		bidManager.applyBidUpdates();
 	}
 
-	@Subscribe
-	public void updateUserClassificationService(
-			UserClassificationServiceNotification notification) {
-		classificationService = notification.getUserClassificationService();
-	}
 }

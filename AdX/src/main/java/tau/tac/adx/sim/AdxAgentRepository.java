@@ -29,6 +29,8 @@ import java.util.Map;
 
 import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.auction.manager.AdxBidManager;
+import tau.tac.adx.auction.tracker.AdxBidTracker;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.users.AdxUser;
@@ -145,7 +147,17 @@ public interface AdxAgentRepository extends AgentRepository {
 	AdxAuctioneer getAuctioneer();
 
 	/**
+	 * @return {@link AdxBidManager}.
+	 */
+	AdxBidManager getAdxBidManager();
+
+	/**
 	 * @return {@link EventBus}.
 	 */
 	EventBus getEventBus();
+
+	/**
+	 * @return {@link AdxBidTracker}.
+	 */
+	AdxBidTracker getAdxBidTracker();
 }
