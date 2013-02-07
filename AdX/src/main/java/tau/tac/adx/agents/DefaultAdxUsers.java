@@ -55,8 +55,13 @@ public class DefaultAdxUsers extends AdxUsers {
 				new BidBundleWriterProxy());
 	}
 
-	public void preNextTimeUnit(int date) {
+	@Override
+	public void nextTimeUnit(int date) {
 		usersBehavior.nextTimeUnit(date);
+		sendReportsToAll();
+	}
+
+	public void preNextTimeUnit(int date) {
 	}
 
 	/**

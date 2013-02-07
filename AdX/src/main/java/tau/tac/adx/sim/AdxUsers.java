@@ -69,8 +69,4 @@ public abstract class AdxUsers extends Builtin implements
 		getSimulation().broadcastAdNetowrkReport(adNetworkName, report);
 	}
 
-	@Override
-	public void nextTimeUnit(int date) {
-		sendReportsToAll();
-	}
 }
