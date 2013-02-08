@@ -1,7 +1,9 @@
 package tau.tac.adx.report.adn;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.properties.Age;
@@ -34,8 +36,8 @@ public enum MarketSegment {
 	 *            {@link AdxUser}.
 	 * @return {@link List} of {@link MarketSegment}s.
 	 */
-	public static List<MarketSegment> extractSegment(AdxUser user) {
-		List<MarketSegment> marketSegments = new LinkedList<MarketSegment>();
+	public static Set<MarketSegment> extractSegment(AdxUser user) {
+		Set<MarketSegment> marketSegments = new HashSet<MarketSegment>();
 		if (user.getGender() == Gender.male) {
 			if (user.getIncome() == Income.low
 					|| user.getIncome() == Income.medium) {

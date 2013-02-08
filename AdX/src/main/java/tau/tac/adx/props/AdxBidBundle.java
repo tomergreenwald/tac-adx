@@ -25,6 +25,9 @@
 package tau.tac.adx.props;
 
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
@@ -173,6 +176,7 @@ public class AdxBidBundle extends
 		entry.setBid(bid);
 		entry.setAd(ad);
 		entry.setDailyLimit(dailyLimit);
+		entry.setCampaignId(campaignId);
 	}
 
 	/**
@@ -409,7 +413,7 @@ public class AdxBidBundle extends
 		BidEntry bidEntry = getEntry(index);
 		BidInfo bidInfo = new BidInfo(bidEntry.getBid(), AdxManager
 				.getInstance().getBidder(advertiserId), bidEntry.getAd(),
-				bidEntry.getMarketSegment(), AdxManager.getInstance()
+				bidEntry.getMarketSegments(), AdxManager.getInstance()
 						.getCampaign(bidEntry.getCampaignId()));
 		return bidInfo;
 	}
@@ -545,11 +549,6 @@ public class AdxBidBundle extends
 		private int weight;
 
 		/**
-		 * {@link MarketSegment}.
-		 */
-		private MarketSegment marketSegment = MarketSegment.NONE;
-
-		/**
 		 * Creates a bid entry with all values set to their persistent value.
 		 */
 		public BidEntry() {
@@ -557,6 +556,16 @@ public class AdxBidBundle extends
 			this.dailyLimit = PERSISTENT_SPEND_LIMIT;
 			this.ad = PERSISTENT_AD;
 			this.weight = PERSISTENT_WEIGHT;
+		}
+
+		public BidEntry(Ad ad, double bid, double dailyLimit, int campaignId,
+				int weight) {
+			super();
+			this.ad = ad;
+			this.bid = bid;
+			this.dailyLimit = dailyLimit;
+			this.campaignId = campaignId;
+			this.weight = weight;
 		}
 
 		public int getWeight() {
@@ -625,16 +634,8 @@ public class AdxBidBundle extends
 		/**
 		 * @return the marketSegment
 		 */
-		public MarketSegment getMarketSegment() {
-			return marketSegment;
-		}
-
-		/**
-		 * @param marketSegment
-		 *            the marketSegment to set
-		 */
-		public void setMarketSegment(MarketSegment marketSegment) {
-			this.marketSegment = marketSegment;
+		public Set<MarketSegment> getMarketSegments() {
+			return getKey().getMarketSegments();
 		}
 
 		/**
@@ -652,8 +653,6 @@ public class AdxBidBundle extends
 			this.dailyLimit = reader.getAttributeAsDouble("dailyLimit",
 					PERSISTENT_SPEND_LIMIT);
 			this.campaignId = reader.getAttributeAsInt("campaignId", 0);
-			this.marketSegment = MarketSegment.valueOf(reader.getAttribute(
-					"marketSegment", null));
 			this.weight = reader.getAttributeAsInt("weight", 1);
 			if (reader.nextNode("Ad", false)) {
 				this.ad = (Ad) reader.readTransportable();
@@ -671,7 +670,6 @@ public class AdxBidBundle extends
 			writer.attr("bid", bid);
 			writer.attr("dailyLimit", dailyLimit);
 			writer.attr("campaignId", campaignId);
-			writer.attr("marketSegment", marketSegment.toString());
 			writer.attr("weight", weight);
 			if (ad != null) {
 				writer.write(ad);

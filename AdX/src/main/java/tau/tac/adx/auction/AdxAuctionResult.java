@@ -3,6 +3,8 @@
  */
 package tau.tac.adx.auction;
 
+import java.util.Set;
+
 import tau.tac.adx.Adx;
 import tau.tac.adx.auction.data.AuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
@@ -52,8 +54,8 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	/**
 	 * @return the marketSegment
 	 */
-	public MarketSegment getMarketSegment() {
-		return winningBidInfo.getMarketSegment();
+	public Set<MarketSegment> getMarketSegments() {
+		return winningBidInfo.getMarketSegments();
 	}
 
 	/**

@@ -3,12 +3,18 @@
  */
 package tau.tac.adx.auction;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import tau.tac.adx.auction.data.AuctionData;
 import tau.tac.adx.auction.data.AuctionOrder;
 import tau.tac.adx.auction.data.AuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
+import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.report.adn.MarketSegment;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 /**
@@ -30,7 +36,7 @@ public class SimpleAuctionManager implements AuctionManager {
 	 * @see AuctionManager#runAuction(AuctionData)
 	 */
 	@Override
-	public AdxAuctionResult runAuction(AuctionData auctionData) {
+	public AdxAuctionResult runAuction(AuctionData auctionData, AdxQuery query) {
 		BidInfo winningBid = initializeByAuctionOrder(auctionData
 				.getAuctionOrder());
 		BidInfo secondBid = initializeByAuctionOrder(auctionData
@@ -44,7 +50,11 @@ public class SimpleAuctionManager implements AuctionManager {
 				secondBid = bidInfo;
 			}
 		}
-		return calculateAuctionResult(winningBid, secondBid, auctionData);
+		BidInfo adjustedWinningBid = (BidInfo) winningBid.clone();
+		Set<MarketSegment> marketSegments = Sets.intersection(
+				query.getMarketSegments(), winningBid.getMarketSegments());
+		adjustedWinningBid.setMarketSegments(marketSegments);
+		return calculateAuctionResult(adjustedWinningBid, secondBid, auctionData);
 	}
 
 	/**
@@ -145,9 +155,11 @@ public class SimpleAuctionManager implements AuctionManager {
 	protected BidInfo initializeByAuctionOrder(AuctionOrder auctionOrder) {
 		switch (auctionOrder) {
 		case HIGHEST_WINS:
-			return new BidInfo(Double.MIN_VALUE, null, null, null, null);
+			return new BidInfo(Double.MIN_VALUE, null, null,
+					new HashSet<MarketSegment>(), null);
 		case LOWEST_WINS:
-			return new BidInfo(Double.MAX_VALUE, null, null, null, null);
+			return new BidInfo(Double.MAX_VALUE, null, null,
+					new HashSet<MarketSegment>(), null);
 		default:
 			throw switchCaseException(auctionOrder);
 		}

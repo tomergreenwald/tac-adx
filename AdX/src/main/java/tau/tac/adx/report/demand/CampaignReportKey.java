@@ -65,6 +65,11 @@ public class CampaignReportKey implements Transportable {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "CampaignReportKey [campaignId=" + campaignId + "]";
+	}
+
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

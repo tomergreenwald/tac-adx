@@ -24,6 +24,7 @@
  */
 package tau.tac.adx.auction.tracker;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +44,9 @@ import tau.tac.adx.report.adn.MarketSegment;
 import ch.lambdaj.Lambda;
 
 import com.botbox.util.ArrayUtils;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 import edu.umich.eecs.tac.props.Ad;
@@ -241,24 +245,42 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			if (sampler == null) {
 				sampler = new WheelSampler<AdxBidBundle.BidEntry>();
 				queryMap.put(query, sampler);
-				for (MarketSegment marketSegment : query.getMarketSegments()) {
-					List<BidEntry> select = Lambda.select(querySet, Lambda
-							.having(Lambda.on(BidEntry.class)
-									.getMarketSegment(), Matchers
-									.equalTo(marketSegment)));
-					for (BidEntry bidEntry : select) {
-						sampler.addState(bidEntry.getWeight(), bidEntry);
-					}
+				// for (MarketSegment marketSegment : query.getMarketSegments())
+				// {
+				// List<BidEntry> select = Lambda.select(querySet, Lambda
+				// .having(Lambda.on(BidEntry.class)
+				// .getMarketSegment(), Matchers
+				// .equalTo(marketSegment)));
+				// Filter by device and types, advertiesr
+				Collection<BidEntry> filteredQueries = Collections2.filter(querySet,
+						new BidPredicate(query));
+				for (BidEntry bidEntry : filteredQueries) {
+					sampler.addState(bidEntry.getWeight(), bidEntry);
 				}
+				// }
 			}
 			BidEntry sample = sampler.getSample();
 			if (sample == null) {
 				return null;
 			}
 			BidInfo bidInfo = new BidInfo(sample.getBid(), bidder,
-					sample.getAd(), sample.getMarketSegment(), AdxManager
+					sample.getAd(), sample.getMarketSegments(), AdxManager
 							.getInstance().getCampaign(sample.getCampaignId()));
 			return bidInfo;
+		}
+
+		private class BidPredicate implements Predicate<BidEntry> {
+
+			private AdxQuery adxQuery;
+
+			public BidPredicate(AdxQuery adxQuery) {
+				this.adxQuery = adxQuery;
+			}
+
+			public boolean apply(BidEntry input) {
+				return ! Sets.intersection(adxQuery.getMarketSegments(), input.getMarketSegments()).isEmpty();
+			}
+
 		}
 
 		private synchronized void doAddQuery(BidEntry entry) {

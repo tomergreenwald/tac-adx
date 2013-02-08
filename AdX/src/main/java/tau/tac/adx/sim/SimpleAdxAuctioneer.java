@@ -6,6 +6,7 @@ package tau.tac.adx.sim;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.Adx;
@@ -36,6 +37,8 @@ import edu.umich.eecs.tac.auction.BidManager;
  * 
  */
 public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
+	
+	private static Set<MarketSegment> emptySegments  = new HashSet<MarketSegment>(Collections.singletonList(MarketSegment.NONE));
 
 	/**
 	 * {@link AuctionManager}.
@@ -75,7 +78,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 		AuctionData auctionData = new AuctionData(AuctionOrder.HIGHEST_WINS,
 				AuctionPriceType.GENERALIZED_SECOND_PRICE, bidInfoCollection,
 				reservePrice);
-		AdxAuctionResult auctionResult = auctionManager.runAuction(auctionData);
+		AdxAuctionResult auctionResult = auctionManager.runAuction(auctionData, query);
 		if (auctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
 			reservePriceManager.addImpressionForPrice(reservePrice);
 		}
@@ -106,7 +109,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 			return query;
 		}
 		AdxQuery clone = query.clone();
-		clone.setMarketSegments(Collections.singletonList(MarketSegment.NONE));
+		clone.setMarketSegments(emptySegments);
 		// return clone;
 		return query;
 	}

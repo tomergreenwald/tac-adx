@@ -46,7 +46,7 @@ public class AdxSpendTrackerImplTest {
 
 		String advertiser = "Alice";
 		AdxQuery query = new AdxQuery("pub",
-				Collections.singletonList(MarketSegment.FEMALE_HIGH_INCOME),
+				MarketSegment.FEMALE_HIGH_INCOME,
 				Device.mobile, AdType.text);
 		double cost = 1.0;
 
@@ -65,7 +65,7 @@ public class AdxSpendTrackerImplTest {
 
 		assertEquals(spendTracker.getDailyCost("notAlice"), 0.0, 0.0);
 		assertEquals(spendTracker.getDailyCost(advertiser, new AdxQuery("a",
-				Collections.singletonList(MarketSegment.FEMALE_HIGH_INCOME),
+				MarketSegment.FEMALE_HIGH_INCOME,
 				null, null)), 0.0, 0.0);
 		assertEquals(spendTracker.getDailyCost("notAlice", query), 0.0, 0.0);
 

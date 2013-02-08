@@ -25,6 +25,7 @@
 package tau.tac.adx.report.adn;
 
 import java.util.List;
+import java.util.Set;
 
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.props.AdxQuery;
@@ -120,7 +121,7 @@ public class AdNetworkReport extends
 	 */
 	public void addBid(AdxAuctionResult auctionResult, AdxQuery query,
 			AdxUser user) {
-		List<MarketSegment> marketSegments = MarketSegment.extractSegment(user);
+		Set<MarketSegment> marketSegments = MarketSegment.extractSegment(user);
 		for (MarketSegment marketSegment : marketSegments) {
 			AdNetworkKey adNetworkKey = getAdNetworkKey(marketSegment, query);
 			AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);

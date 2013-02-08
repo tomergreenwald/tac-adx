@@ -137,9 +137,10 @@ public class DummyAdNetwork extends Agent {
 		}
 	}
 
-	private void handleCampaignReport(CampaignReport CampaignReport) {
-		this.campaignReport = CampaignReport;
+	private void handleCampaignReport(CampaignReport campaignReport) {
+		this.campaignReport = campaignReport;
 		/* ... */
+		log.log(Level.INFO, getName() + campaignReport.toMyString());
 	}
 
 	private void updateCampaignDataOpportunity(
@@ -165,7 +166,7 @@ public class DummyAdNetwork extends Agent {
 
 		updateCampaignDataOpportunity(com, pendingCampaign);
 
-		long cmpBid = randomGenerator.nextLong()
+		long cmpBid = Math.abs(randomGenerator.nextLong())
 				% campaignOpportunityMessage.getReachImps();
 
 		AdNetBidMessage bids = new AdNetBidMessage(
@@ -285,9 +286,10 @@ public class DummyAdNetwork extends Agent {
 				Random rnd = new Random();
 
 				for (int i = 0; i < queries.length; i++) {
-					List<MarketSegment> segmentsList = queries[i]
+					Set<MarketSegment> segmentsList = queries[i]
 							.getMarketSegments();
-					if (campaign.targetSegment == segmentsList.get(0))
+					if (campaign.targetSegment == segmentsList.iterator()
+							.next())
 						bidBundle.addQuery(queries[i], rnd.nextLong() % 1000,
 								new Ad(null), campaign.id, 1);
 				}
@@ -295,7 +297,7 @@ public class DummyAdNetwork extends Agent {
 			}
 		}
 
-		if (bidBundle != null && ServerAddress != null) {
+		if (bidBundle != null) {
 			sendToRole(TACAdxConstants.ADX_AGENT_ROLE_ID, bidBundle);
 		}
 	}
@@ -310,7 +312,7 @@ public class DummyAdNetwork extends Agent {
 			 */
 			for (PublisherCatalogEntry publisherCatalogEntry : publisherCatalog) {
 				for (MarketSegment userSegment : MarketSegment.values()) {
-					List<MarketSegment> marketSegments = new ArrayList<MarketSegment>();
+					Set<MarketSegment> marketSegments = new HashSet<MarketSegment>();
 					marketSegments.add(userSegment);
 
 					queryList.add(new AdxQuery(publisherCatalogEntry
