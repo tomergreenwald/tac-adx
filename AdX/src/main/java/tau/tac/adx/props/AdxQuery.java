@@ -4,8 +4,10 @@
 package tau.tac.adx.props;
 
 import java.text.ParseException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
@@ -65,7 +67,7 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	/**
 	 * {@link MarketSegment}s which this {@link AdxQuery} relates to.
 	 */
-	private List<MarketSegment> marketSegments;
+	private Set<MarketSegment> marketSegments;
 
 	/**
 	 * Accessing {@link Device} used for the query.
@@ -89,11 +91,33 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	 * @param adType
 	 *            Requested {@link AdType} for the query.
 	 */
-	public AdxQuery(String publisher, List<MarketSegment> marketSegments,
+	public AdxQuery(String publisher, Set<MarketSegment> marketSegments,
 			Device device, AdType adType) {
 		super();
 		this.publisher = publisher;
 		this.marketSegments = marketSegments;
+		this.device = device;
+		this.adType = adType;
+	}
+	
+	/**
+	 * Class constructor.
+	 * 
+	 * @param publisher
+	 *            The queried {@link AdxPublisher}.
+	 * @param marketSegments
+	 *            {@link MarketSegment} which this {@link AdxQuery} relates to.
+	 * @param device
+	 *            Accessing {@link Device} used for the query.
+	 * @param adType
+	 *            Requested {@link AdType} for the query.
+	 */
+	public AdxQuery(String publisher, MarketSegment marketSegment,
+			Device device, AdType adType) {
+		super();
+		this.publisher = publisher;
+		this.marketSegments = new HashSet<MarketSegment>();
+		this.marketSegments.add(marketSegment);
 		this.device = device;
 		this.adType = adType;
 	}
@@ -103,7 +127,7 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	 */
 	public AdxQuery() {
 		super();
-		marketSegments = new LinkedList<MarketSegment>();
+		marketSegments = new HashSet<MarketSegment>();
 	}
 
 	/**
@@ -204,7 +228,7 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	/**
 	 * @return the marketSegments
 	 */
-	public List<MarketSegment> getMarketSegments() {
+	public Set<MarketSegment> getMarketSegments() {
 		return marketSegments;
 	}
 
@@ -212,7 +236,7 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 	 * @param marketSegments
 	 *            the marketSegments to set
 	 */
-	public void setMarketSegments(List<MarketSegment> marketSegments) {
+	public void setMarketSegments(Set<MarketSegment> marketSegments) {
 		this.marketSegments = marketSegments;
 	}
 

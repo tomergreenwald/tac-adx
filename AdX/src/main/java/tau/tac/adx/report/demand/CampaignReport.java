@@ -22,6 +22,14 @@ public class CampaignReport extends AbstractKeyedEntryList<CampaignReportKey, Ca
 	}
 
 	
+	public String toMyString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (CampaignReportEntry entry : getEntries()) {
+			stringBuilder.append(entry.getKey()).append(" : ").append(entry).append("\n");
+		}
+		return "CampaignReport: "+stringBuilder;
+	}
+
 	/**
 	 * Adds an {@link campaignReportKey} to the report.
 	 * 

@@ -41,7 +41,7 @@ public class AdNetBidMessage extends SimpleContent {
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
 				.append('[').append(ucsBid).append(',').append(campaignId).append(',').append(campaignBudgetBid).append(',');
-		return params(buf).append(']').toString();
+		return buf.append(']').toString();
 	}
 
 	

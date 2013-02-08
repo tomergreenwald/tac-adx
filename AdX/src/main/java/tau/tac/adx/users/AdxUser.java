@@ -174,4 +174,11 @@ public class AdxUser extends User implements Cloneable, TacUser<Adx> {
 		return result;
 	}
 
+	@Override
+	public String toString() {
+		return "AdxUser [age=" + age + ", gender=" + gender + ", income="
+				+ income + ", pContinue=" + pContinue + ", userState="
+				+ userState + ", uniqueId=" + uniqueId + "]";
+	}
+
 }

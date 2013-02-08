@@ -1,5 +1,9 @@
 package tau.tac.adx.bids;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.report.adn.MarketSegment;
 import edu.umich.eecs.tac.props.Ad;
@@ -28,7 +32,7 @@ public class BidInfo implements Cloneable {
 	private final BidProduct bidProduct;
 
 	/** Associated {@link MarketSegment}. */
-	private MarketSegment marketSegment;
+	private Set<MarketSegment> marketSegments;
 
 	/** Associated {@link Campaign}. */
 	private Campaign campaign;
@@ -46,11 +50,33 @@ public class BidInfo implements Cloneable {
 	 *            Associated {@link Campaign}
 	 */
 	public BidInfo(double bidPrice, Bidder bidder, BidProduct bidProduct,
+			Set<MarketSegment> marketSegments, Campaign campaign) {
+		this.bid = bidPrice;
+		this.bidder = bidder;
+		this.bidProduct = bidProduct;
+		this.marketSegments = marketSegments;
+		this.campaign = campaign;
+	}
+	
+	/**
+	 * @param bidPrice
+	 *            bid price
+	 * @param bidder
+	 *            {@link Bidder}
+	 * @param bidProduct
+	 *            {@link BidProduct}
+	 * @param marketSegment
+	 *            Associated {@link MarketSegment}
+	 * @param campaign
+	 *            Associated {@link Campaign}
+	 */
+	public BidInfo(double bidPrice, Bidder bidder, BidProduct bidProduct,
 			MarketSegment marketSegment, Campaign campaign) {
 		this.bid = bidPrice;
 		this.bidder = bidder;
 		this.bidProduct = bidProduct;
-		this.marketSegment = marketSegment;
+		this.marketSegments = new HashSet<MarketSegment>();
+		this.marketSegments.add(marketSegment);
 		this.campaign = campaign;
 	}
 
@@ -75,19 +101,13 @@ public class BidInfo implements Cloneable {
 		return bidProduct;
 	}
 
-	/**
-	 * @return the marketSegment
-	 */
-	public MarketSegment getMarketSegment() {
-		return marketSegment;
+
+	public Set<MarketSegment> getMarketSegments() {
+		return marketSegments;
 	}
 
-	/**
-	 * @param marketSegment
-	 *            the marketSegment to set
-	 */
-	public void setMarketSegment(MarketSegment marketSegment) {
-		this.marketSegment = marketSegment;
+	public void setMarketSegments(Set<MarketSegment> marketSegments) {
+		this.marketSegments = marketSegments;
 	}
 
 	/**
@@ -110,7 +130,7 @@ public class BidInfo implements Cloneable {
 	 */
 	@Override
 	public Object clone() {
-		return new BidInfo(bid, bidder, bidProduct, marketSegment, campaign);
+		return new BidInfo(bid, bidder, bidProduct, marketSegments, campaign);
 	}
 
 	/**

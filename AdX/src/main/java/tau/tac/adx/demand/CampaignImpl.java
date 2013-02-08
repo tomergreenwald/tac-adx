@@ -88,7 +88,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		
 	}
 	public int getDayEnd(){
-		return dayStart;
+		return dayEnd;
 		
 	}
 	public MarketSegment getTargetSegment(){

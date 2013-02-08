@@ -290,10 +290,10 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	@Override
 	public void messageReceived(Message message) {
 		userManager.messageReceived(message);
-		String sender = message.getSender();
 		Transportable content = message.getContent();
 		if (content instanceof AdxBidBundle) {
 			AdxBidBundle bundle = (AdxBidBundle) content;
+			log.fine("Recieved "+AdxBidBundle.class.getName()+": "+bundle);
 			bidManager.updateBids(message.getSender(), bundle);
 		}
 	}

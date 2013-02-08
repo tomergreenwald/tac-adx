@@ -84,7 +84,7 @@ public class DemandAgent extends Builtin {
 		 * agents
 		 */
 		pendingCampaign = new CampaignImpl(qualityManager, aloc_cmp_reach,
-				ALOC_CMP_START_DAY, ALOC_CMP_END_DAY, ALOC_CMP_SGMNT /*
+				day+ALOC_CMP_START_DAY, day+ALOC_CMP_END_DAY, ALOC_CMP_SGMNT /*
 																	 * TODO:
 																	 * randomize
 																	 */,
@@ -257,7 +257,7 @@ public class DemandAgent extends Builtin {
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
 			cmpn.impress(
-					message.getAuctionResult().getMarketSegment(),
+					message.getAuctionResult().getMarketSegments().iterator().next(),
 					message.getQuery().getAdType(),
 					message.getQuery().getDevice(),
 					(long) (message.getAuctionResult().getWinningPrice() * 1000));
