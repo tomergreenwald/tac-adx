@@ -62,7 +62,7 @@ public class AdxBidBundleTest {
 		ad.setProduct(product);
 		Random random = new Random();
 		double bid = 20.1;
-		
+
 		int campaignID = random.nextInt();
 		int weight = random.nextInt();
 		bundle.addQuery(query, bid, ad, campaignID, weight);
@@ -74,7 +74,8 @@ public class AdxBidBundleTest {
 		ad2.setProduct(product2);
 
 		double bid2 = 50.5;
-		bundle.addQuery(query2, bid2, ad2, campaignID, weight,AdxBidBundle.PERSISTENT_SPEND_LIMIT);
+		bundle.addQuery(query2, bid2, ad2, campaignID, weight,
+				AdxBidBundle.PERSISTENT_SPEND_LIMIT);
 
 		assertEquals(bundle.size(), 2);
 
@@ -91,9 +92,8 @@ public class AdxBidBundleTest {
 		assertEquals(bundle.getCampaignDailySpendLimit(), 100.5, 0);
 		assertEquals(bundle.getDailyLimit(query), 15.0, 0);
 		assertEquals(bundle.getDailyLimit(1), 200.0, 0);
-		assertEquals(campaignID, bundle.getCampaignId(index));
-		assertEquals(weight, bundle.getWeight(index));
-		
+		assertEquals(campaignID, bundle.getCampaignId(index), 0);
+		assertEquals(weight, bundle.getWeight(index), 0);
 
 		bundle.setBid(query, 100.0);
 		assertEquals(bundle.getBid(query), 100.0, 0);

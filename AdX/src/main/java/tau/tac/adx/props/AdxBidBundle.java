@@ -25,8 +25,6 @@
 package tau.tac.adx.props;
 
 import java.text.ParseException;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import se.sics.isl.transport.TransportReader;
@@ -177,6 +175,7 @@ public class AdxBidBundle extends
 		entry.setAd(ad);
 		entry.setDailyLimit(dailyLimit);
 		entry.setCampaignId(campaignId);
+		entry.setWeight(weight);
 	}
 
 	/**

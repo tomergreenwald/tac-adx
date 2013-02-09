@@ -57,7 +57,9 @@ public class AdxQueryTest {
 	public void testToString() {
 		AdxQuery query = new AdxQuery();
 		query.setPublisher("Publisher name");
-		assertEquals(query.toString(), "(AdxQuery (Publisher name))");
+		assertEquals(
+				"AdxQuery [publisher=Publisher name, marketSegments=[], device=null, adType=null]",
+				query.toString());
 	}
 
 	@Test
