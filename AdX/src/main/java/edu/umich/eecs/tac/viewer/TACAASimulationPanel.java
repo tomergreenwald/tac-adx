@@ -43,6 +43,7 @@ import edu.umich.eecs.tac.viewer.role.AdvertiserTabPanel;
 import edu.umich.eecs.tac.viewer.role.AgentSupport;
 import edu.umich.eecs.tac.viewer.role.MainTabPanel;
 import edu.umich.eecs.tac.viewer.role.PublisherTabPanel;
+import edu.umich.eecs.tac.viewer.role.adnet.AdNetTabPanel;
 import edu.umich.eecs.tac.viewer.role.adx.AdxDashboardTabPanel;
 
 /**
@@ -84,6 +85,8 @@ public class TACAASimulationPanel extends JPanel implements TickListener,
 	protected void createTabs() {
 		tabbedPane.addTab("ADX Dashboard", null,
 				new AdxDashboardTabPanel(this), "Click to view ADX Dashboard");
+		tabbedPane.addTab("AdNet", null, new AdNetTabPanel(this),
+				"Click to view AdNets");
 		tabbedPane.addTab("Dashboard", null, new MainTabPanel(this),
 				"Click to view main dashboard");
 		tabbedPane.addTab("Advertisers", null, new AdvertiserTabPanel(this),
