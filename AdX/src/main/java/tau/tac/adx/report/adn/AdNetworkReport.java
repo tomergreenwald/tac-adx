@@ -24,7 +24,6 @@
  */
 package tau.tac.adx.report.adn;
 
-import java.util.List;
 import java.util.Set;
 
 import tau.tac.adx.auction.AdxAuctionResult;
@@ -130,5 +129,18 @@ public class AdNetworkReport extends
 			}
 			reportEntry.addAuctionResult(auctionResult);
 		}
+	}
+
+	/**
+	 * Calculates daily expenses sum.
+	 * 
+	 * @return Daily cost.
+	 */
+	public double getDailyCost() {
+		double result = 0;
+		for (AdNetworkReportEntry adNetworkReportEntry : getEntries()) {
+			result = result + adNetworkReportEntry.getCost();
+		}
+		return result;
 	}
 }

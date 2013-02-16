@@ -36,7 +36,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.sim.TACAdxConstants;
 
 import com.botbox.util.ArrayUtils;
@@ -130,14 +132,14 @@ public class AdNetProfitsPanel extends SimulationTabPanel {
 		setAgent(agent, role, name, participantID);
 	}
 
-	protected void dataUpdated(int agent, int type, double value) {
+	protected void dataUpdated(int agent, int type, Transportable value) {
 		int index = ArrayUtils.indexOf(agents, 0, agentCount, agent);
 		if (index < 0 || series[index] == null
-				|| type != TACAdxConstants.DU_AD_NETWORK_WIN_COUNT) {
+				|| type != TACAdxConstants.DU_AD_NETWORK_REPORT) {
 			return;
 		}
-
-		series[index].addOrUpdate(currentDay, value);
+		AdNetworkReport queryReport = (AdNetworkReport) value;
+		series[index].addOrUpdate(currentDay, -queryReport.getDailyCost());
 	}
 
 	protected void tick(long serverTime) {
@@ -163,7 +165,7 @@ public class AdNetProfitsPanel extends SimulationTabPanel {
 	protected class BankStatusListener extends ViewAdaptor {
 
 		@Override
-		public void dataUpdated(int agent, int type, double value) {
+		public void dataUpdated(int agent, int type, Transportable value) {
 			AdNetProfitsPanel.this.dataUpdated(agent, type, value);
 		}
 

@@ -43,9 +43,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
-import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
-import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.RetailCatalog;
@@ -125,18 +123,6 @@ public class AdNetRevCostPanel extends JPanel {
 		currentDay = simulationDate;
 	}
 
-	private double getDayCost(AdNetworkReport queryReport) {
-
-		double result = 0;
-		for (AdNetworkKey adNetworkKey : queryReport) {
-			AdNetworkReportEntry adNetworkReportEntry = queryReport
-					.getAdNetworkReportEntry(adNetworkKey);
-			result = result + adNetworkReportEntry.getCost();
-		}
-		return result;
-
-	}
-
 	private double getDayRevenue(SalesReport report) {
 		double result = 0;
 		for (Query query : queries) {
@@ -159,18 +145,18 @@ public class AdNetRevCostPanel extends JPanel {
 
 						AdNetworkReport queryReport = (AdNetworkReport) value;
 
-						costSeries.addOrUpdate(-currentDay,
-								AdNetRevCostPanel.this.getDayCost(queryReport));
-					}
-
-					if (type == TACAdxConstants.DU_UCS_REPORT
-							&& value.getClass().equals(AdNetworkReport.class)) {
-
-						AdNetworkReport queryReport = (AdNetworkReport) value;
-
 						costSeries.addOrUpdate(currentDay,
-								AdNetRevCostPanel.this.getDayCost(queryReport));
+								-queryReport.getDailyCost());
 					}
+
+					// if (type == TACAdxConstants.DU_UCS_REPORT
+					// && value.getClass().equals(AdNetworkReport.class)) {
+					//
+					// AdNetworkReport queryReport = (AdNetworkReport) value;
+					//
+					// costSeries.addOrUpdate(currentDay,
+					// AdNetRevCostPanel.this.getDayCost(queryReport));
+					// }
 
 					if (type == TACAdxConstants.DU_SALES_REPORT
 							&& value.getClass().equals(SalesReport.class)
