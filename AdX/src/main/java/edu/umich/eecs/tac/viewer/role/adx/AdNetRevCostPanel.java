@@ -44,6 +44,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
 import tau.tac.adx.report.adn.AdNetworkReport;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.RetailCatalog;
@@ -145,29 +146,28 @@ public class AdNetRevCostPanel extends JPanel {
 
 						AdNetworkReport queryReport = (AdNetworkReport) value;
 
-						costSeries.addOrUpdate(currentDay,
-								-queryReport.getDailyCost());
+						costSeries.add(currentDay, -queryReport.getDailyCost());
 					}
 
-					// if (type == TACAdxConstants.DU_UCS_REPORT
-					// && value.getClass().equals(AdNetworkReport.class)) {
+					if (type == TACAdxConstants.DU_UCS_REPORT
+							&& value.getClass().equals(
+									AdNetworkDailyNotification.class)) {
+
+						AdNetworkDailyNotification notification = (AdNetworkDailyNotification) value;
+
+						costSeries.add(currentDay, -notification.getCost());
+					}
+
+					// if (type == TACAdxConstants.DU_SALES_REPORT
+					// && value.getClass().equals(SalesReport.class)
+					// && agent == AdNetRevCostPanel.this.agent) {
 					//
-					// AdNetworkReport queryReport = (AdNetworkReport) value;
+					// SalesReport salesReport = (SalesReport) value;
 					//
-					// costSeries.addOrUpdate(currentDay,
-					// AdNetRevCostPanel.this.getDayCost(queryReport));
+					// revSeries.addOrUpdate(currentDay,
+					// AdNetRevCostPanel.this
+					// .getDayRevenue(salesReport));
 					// }
-
-					if (type == TACAdxConstants.DU_SALES_REPORT
-							&& value.getClass().equals(SalesReport.class)
-							&& agent == AdNetRevCostPanel.this.agent) {
-
-						SalesReport salesReport = (SalesReport) value;
-
-						revSeries.addOrUpdate(currentDay,
-								AdNetRevCostPanel.this
-										.getDayRevenue(salesReport));
-					}
 				}
 			});
 		}

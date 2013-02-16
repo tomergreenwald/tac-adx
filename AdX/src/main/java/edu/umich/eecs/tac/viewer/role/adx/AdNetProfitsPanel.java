@@ -39,6 +39,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
 import tau.tac.adx.report.adn.AdNetworkReport;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.sim.TACAdxConstants;
 
 import com.botbox.util.ArrayUtils;
@@ -134,12 +135,22 @@ public class AdNetProfitsPanel extends SimulationTabPanel {
 
 	protected void dataUpdated(int agent, int type, Transportable value) {
 		int index = ArrayUtils.indexOf(agents, 0, agentCount, agent);
-		if (index < 0 || series[index] == null
-				|| type != TACAdxConstants.DU_AD_NETWORK_REPORT) {
+		if (index < 0 || series[index] == null) {
 			return;
 		}
-		AdNetworkReport queryReport = (AdNetworkReport) value;
-		series[index].addOrUpdate(currentDay, -queryReport.getDailyCost());
+		switch (type) {
+		case TACAdxConstants.DU_AD_NETWORK_REPORT:
+			AdNetworkReport queryReport = (AdNetworkReport) value;
+			series[index].addOrUpdate(currentDay, -queryReport.getDailyCost());
+			break;
+
+		case TACAdxConstants.DU_UCS_REPORT:
+			AdNetworkDailyNotification notification = (AdNetworkDailyNotification) value;
+			series[index].addOrUpdate(currentDay, -notification.getCost());
+			break;
+		default:
+			break;
+		}
 	}
 
 	protected void tick(long serverTime) {

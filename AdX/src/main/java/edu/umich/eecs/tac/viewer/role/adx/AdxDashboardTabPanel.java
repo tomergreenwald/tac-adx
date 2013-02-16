@@ -35,9 +35,9 @@ import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
 /**
  * @author Guha Balakrishnan
  */
-public class TomerTabPanel extends SimulationTabPanel {
+public class AdxDashboardTabPanel extends SimulationTabPanel {
 
-	public TomerTabPanel(TACAASimulationPanel simulationPanel) {
+	public AdxDashboardTabPanel(TACAASimulationPanel simulationPanel) {
 		super(simulationPanel);
 		setLayout(new GridBagLayout());
 		setBackground(TACAAViewerConstants.LEGEND_COLORS[0]);
