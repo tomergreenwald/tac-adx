@@ -172,6 +172,11 @@ public final class TACAdxConstants {
 	public static final int DU_UCS_REPORT = 406;
 
 	/**
+	 * @see {@link AdNetworkReport}.
+	 */
+	public static final int DU_AD_NETWORK_WIN_COUNT = 407;
+
+	/**
 	 * The TAC AA Publisher role.
 	 */
 	public static final int PUBLISHER = 0;
