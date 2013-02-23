@@ -39,7 +39,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -55,11 +57,11 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 	private int currentDay;
 	private XYSeriesCollection targetedImpressions;
 	private XYSeriesCollection impressions;
-	private XYSeriesCollection clicks;
+	private XYSeriesCollection serviceLevels;
 	private XYSeriesCollection conversions;
 	private final Map<String, XYSeries> targetedImpressionsMap;
 	private final Map<String, XYSeries> impressionsMap;
-	private final Map<String, XYSeries> clicksMap;
+	private final Map<String, XYSeries> serviceLevelMap;
 	private final Map<String, XYSeries> conversionsMap;
 
 	public AdNetCountTabPanel(TACAASimulationPanel simulationPanel) {
@@ -67,7 +69,7 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 
 		agents = new HashMap<Integer, String>();
 		impressionsMap = new HashMap<String, XYSeries>();
-		clicksMap = new HashMap<String, XYSeries>();
+		serviceLevelMap = new HashMap<String, XYSeries>();
 		conversionsMap = new HashMap<String, XYSeries>();
 		targetedImpressionsMap = new HashMap<String, XYSeries>();
 
@@ -77,11 +79,11 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 	}
 
 	private void initialize() {
-		setLayout(new GridLayout(4, 1));
+		setLayout(new GridLayout(2, 1));
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 
 		add(new ChartPanel(createTargetedImpressionsChart()));
-		// add(new ChartPanel(createClicksChart()));
+		add(new ChartPanel(createServiceLevelChart()));
 		// add(new ChartPanel(createConversionsChart()));
 
 		setBorder(BorderFactory.createTitledBorder("Counts"));
@@ -93,9 +95,10 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 		return createDaySeriesChartWithColors("Convs", conversions, true);
 	}
 
-	private JFreeChart createClicksChart() {
-		clicks = new XYSeriesCollection();
-		return createDaySeriesChartWithColors("Clicks", clicks, false);
+	private JFreeChart createServiceLevelChart() {
+		serviceLevels = new XYSeriesCollection();
+		return createDaySeriesChartWithColors("Service Level", serviceLevels,
+				false);
 	}
 
 	private JFreeChart createImpressionsChart() {
@@ -115,8 +118,9 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 				impressions);
 	}
 
-	protected void addClicks(String advertiser, int clicks) {
-		this.clicksMap.get(advertiser).addOrUpdate(currentDay, clicks);
+	protected void addServiceLevel(String advertiser, double serviceLevel) {
+		this.serviceLevelMap.get(advertiser).addOrUpdate(currentDay,
+				serviceLevel);
 	}
 
 	protected void addConversions(String advertiser, int conversions) {
@@ -137,6 +141,28 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 						switch (type) {
 						case TACAdxConstants.DU_AD_NETWORK_WIN_COUNT:
 							addTargetedImpressions(agentAddress, value);
+							break;
+						}
+					}
+				}
+			});
+		}
+
+		@Override
+		public void dataUpdated(final int agent, final int type,
+				final Transportable content) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					String agentAddress = agents.get(agent);
+
+					if (agentAddress != null) {
+						switch (type) {
+						case TACAdxConstants.DU_UCS_REPORT:
+							AdNetworkDailyNotification adNetworkDailyNotification = (AdNetworkDailyNotification) content;
+							addServiceLevel(agentAddress,
+									adNetworkDailyNotification
+											.getServiceLevel());
 							break;
 						}
 					}
@@ -184,6 +210,9 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 			XYSeries targetedImpressionsSeries = new XYSeries(name);
 			targetedImpressionsMap.put(name, targetedImpressionsSeries);
 			targetedImpressions.addSeries(targetedImpressionsSeries);
+			XYSeries serviceLevelSeries = new XYSeries(name);
+			serviceLevelMap.put(name, serviceLevelSeries);
+			serviceLevels.addSeries(serviceLevelSeries);
 		}
 	}
 }
