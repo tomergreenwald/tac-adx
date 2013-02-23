@@ -56,11 +56,9 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 
 	private int currentDay;
 	private XYSeriesCollection targetedImpressions;
-	private XYSeriesCollection impressions;
 	private XYSeriesCollection serviceLevels;
 	private XYSeriesCollection qualityRatings;
 	private final Map<String, XYSeries> targetedImpressionsMap;
-	private final Map<String, XYSeries> impressionsMap;
 	private final Map<String, XYSeries> serviceLevelMap;
 	private final Map<String, XYSeries> qualityRatingsMap;
 
@@ -68,7 +66,6 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 		super(simulationPanel);
 
 		agents = new HashMap<Integer, String>();
-		impressionsMap = new HashMap<String, XYSeries>();
 		serviceLevelMap = new HashMap<String, XYSeries>();
 		qualityRatingsMap = new HashMap<String, XYSeries>();
 		targetedImpressionsMap = new HashMap<String, XYSeries>();
@@ -100,11 +97,6 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 		serviceLevels = new XYSeriesCollection();
 		return createDaySeriesChartWithColors("Service Level", serviceLevels,
 				false);
-	}
-
-	private JFreeChart createImpressionsChart() {
-		impressions = new XYSeriesCollection();
-		return createDaySeriesChartWithColors("Imprs", impressions, false);
 	}
 
 	private JFreeChart createTargetedImpressionsChart() {
