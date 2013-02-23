@@ -58,11 +58,11 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 	private XYSeriesCollection targetedImpressions;
 	private XYSeriesCollection impressions;
 	private XYSeriesCollection serviceLevels;
-	private XYSeriesCollection conversions;
+	private XYSeriesCollection qualityRatings;
 	private final Map<String, XYSeries> targetedImpressionsMap;
 	private final Map<String, XYSeries> impressionsMap;
 	private final Map<String, XYSeries> serviceLevelMap;
-	private final Map<String, XYSeries> conversionsMap;
+	private final Map<String, XYSeries> qualityRatingsMap;
 
 	public AdNetCountTabPanel(TACAASimulationPanel simulationPanel) {
 		super(simulationPanel);
@@ -70,7 +70,7 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 		agents = new HashMap<Integer, String>();
 		impressionsMap = new HashMap<String, XYSeries>();
 		serviceLevelMap = new HashMap<String, XYSeries>();
-		conversionsMap = new HashMap<String, XYSeries>();
+		qualityRatingsMap = new HashMap<String, XYSeries>();
 		targetedImpressionsMap = new HashMap<String, XYSeries>();
 
 		simulationPanel.addViewListener(new DataUpdateListener());
@@ -79,20 +79,21 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 	}
 
 	private void initialize() {
-		setLayout(new GridLayout(2, 1));
+		setLayout(new GridLayout(3, 1));
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 
 		add(new ChartPanel(createTargetedImpressionsChart()));
 		add(new ChartPanel(createServiceLevelChart()));
-		// add(new ChartPanel(createConversionsChart()));
+		add(new ChartPanel(createQualityRatingChart()));
 
 		setBorder(BorderFactory.createTitledBorder("Counts"));
 
 	}
 
-	private JFreeChart createConversionsChart() {
-		conversions = new XYSeriesCollection();
-		return createDaySeriesChartWithColors("Convs", conversions, true);
+	private JFreeChart createQualityRatingChart() {
+		qualityRatings = new XYSeriesCollection();
+		return createDaySeriesChartWithColors("Quality Rating", qualityRatings,
+				true);
 	}
 
 	private JFreeChart createServiceLevelChart() {
@@ -123,9 +124,9 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 				serviceLevel);
 	}
 
-	protected void addConversions(String advertiser, int conversions) {
-		this.conversionsMap.get(advertiser)
-				.addOrUpdate(currentDay, conversions);
+	protected void addQualityRating(String advertiser, int qualityRating) {
+		this.qualityRatingsMap.get(advertiser).addOrUpdate(currentDay,
+				qualityRating);
 	}
 
 	private class DataUpdateListener extends ViewAdaptor {
@@ -141,6 +142,10 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 						switch (type) {
 						case TACAdxConstants.DU_AD_NETWORK_WIN_COUNT:
 							addTargetedImpressions(agentAddress, value);
+							break;
+
+						case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
+							addQualityRating(agentAddress, value);
 							break;
 						}
 					}
@@ -213,6 +218,9 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 			XYSeries serviceLevelSeries = new XYSeries(name);
 			serviceLevelMap.put(name, serviceLevelSeries);
 			serviceLevels.addSeries(serviceLevelSeries);
+			XYSeries qualityRatingSeries = new XYSeries(name);
+			qualityRatingsMap.put(name, qualityRatingSeries);
+			qualityRatings.addSeries(qualityRatingSeries);
 		}
 	}
 }
