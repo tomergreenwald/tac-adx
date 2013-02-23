@@ -23,7 +23,7 @@
  * EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 
-package edu.umich.eecs.tac.viewer.role.advertiser;
+package edu.umich.eecs.tac.viewer.role.adx;
 
 import static edu.umich.eecs.tac.viewer.ViewerChartFactory.createDaySeriesChartWithColors;
 
@@ -49,24 +49,27 @@ import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
 /**
  * @author Patrick Jordan
  */
-public class AdvertiserCountTabPanel extends SimulationTabPanel {
+public class AdNetCountTabPanel extends SimulationTabPanel {
 	Map<Integer, String> agents;
 
 	private int currentDay;
+	private XYSeriesCollection targetedImpressions;
 	private XYSeriesCollection impressions;
 	private XYSeriesCollection clicks;
 	private XYSeriesCollection conversions;
+	private final Map<String, XYSeries> targetedImpressionsMap;
 	private final Map<String, XYSeries> impressionsMap;
 	private final Map<String, XYSeries> clicksMap;
 	private final Map<String, XYSeries> conversionsMap;
 
-	public AdvertiserCountTabPanel(TACAASimulationPanel simulationPanel) {
+	public AdNetCountTabPanel(TACAASimulationPanel simulationPanel) {
 		super(simulationPanel);
 
 		agents = new HashMap<Integer, String>();
 		impressionsMap = new HashMap<String, XYSeries>();
 		clicksMap = new HashMap<String, XYSeries>();
 		conversionsMap = new HashMap<String, XYSeries>();
+		targetedImpressionsMap = new HashMap<String, XYSeries>();
 
 		simulationPanel.addViewListener(new DataUpdateListener());
 		simulationPanel.addTickListener(new DayListener());
@@ -74,12 +77,12 @@ public class AdvertiserCountTabPanel extends SimulationTabPanel {
 	}
 
 	private void initialize() {
-		setLayout(new GridLayout(3, 1));
+		setLayout(new GridLayout(4, 1));
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 
-		add(new ChartPanel(createImpressionsChart()));
-		add(new ChartPanel(createClicksChart()));
-		add(new ChartPanel(createConversionsChart()));
+		add(new ChartPanel(createTargetedImpressionsChart()));
+		// add(new ChartPanel(createClicksChart()));
+		// add(new ChartPanel(createConversionsChart()));
 
 		setBorder(BorderFactory.createTitledBorder("Counts"));
 
@@ -100,10 +103,16 @@ public class AdvertiserCountTabPanel extends SimulationTabPanel {
 		return createDaySeriesChartWithColors("Imprs", impressions, false);
 	}
 
-	protected void addImpressions(String advertiser, int impressions) {
+	private JFreeChart createTargetedImpressionsChart() {
+		targetedImpressions = new XYSeriesCollection();
+		return createDaySeriesChartWithColors("Imprs", targetedImpressions,
+				false);
+	}
 
-		this.impressionsMap.get(advertiser)
-				.addOrUpdate(currentDay, impressions);
+	protected void addTargetedImpressions(String advertiser, int impressions) {
+
+		this.targetedImpressionsMap.get(advertiser).addOrUpdate(currentDay,
+				impressions);
 	}
 
 	protected void addClicks(String advertiser, int clicks) {
@@ -126,14 +135,8 @@ public class AdvertiserCountTabPanel extends SimulationTabPanel {
 
 					if (agentAddress != null) {
 						switch (type) {
-						case TACAdxConstants.DU_IMPRESSIONS:
-							addImpressions(agentAddress, value);
-							break;
-						case TACAdxConstants.DU_CLICKS:
-							addClicks(agentAddress, value);
-							break;
-						case TACAdxConstants.DU_CONVERSIONS:
-							addConversions(agentAddress, value);
+						case TACAdxConstants.DU_AD_NETWORK_WIN_COUNT:
+							addTargetedImpressions(agentAddress, value);
 							break;
 						}
 					}
@@ -157,13 +160,12 @@ public class AdvertiserCountTabPanel extends SimulationTabPanel {
 
 		@Override
 		public void tick(long serverTime) {
-			AdvertiserCountTabPanel.this.tick(serverTime);
+			AdNetCountTabPanel.this.tick(serverTime);
 		}
 
 		@Override
 		public void simulationTick(long serverTime, int simulationDate) {
-			AdvertiserCountTabPanel.this.simulationTick(serverTime,
-					simulationDate);
+			AdNetCountTabPanel.this.simulationTick(serverTime, simulationDate);
 		}
 	}
 
@@ -176,17 +178,12 @@ public class AdvertiserCountTabPanel extends SimulationTabPanel {
 
 	private void handleParticipant(int agent, int role, String name,
 			int participantID) {
-		if (!agents.containsKey(agent) && role == TACAdxConstants.ADVERTISER) {
+		if (!agents.containsKey(agent)
+				&& role == TACAdxConstants.AD_NETOWRK_ROLE_ID) {
 			agents.put(agent, name);
-			XYSeries impressionsSeries = new XYSeries(name);
-			XYSeries clicksSeries = new XYSeries(name);
-			XYSeries conversionsSeries = new XYSeries(name);
-			impressionsMap.put(name, impressionsSeries);
-			impressions.addSeries(impressionsSeries);
-			clicksMap.put(name, clicksSeries);
-			clicks.addSeries(clicksSeries);
-			conversionsMap.put(name, conversionsSeries);
-			conversions.addSeries(conversionsSeries);
+			XYSeries targetedImpressionsSeries = new XYSeries(name);
+			targetedImpressionsMap.put(name, targetedImpressionsSeries);
+			targetedImpressions.addSeries(targetedImpressionsSeries);
 		}
 	}
 }

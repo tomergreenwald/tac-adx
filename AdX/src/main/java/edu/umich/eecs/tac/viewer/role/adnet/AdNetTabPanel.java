@@ -38,7 +38,7 @@ import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import edu.umich.eecs.tac.viewer.auction.ResultsPageModel;
 import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
-import edu.umich.eecs.tac.viewer.role.advertiser.AdvertiserOverviewPanel;
+import edu.umich.eecs.tac.viewer.role.adx.AdNetOverviewPanel;
 
 /**
  * @author Patrick Jordan
@@ -69,7 +69,7 @@ public class AdNetTabPanel extends SimulationTabPanel {
 		tabbedPane.setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 		add(tabbedPane, BorderLayout.CENTER);
 
-		AdvertiserOverviewPanel overviewPanel = new AdvertiserOverviewPanel(
+		AdNetOverviewPanel overviewPanel = new AdNetOverviewPanel(
 				getSimulationPanel());
 		tabbedPane.addTab("Overview", overviewPanel);
 	}

@@ -103,10 +103,10 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 */
 	@Override
 	public void sendReportsToAll() {
-		for (Entry<String, AdNetworkReport> entry : adNetworkReports
-				.entrySet()) {
+		for (Entry<String, AdNetworkReport> entry : adNetworkReports.entrySet()) {
 			adNetworkReportSender.broadcastAdNetowrkReport(entry.getKey(),
 					entry.getValue());
 		}
+		adNetworkReports.clear();
 	}
 }
