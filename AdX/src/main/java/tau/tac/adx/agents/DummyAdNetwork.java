@@ -111,9 +111,6 @@ public class DummyAdNetwork extends Agent {
 				handleAdNetworkReport((AdNetworkReport) content);
 			}
 
-			// handleAdNetworkReport((AdNetworkReport) content);
-			// } else if (content instanceof SimulationStatus) {
-
 		} catch (NullPointerException e) {
 			this.log.log(Level.SEVERE,
 					"Null Message received. " + e.getStackTrace());
