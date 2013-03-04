@@ -64,7 +64,7 @@ public class AdNetBidMessage extends SimpleContent {
 	
 	@Override
 	public String getTransportName() {
-		return "AdNetBid";
+		return getClass().getName();
 	}
 
 }

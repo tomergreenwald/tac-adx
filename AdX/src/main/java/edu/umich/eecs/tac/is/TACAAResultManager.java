@@ -9,6 +9,7 @@ import se.sics.tasim.is.common.InfoServer;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.isl.util.FormatUtils;
+import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.sim.TACAdxConstants;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class TACAAResultManager extends ResultManager {
 		LogReader reader = getLogReader();
 		int simulationID = reader.getSimulationID();
 		String serverName = reader.getServerName();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 		try {
 			simInfo = new TACAASimulationInfo(reader);
 		} catch (Exception e) {

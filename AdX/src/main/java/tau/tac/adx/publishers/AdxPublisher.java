@@ -296,7 +296,7 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 	 */
 	@Override
 	public String getTransportName() {
-		return this.getClass().getCanonicalName();
+		return getClass().getName();
 	}
 
 	/**
