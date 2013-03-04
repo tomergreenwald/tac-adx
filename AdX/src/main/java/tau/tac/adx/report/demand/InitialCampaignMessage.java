@@ -101,7 +101,7 @@ public class InitialCampaignMessage extends SimpleContent {
 	 */
 	@Override
 	public String getTransportName() {
-		return "InitialCampaign";
+		return getClass().getName();
 	}
 
 
