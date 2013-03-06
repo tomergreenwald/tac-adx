@@ -61,7 +61,7 @@ public class CampaignReportEntry extends AbstractTransportableEntry<CampaignRepo
 								  reader.getAttributeAsDouble(NTG_IMPS),
 		                          reader.getAttributeAsDouble(COST));
 		
-		reader.nextNode(AdNetworkKey.class.getSimpleName(), true);
+		reader.nextNode(CampaignReportKey.class.getSimpleName(), true);
 		setKey((CampaignReportKey) reader.readTransportable());
 	}
 
