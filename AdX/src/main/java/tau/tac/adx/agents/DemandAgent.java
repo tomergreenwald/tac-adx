@@ -43,12 +43,12 @@ public class DemandAgent extends Builtin {
 
 	private static final double ALOC_CMP_VC = 2.0;
 	private static final double ALOC_CMP_MC = 1.5;
-	
+
 	private static Random random;
 
-	private static int[] CMP_LENGTHS = {3,5,10};
+	private static int[] CMP_LENGTHS = { 3, 5, 10 };
 	private static int[] CMP_REACHS;
-	
+
 	private Logger log;
 
 	private QualityManager qualityManager;
@@ -85,10 +85,11 @@ public class DemandAgent extends Builtin {
 		 * Create next campaign opportunity and notify competing adNetwork
 		 * agents
 		 */
-		
-		pendingCampaign = new CampaignImpl(qualityManager, CMP_REACHS[random.nextInt(3)],
-				day+1, day + CMP_LENGTHS[random.nextInt(3)], MarketSegment.randomMarketSegment(),
-				ALOC_CMP_VC, ALOC_CMP_MC);
+
+		pendingCampaign = new CampaignImpl(qualityManager,
+				CMP_REACHS[random.nextInt(3)], day + 1, day
+						+ CMP_LENGTHS[random.nextInt(3)],
+				MarketSegment.randomMarketSegment(), ALOC_CMP_VC, ALOC_CMP_MC);
 
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
 		getSimulation().sendCampaignOpportunity(
@@ -160,16 +161,16 @@ public class DemandAgent extends Builtin {
 	@Override
 	protected void setup() {
 		random = new Random();
-		
-		total_population =  getSimulation().getConfig().getPropertyAsInt(
+
+		total_population = getSimulation().getConfig().getPropertyAsInt(
 				"adxusers.population_size", TOTAL_POPULATION_DEFAULT);
-		
+
 		CMP_REACHS = new int[3];
-		CMP_REACHS[0] = total_population/2; 
+		CMP_REACHS[0] = total_population / 2;
 		CMP_REACHS[1] = total_population;
-		CMP_REACHS[2] = total_population*3/2;
-		
-		aloc_cmp_reach =total_population/8;
+		CMP_REACHS[2] = total_population * 3 / 2;
+
+		aloc_cmp_reach = total_population / 8;
 
 		this.log = Logger.getLogger(DemandAgent.class.getName());
 
@@ -202,8 +203,10 @@ public class DemandAgent extends Builtin {
 			campaign.allocateToAdvertiser(advertiser);
 			adNetCampaigns.put(advertiser, campaign);
 
-			getSimulation().sendInitialCampaign(advertiser,
-					new InitialCampaignMessage(campaign, this.getAddress()));
+			getSimulation().sendInitialCampaign(
+					advertiser,
+					new InitialCampaignMessage(campaign, this.getAddress(),
+							AdxManager.getInstance().getAdxAgentAddress()));
 
 			getSimulation().getEventBus().post(
 					new CampaignNotification(campaign));
@@ -264,11 +267,10 @@ public class DemandAgent extends Builtin {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
-			cmpn.impress(
-					message.getAuctionResult().getMarketSegments().iterator().next(),
-					message.getQuery().getAdType(),
-					message.getQuery().getDevice(),
-					(long) (message.getAuctionResult().getWinningPrice() * 1000));
+			cmpn.impress(message.getAuctionResult().getMarketSegments()
+					.iterator().next(), message.getQuery().getAdType(), message
+					.getQuery().getDevice(), (long) (message.getAuctionResult()
+					.getWinningPrice() * 1000));
 		}
 	}
 

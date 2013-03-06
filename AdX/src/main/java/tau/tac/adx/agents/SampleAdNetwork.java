@@ -34,7 +34,7 @@ import tau.tac.adx.sim.TACAdxConstants;
 
 public class SampleAdNetwork extends Agent {
 
-	private final Logger log = Logger.getLogger(DummyAdNetwork.class.getName());
+	private final Logger log = Logger.getLogger(SampleAdNetwork.class.getName());
 
 	
     /**
@@ -59,7 +59,8 @@ public class SampleAdNetwork extends Agent {
     protected Queue<AdxPublisherReport> adxPublisherReports;
     
 	private PublisherCatalog publisherCatalog;
-	private String ServerAddress;
+	private String demandAgentAddress;
+	private String adxAgentAddress;
 	private AdxBidBundle bidBundle;
 
 	/*
@@ -79,6 +80,8 @@ public class SampleAdNetwork extends Agent {
 	private Map<Integer, CampaignData> myCampaigns;
 
 	private int day;
+
+
 
 	public SampleAdNetwork() {
 		campaignReports = new LinkedList<CampaignReport>();
@@ -176,7 +179,7 @@ public class SampleAdNetwork extends Agent {
 		AdNetBidMessage bids = new AdNetBidMessage(
 				randomGenerator.nextInt(100), pendingCampaign.id, cmpBid);
 		log.fine("sent campaign bid");
-		sendMessage(ServerAddress, bids);
+		sendMessage(demandAgentAddress, bids);
 	}
 
 	private void updateCampaignData(InitialCampaignMessage campaignMessage,
@@ -197,7 +200,8 @@ public class SampleAdNetwork extends Agent {
 		day = 0;
 
 		initialCampaignMessage = campaignMessage;
-		ServerAddress = campaignMessage.getServerId();
+		demandAgentAddress = campaignMessage.getDemandAgentAddress();
+		adxAgentAddress = campaignMessage.getAdxAgentAddress();
 
 		CampaignData campaignData = new CampaignData();
 		updateCampaignData(initialCampaignMessage, campaignData);
@@ -211,6 +215,8 @@ public class SampleAdNetwork extends Agent {
 
 	private void handlePublisherCatalog(PublisherCatalog publisherCatalog) {
 		this.publisherCatalog = publisherCatalog;
+//        demandAgentAddress = publisherCatalog.getDemandAgentId();
+//        adxAddress = publisherCatalog.getAdxAgentId();
 		generateAdxQuerySpace();
 	}
 
@@ -260,7 +266,7 @@ public class SampleAdNetwork extends Agent {
 		// will be created.
 		// this.log = Logger.getLogger(DummyAdNetwork.class.getName() + '.'
 		// + getName());
-		log.fine("dummy " + getName() + " simulationSetup");
+		log.fine("AdNet " + getName() + " simulationSetup");
 	}
 
 	@Override
@@ -304,7 +310,7 @@ public class SampleAdNetwork extends Agent {
 		}
 
 		if (bidBundle != null) {
-			sendToRole(TACAdxConstants.ADX_AGENT_ROLE_ID, bidBundle);
+			sendMessage(adxAgentAddress, bidBundle);
 		}
 	}
 

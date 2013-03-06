@@ -190,7 +190,7 @@ public class DummyAdNetwork extends Agent {
 		day = 0;
 
 		initialCampaignMessage = campaignMessage;
-		ServerAddress = campaignMessage.getServerId();
+		ServerAddress = campaignMessage.getDemandAgentAddress();
 
 		CampaignData campaignData = new CampaignData();
 		updateCampaignData(initialCampaignMessage, campaignData);

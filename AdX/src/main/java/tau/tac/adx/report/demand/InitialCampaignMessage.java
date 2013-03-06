@@ -9,9 +9,9 @@ import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.report.adn.MarketSegment;
 
 public class InitialCampaignMessage extends SimpleContent {
-	
+
 	private static final long serialVersionUID = -5447083615716436823L;
-	
+
 	private int id;
 	private Long reachImps;
 	private int dayStart;
@@ -20,26 +20,29 @@ public class InitialCampaignMessage extends SimpleContent {
 	private String targetSegmentName;
 	private double videoCoef;
 	private double mobileCoef;
-	private String serverId;
-	
+	private String demandAgentAddress;
+	private String adxAgentAddress;
+
 	public InitialCampaignMessage() {
 	}
 
-	public InitialCampaignMessage(Campaign campaign, String address) {
+	public InitialCampaignMessage(Campaign campaign, String demandAgentAddress,
+			String adxAgentAddress) {
 		this.id = campaign.getId();
 		this.reachImps = campaign.getReachImps();
 		this.dayStart = campaign.getDayStart();
 		this.dayEnd = campaign.getDayEnd();
 		this.targetSegment = campaign.getTargetSegment();
 		this.videoCoef = campaign.getVideoCoef();
-		this.mobileCoef = campaign.getMobileCoef();	
-		this.serverId = address;
+		this.mobileCoef = campaign.getMobileCoef();
+		this.demandAgentAddress = demandAgentAddress;
+		this.adxAgentAddress = adxAgentAddress;
 	}
 
-	
-	public InitialCampaignMessage(int id, Long reachImps, int dayStart, int dayEnd,
-			MarketSegment targetSegment, double videoCoef, double mobileCoef) {
-				
+	public InitialCampaignMessage(int id, Long reachImps, int dayStart,
+			int dayEnd, MarketSegment targetSegment, double videoCoef,
+			double mobileCoef) {
+
 		this.id = id;
 		this.reachImps = reachImps;
 		this.dayStart = dayStart;
@@ -76,19 +79,22 @@ public class InitialCampaignMessage extends SimpleContent {
 	public double getMobileCoef() {
 		return mobileCoef;
 	}
-	
-	public String getServerId() {
-		return serverId;
-	}
-	
 
-	
+	public String getDemandAgentAddress() {
+		return demandAgentAddress;
+	}
+
+	public String getAdxAgentAddress() {
+		return adxAgentAddress;
+	}
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
-				.append('[').append(id).append(',').append(reachImps).append(',').append(dayStart)
-				.append(',').append(dayEnd).append(',').append(targetSegment)
-				.append(',').append(videoCoef).append(',').append(mobileCoef).append(',')
-				.append(serverId).append(',');
+				.append('[').append(id).append(',').append(reachImps)
+				.append(',').append(dayStart).append(',').append(dayEnd)
+				.append(',').append(targetSegment).append(',')
+				.append(videoCoef).append(',').append(mobileCoef).append(',')
+				.append(demandAgentAddress).append(',');
 		return params(buf).append(']').toString();
 	}
 
@@ -104,8 +110,6 @@ public class InitialCampaignMessage extends SimpleContent {
 		return getClass().getName();
 	}
 
-
-	
 	public void read(TransportReader reader) throws ParseException {
 		if (isLocked()) {
 			throw new IllegalStateException("locked");
@@ -118,18 +122,19 @@ public class InitialCampaignMessage extends SimpleContent {
 		targetSegment = MarketSegment.valueOf(targetSegmentName);
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
-		serverId = reader.getAttribute("serverId");
+		demandAgentAddress = reader.getAttribute("demandAgentAddress");
+		adxAgentAddress = reader.getAttribute("adxAgentAddress");
 		super.read(reader);
 	}
-	
-	
+
 	public void write(TransportWriter writer) {
-		writer.attr("id", id).attr("reachImps", reachImps).attr("dayStart", dayStart).attr(
-				"dayEnd", dayEnd).attr("targetSegment",targetSegment.name()).
-				attr("videoCoef", videoCoef).attr("mobileCoef",mobileCoef).attr("serverId",serverId);
+		writer.attr("id", id).attr("reachImps", reachImps)
+				.attr("dayStart", dayStart).attr("dayEnd", dayEnd)
+				.attr("targetSegment", targetSegment.name())
+				.attr("videoCoef", videoCoef).attr("mobileCoef", mobileCoef)
+				.attr("demandAgentAddress", demandAgentAddress)
+				.attr("adxAgentAddress", adxAgentAddress);
 		super.write(writer);
 	}
-
-	
 
 }
