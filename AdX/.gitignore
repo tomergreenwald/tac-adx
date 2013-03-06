@@ -1,5 +1,6 @@
 /target
 /bin
+/logs
 aa-server-10.1.0.0/infodb
 aa-server-10.1.0.0/*.slg
 aa-server-10.1.0.0/logs
