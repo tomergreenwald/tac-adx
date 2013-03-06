@@ -36,6 +36,7 @@ import tau.tac.adx.demand.UserClassificationServiceAdNetData;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.AdNetworkReportEntry;
+import tau.tac.adx.report.demand.AdNetBidMessage;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
@@ -160,6 +161,7 @@ public class AdxInfoContextFactory implements ContextFactory {
 		con.addTransportable(new CampaignReportEntry());
 		con.addTransportable(new CampaignReportKey());
 		con.addTransportable(new AdNetworkDailyNotification());
+		con.addTransportable(new AdNetBidMessage());
 
 		// Cache the last context
 		lastContext = con;

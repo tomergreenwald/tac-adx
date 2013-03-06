@@ -25,6 +25,9 @@ public class AdNetBidMessage extends SimpleContent {
 		this.campaignBudgetBid = budget;
 	}
 
+	public AdNetBidMessage() {
+	}
+
 	public double getUcsBid() {
 		return ucsBid;
 	}
