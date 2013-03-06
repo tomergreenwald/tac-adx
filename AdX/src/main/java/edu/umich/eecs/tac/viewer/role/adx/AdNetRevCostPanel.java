@@ -137,37 +137,20 @@ public class AdNetRevCostPanel extends JPanel {
 
 		@Override
 		public void dataUpdated(final int agent, final int type,
-				final Transportable value) {
+				final double value) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					if (type == TACAdxConstants.DU_AD_NETWORK_REPORT
-							&& value.getClass().equals(AdNetworkReport.class)) {
-
-						AdNetworkReport queryReport = (AdNetworkReport) value;
-
-						costSeries.add(currentDay, -queryReport.getDailyCost());
+					switch (type) {
+					case TACAdxConstants.DU_AD_NETWORK_REVENUE:
+						costSeries.add(currentDay, value);
+						break;
+					case TACAdxConstants.DU_AD_NETWORK_EXPENSE:
+						costSeries.add(currentDay, -value);
+						break;
+					default:
+						break;
 					}
-
-					if (type == TACAdxConstants.DU_UCS_REPORT
-							&& value.getClass().equals(
-									AdNetworkDailyNotification.class)) {
-
-						AdNetworkDailyNotification notification = (AdNetworkDailyNotification) value;
-
-						costSeries.add(currentDay, -notification.getCost());
-					}
-
-					// if (type == TACAdxConstants.DU_SALES_REPORT
-					// && value.getClass().equals(SalesReport.class)
-					// && agent == AdNetRevCostPanel.this.agent) {
-					//
-					// SalesReport salesReport = (SalesReport) value;
-					//
-					// revSeries.addOrUpdate(currentDay,
-					// AdNetRevCostPanel.this
-					// .getDayRevenue(salesReport));
-					// }
 				}
 			});
 		}
