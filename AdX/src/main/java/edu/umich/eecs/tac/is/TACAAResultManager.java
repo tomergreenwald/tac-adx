@@ -4,21 +4,21 @@ package edu.umich.eecs.tac.is;
  * @author Patrick Jordan, Lee Callender
  */
 
-import se.sics.tasim.is.common.ResultManager;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.logging.Logger;
+
+import se.sics.isl.util.FormatUtils;
 import se.sics.tasim.is.common.InfoServer;
+import se.sics.tasim.is.common.ResultManager;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
-import se.sics.isl.util.FormatUtils;
+import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.sim.TACAdxConstants;
 
-import java.io.IOException;
-import java.io.FileWriter;
-import java.util.logging.Logger;
-import java.util.Arrays;
-
 import com.botbox.html.HtmlWriter;
-import com.botbox.html.HtmlUtils;
-import edu.umich.eecs.tac.props.AAInfo;
+
 import edu.umich.eecs.tac.Participant;
 import edu.umich.eecs.tac.TACAASimulationInfo;
 
@@ -40,7 +40,7 @@ public class TACAAResultManager extends ResultManager {
 		LogReader reader = getLogReader();
 		int simulationID = reader.getSimulationID();
 		String serverName = reader.getServerName();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 		try {
 			simInfo = new TACAASimulationInfo(reader);
 		} catch (Exception e) {

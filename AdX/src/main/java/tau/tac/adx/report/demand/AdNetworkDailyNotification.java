@@ -13,6 +13,13 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	/**
 	 * 
 	 */
+	public AdNetworkDailyNotification() {
+		super();
+	}
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -2893212570481112391L;
 
 	/* user classification service data */
@@ -103,7 +110,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 
 	@Override
 	public String getTransportName() {
-		return "UserClassificationServiceBidNotification";
+		return getClass().getName();
 	}
 
 	@Override

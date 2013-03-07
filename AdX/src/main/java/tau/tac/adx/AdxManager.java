@@ -51,6 +51,14 @@ public class AdxManager {
 	}
 
 	private final Logger log = Logger.getLogger(AdxManager.class.getName());
+	private String adxAgentAddress;
+
+	/**
+	 * @return the adxAgentAddress
+	 */
+	public String getAdxAgentAddress() {
+		return adxAgentAddress;
+	}
 
 	private AdxManager() {
 	}
@@ -118,6 +126,10 @@ public class AdxManager {
 	 */
 	public void setSimulation(TACAdxSimulation simulation) {
 		this.simulation = simulation;
+	}
+
+	public void setAdxAgentAddress(String adxAgentAddress) {
+		this.adxAgentAddress = adxAgentAddress;
 	}
 
 }

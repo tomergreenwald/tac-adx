@@ -3,6 +3,9 @@ package tau.tac.adx.demand;
 
 import java.util.HashMap;
 
+import tau.tac.adx.AdxManager;
+import tau.tac.adx.sim.TACAdxSimulation;
+
 public class QualityManagerImpl implements QualityManager {
 	private final static double MU = 0.6;
 
@@ -21,6 +24,7 @@ public class QualityManagerImpl implements QualityManager {
 	public double updateQualityScore(String advertiser, Double score) {
 		Double newScore = (1-MU)*getQualityScore(advertiser)+ MU*score;
 		advertisersScores.put(advertiser, newScore);
+		AdxManager.getInstance().getSimulation().broadcastAdNetworkQualityRating(advertiser, newScore);
 		return newScore;
 	}
 

@@ -55,6 +55,7 @@ public class AAInfo implements ContextFactory {
 	 * Creates a new AA context factory.
 	 */
 	public AAInfo() {
+		throw new RuntimeException("Don't use me");
 	}
 
 	/**

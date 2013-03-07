@@ -32,9 +32,17 @@ import se.sics.tasim.props.Ping;
 import se.sics.tasim.props.ServerConfig;
 import se.sics.tasim.props.SimulationStatus;
 import se.sics.tasim.props.StartInfo;
+import tau.tac.adx.demand.UserClassificationServiceAdNetData;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.AdNetworkReportEntry;
+import tau.tac.adx.report.demand.AdNetBidMessage;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
+import tau.tac.adx.report.demand.CampaignOpportunityMessage;
+import tau.tac.adx.report.demand.CampaignReport;
+import tau.tac.adx.report.demand.CampaignReportEntry;
+import tau.tac.adx.report.demand.CampaignReportKey;
+import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 import tau.tac.adx.report.publisher.AdxPublisherReportEntry;
 import edu.umich.eecs.tac.props.Ad;
@@ -147,6 +155,13 @@ public class AdxInfoContextFactory implements ContextFactory {
 		con.addTransportable(new AdNetworkKey());
 		con.addTransportable(new AdxBidBundle());
 		con.addTransportable(new AdxBidBundle.BidEntry());
+		con.addTransportable(new InitialCampaignMessage());
+		con.addTransportable(new CampaignOpportunityMessage());
+		con.addTransportable(new CampaignReport());
+		con.addTransportable(new CampaignReportEntry());
+		con.addTransportable(new CampaignReportKey());
+		con.addTransportable(new AdNetworkDailyNotification());
+		con.addTransportable(new AdNetBidMessage());
 
 		// Cache the last context
 		lastContext = con;

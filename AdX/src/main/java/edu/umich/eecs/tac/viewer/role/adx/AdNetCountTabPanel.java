@@ -116,7 +116,7 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 				serviceLevel);
 	}
 
-	protected void addQualityRating(String advertiser, int qualityRating) {
+	protected void addQualityRating(String advertiser, double qualityRating) {
 		this.qualityRatingsMap.get(advertiser).addOrUpdate(currentDay,
 				qualityRating);
 	}
@@ -135,7 +135,21 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 						case TACAdxConstants.DU_AD_NETWORK_WIN_COUNT:
 							addTargetedImpressions(agentAddress, value);
 							break;
+						}
+					}
+				}
+			});
+		}
+		
+		@Override
+		public void dataUpdated(final int agent, final int type, final double value) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					String agentAddress = agents.get(agent);
 
+					if (agentAddress != null) {
+						switch (type) {
 						case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
 							addQualityRating(agentAddress, value);
 							break;

@@ -1,16 +1,30 @@
 package tau.tac.adx.sim.config;
 
+import static edu.umich.eecs.tac.util.permutation.CapacityAssignmentPermutation.secretPermutation;
+import static tau.tac.adx.sim.TACAdxConstants.ADVERTISER;
+import static tau.tac.adx.sim.TACAdxConstants.AD_NETOWRK_ROLE_ID;
+import static tau.tac.adx.sim.TACAdxConstants.PUBLISHER;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.logging.Level;
+
+import edu.umich.eecs.tac.props.AdvertiserInfo;
+import edu.umich.eecs.tac.props.QueryType;
+import edu.umich.eecs.tac.sim.CapacityType;
 
 import se.sics.isl.util.ConfigManager;
+import se.sics.tasim.is.SimulationInfo;
+import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
@@ -285,4 +299,51 @@ public class AdxConfigurationParser {
 				adTypeDistribution);
 		return adAttributeProbabilityMaps;
 	}
+
+	public void initializeAdvertisers(TACAdxSimulation tacAdxSimulation) {
+		Random r = new Random();
+
+		// Initialize advertisers..
+		SimulationAgent[] advertisers = tacAdxSimulation.getAgents(ADVERTISER);
+		tacAdxSimulation
+				.setAdvertiserInfoMap(new HashMap<String, AdvertiserInfo>());
+
+		for (int i = 0, n = advertisers.length; i < n; i++) {
+			SimulationAgent agent = advertisers[i];
+
+			String agentAddress = agent.getAddress();
+			tacAdxSimulation.getAdvertiserAddresses()[i] = agentAddress;
+
+			AdvertiserInfo advertiserInfo = new AdvertiserInfo();
+			advertiserInfo.setAdvertiserId(agentAddress);
+			// advertiserInfo.setPublisherId(publisherAddress);
+			// advertiserInfo.setDistributionCapacity(capacities[i]);
+			// advertiserInfo.setDistributionCapacityDiscounter(decayRate);
+			// advertiserInfo.setComponentSpecialty(tacAdxSimulation
+			// .getComponents()[r.nextInt(tacAdxSimulation
+			// .getComponents().length)]);
+			// advertiserInfo.setComponentBonus(componentBonus);
+			// advertiserInfo.setManufacturerSpecialty(tacAdxSimulation
+			// .getManufacturers()[r.nextInt(tacAdxSimulation
+			// .getManufacturers().length)]);
+			// advertiserInfo.setManufacturerBonus(manufacturerBonus);
+			// advertiserInfo.setDistributionWindow(window);
+			// advertiserInfo.setTargetEffect(targetEffect);
+			// advertiserInfo.setFocusEffects(QueryType.FOCUS_LEVEL_ZERO,
+			// focusEffectF0);
+			// advertiserInfo.setFocusEffects(QueryType.FOCUS_LEVEL_ONE,
+			// focusEffectF1);
+			// advertiserInfo.setFocusEffects(QueryType.FOCUS_LEVEL_TWO,
+			// focusEffectF2);
+			advertiserInfo.lock();
+
+			tacAdxSimulation.getAdvertiserInfoMap().put(agentAddress,
+					advertiserInfo);
+
+			// Create bank account for the advertiser
+			tacAdxSimulation.getBank().addAccount(agentAddress);
+			tacAdxSimulation.getSalesAnalyst().addAccount(agentAddress);
+		}
+	}
+
 }

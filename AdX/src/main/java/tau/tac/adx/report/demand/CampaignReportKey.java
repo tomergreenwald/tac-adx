@@ -44,7 +44,7 @@ public class CampaignReportKey implements Transportable {
 	 */
 	@Override
 	public String getTransportName() {
-		return getClass().getSimpleName();
+		return getClass().getName();
 	}
 
 	/**

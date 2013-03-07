@@ -25,6 +25,9 @@ public class AdNetBidMessage extends SimpleContent {
 		this.campaignBudgetBid = budget;
 	}
 
+	public AdNetBidMessage() {
+	}
+
 	public double getUcsBid() {
 		return ucsBid;
 	}
@@ -64,7 +67,7 @@ public class AdNetBidMessage extends SimpleContent {
 	
 	@Override
 	public String getTransportName() {
-		return "AdNetBid";
+		return getClass().getName();
 	}
 
 }

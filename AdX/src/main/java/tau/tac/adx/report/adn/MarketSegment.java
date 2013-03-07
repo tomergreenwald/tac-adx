@@ -1,8 +1,11 @@
 package tau.tac.adx.report.adn;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import tau.tac.adx.users.AdxUser;
@@ -27,6 +30,17 @@ import tau.tac.adx.users.properties.Income;
 public enum MarketSegment {
 
 	FEMALE_YOUNG, FEMALE_OLD, MALE_YOUNG, MALE_OLD, YOUNG_HIGH_INCOME, OLD_HIGH_INCOME, YOUNG_LOW_INCOME, OLD_LOW_INCOME, FEMALE_LOW_INCOME, FEMALE_HIGH_INCOME, MALE_HIGH_INCOME, MALE_LOW_INCOME, NONE;
+
+	/**
+	 * A random MarketSegment on demand. The values and the Random are cached.
+	 */
+	private static final List<MarketSegment> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+    private static final int SIZE = VALUES.size();
+	private static final Random RANDOM = new Random();
+	
+	public static MarketSegment randomMarketSegment()  {
+	    return VALUES.get(RANDOM.nextInt(SIZE));
+	}
 
 	/**
 	 * Generates a list of matching {@link MarketSegment}s according to a given
@@ -86,4 +100,5 @@ public enum MarketSegment {
 		}
 		return marketSegments;
 	}
+	
 }

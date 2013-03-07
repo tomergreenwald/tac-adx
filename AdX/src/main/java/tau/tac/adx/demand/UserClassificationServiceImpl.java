@@ -5,6 +5,8 @@ import static edu.umich.eecs.tac.auction.AuctionUtils.hardSort;
 import java.util.HashMap;
 import java.util.Map;
 
+import tau.tac.adx.AdxManager;
+
 public class UserClassificationServiceImpl implements UserClassificationService {
 
 	private final static double UCS_PROB = 0.9;
@@ -58,6 +60,7 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 						.get(advNames[indices[j]]);
 				levelPrice = ucsProb * bids[indices[j + 1]];
 				advData.setAuctionResult(levelPrice, ucsProb, day);
+				AdxManager.getInstance().getSimulation().broadcastAdNetworkExpense(advNames[j], levelPrice);
 				ucsProb = ucsProb * UCS_PROB;
 			}
 		}

@@ -101,7 +101,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	 */
 	@Override
 	public String getTransportName() {
-		return "CampaignOpportunity";
+		return getClass().getName();
 	}
 
 

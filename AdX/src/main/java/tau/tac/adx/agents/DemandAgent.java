@@ -2,6 +2,7 @@
  */
 package tau.tac.adx.agents;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,18 +35,19 @@ public class DemandAgent extends Builtin {
 
 	private int day;
 
-	private static final int ALOC_CMP_REACH = 10000;
+	private static final int TOTAL_POPULATION_DEFAULT = 10000;
+	private static int total_population;
 	private static int aloc_cmp_reach;
 
-	private static final int ALOC_CMP_START_DAY = 1;
-	private static final int ALOC_CMP_END_DAY = 5;
+	private static final int ALOC_CMP_LENGTH = 5;
 
-	// FEMALE_YOUNG, FEMALE_OLD, MALE_YOUNG, MALE_OLD, YOUNG_HIGH_INCOME,
-	// OLD_HIGH_INCOME, YOUNG_LOW_INCOME, OLD_LOW_INCOME, FEMALE_LOW_INCOME,
-	// FEMALE_HIGH_INCOME, MALE_HIGH_INCOME, MALE_LOW_INCOME
-	private static final MarketSegment ALOC_CMP_SGMNT = MarketSegment.FEMALE_HIGH_INCOME;
-	private static final double ALOC_CMP_VC = 2.5;
-	private static final double ALOC_CMP_MC = 3.5;
+	private static final double ALOC_CMP_VC = 2.0;
+	private static final double ALOC_CMP_MC = 1.5;
+
+	private static Random random;
+
+	private static int[] CMP_LENGTHS = { 3, 5, 10 };
+	private static int[] CMP_REACHS;
 
 	private Logger log;
 
@@ -83,12 +85,11 @@ public class DemandAgent extends Builtin {
 		 * Create next campaign opportunity and notify competing adNetwork
 		 * agents
 		 */
-		pendingCampaign = new CampaignImpl(qualityManager, aloc_cmp_reach,
-				day+ALOC_CMP_START_DAY, day+ALOC_CMP_END_DAY, ALOC_CMP_SGMNT /*
-																	 * TODO:
-																	 * randomize
-																	 */,
-				ALOC_CMP_VC, ALOC_CMP_MC);
+
+		pendingCampaign = new CampaignImpl(qualityManager,
+				CMP_REACHS[random.nextInt(3)], day + 1, day
+						+ CMP_LENGTHS[random.nextInt(3)],
+				MarketSegment.randomMarketSegment(), ALOC_CMP_VC, ALOC_CMP_MC);
 
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
 		getSimulation().sendCampaignOpportunity(
@@ -159,9 +160,17 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	protected void setup() {
-		// ConfigManager config = getSimulation().getConfig();
-		aloc_cmp_reach = getSimulation().getConfig().getPropertyAsInt(
-				"adxusers.population_size", ALOC_CMP_REACH);
+		random = new Random();
+
+		total_population = getSimulation().getConfig().getPropertyAsInt(
+				"adxusers.population_size", TOTAL_POPULATION_DEFAULT);
+
+		CMP_REACHS = new int[3];
+		CMP_REACHS[0] = total_population / 2;
+		CMP_REACHS[1] = total_population;
+		CMP_REACHS[2] = total_population * 3 / 2;
+
+		aloc_cmp_reach = total_population / 8;
 
 		this.log = Logger.getLogger(DemandAgent.class.getName());
 
@@ -187,15 +196,17 @@ public class DemandAgent extends Builtin {
 			log.log(Level.INFO, "allocating initial campaigns");
 			qualityManager.addAdvertiser(advertiser);
 			Campaign campaign = new CampaignImpl(qualityManager,
-					aloc_cmp_reach, ALOC_CMP_START_DAY, ALOC_CMP_END_DAY,
-					ALOC_CMP_SGMNT /* TODO: randomize */, ALOC_CMP_VC,
+					aloc_cmp_reach, 1, ALOC_CMP_LENGTH,
+					MarketSegment.randomMarketSegment(), ALOC_CMP_VC,
 					ALOC_CMP_MC);
 
 			campaign.allocateToAdvertiser(advertiser);
 			adNetCampaigns.put(advertiser, campaign);
 
-			getSimulation().sendInitialCampaign(advertiser,
-					new InitialCampaignMessage(campaign, this.getAddress()));
+			getSimulation().sendInitialCampaign(
+					advertiser,
+					new InitialCampaignMessage(campaign, this.getAddress(),
+							AdxManager.getInstance().getAdxAgentAddress()));
 
 			getSimulation().getEventBus().post(
 					new CampaignNotification(campaign));
@@ -256,11 +267,10 @@ public class DemandAgent extends Builtin {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
-			cmpn.impress(
-					message.getAuctionResult().getMarketSegments().iterator().next(),
-					message.getQuery().getAdType(),
-					message.getQuery().getDevice(),
-					(long) (message.getAuctionResult().getWinningPrice() * 1000));
+			cmpn.impress(message.getAuctionResult().getMarketSegments()
+					.iterator().next(), message.getQuery().getAdType(), message
+					.getQuery().getDevice(), (long) (message.getAuctionResult()
+					.getWinningPrice() * 1000));
 		}
 	}
 

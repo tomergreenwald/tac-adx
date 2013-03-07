@@ -34,7 +34,7 @@ import se.sics.isl.transport.Transportable;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.tasim.props.ServerConfig;
-import edu.umich.eecs.tac.props.AAInfo;
+import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**
  * The abstract class <code>Parser</code> is a base class that helps with the
@@ -64,7 +64,7 @@ public abstract class Parser {
 
 	protected Parser(LogReader logReader) {
 		this.logReader = logReader;
-		ContextFactory aaInfo = new AAInfo(); // Make sure this works
+		ContextFactory aaInfo = new AdxInfoContextFactory(); // Make sure this works
 		this.logReader.setContext(aaInfo.createContext());
 	}
 

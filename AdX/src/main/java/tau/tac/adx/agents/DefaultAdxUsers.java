@@ -72,7 +72,7 @@ public class DefaultAdxUsers extends AdxUsers {
 		super.setup();
 
 		this.log = Logger.getLogger(DefaultAdxUsers.class.getName());
-
+		AdxManager.getInstance().setAdxAgentAddress(getAddress());
 		usersBehavior.setup();
 	}
 

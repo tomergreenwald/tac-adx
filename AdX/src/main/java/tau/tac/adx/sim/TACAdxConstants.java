@@ -180,6 +180,17 @@ public final class TACAdxConstants {
 	 * AdNet's quality rating.
 	 */
 	public static final int DU_AD_NETWORK_QUALITY_RATING = 408;
+	
+	/**
+	 * AdNet's revenue.
+	 */
+	public static final int DU_AD_NETWORK_REVENUE = 409;
+	
+	/**
+	 * AdNet's expense.
+	 */
+	public static final int DU_AD_NETWORK_EXPENSE= 410;
+	
 
 	/**
 	 * The TAC AA Publisher role.
