@@ -9,6 +9,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
@@ -132,7 +133,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		todays = new CampaignStats(0.0,0.0,0.0);
 		if (day == dayEnd + 1) { /* was last day - update quality score */
 			totals = getStats(dayStart, dayEnd);
-			qualityManager.updateQualityScore(advertiser, effectiveReachRatio(totals.tartgetedImps));
+			double effectiveReachRatio = effectiveReachRatio(totals.tartgetedImps);
+			qualityManager.updateQualityScore(advertiser, effectiveReachRatio);
+			AdxManager.getInstance().getSimulation().broadcastAdNetworkRevenue(advertiser, effectiveReachRatio*budget);
 		}
 	}
 

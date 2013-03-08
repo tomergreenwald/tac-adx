@@ -56,11 +56,9 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 
 	private int currentDay;
 	private XYSeriesCollection targetedImpressions;
-	private XYSeriesCollection impressions;
 	private XYSeriesCollection serviceLevels;
 	private XYSeriesCollection qualityRatings;
 	private final Map<String, XYSeries> targetedImpressionsMap;
-	private final Map<String, XYSeries> impressionsMap;
 	private final Map<String, XYSeries> serviceLevelMap;
 	private final Map<String, XYSeries> qualityRatingsMap;
 
@@ -68,7 +66,6 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 		super(simulationPanel);
 
 		agents = new HashMap<Integer, String>();
-		impressionsMap = new HashMap<String, XYSeries>();
 		serviceLevelMap = new HashMap<String, XYSeries>();
 		qualityRatingsMap = new HashMap<String, XYSeries>();
 		targetedImpressionsMap = new HashMap<String, XYSeries>();
@@ -102,11 +99,6 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 				false);
 	}
 
-	private JFreeChart createImpressionsChart() {
-		impressions = new XYSeriesCollection();
-		return createDaySeriesChartWithColors("Imprs", impressions, false);
-	}
-
 	private JFreeChart createTargetedImpressionsChart() {
 		targetedImpressions = new XYSeriesCollection();
 		return createDaySeriesChartWithColors("Imprs", targetedImpressions,
@@ -124,7 +116,7 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 				serviceLevel);
 	}
 
-	protected void addQualityRating(String advertiser, int qualityRating) {
+	protected void addQualityRating(String advertiser, double qualityRating) {
 		this.qualityRatingsMap.get(advertiser).addOrUpdate(currentDay,
 				qualityRating);
 	}
@@ -143,7 +135,21 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 						case TACAdxConstants.DU_AD_NETWORK_WIN_COUNT:
 							addTargetedImpressions(agentAddress, value);
 							break;
+						}
+					}
+				}
+			});
+		}
+		
+		@Override
+		public void dataUpdated(final int agent, final int type, final double value) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					String agentAddress = agents.get(agent);
 
+					if (agentAddress != null) {
+						switch (type) {
 						case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
 							addQualityRating(agentAddress, value);
 							break;

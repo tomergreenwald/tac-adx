@@ -41,9 +41,9 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import se.sics.isl.transport.Transportable;
+import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.props.SalesReport;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -55,8 +55,7 @@ import edu.umich.eecs.tac.viewer.ViewAdaptor;
 public class AdNetOverviewMetricsPanel extends JPanel {
 	private final AdvertiserMetricsModel model;
 
-	public AdNetOverviewMetricsPanel(
-			final TACAASimulationPanel simulationPanel) {
+	public AdNetOverviewMetricsPanel(final TACAASimulationPanel simulationPanel) {
 		model = new AdvertiserMetricsModel(simulationPanel);
 
 		initialize();
@@ -69,7 +68,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 
 		MetricsNumberRenderer renderer = new MetricsNumberRenderer();
 		JTable table = new JTable(model);
-		for (int i = 2; i < 6; i++) {
+		for (int i = 2; i < 4; i++) {
 			table.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -78,7 +77,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 
 	private static class AdvertiserMetricsModel extends AbstractTableModel {
 		private static final String[] COLUMN_NAMES = new String[] { "Agent",
-				"Capacity", "Profit", "CPC", "VPC", "ROI" };
+				"Profit", "VPC", "ROI" };
 
 		List<AdvertiserMetricsItem> data;
 
@@ -131,14 +130,10 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			if (columnIndex == 0) {
 				return data.get(rowIndex).getAdvertiser();
 			} else if (columnIndex == 1) {
-				return data.get(rowIndex).getCapacity();
-			} else if (columnIndex == 2) {
 				return data.get(rowIndex).getProfit();
-			} else if (columnIndex == 3) {
-				return data.get(rowIndex).getCPC();
-			} else if (columnIndex == 4) {
+			} else if (columnIndex == 2) {
 				return data.get(rowIndex).getVPC();
-			} else if (columnIndex == 5) {
+			} else if (columnIndex == 3) {
 				return data.get(rowIndex).getROI();
 			}
 
@@ -297,8 +292,8 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 						case TACAdxConstants.DU_SALES_REPORT:
 							handleSalesReport((SalesReport) value);
 							break;
-						case TACAdxConstants.DU_QUERY_REPORT:
-							handleQueryReport((QueryReport) value);
+						case TACAdxConstants.DU_AD_NETWORK_REPORT:
+							handleAdNetworkReport((AdNetworkReport) value);
 							break;
 						case TACAdxConstants.DU_ADVERTISER_INFO:
 							handleAdvertiserInfo((AdvertiserInfo) value);
@@ -313,14 +308,8 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			item.setAdvertiserInfo(advertiserInfo);
 		}
 
-		private void handleQueryReport(QueryReport queryReport) {
-			double cost = 0.0;
-
-			for (int i = 0; i < queryReport.size(); i++) {
-				cost += queryReport.getCost(i);
-			}
-
-			item.addCost(cost);
+		private void handleAdNetworkReport(AdNetworkReport report) {
+			item.addCost(report.getDailyCost());
 
 		}
 
