@@ -15,8 +15,8 @@ import tau.tac.adx.users.properties.Income;
 
 /**
  * A set of 12 marketing segments is defined by partitioning each attribute
- * range to two (that is, the user’s Age range to Younger = {44-} and Older =
- * {45+} and the user’s income range to Low = {60-} and High = {60+}). Now, a
+ * range to two (that is, the userï¿½s Age range to Younger = {44-} and Older =
+ * {45+} and the userï¿½s income range to Low = {60-} and High = {60+}). Now, a
  * market segment is any choice of ranges of two of the three attributes. If we
  * designate each range by its initial letter (e.g. Female by F and Younger by
  * Y) we get the following 12 market segments: FY, FO, MY, MO, YL, YH, OL, OH,
@@ -41,7 +41,7 @@ public enum MarketSegment {
 	public static MarketSegment randomMarketSegment()  {
 	    return VALUES.get(RANDOM.nextInt(SIZE));
 	}
-
+	
 	/**
 	 * Generates a list of matching {@link MarketSegment}s according to a given
 	 * {@link AdxUser user}.
