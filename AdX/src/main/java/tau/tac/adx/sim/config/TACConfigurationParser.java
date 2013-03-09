@@ -289,7 +289,7 @@ public class TACConfigurationParser {
 						advertiserInfo);
 
 				// Create bank account for the advertiser
-				tacAdxSimulation.getBank().addAccount(agentAddress);
+				// tacAdxSimulation.getBank().addAccount(agentAddress);
 				tacAdxSimulation.getSalesAnalyst().addAccount(agentAddress);
 			}
 		}

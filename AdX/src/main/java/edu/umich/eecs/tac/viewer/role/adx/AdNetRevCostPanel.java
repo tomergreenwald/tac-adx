@@ -26,7 +26,6 @@
 package edu.umich.eecs.tac.viewer.role.adx;
 
 import static edu.umich.eecs.tac.viewer.ViewerChartFactory.createDifferenceChart;
-import static edu.umich.eecs.tac.viewer.ViewerUtils.buildQuerySpace;
 
 import java.awt.GridLayout;
 import java.util.HashSet;
@@ -41,14 +40,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
-import tau.tac.adx.report.adn.AdNetworkReport;
-import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.SalesReport;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -98,12 +92,6 @@ public class AdNetRevCostPanel extends JPanel {
 		add(chartpanel);
 	}
 
-	private void handleRetailCatalog(RetailCatalog retailCatalog) {
-		queries.clear();
-
-		buildQuerySpace(queries, retailCatalog);
-	}
-
 	protected class DayListener implements TickListener {
 
 		@Override
@@ -124,15 +112,6 @@ public class AdNetRevCostPanel extends JPanel {
 		currentDay = simulationDate;
 	}
 
-	private double getDayRevenue(SalesReport report) {
-		double result = 0;
-		for (Query query : queries) {
-			result = result + report.getRevenue(query);
-
-		}
-		return result;
-	}
-
 	private class DataUpdateListener extends ViewAdaptor {
 
 		@Override
@@ -141,31 +120,13 @@ public class AdNetRevCostPanel extends JPanel {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					switch (type) {
-					case TACAdxConstants.DU_AD_NETWORK_REVENUE:
+					if (AdNetRevCostPanel.this.agent == agent
+							&& type == TACAdxConstants.DU_AD_NETWORK_BANK_ACCOUNT) {
 						costSeries.add(currentDay, value);
-						break;
-					case TACAdxConstants.DU_AD_NETWORK_EXPENSE:
-						costSeries.add(currentDay, -value);
-						break;
-					default:
-						break;
 					}
 				}
 			});
 		}
 
-		@Override
-		public void dataUpdated(final int type, final Transportable value) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					Class valueType = value.getClass();
-					if (valueType == RetailCatalog.class) {
-						handleRetailCatalog((RetailCatalog) value);
-					}
-				}
-			});
-		}
 	}
 }

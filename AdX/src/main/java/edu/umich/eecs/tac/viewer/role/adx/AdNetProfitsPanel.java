@@ -132,29 +132,11 @@ public class AdNetProfitsPanel extends SimulationTabPanel {
 
 	protected void dataUpdated(int agent, int type, double value) {
 		int index = ArrayUtils.indexOf(agents, 0, agentCount, agent);
-		if (index < 0 || series[index] == null) {
+		if (index < 0 || series[index] == null
+				|| type != TACAdxConstants.DU_AD_NETWORK_BANK_ACCOUNT) {
 			return;
 		}
-		double lastDaySum = 0;
-		if (series[index].getMaxX() < currentDay && currentDay > 1) {
-			series[index].addOrUpdate(currentDay,
-					series[index].getY(series[index].getItemCount() - 1));
-		}
-		double todaysValue = 0;
-		if (series[index].getMaxX() == currentDay) {
-			todaysValue = series[index].getY(series[index].getItemCount() - 1)
-					.doubleValue();
-		}
-		switch (type) {
-		case TACAdxConstants.DU_AD_NETWORK_REVENUE:
-			series[index].addOrUpdate(currentDay, todaysValue + value);
-			break;
-		case TACAdxConstants.DU_AD_NETWORK_EXPENSE:
-			series[index].addOrUpdate(currentDay, todaysValue - value);
-			break;
-		default:
-			break;
-		}
+		series[index].addOrUpdate(currentDay, value);
 	}
 
 	protected void tick(long serverTime) {
