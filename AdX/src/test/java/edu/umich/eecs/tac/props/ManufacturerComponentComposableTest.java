@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**
  * 
@@ -91,7 +92,7 @@ public class ManufacturerComponentComposableTest {
 	public void testEmptyTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		ManufacturerComponentComposable instance = new ManufacturerComponentComposable();
 
@@ -119,7 +120,7 @@ public class ManufacturerComponentComposableTest {
 	public void testValidTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		ManufacturerComponentComposable instance = new ManufacturerComponentComposable();
 		String advertisor = "advertisor_1";

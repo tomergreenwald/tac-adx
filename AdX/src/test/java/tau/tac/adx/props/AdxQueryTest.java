@@ -40,7 +40,6 @@ import tau.tac.adx.util.TestUtils;
 
 import com.google.inject.Injector;
 
-import edu.umich.eecs.tac.props.AAInfo;
 import edu.umich.eecs.tac.props.Query;
 
 /**
@@ -84,7 +83,7 @@ public class AdxQueryTest {
 	public void testEmptyTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		Query instance = new Query();
 		byte[] buffer = getBytesForTransportable(writer, instance);

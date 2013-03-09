@@ -41,6 +41,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.props.AdLink;
 
 /**
@@ -164,7 +165,7 @@ public class PricingTest {
 	public void testValidTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		Pricing instance = new Pricing();
 		Product product = new Product("manufacturer_1", "component_1");
@@ -197,7 +198,7 @@ public class PricingTest {
 	public void testEmptyTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		Pricing instance = new Pricing();
 

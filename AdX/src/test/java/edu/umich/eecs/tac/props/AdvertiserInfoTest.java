@@ -39,6 +39,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.props.AdLink;
 
 /**
@@ -148,7 +149,7 @@ public class AdvertiserInfoTest {
 	public void testValidTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		AdvertiserInfo instance = new AdvertiserInfo();
 		instance.setComponentBonus(100.5);
@@ -180,7 +181,7 @@ public class AdvertiserInfoTest {
 	public void testEmptyTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		AdvertiserInfo instance = new AdvertiserInfo();
 

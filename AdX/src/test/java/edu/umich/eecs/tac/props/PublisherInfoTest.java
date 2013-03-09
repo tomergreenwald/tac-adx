@@ -35,6 +35,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**
  * @author Patrick Jordan
@@ -58,7 +59,7 @@ public class PublisherInfoTest {
 	public void testValidTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		PublisherInfo info = new PublisherInfo();
 

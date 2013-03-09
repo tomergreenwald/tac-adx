@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**
  * @author Patrick Jordan
@@ -169,7 +170,7 @@ public class QueryTest {
 	public void testValidTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		Query query = new Query();
 		query.setManufacturer("a");
@@ -197,7 +198,7 @@ public class QueryTest {
 	public void testEmptyTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		Query instance = new Query();
 		byte[] buffer = getBytesForTransportable(writer, instance);

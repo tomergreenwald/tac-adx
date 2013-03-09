@@ -37,6 +37,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**
  * @author Patrick Jordan
@@ -47,7 +48,7 @@ public class AdTest {
 	public void testGenericAd() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		Ad ad = new Ad();
 
@@ -67,7 +68,7 @@ public class AdTest {
 	public void testSpecificAd() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		Ad ad = new Ad();
 		ad.setProduct(new Product("m", "c"));

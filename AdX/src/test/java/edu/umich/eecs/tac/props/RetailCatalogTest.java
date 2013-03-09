@@ -36,7 +36,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
-import edu.umich.eecs.tac.props.AAInfo;
+import tau.tac.adx.props.AdxInfoContextFactory;
 import edu.umich.eecs.tac.props.Product;
 import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.props.RetailCatalog.RetailCatalogEntry;
@@ -104,7 +104,7 @@ public class RetailCatalogTest {
 	public void testEmptyTransport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		RetailCatalog instance = new RetailCatalog();
 
@@ -129,7 +129,7 @@ public class RetailCatalogTest {
 			IndexOutOfBoundsException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		RetailCatalog instance = new RetailCatalog();
 		Product product = new Product("m1", "c1");

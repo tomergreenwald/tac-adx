@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
+import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**
  * @author Patrick Jordan
@@ -84,7 +85,7 @@ public class SalesReportTest {
 	public void testValidTransportOfSalesReportEntry() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		SalesReport.SalesReportEntry entry = new SalesReport.SalesReportEntry();
 		entry.setQuery(new Query());
@@ -110,7 +111,7 @@ public class SalesReportTest {
 			throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		SalesReport.SalesReportEntry entry = new SalesReport.SalesReportEntry();
 		entry.setConversions(1);
@@ -135,7 +136,7 @@ public class SalesReportTest {
 	public void testValidTransportOfSalesReport() throws ParseException {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
-		reader.setContext(new AAInfo().createContext());
+		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		SalesReport report = new SalesReport();
 		report.setConversions(new Query(), 2);

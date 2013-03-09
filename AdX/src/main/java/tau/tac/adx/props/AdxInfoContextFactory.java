@@ -32,7 +32,6 @@ import se.sics.tasim.props.Ping;
 import se.sics.tasim.props.ServerConfig;
 import se.sics.tasim.props.SimulationStatus;
 import se.sics.tasim.props.StartInfo;
-import tau.tac.adx.demand.UserClassificationServiceAdNetData;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.AdNetworkReportEntry;

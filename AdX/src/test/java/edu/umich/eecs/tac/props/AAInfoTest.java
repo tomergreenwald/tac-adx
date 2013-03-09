@@ -30,6 +30,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Test;
 
 import se.sics.isl.transport.Context;
+import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**
  * Unit test suite for the AAInfo class.
@@ -40,18 +41,18 @@ public class AAInfoTest {
 
 	@Test
 	public void testConstructor() {
-		new AAInfo();
+		new AdxInfoContextFactory();
 	}
 
 	@Test
 	public void testEmptyCreateContext() {
-		AAInfo info = new AAInfo();
+		AdxInfoContextFactory info = new AdxInfoContextFactory();
 		assertNotNull(info.createContext());
 	}
 
 	@Test
 	public void testParentCreateContext() {
-		AAInfo info = new AAInfo();
+		AdxInfoContextFactory info = new AdxInfoContextFactory();
 		Context context = new Context("parent");
 
 		Context childContext = info.createContext(context);
