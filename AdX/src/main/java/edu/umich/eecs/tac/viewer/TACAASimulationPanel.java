@@ -39,10 +39,7 @@ import se.sics.isl.transport.Transportable;
 import se.sics.isl.util.ConfigManager;
 import se.sics.tasim.viewer.TickListener;
 import se.sics.tasim.viewer.ViewerPanel;
-import edu.umich.eecs.tac.viewer.role.AdvertiserTabPanel;
 import edu.umich.eecs.tac.viewer.role.AgentSupport;
-import edu.umich.eecs.tac.viewer.role.MainTabPanel;
-import edu.umich.eecs.tac.viewer.role.PublisherTabPanel;
 import edu.umich.eecs.tac.viewer.role.adnet.AdNetTabPanel;
 import edu.umich.eecs.tac.viewer.role.adx.AdxDashboardTabPanel;
 
@@ -87,12 +84,12 @@ public class TACAASimulationPanel extends JPanel implements TickListener,
 				new AdxDashboardTabPanel(this), "Click to view ADX Dashboard");
 		tabbedPane.addTab("AdNet", null, new AdNetTabPanel(this),
 				"Click to view AdNets");
-		tabbedPane.addTab("Dashboard", null, new MainTabPanel(this),
-				"Click to view main dashboard");
-		tabbedPane.addTab("Advertisers", null, new AdvertiserTabPanel(this),
-				"Click to view Advertisers");
-		tabbedPane.addTab("Publisher", null, new PublisherTabPanel(this),
-				"Click to view Publisher");
+		// tabbedPane.addTab("Dashboard", null, new MainTabPanel(this),
+		// "Click to view main dashboard");
+		// tabbedPane.addTab("Advertisers", null, new AdvertiserTabPanel(this),
+		// "Click to view Advertisers");
+		// tabbedPane.addTab("Publisher", null, new PublisherTabPanel(this),
+		// "Click to view Publisher");
 	}
 
 	public TACAAAgentView getAgentView(int agentID) {
