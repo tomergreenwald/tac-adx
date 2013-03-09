@@ -197,8 +197,7 @@ public class AdxBidBundleTest {
 		assertNotNull(received);
 		assertEquals(received.size(), 2);
 
-		assertEquals(bundle.getEntry(0).toString(), received.getEntry(0)
-				.toString());
+		assertEquals(bundle.getEntry(0), received.getEntry(0));
 		assertEquals(bundle.toString(), received.toString());
 
 	}

@@ -567,6 +567,54 @@ public class AdxBidBundle extends
 			this.weight = weight;
 		}
 
+		/**
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((ad == null) ? 0 : ad.hashCode());
+			long temp;
+			temp = Double.doubleToLongBits(bid);
+			result = prime * result + (int) (temp ^ (temp >>> 32));
+			result = prime * result + campaignId;
+			temp = Double.doubleToLongBits(dailyLimit);
+			result = prime * result + (int) (temp ^ (temp >>> 32));
+			result = prime * result + weight;
+			return result;
+		}
+
+		/**
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			BidEntry other = (BidEntry) obj;
+			if (ad == null) {
+				if (other.ad != null)
+					return false;
+			} else if (!ad.equals(other.ad))
+				return false;
+			if (Double.doubleToLongBits(bid) != Double
+					.doubleToLongBits(other.bid))
+				return false;
+			if (campaignId != other.campaignId)
+				return false;
+			if (Double.doubleToLongBits(dailyLimit) != Double
+					.doubleToLongBits(other.dailyLimit))
+				return false;
+			if (weight != other.weight)
+				return false;
+			return true;
+		}
+
 		public int getWeight() {
 			return weight;
 		}
