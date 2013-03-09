@@ -24,205 +24,217 @@
  */
 package edu.umich.eecs.tac.viewer.role.advertiser;
 
+import java.awt.GridLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import se.sics.isl.transport.Transportable;
+import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.props.SalesReport;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
-import se.sics.isl.transport.Transportable;
-import tau.tac.adx.sim.TACAdxConstants;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author Patrick R. Jordan
  */
 public class AdvertiserQueryInfoPanel extends JPanel {
-    private int agent;
-    private String advertiser;
-    private Query query;
+	private final int agent;
+	private final String advertiser;
+	private final Query query;
 
-    private int impressions;
-    private int clicks;
-    private int conversions;
-    private double revenue;
-    private double cost;
+	private int impressions;
+	private int clicks;
+	private int conversions;
+	private double revenue;
+	private double cost;
 
-    private JLabel ctrLabel;
-    private JLabel convRateLabel;
-    private JLabel cpcLabel;
-    private JLabel cpmLabel;
-    private JLabel vpcLabel;
-    private JLabel roiLabel;
+	private JLabel ctrLabel;
+	private JLabel convRateLabel;
+	private JLabel cpcLabel;
+	private JLabel cpmLabel;
+	private JLabel vpcLabel;
+	private JLabel roiLabel;
 
-    public AdvertiserQueryInfoPanel(int agent, String advertiser, Query query, TACAASimulationPanel simulationPanel) {
-        this.agent = agent;
-        this.advertiser = advertiser;
-        this.query = query;
+	public AdvertiserQueryInfoPanel(int agent, String advertiser, Query query,
+			TACAASimulationPanel simulationPanel) {
+		this.agent = agent;
+		this.advertiser = advertiser;
+		this.query = query;
 
-        initialize();
+		initialize();
 
-        simulationPanel.addViewListener(new DataUpdateListener());
-    }
+		simulationPanel.addViewListener(new DataUpdateListener());
+	}
 
-    private void initialize() {
-        setLayout(new GridLayout(3, 4));
-        setBackground(TACAAViewerConstants.CHART_BACKGROUND);
+	private void initialize() {
+		setLayout(new GridLayout(3, 4));
+		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 
-        ctrLabel = new JLabel("---");
-        add(new JLabel("CTR:"));
-        add(ctrLabel);
+		ctrLabel = new JLabel("---");
+		add(new JLabel("CTR:"));
+		add(ctrLabel);
 
-        cpcLabel = new JLabel("---");
-        add(new JLabel("CPC:"));
-        add(cpcLabel);
+		cpcLabel = new JLabel("---");
+		add(new JLabel("CPC:"));
+		add(cpcLabel);
 
-        convRateLabel = new JLabel("---");
-        add(new JLabel("Conv. Rate:"));
-        add(convRateLabel);
+		convRateLabel = new JLabel("---");
+		add(new JLabel("Conv. Rate:"));
+		add(convRateLabel);
 
-        vpcLabel = new JLabel("---");
-        add(new JLabel("VPC:"));
-        add(vpcLabel);
+		vpcLabel = new JLabel("---");
+		add(new JLabel("VPC:"));
+		add(vpcLabel);
 
-        cpmLabel = new JLabel("---");
-        add(new JLabel("CPM:"));
-        add(cpmLabel);
+		cpmLabel = new JLabel("---");
+		add(new JLabel("CPM:"));
+		add(cpmLabel);
 
-        roiLabel = new JLabel("---");
-        add(new JLabel("ROI:"));
-        add(roiLabel);
+		roiLabel = new JLabel("---");
+		add(new JLabel("ROI:"));
+		add(roiLabel);
 
-        setBorder(BorderFactory.createTitledBorder("Rate Metrics"));
-    }
+		setBorder(BorderFactory.createTitledBorder("Rate Metrics"));
+	}
 
-    public int getAgent() {
-        return agent;
-    }
+	public int getAgent() {
+		return agent;
+	}
 
-    public String getAdvertiser() {
-        return advertiser;
-    }
+	public String getAdvertiser() {
+		return advertiser;
+	}
 
-    private class DataUpdateListener extends ViewAdaptor {
+	private class DataUpdateListener extends ViewAdaptor {
 
-        public void dataUpdated(final int agent, final int type, final Transportable value) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (agent == AdvertiserQueryInfoPanel.this.agent) {
-                        switch (type) {
-                            case TACAdxConstants.DU_SALES_REPORT:
-                                handleSalesReport((SalesReport) value);
-                                break;
-                            case TACAdxConstants.DU_QUERY_REPORT:
-                                handleQueryReport((QueryReport) value);
-                                break;
-                        }
-                    }
-                }
-            });
+		@Override
+		public void dataUpdated(final int agent, final int type,
+				final Transportable value) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					if (agent == AdvertiserQueryInfoPanel.this.agent) {
+						switch (type) {
+						case TACAdxConstants.DU_SALES_REPORT:
+							handleSalesReport((SalesReport) value);
+							break;
+						case TACAdxConstants.DU_QUERY_REPORT:
+							handleQueryReport((QueryReport) value);
+							break;
+						}
+					}
+				}
+			});
 
-        }
+		}
 
-        private void handleQueryReport(QueryReport queryReport) {
-            addImpressions(queryReport.getImpressions(query));
-            addClicks(queryReport.getClicks(query));
-            addCost(queryReport.getCost(query));
+		private void handleQueryReport(QueryReport queryReport) {
+			addImpressions(queryReport.getImpressions(query));
+			addClicks(queryReport.getClicks(query));
+			addCost(queryReport.getCost(query));
 
-        }
+		}
 
-        private void handleSalesReport(SalesReport salesReport) {
-            addConversions(salesReport.getConversions(query));
-            addRevenue(salesReport.getRevenue(query));
-        }
-    }
+		private void handleSalesReport(SalesReport salesReport) {
+			addConversions(salesReport.getConversions(query));
+			addRevenue(salesReport.getRevenue(query));
+		}
+	}
 
-    protected void addRevenue(double revenue) {
-        this.revenue += revenue;
+	protected void addRevenue(double revenue) {
+		this.revenue += revenue;
 
-        updateCTR();
-        updateVPC();
-        updateROI();
-    }
+		updateCTR();
+		updateVPC();
+		updateROI();
+	}
 
-    protected void addCost(double cost) {
-        this.cost += cost;
+	protected void addCost(double cost) {
+		this.cost += cost;
 
-        updateCPC();
-        updateVPC();
-        updateCPM();
-        updateROI();
-    }
+		updateCPC();
+		updateVPC();
+		updateCPM();
+		updateROI();
+	}
 
-    protected void addImpressions(int impressions) {
-        this.impressions += impressions;
+	protected void addImpressions(int impressions) {
+		this.impressions += impressions;
 
-        updateCTR();
-        updateCPM();
-    }
+		updateCTR();
+		updateCPM();
+	}
 
-    protected void addClicks(int clicks) {
-        this.clicks += clicks;
+	protected void addClicks(int clicks) {
+		this.clicks += clicks;
 
-        updateCTR();
-        updateConvRate();
-        updateCPC();
-        updateVPC();
-    }
+		updateCTR();
+		updateConvRate();
+		updateCPC();
+		updateVPC();
+	}
 
-    protected void addConversions(int conversions) {
-        this.conversions += conversions;
+	protected void addConversions(int conversions) {
+		this.conversions += conversions;
 
-        updateConvRate();
-    }
+		updateConvRate();
+	}
 
-    protected void updateCTR() {
-        if (impressions > 0) {
-            ctrLabel.setText(String.format("%.2f%%", (100.0 * ((double) clicks) / ((double) impressions))));
-        } else {
-            ctrLabel.setText("---");
-        }
-    }
+	protected void updateCTR() {
+		if (impressions > 0) {
+			ctrLabel.setText(String.format("%.2f%%",
+					(100.0 * (clicks) / (impressions))));
+		} else {
+			ctrLabel.setText("---");
+		}
+	}
 
-    protected void updateConvRate() {
-        if (clicks > 0) {
-            convRateLabel.setText(String.format("%.2f%%", (100.0 * ((double) conversions) / ((double) clicks))));
-        } else {
-            convRateLabel.setText("---");
-        }
-    }
+	protected void updateConvRate() {
+		if (clicks > 0) {
+			convRateLabel.setText(String.format("%.2f%%",
+					(100.0 * (conversions) / (clicks))));
+		} else {
+			convRateLabel.setText("---");
+		}
+	}
 
-    protected void updateCPC() {
-        if (clicks > 0) {
-            cpcLabel.setText(String.format("%.2f", cost / ((double) clicks)));
-        } else {
-            cpcLabel.setText("---");
-        }
-    }
+	protected void updateCPC() {
+		if (clicks > 0) {
+			cpcLabel.setText(String.format("%.2f", cost / (clicks)));
+		} else {
+			cpcLabel.setText("---");
+		}
+	}
 
-    protected void updateCPM() {
-        if (impressions > 0) {
-            cpmLabel.setText(String.format("%.2f", cost / (impressions / 1000.0)));
-        } else {
-            cpmLabel.setText("---");
-        }
-    }
+	protected void updateCPM() {
+		if (impressions > 0) {
+			cpmLabel.setText(String.format("%.2f", cost
+					/ (impressions / 1000.0)));
+		} else {
+			cpmLabel.setText("---");
+		}
+	}
 
-    protected void updateROI() {
-        if (cost > 0.0) {
-            roiLabel.setText(String.format("%.2f%%", (100.0 * (revenue - cost) / cost)));
-        } else {
-            roiLabel.setText("---");
-        }
-    }
+	protected void updateROI() {
+		if (cost > 0.0) {
+			roiLabel.setText(String.format("%.2f%%",
+					(100.0 * (revenue - cost) / cost)));
+		} else {
+			roiLabel.setText("---");
+		}
+	}
 
-    protected void updateVPC() {
-        if (clicks > 0) {
-            vpcLabel.setText(String.format("%.2f", (revenue - cost) / ((double) clicks)));
-        } else {
-            vpcLabel.setText("---");
-        }
-    }
+	protected void updateVPC() {
+		if (clicks > 0) {
+			vpcLabel.setText(String.format("%.2f", (revenue - cost) / (clicks)));
+		} else {
+			vpcLabel.setText("---");
+		}
+	}
 }

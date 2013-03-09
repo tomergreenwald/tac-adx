@@ -92,7 +92,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 				@Override
 				public void participant(int agent, int role, String name,
 						int participantID) {
-					if (role == TACAdxConstants.ADVERTISER) {
+					if (role == TACAdxConstants.AD_NETOWRK_ROLE_ID) {
 						if (!agents.containsKey(agent)) {
 							AdvertiserMetricsItem item = new AdvertiserMetricsItem(
 									agent, name, AdvertiserMetricsModel.this,
@@ -265,14 +265,14 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 				public void run() {
 					if (agent == item.getAgent()) {
 						switch (type) {
-						case TACAdxConstants.DU_IMPRESSIONS:
+						case TACAdxConstants.DU_AD_NETWORK_WIN_COUNT:
 							item.addImpressions(value);
 							break;
-						case TACAdxConstants.DU_CLICKS:
-							item.addClicks(value);
+						case TACAdxConstants.DU_AD_NETWORK_REVENUE:
+							item.addRevenue(value);
 							break;
-						case TACAdxConstants.DU_CONVERSIONS:
-							item.addConversions(value);
+						case TACAdxConstants.DU_AD_NETWORK_EXPENSE:
+							item.addCost(value);
 							break;
 						}
 					}
