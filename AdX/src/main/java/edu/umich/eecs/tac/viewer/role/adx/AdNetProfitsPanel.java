@@ -36,10 +36,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
-import tau.tac.adx.report.adn.AdNetworkReport;
-import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.sim.TACAdxConstants;
 
 import com.botbox.util.ArrayUtils;
@@ -133,20 +130,27 @@ public class AdNetProfitsPanel extends SimulationTabPanel {
 		setAgent(agent, role, name, participantID);
 	}
 
-	protected void dataUpdated(int agent, int type, Transportable value) {
+	protected void dataUpdated(int agent, int type, double value) {
 		int index = ArrayUtils.indexOf(agents, 0, agentCount, agent);
 		if (index < 0 || series[index] == null) {
 			return;
 		}
+		double lastDaySum = 0;
+		if (series[index].getMaxX() < currentDay && currentDay > 1) {
+			series[index].addOrUpdate(currentDay,
+					series[index].getY(series[index].getItemCount() - 1));
+		}
+		double todaysValue = 0;
+		if (series[index].getMaxX() == currentDay) {
+			todaysValue = series[index].getY(series[index].getItemCount() - 1)
+					.doubleValue();
+		}
 		switch (type) {
-		case TACAdxConstants.DU_AD_NETWORK_REPORT:
-			AdNetworkReport queryReport = (AdNetworkReport) value;
-			series[index].addOrUpdate(currentDay, -queryReport.getDailyCost());
+		case TACAdxConstants.DU_AD_NETWORK_REVENUE:
+			series[index].addOrUpdate(currentDay, todaysValue + value);
 			break;
-
-		case TACAdxConstants.DU_UCS_REPORT:
-			AdNetworkDailyNotification notification = (AdNetworkDailyNotification) value;
-			series[index].addOrUpdate(currentDay, -notification.getCost());
+		case TACAdxConstants.DU_AD_NETWORK_EXPENSE:
+			series[index].addOrUpdate(currentDay, todaysValue - value);
 			break;
 		default:
 			break;
@@ -176,7 +180,7 @@ public class AdNetProfitsPanel extends SimulationTabPanel {
 	protected class BankStatusListener extends ViewAdaptor {
 
 		@Override
-		public void dataUpdated(int agent, int type, Transportable value) {
+		public void dataUpdated(int agent, int type, double value) {
 			AdNetProfitsPanel.this.dataUpdated(agent, type, value);
 		}
 
