@@ -5,13 +5,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.sim.TACAdxSimulation;
 
 /**
  * @author mariano
@@ -143,7 +146,7 @@ public class CampaignTest {
 			multiImpress(campaign, true, 500, 10);
 			multiImpress(campaign, false, 300, 3);
 		}
-
+		AdxManager.getInstance().setSimulation(mock(TACAdxSimulation.class));
 		campaign.nextTimeUnit(dayEnd + 1);
 		assertFalse(campaign.isActive());
 
