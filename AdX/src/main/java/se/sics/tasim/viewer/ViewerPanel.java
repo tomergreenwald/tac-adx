@@ -86,7 +86,7 @@ public class ViewerPanel extends ViewerConnection {
 		// TODO: use the tasim_viewer.conf file
 		// NOTE: this should actually be the tac09aa_viewer.conf file
 		String configFile = "tasim_viewer.conf";
-		// String configFile = "tac09aa_viewer.conf";
+		// String configFile = "tac13adx_viewer.conf";
 		URL configURL = ViewerPanel.class.getResource("/config/" + configFile);
 		config = new ConfigManager();
 		try {

@@ -57,7 +57,7 @@ public final class TACAdxConstants {
 	/**
 	 * The simulation supported types.
 	 */
-	public static final String[] SUPPORTED_TYPES = { "tac09aa" };
+	public static final String[] SUPPORTED_TYPES = { "tac13adx" };
 	/**
 	 * Human readable message.
 	 */
