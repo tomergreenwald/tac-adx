@@ -5,5 +5,5 @@ aa-server-10.1.0.0/*.slg
 aa-server-10.1.0.0/logs
 aa-server-10.1.0.0/public_html/*.slg
 aa-server-10.1.0.0/public_html/localhost
-aa-server-10.1.0.0/infodb/
+aa-server-10.1.0.0/infodb/*dat
 
