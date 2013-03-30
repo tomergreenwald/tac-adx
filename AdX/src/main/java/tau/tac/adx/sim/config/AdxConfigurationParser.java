@@ -296,13 +296,15 @@ public class AdxConfigurationParser {
 		Random r = new Random();
 
 		// Initialize advertisers..
-		SimulationAgent[] advertisers = tacAdxSimulation
+		SimulationAgent[] adnetowrkAgents = tacAdxSimulation
 				.getAgents(AD_NETOWRK_ROLE_ID);
 		tacAdxSimulation
 				.setAdvertiserInfoMap(new HashMap<String, AdvertiserInfo>());
 
-		for (int i = 0, n = advertisers.length; i < n; i++) {
-			SimulationAgent agent = advertisers[i];
+		for (int i = 0, n = adnetowrkAgents.length; i < n; i++) {
+			tacAdxSimulation.getAdxAdvertiserAddresses()[i] = adnetowrkAgents[i]
+					.getAddress();
+			SimulationAgent agent = adnetowrkAgents[i];
 
 			String agentAddress = agent.getAddress();
 			tacAdxSimulation.getAdvertiserAddresses()[i] = agentAddress;
