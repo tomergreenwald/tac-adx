@@ -267,13 +267,13 @@ public class TACConfigurationParser {
 				advertiserInfo.setPublisherId(publisherAddress);
 				advertiserInfo.setDistributionCapacity(capacities[i]);
 				advertiserInfo.setDistributionCapacityDiscounter(decayRate);
-				advertiserInfo.setComponentSpecialty(tacAdxSimulation
-						.getComponents()[r.nextInt(tacAdxSimulation
-						.getComponents().length)]);
+				// advertiserInfo.setComponentSpecialty(tacAdxSimulation
+				// .getComponents()[r.nextInt(tacAdxSimulation
+				// .getComponents().length)]);
 				advertiserInfo.setComponentBonus(componentBonus);
-				advertiserInfo.setManufacturerSpecialty(tacAdxSimulation
-						.getManufacturers()[r.nextInt(tacAdxSimulation
-						.getManufacturers().length)]);
+				// advertiserInfo.setManufacturerSpecialty(tacAdxSimulation
+				// .getManufacturers()[r.nextInt(tacAdxSimulation
+				// .getManufacturers().length)]);
 				advertiserInfo.setManufacturerBonus(manufacturerBonus);
 				advertiserInfo.setDistributionWindow(window);
 				advertiserInfo.setTargetEffect(targetEffect);
