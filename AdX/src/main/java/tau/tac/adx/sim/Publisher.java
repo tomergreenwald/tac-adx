@@ -59,7 +59,6 @@ public abstract class Publisher extends Builtin implements QueryReportSender,
 
 	@Override
 	public void sendQueryReport(String advertiser, QueryReport report) {
-		getSimulation().sendQueryReport(advertiser, report);
 	}
 
 	@Override

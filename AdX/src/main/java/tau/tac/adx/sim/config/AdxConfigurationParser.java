@@ -311,25 +311,6 @@ public class AdxConfigurationParser {
 
 			AdvertiserInfo advertiserInfo = new AdvertiserInfo();
 			advertiserInfo.setAdvertiserId(agentAddress);
-			// advertiserInfo.setPublisherId(publisherAddress);
-			// advertiserInfo.setDistributionCapacity(capacities[i]);
-			// advertiserInfo.setDistributionCapacityDiscounter(decayRate);
-			// advertiserInfo.setComponentSpecialty(tacAdxSimulation
-			// .getComponents()[r.nextInt(tacAdxSimulation
-			// .getComponents().length)]);
-			// advertiserInfo.setComponentBonus(componentBonus);
-			// advertiserInfo.setManufacturerSpecialty(tacAdxSimulation
-			// .getManufacturers()[r.nextInt(tacAdxSimulation
-			// .getManufacturers().length)]);
-			// advertiserInfo.setManufacturerBonus(manufacturerBonus);
-			// advertiserInfo.setDistributionWindow(window);
-			// advertiserInfo.setTargetEffect(targetEffect);
-			// advertiserInfo.setFocusEffects(QueryType.FOCUS_LEVEL_ZERO,
-			// focusEffectF0);
-			// advertiserInfo.setFocusEffects(QueryType.FOCUS_LEVEL_ONE,
-			// focusEffectF1);
-			// advertiserInfo.setFocusEffects(QueryType.FOCUS_LEVEL_TWO,
-			// focusEffectF2);
 			advertiserInfo.lock();
 
 			tacAdxSimulation.getAdvertiserInfoMap().put(agentAddress,
@@ -337,7 +318,6 @@ public class AdxConfigurationParser {
 
 			// Create bank account for the advertiser
 			tacAdxSimulation.getBank().addAccount(agentAddress);
-			tacAdxSimulation.getSalesAnalyst().addAccount(agentAddress);
 		}
 	}
 

@@ -38,15 +38,13 @@ import tau.tac.adx.users.AdxUser;
 import com.google.common.eventbus.EventBus;
 
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.sim.AgentRepository;
-import edu.umich.eecs.tac.sim.SalesAnalyst;
 
 /**
  * The agent repository holds references to all agents in the TAC/AA simulation.
  * 
  * @author Patrick Jordan
  */
-public interface AdxAgentRepository extends AgentRepository {
+public interface AdxAgentRepository {
 	/**
 	 * Get the {@link PublisherCatalog} used for the simulation.
 	 * 
@@ -59,7 +57,6 @@ public interface AdxAgentRepository extends AgentRepository {
 	 * 
 	 * @return the advertiser information mapping.
 	 */
-	@Override
 	Map<String, AdvertiserInfo> getAdvertiserInfo();
 
 	/**
@@ -67,23 +64,13 @@ public interface AdxAgentRepository extends AgentRepository {
 	 * 
 	 * @return the list of publisher agents.
 	 */
-	@Override
 	SimulationAgent[] getPublishers();
-
-	/**
-	 * Get the sales analyst.
-	 * 
-	 * @return the sales analyst.
-	 */
-	@Override
-	SalesAnalyst getSalesAnalyst();
 
 	/**
 	 * Returns the number of advertisers in the simulation.
 	 * 
 	 * @return the number of advertisers in the simulation.
 	 */
-	@Override
 	int getNumberOfAdvertisers();
 
 	/**
@@ -91,7 +78,6 @@ public interface AdxAgentRepository extends AgentRepository {
 	 * 
 	 * @return the addresses of advertisers in the simulation.
 	 */
-	@Override
 	String[] getAdvertiserAddresses();
 
 	/**

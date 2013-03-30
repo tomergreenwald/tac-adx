@@ -172,7 +172,7 @@ public class DefaultUsers extends Users {
 
 		@Override
 		public SalesAnalyst getSalesAnalyst() {
-			return getSimulation().getSalesAnalyst();
+			return null;
 		}
 
 		@Override

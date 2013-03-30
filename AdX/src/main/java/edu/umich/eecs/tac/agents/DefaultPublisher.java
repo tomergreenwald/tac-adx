@@ -184,7 +184,7 @@ public class DefaultPublisher extends Publisher {
 
 		@Override
 		public SalesAnalyst getSalesAnalyst() {
-			return getSimulation().getSalesAnalyst();
+			return null;
 		}
 
 		@Override
