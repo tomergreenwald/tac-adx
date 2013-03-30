@@ -1,22 +1,13 @@
 package tau.tac.adx.sim.config;
 
-import static edu.umich.eecs.tac.util.permutation.CapacityAssignmentPermutation.secretPermutation;
-import static tau.tac.adx.sim.TACAdxConstants.ADVERTISER;
 import static tau.tac.adx.sim.TACAdxConstants.AD_NETOWRK_ROLE_ID;
-import static tau.tac.adx.sim.TACAdxConstants.PUBLISHER;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-
-import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.QueryType;
-import edu.umich.eecs.tac.sim.CapacityType;
 
 import se.sics.isl.util.ConfigManager;
-import se.sics.tasim.is.SimulationInfo;
 import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
@@ -31,6 +22,7 @@ import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
+import edu.umich.eecs.tac.props.AdvertiserInfo;
 
 public class AdxConfigurationParser {
 
@@ -304,7 +296,8 @@ public class AdxConfigurationParser {
 		Random r = new Random();
 
 		// Initialize advertisers..
-		SimulationAgent[] advertisers = tacAdxSimulation.getAgents(ADVERTISER);
+		SimulationAgent[] advertisers = tacAdxSimulation
+				.getAgents(AD_NETOWRK_ROLE_ID);
 		tacAdxSimulation
 				.setAdvertiserInfoMap(new HashMap<String, AdvertiserInfo>());
 

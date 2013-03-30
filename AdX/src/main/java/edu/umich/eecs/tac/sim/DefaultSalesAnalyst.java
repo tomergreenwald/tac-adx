@@ -38,8 +38,8 @@ import edu.umich.eecs.tac.props.SalesReport;
  * @author Patrick Jordan, Lee Callender
  */
 public class DefaultSalesAnalyst implements SalesAnalyst {
-	private AgentRepository agentRepository;
-	private SalesReportSender salesReportSender;
+	private final AgentRepository agentRepository;
+	private final SalesReportSender salesReportSender;
 
 	private String[] accountNames;
 	private int[][] accountConversions;
@@ -65,6 +65,7 @@ public class DefaultSalesAnalyst implements SalesAnalyst {
 		salesReports = new SalesReport[accountNumber];
 	}
 
+	@Override
 	public void addAccount(String name) {
 		int index = ArrayUtils.indexOf(accountNames, 0, accountNumber, name);
 		if (index < 0) {
@@ -82,12 +83,17 @@ public class DefaultSalesAnalyst implements SalesAnalyst {
 					newSize);
 		}
 		accountNames[accountNumber] = name;
-		accountConversions[accountNumber] = new int[getAdvertiserInfo().get(name).getDistributionWindow()];
-        int defaultConversions = getAdvertiserInfo().get(name).getDistributionCapacity() / getAdvertiserInfo().get(name).getDistributionWindow();
-        Arrays.fill(accountConversions[accountNumber], defaultConversions);  
+		accountConversions[accountNumber] = new int[getAdvertiserInfo().get(
+				name).getDistributionWindow()];
+		// FIXME delete this code
+		// int defaultConversions =
+		// getAdvertiserInfo().get(name).getDistributionCapacity() /
+		// getAdvertiserInfo().get(name).getDistributionWindow();
+		// Arrays.fill(accountConversions[accountNumber], defaultConversions);
 		return accountNumber++;
 	}
 
+	@Override
 	public double getRecentConversions(String name) {
 		int index = ArrayUtils.indexOf(accountNames, 0, accountNumber, name);
 
@@ -113,13 +119,15 @@ public class DefaultSalesAnalyst implements SalesAnalyst {
 
 		if (accountConversions[index] == null) {
 
-            AdvertiserInfo advertiserInfo = getAdvertiserInfo().get(name);
+			AdvertiserInfo advertiserInfo = getAdvertiserInfo().get(name);
 
-            accountConversions[index] = new int[advertiserInfo.getDistributionWindow()];
+			accountConversions[index] = new int[advertiserInfo
+					.getDistributionWindow()];
 
-            int defaultConversions = advertiserInfo.getDistributionCapacity() / advertiserInfo.getDistributionWindow();
+			int defaultConversions = advertiserInfo.getDistributionCapacity()
+					/ advertiserInfo.getDistributionWindow();
 
-            Arrays.fill(accountConversions[index], defaultConversions);            
+			Arrays.fill(accountConversions[index], defaultConversions);
 		}
 
 		accountConversions[index][0] += conversions;
@@ -138,6 +146,7 @@ public class DefaultSalesAnalyst implements SalesAnalyst {
 		return accountConversions[index][0];
 	}
 
+	@Override
 	public void sendSalesReportToAll() {
 		for (int i = 0; i < accountNumber; i++) {
 			SalesReport report = salesReports[i];
@@ -153,7 +162,8 @@ public class DefaultSalesAnalyst implements SalesAnalyst {
 
 			salesReportSender.sendSalesReport(accountNames[i], report);
 
-			salesReportSender.broadcastConversions(accountNames[i], accountConversions[i][0]);
+			salesReportSender.broadcastConversions(accountNames[i],
+					accountConversions[i][0]);
 		}
 
 		updateConversionQueue();
@@ -168,17 +178,21 @@ public class DefaultSalesAnalyst implements SalesAnalyst {
 		}
 	}
 
+	@Override
 	public void queryIssued(Query query) {
 	}
 
+	@Override
 	public void viewed(Query query, Ad ad, int slot, String advertiser,
 			boolean isPromoted) {
 	}
 
+	@Override
 	public void clicked(Query query, Ad ad, int slot, double cpc,
 			String advertiser) {
 	}
 
+	@Override
 	public void converted(Query query, Ad ad, int slot, double salesProfit,
 			String advertiser) {
 		addConversions(advertiser, query, 1, salesProfit);
