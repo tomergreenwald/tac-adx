@@ -28,7 +28,6 @@ import java.util.Random;
 
 import tau.tac.adx.agents.DefaultAdxUserManager;
 import tau.tac.adx.sim.AdxAgentRepository;
-import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
 
@@ -48,8 +47,6 @@ public class DefaultAdxUserManagerBuilder implements
 	@Override
 	public DefaultAdxUserManager build(ConfigProxy userConfigProxy,
 			AdxAgentRepository repository, Random random) {
-
-		RetailCatalog retailCatalog = repository.getRetailCatalog();
 
 		try {
 			AdxUserBehaviorBuilder<DefaultAdxUserQueryManager> queryBuilder = ConfigProxyUtils

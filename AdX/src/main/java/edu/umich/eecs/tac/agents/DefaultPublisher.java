@@ -40,8 +40,6 @@ import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.BidBundle;
 import edu.umich.eecs.tac.props.PublisherInfo;
 import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.SalesAnalyst;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
@@ -54,7 +52,7 @@ public class DefaultPublisher extends Publisher {
 	/**
 	 * The publisher behavior
 	 */
-	private PublisherBehavior publisherBehavior;
+	private final PublisherBehavior publisherBehavior;
 
 	public DefaultPublisher() {
 		publisherBehavior = new DefaultPublisherBehavior(
@@ -62,10 +60,12 @@ public class DefaultPublisher extends Publisher {
 				new ClickChargerProxy(), new BidBundleWriterProxy());
 	}
 
+	@Override
 	public void nextTimeUnit(int date) {
 		publisherBehavior.nextTimeUnit(date);
 	}
 
+	@Override
 	protected void setup() {
 		this.log = Logger.getLogger(DefaultPublisher.class.getName());
 
@@ -74,20 +74,24 @@ public class DefaultPublisher extends Publisher {
 		addTimeListener(this);
 	}
 
+	@Override
 	protected void stopped() {
 		removeTimeListener(this);
 
 		publisherBehavior.stopped();
 	}
 
+	@Override
 	protected void shutdown() {
 		publisherBehavior.stopped();
 	}
 
+	@Override
 	protected void messageReceived(Message message) {
 		publisherBehavior.messageReceived(message);
 	}
 
+	@Override
 	public PublisherInfo getPublisherInfo() {
 		return publisherBehavior.getPublisherInfo();
 	}
@@ -96,57 +100,70 @@ public class DefaultPublisher extends Publisher {
 		publisherBehavior.setPublisherInfo(publisherInfo);
 	}
 
+	@Override
 	public void sendQueryReportsToAll() {
 		publisherBehavior.sendQueryReportsToAll();
 	}
 
+	@Override
 	public Auction runAuction(Query query) {
 		return publisherBehavior.runAuction(query);
 	}
 
-    public void applyBidUpdates() {
-        publisherBehavior.applyBidUpdates();
-    }
+	@Override
+	public void applyBidUpdates() {
+		publisherBehavior.applyBidUpdates();
+	}
 
-    protected class PublisherConfigProxy implements ConfigProxy {
+	protected class PublisherConfigProxy implements ConfigProxy {
 
+		@Override
 		public String getProperty(String name) {
 			return DefaultPublisher.this.getProperty(name);
 		}
 
+		@Override
 		public String getProperty(String name, String defaultValue) {
 			return DefaultPublisher.this.getProperty(name, defaultValue);
 		}
 
+		@Override
 		public String[] getPropertyAsArray(String name) {
 			return DefaultPublisher.this.getPropertyAsArray(name);
 		}
 
+		@Override
 		public String[] getPropertyAsArray(String name, String defaultValue) {
 			return DefaultPublisher.this.getPropertyAsArray(name, defaultValue);
 		}
 
+		@Override
 		public int getPropertyAsInt(String name, int defaultValue) {
 			return DefaultPublisher.this.getPropertyAsInt(name, defaultValue);
 		}
 
+		@Override
 		public int[] getPropertyAsIntArray(String name) {
 			return DefaultPublisher.this.getPropertyAsIntArray(name);
 		}
 
+		@Override
 		public int[] getPropertyAsIntArray(String name, String defaultValue) {
 			return DefaultPublisher.this.getPropertyAsIntArray(name,
 					defaultValue);
 		}
 
+		@Override
 		public long getPropertyAsLong(String name, long defaultValue) {
 			return DefaultPublisher.this.getPropertyAsLong(name, defaultValue);
 		}
 
+		@Override
 		public float getPropertyAsFloat(String name, float defaultValue) {
 			return DefaultPublisher.this.getPropertyAsFloat(name, defaultValue);
 		}
 
+		@Override
 		public double getPropertyAsDouble(String name, double defaultValue) {
 			return DefaultPublisher.this
 					.getPropertyAsDouble(name, defaultValue);
@@ -154,46 +171,42 @@ public class DefaultPublisher extends Publisher {
 	}
 
 	protected class AgentRepositoryProxy implements AgentRepository {
-		public RetailCatalog getRetailCatalog() {
-			return getSimulation().getRetailCatalog();
-		}
 
-		public SlotInfo getAuctionInfo() {
-			return getSimulation().getAuctionInfo();
-		}
-
+		@Override
 		public Map<String, AdvertiserInfo> getAdvertiserInfo() {
 			return getSimulation().getAdvertiserInfo();
 		}
 
+		@Override
 		public SimulationAgent[] getPublishers() {
 			return getSimulation().getPublishers();
 		}
 
-		public SimulationAgent[] getUsers() {
-			return getSimulation().getUsers();
-		}
-
+		@Override
 		public SalesAnalyst getSalesAnalyst() {
 			return getSimulation().getSalesAnalyst();
 		}
 
+		@Override
 		public int getNumberOfAdvertisers() {
 			return getSimulation().getNumberOfAdvertisers();
 		}
 
+		@Override
 		public String[] getAdvertiserAddresses() {
 			return getSimulation().getAdvertiserAddresses();
 		}
 	}
 
 	protected class ClickChargerProxy implements ClickCharger {
+		@Override
 		public void charge(String advertiser, double cpc) {
 			DefaultPublisher.this.charge(advertiser, cpc);
 		}
 	}
 
 	protected class BidBundleWriterProxy implements BidBundleWriter {
+		@Override
 		public void writeBundle(String advertiser, BidBundle bundle) {
 
 			int agentIndex = DefaultPublisher.this.getSimulation().agentIndex(

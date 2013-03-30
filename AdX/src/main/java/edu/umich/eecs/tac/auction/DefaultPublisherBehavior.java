@@ -32,8 +32,6 @@ import java.util.logging.Logger;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
-import se.sics.tasim.sim.SimulationAgent;
-import tau.tac.adx.sim.Users;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.Auction;
 import edu.umich.eecs.tac.props.BidBundle;
@@ -178,10 +176,6 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 
 		queryReportManager = createQueryReportManager();
 
-		for (SimulationAgent agent : agentRepository.getUsers()) {
-			Users users = (Users) agent.getAgent();
-			users.addUserEventListener(new ClickMonitor());
-		}
 	}
 
 	private PublisherInfo createPublisherInfo() {
@@ -217,11 +211,6 @@ public class DefaultPublisherBehavior implements PublisherBehavior {
 
 		for (String advertiser : agentRepository.getAdvertiserAddresses()) {
 			queryReportManager.addAdvertiser(advertiser);
-		}
-
-		for (SimulationAgent agent : agentRepository.getUsers()) {
-			Users users = (Users) agent.getAgent();
-			users.addUserEventListener(queryReportManager);
 		}
 
 		return queryReportManager;

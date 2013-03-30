@@ -85,11 +85,6 @@ public class DefaultSalesAnalyst implements SalesAnalyst {
 		accountNames[accountNumber] = name;
 		accountConversions[accountNumber] = new int[getAdvertiserInfo().get(
 				name).getDistributionWindow()];
-		// FIXME delete this code
-		// int defaultConversions =
-		// getAdvertiserInfo().get(name).getDistributionCapacity() /
-		// getAdvertiserInfo().get(name).getDistributionWindow();
-		// Arrays.fill(accountConversions[accountNumber], defaultConversions);
 		return accountNumber++;
 	}
 

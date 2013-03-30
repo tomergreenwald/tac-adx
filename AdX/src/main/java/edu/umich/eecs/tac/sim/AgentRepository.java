@@ -28,8 +28,6 @@ import java.util.Map;
 
 import se.sics.tasim.sim.SimulationAgent;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.SlotInfo;
 
 /**
  * The agent repository holds references to all agents in the TAC/AA simulation.
@@ -37,19 +35,6 @@ import edu.umich.eecs.tac.props.SlotInfo;
  * @author Patrick Jordan
  */
 public interface AgentRepository {
-	/**
-	 * Get the retail catalog used for the simulation.
-	 * 
-	 * @return the retail catalog
-	 */
-	RetailCatalog getRetailCatalog();
-
-	/**
-	 * Get the auction information
-	 * 
-	 * @return the auction info
-	 */
-	SlotInfo getAuctionInfo();
 
 	/**
 	 * Get the advertiser information mapping.
@@ -64,13 +49,6 @@ public interface AgentRepository {
 	 * @return the list of publisher agents.
 	 */
 	SimulationAgent[] getPublishers();
-
-	/**
-	 * Get the list of user agents.
-	 * 
-	 * @return the list of user agents.
-	 */
-	SimulationAgent[] getUsers();
 
 	/**
 	 * Get the sales analyst.

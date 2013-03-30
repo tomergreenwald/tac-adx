@@ -31,8 +31,6 @@ import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.sim.Users;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.SalesAnalyst;
 import edu.umich.eecs.tac.user.DefaultUsersBehavior;
@@ -161,15 +159,6 @@ public class DefaultUsers extends Users {
 	}
 
 	protected class AgentRepositoryProxy implements AgentRepository {
-		@Override
-		public RetailCatalog getRetailCatalog() {
-			return getSimulation().getRetailCatalog();
-		}
-
-		@Override
-		public SlotInfo getAuctionInfo() {
-			return getSimulation().getAuctionInfo();
-		}
 
 		@Override
 		public Map<String, AdvertiserInfo> getAdvertiserInfo() {
@@ -179,11 +168,6 @@ public class DefaultUsers extends Users {
 		@Override
 		public SimulationAgent[] getPublishers() {
 			return getSimulation().getPublishers();
-		}
-
-		@Override
-		public SimulationAgent[] getUsers() {
-			return getSimulation().getUsers();
 		}
 
 		@Override

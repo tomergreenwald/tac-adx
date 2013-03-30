@@ -38,8 +38,6 @@ import tau.tac.adx.users.AdxUser;
 import com.google.common.eventbus.EventBus;
 
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.RetailCatalog;
-import edu.umich.eecs.tac.props.SlotInfo;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.SalesAnalyst;
 
@@ -50,27 +48,11 @@ import edu.umich.eecs.tac.sim.SalesAnalyst;
  */
 public interface AdxAgentRepository extends AgentRepository {
 	/**
-	 * Get the retail catalog used for the simulation.
-	 * 
-	 * @return the retail catalog
-	 */
-	@Override
-	RetailCatalog getRetailCatalog();
-
-	/**
 	 * Get the {@link PublisherCatalog} used for the simulation.
 	 * 
 	 * @return The {@link PublisherCatalog}.
 	 */
 	PublisherCatalog getPublisherCatalog();
-
-	/**
-	 * Get the auction information
-	 * 
-	 * @return the auction info
-	 */
-	@Override
-	SlotInfo getAuctionInfo();
 
 	/**
 	 * Get the advertiser information mapping.
@@ -87,14 +69,6 @@ public interface AdxAgentRepository extends AgentRepository {
 	 */
 	@Override
 	SimulationAgent[] getPublishers();
-
-	/**
-	 * Get the list of user agents.
-	 * 
-	 * @return the list of user agents.
-	 */
-	@Override
-	SimulationAgent[] getUsers();
 
 	/**
 	 * Get the sales analyst.
