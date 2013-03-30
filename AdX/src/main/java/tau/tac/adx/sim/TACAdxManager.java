@@ -24,228 +24,233 @@
  */
 package tau.tac.adx.sim;
 
-
 import java.util.Hashtable;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 import se.sics.isl.util.ConfigManager;
-import se.sics.tasim.is.SimulationInfo;
 import se.sics.tasim.is.InfoConnection;
-import se.sics.tasim.is.common.InfoConnectionImpl;
+import se.sics.tasim.is.SimulationInfo;
 import se.sics.tasim.is.common.Competition;
+import se.sics.tasim.is.common.InfoConnectionImpl;
 import se.sics.tasim.is.common.SimServer;
+import se.sics.tasim.sim.Admin;
 import se.sics.tasim.sim.Simulation;
 import se.sics.tasim.sim.SimulationManager;
-import se.sics.tasim.sim.Admin;
 
 public class TACAdxManager extends SimulationManager {
 
-    private final static Logger log = Logger.getLogger(TACAdxManager.class.getName());
+	private final static Logger log = Logger.getLogger(TACAdxManager.class
+			.getName());
 
-    /**
-     * The default simulation length if not specified in configuration file
-     */
-    private final static int DEFAULT_SIM_LENGTH = 10 * 60; // Set to 10 minutes
+	/**
+	 * The default simulation length if not specified in configuration file
+	 */
+	private final static int DEFAULT_SIM_LENGTH = 10 * 60; // Set to 10 minutes
 
-    /**
-     * Default number of participants in a TACSCM simulation if not specified in
-     * configuration file
-     */
-    final static int NUMBER_OF_ADVERTISERS = 8;
+	/**
+	 * Default number of participants in a TACSCM simulation if not specified in
+	 * configuration file
+	 */
+	final static int NUMBER_OF_ADVERTISERS = 8;
 
-    private static Hashtable<String, Config> configTable = new Hashtable<String, Config>();
+	private static Hashtable<String, Config> configTable = new Hashtable<String, Config>();
 
-    public TACAdxManager() {
-    }
+	public TACAdxManager() {
+	}
 
-    /**
-     * Initializes this simulation manager. Recommended actions is to register
-     * all supported simulation types.
-     */
-    protected void init() {
-        for (int i = 0, n = TACAdxConstants.SUPPORTED_TYPES.length; i < n; i++) {
-            init(TACAdxConstants.SUPPORTED_TYPES[i]);
-        }
-    }
+	/**
+	 * Initializes this simulation manager. Recommended actions is to register
+	 * all supported simulation types.
+	 */
+	@Override
+	protected void init() {
+		for (int i = 0, n = TACAdxConstants.SUPPORTED_TYPES.length; i < n; i++) {
+			init(TACAdxConstants.SUPPORTED_TYPES[i]);
+		}
+	}
 
-    private void init(String type) {
-        configTable.put(type, new Config(type));
-        registerType(type);
-    }
+	private void init(String type) {
+		configTable.put(type, new Config(type));
+		registerType(type);
+	}
 
-    protected boolean isSupportedSimulationType(String type) {
-        return configTable.get(type) != null;
-    }
+	protected boolean isSupportedSimulationType(String type) {
+		return configTable.get(type) != null;
+	}
 
-    protected ConfigManager getSimulationConfig(Config simConfig) {
-        // Only supports one type of simulation at this time. FIX THIS!!!
-        if (simConfig.simulationConfig == null) {
-            ConfigManager config = loadSimulationConfig(simConfig.type);
-            simConfig.simulationConfig = config;
-            simConfig.simulationLength = config.getPropertyAsInt("game.length",
-                    DEFAULT_SIM_LENGTH) * 1000;
-            simConfig.numberOfAdvertisers = config.getPropertyAsInt(
-                    "game.numberOfAdvertisers", NUMBER_OF_ADVERTISERS);
-        }
-        return simConfig.simulationConfig;
-    }
+	protected ConfigManager getSimulationConfig(Config simConfig) {
+		// Only supports one type of simulation at this time. FIX THIS!!!
+		if (simConfig.simulationConfig == null) {
+			ConfigManager config = loadSimulationConfig(simConfig.type);
+			simConfig.simulationConfig = config;
+			simConfig.simulationLength = config.getPropertyAsInt("game.length",
+					DEFAULT_SIM_LENGTH) * 1000;
+			simConfig.numberOfAdvertisers = config.getPropertyAsInt(
+					"game.numberOfAdvertisers", NUMBER_OF_ADVERTISERS);
+		}
+		return simConfig.simulationConfig;
+	}
 
-    public SimulationInfo createSimulationInfo(String type, String params) {
-        Config simConfig = (Config) configTable.get(type);
-        if (simConfig != null) {
-            // Initialize the config if not already done.
-            getSimulationConfig(simConfig);
-            // Should take length from parameters. FIX THIS!!!
-            return createSimulationInfo(type, params,
-                    simConfig.simulationLength);
-        }
-        return null;
-    }
+	@Override
+	public SimulationInfo createSimulationInfo(String type, String params) {
+		Config simConfig = configTable.get(type);
+		if (simConfig != null) {
+			// Initialize the config if not already done.
+			getSimulationConfig(simConfig);
+			// Should take length from parameters. FIX THIS!!!
+			return createSimulationInfo(type, params,
+					simConfig.simulationLength);
+		}
+		return null;
+	}
 
-    public boolean join(int agentID, int role, SimulationInfo info) {
-        Config simConfig = (Config) configTable.get(info.getType());
-        if (simConfig == null) {
-            return false;
-        }
-        // Initialize the config if not already done.
-        getSimulationConfig(simConfig);
+	@Override
+	public boolean join(int agentID, int role, SimulationInfo info) {
+		Config simConfig = configTable.get(info.getType());
+		if (simConfig == null) {
+			return false;
+		}
+		// Initialize the config if not already done.
+		getSimulationConfig(simConfig);
 
-        if ((role == TACAdxConstants.ADVERTISER) && !info.isFull()
-                && info.getParticipantCount() < simConfig.numberOfAdvertisers) {
-            info.addParticipant(agentID, TACAdxConstants.ADVERTISER);
-            // The number of participants should be taken from parameters! FIX
-            // THIS!!!
-            if (info.getParticipantCount() >= simConfig.numberOfAdvertisers) {
-                info.setFull();
-            }
-            return true;
-        }
-        return false;
-    }
+		if ((role == TACAdxConstants.ADVERTISER) && !info.isFull()
+				&& info.getParticipantCount() < simConfig.numberOfAdvertisers) {
+			info.addParticipant(agentID, TACAdxConstants.ADVERTISER);
+			// The number of participants should be taken from parameters! FIX
+			// THIS!!!
+			if (info.getParticipantCount() >= simConfig.numberOfAdvertisers) {
+				info.setFull();
+			}
+			return true;
+		}
+		return false;
+	}
 
-    public String getSimulationRoleName(String type, int simRole) {
-        return configTable.get(type) != null ? TACAdxSimulation
-                .getSimulationRoleName(simRole) : null;
-    }
+	@Override
+	public String getSimulationRoleName(String type, int simRole) {
+		return configTable.get(type) != null ? TACAdxSimulation
+				.getSimulationRoleName(simRole) : null;
+	}
 
-    public int getSimulationRoleID(String type, String simRole) {
-        return configTable.get(type) != null ? (simRole == null ? TACAdxConstants.ADVERTISER
-                : TACAdxSimulation.getSimulationRole(simRole))
-                : 0;
-    }
+	@Override
+	public int getSimulationRoleID(String type, String simRole) {
+		return configTable.get(type) != null ? (simRole == null ? TACAdxConstants.AD_NETOWRK_ROLE_ID
+				: TACAdxSimulation.getSimulationRole(simRole))
+				: 0;
+	}
 
-    public int getSimulationLength(String type, String params) {
-        Config simConfig = (Config) configTable.get(type);
-        if (simConfig == null) {
-            return DEFAULT_SIM_LENGTH;
-        }
+	@Override
+	public int getSimulationLength(String type, String params) {
+		Config simConfig = configTable.get(type);
+		if (simConfig == null) {
+			return DEFAULT_SIM_LENGTH;
+		}
 
-        // Initialize the config if not already done.
-        getSimulationConfig(simConfig);
+		// Initialize the config if not already done.
+		getSimulationConfig(simConfig);
 
-        return simConfig.simulationLength;
-    }
+		return simConfig.simulationLength;
+	}
 
-    public Simulation createSimulation(SimulationInfo info) {
-        Config simConfig = (Config) configTable.get(info.getType());
-        if (simConfig == null) {
-            throw new IllegalArgumentException("simulation type "
-                    + info.getType() + " not supported");
-        }
-        // When should the configuration be reloaded? FIX THIS!!! FIX THIS!!!
-        ConfigManager config = getSimulationConfig(simConfig);
+	@Override
+	public Simulation createSimulation(SimulationInfo info) {
+		Config simConfig = configTable.get(info.getType());
+		if (simConfig == null) {
+			throw new IllegalArgumentException("simulation type "
+					+ info.getType() + " not supported");
+		}
+		// When should the configuration be reloaded? FIX THIS!!! FIX THIS!!!
+		ConfigManager config = getSimulationConfig(simConfig);
 
-        // Find the competition in which the simulation is running, if any.
-        Competition competition = findContainingCompetition(info.getSimulationID());
+		// Find the competition in which the simulation is running, if any.
+		Competition competition = findContainingCompetition(info
+				.getSimulationID());
 
-        return new TACAdxSimulation(config, competition);
-    }
+		return new TACAdxSimulation(config, competition);
+	}
 
+	private Competition findContainingCompetition(int simulationId) {
 
-    private Competition findContainingCompetition(int simulationId) {
+		Competition competition = null;
 
-        Competition competition = null;
+		Competition[] competitions = findCompetitions();
 
-        Competition[] competitions = findCompetitions();
+		for (int i = competitions.length - 1; i >= 0; i--) {
 
-        for (int i = competitions.length - 1; i >= 0; i--) {
+			Competition c = competitions[i];
 
-            Competition c = competitions[i];
+			if (c != null) {
 
-            if (c != null) {
+				if (c.containsSimulation(simulationId)) {
 
-                if (c.containsSimulation(simulationId)) {
+					competition = c;
 
-                    competition = c;
+					break;
+				}
+			}
+		}
 
-                    break;
-                }
-            }
-        }
+		return competition;
 
-        return competition;
-        
-    }
+	}
 
-    private SimServer findSimServer() {
+	private SimServer findSimServer() {
 
-        SimServer simServer = null;
+		SimServer simServer = null;
 
-        InfoConnection infoConnection = findInfoConnection();
+		InfoConnection infoConnection = findInfoConnection();
 
-        if (infoConnection instanceof InfoConnectionImpl) {
-            InfoConnectionImpl infoConnectionImpl = (InfoConnectionImpl) infoConnection;
+		if (infoConnection instanceof InfoConnectionImpl) {
+			InfoConnectionImpl infoConnectionImpl = (InfoConnectionImpl) infoConnection;
 
-            simServer = infoConnectionImpl.getSimServer();
-        }
+			simServer = infoConnectionImpl.getSimServer();
+		}
 
+		return simServer;
 
-        return simServer;
+	}
 
-    }
+	private InfoConnection findInfoConnection() {
 
-    private InfoConnection findInfoConnection() {
+		Admin admin = getAdmin();
 
-        Admin admin = getAdmin();
+		InfoConnection infoConnection = null;
 
-        InfoConnection infoConnection = null;
+		if (admin != null) {
 
-        if (admin != null) {
+			infoConnection = admin.getInfoConnection();
 
-            infoConnection = admin.getInfoConnection();
+		}
 
-        }
+		return infoConnection;
 
-        return infoConnection;
-        
-    }
+	}
 
-    private Competition[] findCompetitions() {
-        SimServer simServer = findSimServer();
+	private Competition[] findCompetitions() {
+		SimServer simServer = findSimServer();
 
-        Competition[] competitions = null;
+		Competition[] competitions = null;
 
-        if (simServer != null) {
-            competitions = simServer.getCompetitions();
-        }
+		if (simServer != null) {
+			competitions = simServer.getCompetitions();
+		}
 
-        return competitions==null ? new Competition[0] : competitions;
-    }
+		return competitions == null ? new Competition[0] : competitions;
+	}
 
-    private static class Config {
+	private static class Config {
 
-        /**
-         * Configuration for a specific type of simulation
-         */
-        public final String type;
-        public ConfigManager simulationConfig;
-        public int simulationLength = DEFAULT_SIM_LENGTH * 1000;
-        public int numberOfAdvertisers = NUMBER_OF_ADVERTISERS;
+		/**
+		 * Configuration for a specific type of simulation
+		 */
+		public final String type;
+		public ConfigManager simulationConfig;
+		public int simulationLength = DEFAULT_SIM_LENGTH * 1000;
+		public int numberOfAdvertisers = NUMBER_OF_ADVERTISERS;
 
-        public Config(String type) {
-            this.type = type;
-        }
-    }
+		public Config(String type) {
+			this.type = type;
+		}
+	}
 
 }

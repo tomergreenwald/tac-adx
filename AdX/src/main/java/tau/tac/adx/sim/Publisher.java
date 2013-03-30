@@ -24,11 +24,8 @@
  */
 package tau.tac.adx.sim;
 
-import static tau.tac.adx.sim.TACAdxConstants.ADVERTISER;
-
 import java.util.logging.Logger;
 
-import se.sics.isl.transport.Transportable;
 import edu.umich.eecs.tac.props.QueryReport;
 import edu.umich.eecs.tac.sim.Auctioneer;
 import edu.umich.eecs.tac.sim.PublisherInfoSender;
@@ -45,10 +42,6 @@ public abstract class Publisher extends Builtin implements QueryReportSender,
 
 	public Publisher() {
 		super(CONF);
-	}
-
-	protected void sendToAdvertisers(Transportable content) {
-		sendToRole(ADVERTISER, content);
 	}
 
 	public abstract void sendQueryReportsToAll();
