@@ -81,12 +81,14 @@ public class DefaultSalesAnalystTest {
 	@Test
 	public void testConversions() {
 		salesAnalyst.addAccount(alice);
+		
+		salesAnalyst.addConversions(alice, new Query(), 10, 1.0);
 
 		assertEquals(salesAnalyst.getRecentConversions(alice), 10.0, 0.0);
 
-		salesAnalyst.addConversions(alice, new Query(), 17, 2.0);
+		salesAnalyst.addConversions(alice, new Query(), 12, 2.0);
 
-		assertEquals(salesAnalyst.getRecentConversions(alice), 27.0, 0.0);
+		assertEquals(salesAnalyst.getRecentConversions(alice), 22.0, 0.0);
 
 		salesAnalyst.sendSalesReportToAll();
 
