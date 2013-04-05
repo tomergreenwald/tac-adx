@@ -113,9 +113,9 @@ public class TACAdxManager extends SimulationManager {
 		// Initialize the config if not already done.
 		getSimulationConfig(simConfig);
 
-		if ((role == TACAdxConstants.ADVERTISER) && !info.isFull()
+		if ((role == TACAdxConstants.AD_NETOWRK_ROLE_ID) && !info.isFull()
 				&& info.getParticipantCount() < simConfig.numberOfAdvertisers) {
-			info.addParticipant(agentID, TACAdxConstants.ADVERTISER);
+			info.addParticipant(agentID, TACAdxConstants.AD_NETOWRK_ROLE_ID);
 			// The number of participants should be taken from parameters! FIX
 			// THIS!!!
 			if (info.getParticipantCount() >= simConfig.numberOfAdvertisers) {
