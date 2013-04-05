@@ -1,5 +1,0 @@
-05/04 10:06:24 INFO file.FileDatabase|infodb: database opened as /specific/a/home/cc/students/cs/marianos/adxgame/tac-adx/AdX/adx-server-1.0.0.0/infodb
-05/04 10:06:24 INFO common.BlockingViewerServer|viewer server started at *:4042
-05/04 07:06:24 INFO sim.Admin|adding manager for simulation type tac13adx
-05/04 07:06:24 INFO server.TACTGateway|TACT Server started at *:6502
-05/04 07:06:29 INFO server.TACTChannel|user taux logged in as taux@tact-1 with version 0.9.6 from 127.0.0.1
