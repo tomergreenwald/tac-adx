@@ -57,7 +57,7 @@ import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
-import tau.tac.adx.util.TestUtils;
+import tau.tac.adx.util.Utils;
 
 /**
  * @author Patrick Jordan
@@ -181,7 +181,7 @@ public class AdNetworkReportTest {
 				winningBidInfo, winningPrice);
 		SimpleUserGenerator userGenerator = new SimpleUserGenerator();
 		AdxUser user = userGenerator.generate(1).get(0);
-		AdxQueryGenerator generator = TestUtils.getInjector().getInstance(
+		AdxQueryGenerator generator = Utils.getInjector().getInstance(
 				AdxQueryGenerator.class);
 		AdxQuery query = generator.generate(1).iterator().next();
 		report.addBid(auctionResult, query, user);

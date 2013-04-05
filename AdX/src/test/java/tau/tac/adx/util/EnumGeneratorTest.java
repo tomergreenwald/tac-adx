@@ -26,7 +26,7 @@ public class EnumGeneratorTest {
 	 */
 	@Test
 	public void testRandomType() {
-		Map<Object, Integer> weigtMap = TestUtils.randomizeObjectWeightMap(
+		Map<Object, Integer> weigtMap = Utils.randomizeObjectWeightMap(
 				Age.values(), TestConstants.MAX_WEIGHT);
 		EnumGenerator<Object> enumGenerator = new EnumGenerator<Object>(weigtMap);
 		Map<Object, Integer> typeCount = adxUtils.initEmptyMap(weigtMap

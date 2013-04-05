@@ -40,7 +40,7 @@ import org.junit.Test;
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
 import tau.tac.adx.props.generators.AdxQueryGenerator;
-import tau.tac.adx.util.TestUtils;
+import tau.tac.adx.util.Utils;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.Product;
 
@@ -49,7 +49,7 @@ import edu.umich.eecs.tac.props.Product;
  */
 public class AdxBidBundleTest {
 
-	private final AdxQueryGenerator queryGenerator = TestUtils.getInjector()
+	private final AdxQueryGenerator queryGenerator = Utils.getInjector()
 			.getInstance(AdxQueryGenerator.class);
 
 	@Test

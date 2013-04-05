@@ -15,7 +15,7 @@ import com.google.inject.Injector;
  * @author greenwald
  * 
  */
-public class TestUtils {
+public class Utils {
 
 	/**
 	 * Initializes an {@link Injector} with an {@link AbstractModule}

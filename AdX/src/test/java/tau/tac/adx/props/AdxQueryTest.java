@@ -36,7 +36,7 @@ import org.junit.Test;
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
 import tau.tac.adx.props.generators.AdxQueryGenerator;
-import tau.tac.adx.util.TestUtils;
+import tau.tac.adx.util.Utils;
 
 import com.google.inject.Injector;
 
@@ -66,7 +66,7 @@ public class AdxQueryTest {
 		BinaryTransportWriter writer = new BinaryTransportWriter();
 		BinaryTransportReader reader = new BinaryTransportReader();
 		reader.setContext(new AdxInfoContextFactory().createContext());
-		Injector injector = TestUtils.getInjector();
+		Injector injector = Utils.getInjector();
 		AdxQueryGenerator generator = injector
 				.getInstance(AdxQueryGenerator.class);
 		AdxQuery query = (AdxQuery) generator.generate(1).toArray()[0];

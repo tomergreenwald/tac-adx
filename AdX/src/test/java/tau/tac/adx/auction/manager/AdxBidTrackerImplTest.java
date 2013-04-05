@@ -38,7 +38,7 @@ import tau.tac.adx.auction.tracker.AdxBidTrackerImpl;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.generators.AdxQueryGenerator;
-import tau.tac.adx.util.TestUtils;
+import tau.tac.adx.util.Utils;
 import edu.umich.eecs.tac.props.Ad;
 
 /**
@@ -148,7 +148,7 @@ public class AdxBidTrackerImplTest {
 		AdxBidTrackerImpl AdxBidTracker = new AdxBidTrackerImpl();
 
 		Set<AdxQuery> querySpace = new HashSet<AdxQuery>();
-		AdxQueryGenerator generator = TestUtils.getInjector().getInstance(
+		AdxQueryGenerator generator = Utils.getInjector().getInstance(
 				AdxQueryGenerator.class);
 		Collection<AdxQuery> queries = generator.generate(3);
 		Iterator<AdxQuery> iterator = queries.iterator();

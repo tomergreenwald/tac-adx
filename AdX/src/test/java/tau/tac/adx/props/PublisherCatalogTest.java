@@ -39,7 +39,7 @@ import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.publishers.generators.AdxPublisherGenerator;
-import tau.tac.adx.util.TestUtils;
+import tau.tac.adx.util.Utils;
 
 /**
  * @author Patrick Jordan
@@ -86,7 +86,7 @@ public class PublisherCatalogTest {
 		reader.setContext(new AdxInfoContextFactory().createContext());
 
 		PublisherCatalog catalog = new PublisherCatalog();
-		AdxPublisherGenerator publisherGenerator = TestUtils.getInjector()
+		AdxPublisherGenerator publisherGenerator = Utils.getInjector()
 				.getInstance(AdxPublisherGenerator.class);
 		AdxPublisher publisher = publisherGenerator.generate(1).iterator()
 				.next();

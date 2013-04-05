@@ -45,7 +45,7 @@ import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.users.generators.AdxUserGenerator;
-import tau.tac.adx.util.TestUtils;
+import tau.tac.adx.util.Utils;
 
 import com.google.common.eventbus.EventBus;
 
@@ -76,7 +76,7 @@ public class DefaultAdxUserManagerTest {
 	public void setup() {
 		product = new Product("man", "com");
 		random = new Random();
-		AdxUserGenerator userGenerator = TestUtils.getInjector().getInstance(
+		AdxUserGenerator userGenerator = Utils.getInjector().getInstance(
 				AdxUserGenerator.class);
 		populationSize = 10;
 		users = (List<AdxUser>) userGenerator.generate(populationSize);

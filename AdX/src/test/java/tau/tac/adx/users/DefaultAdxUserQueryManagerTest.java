@@ -42,7 +42,7 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.generators.AdxUserGenerator;
-import tau.tac.adx.util.TestUtils;
+import tau.tac.adx.util.Utils;
 import edu.umich.eecs.tac.props.Product;
 
 /**
@@ -58,7 +58,7 @@ public class DefaultAdxUserQueryManagerTest {
 	private List<AdxUser> users;
 	private Map<Device, Integer> deviceDistributionMap;
 	private Map<AdType, Integer> adTypeDistributionMap;
-	AdxUserGenerator userGenerator = TestUtils.getInjector().getInstance(
+	AdxUserGenerator userGenerator = Utils.getInjector().getInstance(
 			AdxUserGenerator.class);
 
 	@Before
