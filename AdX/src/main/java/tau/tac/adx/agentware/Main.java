@@ -58,7 +58,7 @@ public class Main {
 
 		String configFile = config.getArgument("config", DEFAULT_CONFIG);
 		try {
-			config.loadConfiguration(configFile);
+			boolean loadConfiguration = config.loadConfiguration(configFile);
 			config.removeArgument("config");
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());

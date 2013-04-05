@@ -1,0 +1,20 @@
+05/04 09:57:11 INFO file.FileDatabase|infodb: database opened as /specific/a/home/cc/students/cs/marianos/adxgame/tac-adx/AdX/adx-server-1.0.0.0/infodb
+05/04 09:57:11 INFO common.BlockingViewerServer|viewer server started at *:4042
+05/04 06:57:11 INFO sim.Admin|adding manager for simulation type tac13adx
+05/04 06:57:11 INFO server.TACTGateway|TACT Server started at *:6502
+05/04 06:57:14 INFO server.TACTChannel|user tau-1 logged in as tau-1@tact-1 with version 0.9.6 from 127.0.0.1
+05/04 07:00:20 SEVERE tact.TACTConnection|tau-1@tact-1: closed from other side
+05/04 07:00:27 INFO server.TACTChannel|user tau-1 logged in as tau-1@tact-2 with version 0.9.6 from 127.0.0.1
+05/04 07:03:20 SEVERE tact.TACTConnection|tau-1@tact-2: closed from other side
+05/04 07:03:36 WARNING server.TACTChannel|could not login user taux
+java.lang.IllegalArgumentException: No user with name 'taux' found
+	at se.sics.tasim.sim.Admin.loginAgentChannel(Admin.java:1446)
+	at se.sics.tasim.sim.AgentChannel.init(AgentChannel.java:63)
+	at se.sics.tasim.sim.Gateway.loginAgentChannel(Gateway.java:81)
+	at se.sics.tasim.sim.server.TACTGateway.loginAgentChannel(TACTGateway.java:193)
+	at se.sics.tasim.sim.server.TACTChannel.deliverFromAgent(TACTChannel.java:267)
+	at se.sics.tasim.sim.server.TACTChannel.dataRead(TACTChannel.java:181)
+	at se.sics.tasim.sim.server.TACTChannel.access$100(TACTChannel.java:49)
+	at se.sics.tasim.sim.server.TACTChannel$1.dataRead(TACTChannel.java:84)
+	at se.sics.isl.tact.TACTConnection$TACTReader.run(TACTConnection.java:414)
+05/04 07:04:32 INFO server.TACTChannel|user taux logged in as taux@tact-4 with version 0.9.6 from 127.0.0.1
