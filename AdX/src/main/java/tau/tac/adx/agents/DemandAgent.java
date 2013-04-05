@@ -262,8 +262,6 @@ public class DemandAgent extends Builtin {
 
 	@Subscribe
 	public void impressed(AuctionMessage message) {
-		log.log(Level.FINEST, "Impressed: " + message.toString());
-
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
