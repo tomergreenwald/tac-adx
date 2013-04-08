@@ -85,6 +85,10 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		return cost;
 	}
 
+	public void zeroCost() {
+		cost = 0;
+	}
+
 
 	public void read(TransportReader reader) throws ParseException {
 		if (isLocked()) {

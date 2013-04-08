@@ -39,6 +39,7 @@ import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.props.SimulationStatus;
 import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
@@ -50,6 +51,7 @@ import tau.tac.adx.report.demand.AdNetBidMessage;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
+import tau.tac.adx.report.demand.CampaignReportKey;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 import tau.tac.adx.sim.TACAdxConstants;
@@ -136,7 +138,20 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleCampaignReport(CampaignReport campaignReport) {
 		this.campaignReport = campaignReport;
-		/* ... */
+				
+		/* for each campaign, the accumulated statistics from day 1 up to day n-1 are reported */
+		for (CampaignReportKey campaignKey : campaignReport.keys()) {
+			int cmpId = campaignKey.getCampaignId();
+			CampaignStats cstats = campaignReport.getCampaignReportEntry(campaignKey).getCampaignStats();
+			myCampaigns.get(cmpId).setStats(cstats);
+			
+			log.fine("Day " + day + ": Updating campaign " + cmpId +" stats: " + 
+					cstats.getTargetedImps() + " tgtImps " + 
+					cstats.getOtherImps() + " nonTgtImps. Cost of imps is " + 
+					cstats.getCost()
+					);
+		}		
+
 		log.log(Level.INFO, getName() + campaignReport.toMyString());
 	}
 
@@ -167,7 +182,7 @@ public class DummyAdNetwork extends Agent {
 				% campaignOpportunityMessage.getReachImps();
 
 		AdNetBidMessage bids = new AdNetBidMessage(
-				randomGenerator.nextInt(100), pendingCampaign.id, cmpBid);
+				randomGenerator.nextInt(10), pendingCampaign.id, cmpBid);
 		log.fine("sent campaign bid");
 		sendMessage(ServerAddress, bids);
 	}
@@ -210,30 +225,9 @@ public class DummyAdNetwork extends Agent {
 	private void handleAdNetworkReport(AdNetworkReport queryReport) {
 		this.log.log(Level.INFO, queryReport.toString());
 
-		/*
-		 * AdNetworkReportEntry entry =
-		 * queryReport.getAdNetworkReportEntry(getName());
-		 * 
-		 * for (int i = 0; i < queries.length; i++) { AdxQuery query =
-		 * queries[i]; queryReport. int index =
-		 * queryReport.indexForEntry(query); if (index >= 0) { impressions[i] +=
-		 * queryReport.getImpressions(index); clicks[i] +=
-		 * queryReport.getClicks(index); } }
-		 */
 
 	}
 
-	// private void handleSalesReport(SalesReport salesReport) {
-	// for (int i = 0; i < queries.length; i++) {
-	// AdxQuery query = queries[i];
-	//
-	// int index = salesReport.indexForEntry(query);
-	// if (index >= 0) {
-	// conversions[i] += salesReport.getConversions(index);
-	// values[i] += salesReport.getRevenue(index);
-	// }
-	// }
-	// }
 
 	@Override
 	protected void simulationSetup() {
@@ -287,7 +281,7 @@ public class DummyAdNetwork extends Agent {
 							.getMarketSegments();
 					if (campaign.targetSegment == segmentsList.iterator()
 							.next())
-						bidBundle.addQuery(queries[i], rnd.nextLong() % 1000,
+						bidBundle.addQuery(queries[i], (1+rnd.nextLong() % 1000)/1000,
 								new Ad(null), campaign.id, 1);
 				}
 
@@ -337,6 +331,11 @@ public class DummyAdNetwork extends Agent {
 	}
 
 	private class CampaignData {
+		void setStats(CampaignStats s) {
+			   stats.setValues(s);	
+		}
+
+		
 		Long reachImps;
 		long dayStart;
 		long dayEnd;
@@ -344,6 +343,9 @@ public class DummyAdNetwork extends Agent {
 		double videoCoef;
 		double mobileCoef;
 		int id;
+		
+		/* campaign info as reported */
+		CampaignStats stats;		
 	}
 
 }

@@ -66,14 +66,14 @@ public class DemandAgent extends Builtin {
 
 	public void preNextTimeUnit(int date) {
 		day = date;
-		if (date == 0) {
+		if (day == 0) {
 			zeroDayInitialization();
 		} else {
-			auctionTomorrowsCampaign(date);
+			auctionTomorrowsCampaign(day);
 			ucs.auction(day);
 
-			consolidateCmpaignStatistics(date);
-			reportAuctionResutls(date);
+			consolidateCmpaignStatistics(day);
+			reportAuctionResutls(day);
 		}
 		getSimulation().getEventBus().post(
 				new UserClassificationServiceNotification(ucs));
@@ -82,13 +82,13 @@ public class DemandAgent extends Builtin {
 
 	private void createAndPublishTomorrowsPendingCampaign() {
 		/*
-		 * Create next campaign opportunity and notify competing adNetwork
-		 * agents
+		 * Create next campaign opportunity (to start on day + 2)  
+		 * and notify competing adNetwork agents
 		 */
 
 		pendingCampaign = new CampaignImpl(qualityManager,
-				CMP_REACHS[random.nextInt(3)], day + 1, day
-						+ CMP_LENGTHS[random.nextInt(3)],
+				CMP_REACHS[random.nextInt(3)], day + 2, 
+						day + 1 + CMP_LENGTHS[random.nextInt(3)],
 				MarketSegment.randomMarketSegment(), ALOC_CMP_VC, ALOC_CMP_MC);
 
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
@@ -104,35 +104,51 @@ public class DemandAgent extends Builtin {
 		log.log(Level.INFO, "Pending campaign: " + pendingCampaign);
 
 		for (String advertiser : getAdxAdvertiserAddresses()) {
-
-			CampaignReport report = new CampaignReport();
-			for (Campaign campaign : adNetCampaigns.values()) {
-				if (campaign.isAllocated()
+			
+			/* we only report adx simulation results starting from day 2 (w.r.t. day 1) */
+			if (date >=2 ) {
+			   CampaignReport report = new CampaignReport();
+		   	   for (Campaign campaign : adNetCampaigns.values()) {
+				   if (campaign.isAllocated()
+						&& (campaign.getDayStart() < date)    
 						&& (advertiser.equals(campaign.getAdvertiser()))) {
 					report.addStatsEntry(campaign.getId(),
-							campaign.getStats(1, date));
-				}
+							campaign.getStats(campaign.getDayStart(), date-1));
+				   }
+			   }
+			   getSimulation().sendCampaignReport(advertiser, report);
 			}
-
-			getSimulation().sendCampaignReport(advertiser, report);
-
+			
+			
 			AdNetworkDailyNotification adNetworkNotification = new AdNetworkDailyNotification(
 					ucs.getAdNetData(advertiser), pendingCampaign);
 
-			/* TODO: erase campaign winner and cost for non-winning advertisers */
+			/* remove campaign cost for non-winning advertisers */
+			if (!advertiser.equals(pendingCampaign.getAdvertiser())) {
+				adNetworkNotification.zeroCost();
+			} 
+			
 			getSimulation().sendUserClassificationAuctionResult(advertiser,
 					adNetworkNotification);
 		}
 	}
 
 	private void consolidateCmpaignStatistics(int date) {
-		for (Campaign campaign : adNetCampaigns.values())
-			campaign.nextTimeUnit(date);
+		/* nothing to consolidate before day 2 (w.r.t. simulated day 1) */
+		if (date >= 2) {
+		   for (Campaign campaign : adNetCampaigns.values())
+			   campaign.nextTimeUnit(date);
+		}
 	}
 
 	private void auctionTomorrowsCampaign(int date) {
 		/*
 		 * Auction campaign and add to repository
+		 * 
+		 * on day 1 we auction the campaign starting on day 2 for which bids where received on day 0 
+		 * on day n we auction the campaign starting on day n+1 for which bids where received on day n-1
+		 * 
+		 * Note: the campaign (pendingCampaign) was created on day n-1 
 		 */
 		log.log(Level.INFO, "new day " + date + " . Auction pending campaign");
 		if (pendingCampaign != null) {
@@ -265,10 +281,11 @@ public class DemandAgent extends Builtin {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
-			cmpn.impress(message.getAuctionResult().getMarketSegments()
-					.iterator().next(), message.getQuery().getAdType(), message
-					.getQuery().getDevice(), (long) (message.getAuctionResult()
-					.getWinningPrice() * 1000));
+			cmpn.impress(message.getAuctionResult().getMarketSegments().iterator().next(), 
+					message.getQuery().getAdType(),
+					message.getQuery().getDevice(),
+					message.getAuctionResult().getWinningPrice()
+					);
 		}
 	}
 

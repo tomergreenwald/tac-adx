@@ -61,7 +61,7 @@ public interface Campaign extends TimeListener {
  * @param device
  * @param double1 : paid to the Publisher as determined by AdX auction (in milli units)
  */
-	void impress(MarketSegment segment, AdType adType, Device device, long double1);
+	void impress(MarketSegment segment, AdType adType, Device device, double cost);
 
 /**
  * 	

@@ -138,7 +138,7 @@ public class CampaignTest {
 		campaign.auction();
 		assertEquals(campaign.getAdvertiser(), "a2");
 		assertEquals(campaign.getBudget(), 80L, 0);
-		assertFalse(campaign.isActive());
+		//assertFalse(campaign.isActive());
 
 		for (int day = dayStart; day <= dayEnd; day++) {
 			campaign.nextTimeUnit(day);

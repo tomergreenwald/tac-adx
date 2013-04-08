@@ -31,14 +31,6 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.users.AdxUser;
 import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
 
-/**
- * Query report contains impressions, clicks, cost, average position, and ad
- * displayed by the advertiser for each query class during the period as well as
- * the positions and displayed ads of all advertisers during the period for each
- * query class.
- * 
- * @author Ben Cassell, Patrick Jordan, Lee Callender
- */
 public class AdNetworkReport extends
 		AbstractKeyedEntryList<AdNetworkKey, AdNetworkReportEntry> {
 

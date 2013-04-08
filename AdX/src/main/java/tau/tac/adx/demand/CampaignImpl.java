@@ -60,7 +60,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		budget = null;
 		advertiser = null;
 
-		day = 0;
+		/* the first day for the campaign to be collecting statistics */
+		day = dayStart;
 
 		this.qualityManager = qualityManager;
 		this.reachImps = (long) reachImps;
@@ -115,9 +116,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public void impress(MarketSegment segment, AdType adType, Device device,
-			long costMillis) {
+			double costPerMille) {
 		if (isAllocated()) {
-			todays.cost += costMillis / 1000.0;
+			todays.cost += costPerMille / 1000.0;
 
 			double imps = (device == Device.mobile ? mobileCoef : 1)
 					* (adType == AdType.video ? videoCoef : 1);
@@ -244,6 +245,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 																	 */
 		SortedMap<Integer, CampaignStats> daysRangeStats = dayStats.subMap(
 				timeUnitFrom, timeUnitTo + 1);
+		
 		return AccumulatorImpl.accumulate(this,
 				new ArrayList<CampaignStats>(daysRangeStats.values()),
 				new CampaignStats(0.0, 0.0, 0.0)).add(current);
