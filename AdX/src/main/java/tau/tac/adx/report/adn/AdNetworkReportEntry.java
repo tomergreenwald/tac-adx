@@ -142,9 +142,10 @@ public class AdNetworkReportEntry extends
 	 * 
 	 * @param auctionResult
 	 *            {@link AdxAuctionResult} to update entry with.
+	 * @param hasWon 
 	 */
-	public void addAuctionResult(AdxAuctionResult auctionResult) {
-		if (auctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
+	public void addAuctionResult(AdxAuctionResult auctionResult, boolean hasWon) {
+		if (hasWon) {
 			winCount++;
 			cost += auctionResult.getWinningPrice();
 		}

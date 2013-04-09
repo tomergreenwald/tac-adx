@@ -403,10 +403,7 @@ public class SampleAdNetwork extends Agent {
 		log.info("AdNetreport: ");		
 		for (AdNetworkKey adnetKey : adnetReport.keys()) {
 			AdNetworkReportEntry entry = adnetReport.getAdNetworkReportEntry(adnetKey);
-			log.info("Site "+ adnetKey.getPublisher() + " Segment " + adnetKey.getSegment()
-					+ " " + adnetKey.getDevice() + " " + adnetKey.getAdType() 
-					+ " : " + entry.getWinCount() + " wins, out of " + entry.getBidCount() + " bids" 
-					);
+			log.info(adnetKey + " " + entry);
 		}
 		
 	}

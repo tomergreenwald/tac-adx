@@ -14,6 +14,8 @@ import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.util.AdxUtils;
 
 public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final Logger log = Logger.getLogger(CampaignImpl.class.getName());
@@ -116,7 +118,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void impress(MarketSegment segment, AdType adType, Device device,
+	public void impress(AdxUser adxUser, AdType adType, Device device,
 			double costPerMille) {
 		if (isAllocated()) {
 			todays.cost += costPerMille / 1000.0;
@@ -124,10 +126,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			double imps = (device == Device.mobile ? mobileCoef : 1)
 					* (adType == AdType.video ? videoCoef : 1);
 
-			if (segment == targetSegment)
+			if (MarketSegment.extractSegment(adxUser).contains(targetSegment)) {
 				todays.tartgetedImps += imps;
-			else
+			} else {
 				todays.otherImps += imps;
+			}
 		}
 	}
 
@@ -151,11 +154,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 					.getSimulation()
 					.broadcastAdNetworkRevenue(advertiser,
 							effectiveReachRatio * budget);
-			
-			log.log(Level.INFO,"Campaign " + id + " ended for advertiser " + 
-			   advertiser+ ". Stats " + totals + " Reach " + reachImps +
-			   " ERR " + effectiveReachRatio + " Budget " + budget +
-			   " Revenue " + effectiveReachRatio * budget);
+
+			log.log(Level.INFO, "Campaign " + id + " ended for advertiser "
+					+ advertiser + ". Stats " + totals + " Reach " + reachImps
+					+ " ERR " + effectiveReachRatio + " Budget " + budget
+					+ " Revenue " + effectiveReachRatio * budget);
 		}
 	}
 
@@ -167,7 +170,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public void addAdvertiserBid(String advertiser, Long budgetBid) {
 		/* bids above the reserve budget are not considered */
-		if ((budgetBid > 0) && (budgetBid <= (RESERVE_BUDGET_FACTOR * reachImps)))
+		if ((budgetBid > 0)
+				&& (budgetBid <= (RESERVE_BUDGET_FACTOR * reachImps)))
 			advertisersBids.put(advertiser, budgetBid);
 	}
 
@@ -251,7 +255,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 																	 */
 		SortedMap<Integer, CampaignStats> daysRangeStats = dayStats.subMap(
 				timeUnitFrom, timeUnitTo + 1);
-		
+
 		return AccumulatorImpl.accumulate(this,
 				new ArrayList<CampaignStats>(daysRangeStats.values()),
 				new CampaignStats(0.0, 0.0, 0.0)).add(current);

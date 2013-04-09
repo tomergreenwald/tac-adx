@@ -283,7 +283,7 @@ public class DemandAgent extends Builtin {
 		if (cmpn != null) {
 //			log.log(Level.INFO,"IMPRESSED ("+ cmpn.getId() + "," + cmpn.getAdvertiser() + ") segments:" + message.getAuctionResult().getMarketSegments());
 
-			cmpn.impress(message.getAuctionResult().getMarketSegments().iterator().next(), 
+			cmpn.impress(message.getUser(), 
 					message.getQuery().getAdType(),
 					message.getQuery().getDevice(),
 					message.getAuctionResult().getWinningPrice()

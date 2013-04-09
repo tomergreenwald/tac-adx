@@ -106,8 +106,8 @@ public class AdNetworkReportTest {
 				.nextInt(MarketSegment.values().length - 1)];
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];
-		AdNetworkKey key = new AdNetworkKey(segment, publisherName, device,
-				adType);
+		AdxUser adxUser = new SimpleUserGenerator().generate(1).get(0);
+		AdNetworkKey key = new AdNetworkKey(adxUser, publisherName, device, adType);
 		AdNetworkReportEntry entry = new AdNetworkReportEntry(key);
 		entry.setBidCount(random.nextInt());
 		entry.setCost(random.nextDouble());
@@ -164,7 +164,8 @@ public class AdNetworkReportTest {
 				.nextInt(MarketSegment.values().length - 1)];
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];
-		AdNetworkKey key = new AdNetworkKey(segment, publisherName, device,
+		AdxUser adxUser = new SimpleUserGenerator().generate(1).get(0);
+		AdNetworkKey key = new AdNetworkKey(adxUser, publisherName, device,
 				adType);
 		AdNetworkReportEntry entry = new AdNetworkReportEntry(key);
 		entry.setBidCount(random.nextInt());
@@ -184,7 +185,7 @@ public class AdNetworkReportTest {
 		AdxQueryGenerator generator = Utils.getInjector().getInstance(
 				AdxQueryGenerator.class);
 		AdxQuery query = generator.generate(1).iterator().next();
-		report.addBid(auctionResult, query, user);
+		report.addBid(auctionResult, query, user, false);
 		report.lock();
 
 		byte[] buffer = getBytesForTransportable(writer, report);
@@ -195,7 +196,7 @@ public class AdNetworkReportTest {
 		assertNotNull(received);
 		assertEquals(MarketSegment.extractSegment(user).size(), report.size());
 		assertEquals(report.size(), received.size());
-		AdNetworkKey adNetworkKey = new AdNetworkKey(segment, publisherName,
+		AdNetworkKey adNetworkKey = new AdNetworkKey(adxUser, publisherName,
 				device, adType);
 		assertEquals(report.getAdNetworkReportEntry(adNetworkKey),
 				received.getAdNetworkReportEntry(adNetworkKey));
@@ -209,6 +210,6 @@ public class AdNetworkReportTest {
 	public void testAddQueryToReport() {
 		AdNetworkReport report = new AdNetworkReport();
 
-		report.addBid(null, null, null);
+		report.addBid(null, null, null, false);
 	}
 }

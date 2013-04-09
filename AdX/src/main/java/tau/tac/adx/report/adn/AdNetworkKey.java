@@ -8,6 +8,10 @@ import se.sics.isl.transport.Transportable;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.users.properties.Age;
+import tau.tac.adx.users.properties.Gender;
+import tau.tac.adx.users.properties.Income;
 
 /**
  * {@link AdNetworkReport}'s key. Each is a single combination of properties to
@@ -18,19 +22,40 @@ import tau.tac.adx.publishers.AdxPublisher;
  */
 public class AdNetworkKey implements Transportable {
 
-	/** MARKET_SEGMENT_KEY. */
-	private static final String MARKET_SEGMENT_KEY = "MARKET_SEGMENT_KEY";
 	/** PUBLISHER_KEY. */
 	private static final String PUBLISHER_KEY = "PUBLISHER_KEY";
 	/** DEVICE_KEY. */
 	private static final String DEVICE_KEY = "DEVICE_KEY";
 	/** AD_TYPE_KEY. */
 	private static final String AD_TYPE_KEY = "AD_TYPE_KEY";
+	private static final String GENDER_TYPE_KEY = "GENDER_TYPE_KEY";
+	private static final String INCOME_TYPE_KEY = "INCOME_TYPE_KEY";
+	private static final String AGE_TYPE_KEY = "AGE_TYPE_KEY";
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "AdNetworkKey [age=" + age + ", income=" + income + ", gender="
+				+ gender + ", publisher=" + publisher + ", device=" + device
+				+ ", adType=" + adType + "]";
+	}
 
 	/**
-	 * {@link MarketSegment}.
+	 * {@link Age}.
 	 */
-	private MarketSegment segment;
+	private Age age;
+
+	/**
+	 * {@link Income}.
+	 */
+	private Income income;
+
+	/**
+	 * {@link Gender}.
+	 */
+	private Gender gender;
 
 	/**
 	 * {@link AdxPublisher}'s name.
@@ -57,10 +82,12 @@ public class AdNetworkKey implements Transportable {
 	 * @param adType
 	 *            {@link AdType}.
 	 */
-	public AdNetworkKey(MarketSegment segment, String publisher, Device device,
-			AdType adType) {
+	public AdNetworkKey(AdxUser adxUser,
+			String publisher, Device device, AdType adType) {
 		super();
-		this.segment = segment;
+		this.age = adxUser.getAge();
+		this.income = adxUser.getIncome();
+		this.gender = adxUser.getGender();
 		this.publisher = publisher;
 		this.device = device;
 		this.adType = adType;
@@ -69,19 +96,47 @@ public class AdNetworkKey implements Transportable {
 	public AdNetworkKey() {
 	}
 
+
 	/**
-	 * @return the segment
+	 * @return the age
 	 */
-	public MarketSegment getSegment() {
-		return segment;
+	public Age getAge() {
+		return age;
 	}
 
 	/**
-	 * @param segment
-	 *            the segment to set
+	 * @param age the age to set
 	 */
-	public void setSegment(MarketSegment segment) {
-		this.segment = segment;
+	public void setAge(Age age) {
+		this.age = age;
+	}
+
+	/**
+	 * @return the income
+	 */
+	public Income getIncome() {
+		return income;
+	}
+
+	/**
+	 * @param income the income to set
+	 */
+	public void setIncome(Income income) {
+		this.income = income;
+	}
+
+	/**
+	 * @return the gender
+	 */
+	public Gender getGender() {
+		return gender;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	/**
@@ -142,11 +197,12 @@ public class AdNetworkKey implements Transportable {
 	 */
 	@Override
 	public void read(TransportReader reader) throws ParseException {
-		segment = MarketSegment.valueOf(reader.getAttribute(MARKET_SEGMENT_KEY,
-				null));
 		publisher = reader.getAttribute(PUBLISHER_KEY, null);
 		device = Device.valueOf(reader.getAttribute(DEVICE_KEY, null));
 		adType = AdType.valueOf(reader.getAttribute(AD_TYPE_KEY, null));
+		gender = Gender.valueOf(reader.getAttribute(GENDER_TYPE_KEY, null));
+		income = Income.valueOf(reader.getAttribute(INCOME_TYPE_KEY, null));
+		age = Age.valueOf(reader.getAttribute(AGE_TYPE_KEY, null));
 
 	}
 
@@ -155,9 +211,6 @@ public class AdNetworkKey implements Transportable {
 	 */
 	@Override
 	public void write(TransportWriter writer) {
-		if (segment != null) {
-			writer.attr(MARKET_SEGMENT_KEY, segment.toString());
-		}
 		if (publisher != null) {
 			writer.attr(PUBLISHER_KEY, publisher);
 		}
@@ -167,9 +220,18 @@ public class AdNetworkKey implements Transportable {
 		if (adType != null) {
 			writer.attr(AD_TYPE_KEY, adType.toString());
 		}
+		if (gender != null) {
+			writer.attr(GENDER_TYPE_KEY, gender.toString());
+		}
+		if (income != null) {
+			writer.attr(INCOME_TYPE_KEY, income.toString());
+		}
+		if (age!= null) {
+			writer.attr(AGE_TYPE_KEY, age.toString());
+		}
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -177,14 +239,16 @@ public class AdNetworkKey implements Transportable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((adType == null) ? 0 : adType.hashCode());
+		result = prime * result + ((age == null) ? 0 : age.hashCode());
 		result = prime * result + ((device == null) ? 0 : device.hashCode());
+		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result + ((income == null) ? 0 : income.hashCode());
 		result = prime * result
 				+ ((publisher == null) ? 0 : publisher.hashCode());
-		result = prime * result + ((segment == null) ? 0 : segment.hashCode());
 		return result;
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -198,14 +262,18 @@ public class AdNetworkKey implements Transportable {
 		AdNetworkKey other = (AdNetworkKey) obj;
 		if (adType != other.adType)
 			return false;
+		if (age != other.age)
+			return false;
 		if (device != other.device)
+			return false;
+		if (gender != other.gender)
+			return false;
+		if (income != other.income)
 			return false;
 		if (publisher == null) {
 			if (other.publisher != null)
 				return false;
 		} else if (!publisher.equals(other.publisher))
-			return false;
-		if (segment != other.segment)
 			return false;
 		return true;
 	}

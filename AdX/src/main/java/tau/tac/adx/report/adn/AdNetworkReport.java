@@ -94,9 +94,8 @@ public class AdNetworkReport extends
 	 *            {@link AdxQuery}.
 	 * @return Corresponding {@link AdNetworkKey}.
 	 */
-	private AdNetworkKey getAdNetworkKey(MarketSegment marketSegment,
-			AdxQuery query) {
-		return new AdNetworkKey(marketSegment, query.getPublisher(),
+	private AdNetworkKey getAdNetworkKey(AdxUser adxUser, AdxQuery query) {
+		return new AdNetworkKey(adxUser, query.getPublisher(),
 				query.getDevice(), query.getAdType());
 	}
 
@@ -109,18 +108,16 @@ public class AdNetworkReport extends
 	 *            {@link AdxQuery}.
 	 * @param user
 	 *            {@link AdxUser}.
+	 * @param hasWon 
 	 */
 	public void addBid(AdxAuctionResult auctionResult, AdxQuery query,
-			AdxUser user) {
-		Set<MarketSegment> marketSegments = MarketSegment.extractSegment(user);
-		for (MarketSegment marketSegment : marketSegments) {
-			AdNetworkKey adNetworkKey = getAdNetworkKey(marketSegment, query);
-			AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);
-			if (reportEntry == null) {
-				reportEntry = addReportEntry(adNetworkKey);
-			}
-			reportEntry.addAuctionResult(auctionResult);
+			AdxUser user, boolean hasWon) {
+		AdNetworkKey adNetworkKey = getAdNetworkKey(user, query);
+		AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);
+		if (reportEntry == null) {
+			reportEntry = addReportEntry(adNetworkKey);
 		}
+		reportEntry.addAuctionResult(auctionResult, hasWon);
 	}
 
 	/**
@@ -133,6 +130,6 @@ public class AdNetworkReport extends
 		for (AdNetworkReportEntry adNetworkReportEntry : getEntries()) {
 			result = result + adNetworkReportEntry.getCost();
 		}
-		return result/1000;
+		return result / 1000;
 	}
 }
