@@ -22,6 +22,14 @@ public class CampaignStats {
 		return cost;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CampaignStats [tartgetedImps=" + tartgetedImps + ", otherImps="
+				+ otherImps + ", cost=" + cost + "]";
+	}
 	public void setValues(CampaignStats other) {
 		this.tartgetedImps = other.tartgetedImps;
 		this.otherImps = other.otherImps;
