@@ -178,7 +178,7 @@ public class AdNetworkReportTest {
 				null);
 		Double winningPrice = random.nextDouble();
 		AdxAuctionResult auctionResult = new AdxAuctionResult(auctionState,
-				winningBidInfo, winningPrice);
+				winningBidInfo, winningPrice, null);
 		SimpleUserGenerator userGenerator = new SimpleUserGenerator();
 		AdxUser user = userGenerator.generate(1).get(0);
 		AdxQueryGenerator generator = Utils.getInjector().getInstance(
