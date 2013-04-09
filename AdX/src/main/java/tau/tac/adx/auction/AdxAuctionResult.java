@@ -3,6 +3,7 @@
  */
 package tau.tac.adx.auction;
 
+import java.util.List;
 import java.util.Set;
 
 import tau.tac.adx.Adx;
@@ -36,19 +37,27 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	private final Double winningPrice;
 
 	/**
+	 * List of participants in the auction.
+	 */
+	private final List<String> participants;
+
+	/**
 	 * @param auctionState
 	 *            {@link AuctionState}.
 	 * @param winningBidInfo
 	 *            Winning {@link BidInfo}.
 	 * @param winningPrice
 	 *            Wining price.
+	 * @param participants
+	 *            List of participants in the auction.
 	 */
 	public AdxAuctionResult(AuctionState auctionState, BidInfo winningBidInfo,
-			Double winningPrice) {
+			Double winningPrice, List<String> participants) {
 		super();
 		this.auctionState = auctionState;
 		this.winningBidInfo = winningBidInfo;
 		this.winningPrice = winningPrice;
+		this.participants = participants;
 	}
 
 	/**
@@ -87,5 +96,18 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 			return null;
 		}
 		return winningBidInfo.getCampaign();
+	}
+
+	/**
+	 * @return the participants
+	 */
+	public List<String> getParticipants() {
+		return participants;
+	}
+
+	public String toString() {
+		return "State: " + auctionState.toString() + " Winning: "
+				+ winningPrice.toString() + " Segments: "
+				+ winningBidInfo.getMarketSegments();
 	}
 }

@@ -4,6 +4,8 @@
 package tau.tac.adx.auction;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import tau.tac.adx.auction.data.AuctionData;
@@ -117,17 +119,21 @@ public class SimpleAuctionManager implements AuctionManager {
 	 */
 	protected AdxAuctionResult calculateAuctionResult(BidInfo winningBid,
 			BidInfo secondBid, AuctionData auctionData) {
+		List<String> participants = new LinkedList<String>();
+		for (BidInfo bidInfo : auctionData.getBidInfoCollection()) {
+			participants.add(bidInfo.getBidder().getName());
+		}
 		if (winningBid.equals(initializeByAuctionOrder(auctionData
 				.getAuctionOrder()))) {
-			return new AdxAuctionResult(AuctionState.NO_BIDS, null, Double.NaN);
+			return new AdxAuctionResult(AuctionState.NO_BIDS, null, Double.NaN, participants);
 		}
 		if (!passedReservePrice(winningBid, auctionData)) {
-			return new AdxAuctionResult(AuctionState.LOW_BIDS, null, null);
+			return new AdxAuctionResult(AuctionState.LOW_BIDS, null, null, participants);
 		}
 		switch (auctionData.getAuctionPriceType()) {
 		case GENERALIZED_FIRST_PRICE:
 			return new AdxAuctionResult(AuctionState.AUCTION_COPMLETED,
-					winningBid, winningBid.getBid());
+					winningBid, winningBid.getBid(), participants);
 		case GENERALIZED_SECOND_PRICE:
 			double winningPrice;
 			if (!passedReservePrice(secondBid, auctionData)) {
@@ -136,7 +142,7 @@ public class SimpleAuctionManager implements AuctionManager {
 				winningPrice = secondBid.getBid();
 			}
 			return new AdxAuctionResult(AuctionState.AUCTION_COPMLETED,
-					winningBid, winningPrice);
+					winningBid, winningPrice, participants);
 		default:
 			throw switchCaseException(auctionData);
 		}
