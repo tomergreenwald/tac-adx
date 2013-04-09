@@ -281,11 +281,15 @@ public class DemandAgent extends Builtin {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
+//			log.log(Level.INFO,"IMPRESSED ("+ cmpn.getId() + "," + cmpn.getAdvertiser() + ") segments:" + message.getAuctionResult().getMarketSegments());
+
 			cmpn.impress(message.getAuctionResult().getMarketSegments().iterator().next(), 
 					message.getQuery().getAdType(),
 					message.getQuery().getDevice(),
 					message.getAuctionResult().getWinningPrice()
 					);
+		} else {
+			log.log(Level.SEVERE, "IMPRESSED: Campaign Missing!!! " + message.getAuctionResult());			
 		}
 	}
 
