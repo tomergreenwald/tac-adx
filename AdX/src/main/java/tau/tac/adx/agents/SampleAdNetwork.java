@@ -336,20 +336,25 @@ public class SampleAdNetwork extends Agent {
 				for (int i = 0; i < queries.length; i++) {
 					
 					Set<MarketSegment> segmentsList = queries[i].getMarketSegments();
-										
-					if (campaign.targetSegment == segmentsList.iterator().next()) {
-						 /* 
-						  * among matching entries with the same campaign id,    
-						  * the AdX randomly chooses an entry according to the       
-						  * designated weight.                                           
-						  * by setting a constant weight 1, 
-						  * we create a uniform probability over active campaigns 
-						  */
+					
+					for (MarketSegment marketSegment : segmentsList) {
+						if (campaign.targetSegment == marketSegment) {
+							/* 
+							 * among matching entries with the same campaign id,    
+							 * the AdX randomly chooses an entry according to the       
+							 * designated weight.                                           
+							 * by setting a constant weight 1, 
+							 * we create a uniform probability over active campaigns 
+							 */
+							++entCount;
+							bidBundle.addQuery(queries[i], rbid, new Ad(null), campaign.id, 1);						
+						}
+					}
+					if (segmentsList.size() == 0) {
 						++entCount;
-						bidBundle.addQuery(queries[i], rbid, new Ad(null), campaign.id, 1);						
+						bidBundle.addQuery(queries[i], rbid, new Ad(null), campaign.id, 1);
 					}
 				}
-				
 				log.info("Day " + day + ": Updated "+ entCount + " Bid Bundle entries for Campaign id " + campaign.id);				
 			}
 		}
@@ -402,8 +407,11 @@ public class SampleAdNetwork extends Agent {
 	private void handleAdNetworkReport(AdNetworkReport adnetReport) {
 		log.info("AdNetreport: ");		
 		for (AdNetworkKey adnetKey : adnetReport.keys()) {
-			AdNetworkReportEntry entry = adnetReport.getAdNetworkReportEntry(adnetKey);
-			log.info(adnetKey + " " + entry);
+			double rnd = Math.random();
+			if (rnd>0.95) {
+				AdNetworkReportEntry entry = adnetReport.getAdNetworkReportEntry(adnetKey);
+				log.info(adnetKey + " " + entry);
+			}
 		}
 		
 	}
@@ -445,11 +453,11 @@ public class SampleAdNetwork extends Agent {
 			 * of device type, ad type, and user market segment
 			 */
 			for (PublisherCatalogEntry publisherCatalogEntry : publisherCatalog) {
+				String publishersName = publisherCatalogEntry
+						.getPublisherName();
 				for (MarketSegment userSegment : MarketSegment.values()) {
 					Set<MarketSegment> singleMarketSegment = new HashSet<MarketSegment>();
 					singleMarketSegment.add(userSegment);
-					String publishersName = publisherCatalogEntry
-							.getPublisherName();
 
 					querySet.add(new AdxQuery(publishersName,
 							singleMarketSegment, Device.mobile, AdType.text));
@@ -464,7 +472,14 @@ public class SampleAdNetwork extends Agent {
 							singleMarketSegment, Device.pc, AdType.video));
 
 				}
-
+				querySet.add(new AdxQuery(publishersName,
+						new HashSet<MarketSegment>(), Device.mobile, AdType.video));
+				querySet.add(new AdxQuery(publishersName,
+						new HashSet<MarketSegment>(), Device.mobile, AdType.text));
+				querySet.add(new AdxQuery(publishersName,
+						new HashSet<MarketSegment>(), Device.pc, AdType.video));
+				querySet.add(new AdxQuery(publishersName,
+						new HashSet<MarketSegment>(), Device.pc, AdType.text));
 			}
 			queries = new AdxQuery[querySet.size()];
 			querySet.toArray(queries);
