@@ -133,6 +133,6 @@ public class AdNetworkReport extends
 		for (AdNetworkReportEntry adNetworkReportEntry : getEntries()) {
 			result = result + adNetworkReportEntry.getCost();
 		}
-		return result;
+		return result/1000;
 	}
 }
