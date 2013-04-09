@@ -23,7 +23,7 @@ public class ReservePriceManager {
 	/**
 	 * Number of digits after decimal point to keep.
 	 */
-	private static final int DIGITS_AFTER_DECIMAL_POINT = 2;
+	private static final int DIGITS_AFTER_DECIMAL_POINT = 4;
 	/**
 	 * Initial daily baseline average string. Allows configuration of
 	 * {@link #dailyBaselineAverage} via a {@link ConfigProxy}.
@@ -33,7 +33,7 @@ public class ReservePriceManager {
 	 * A daily baseline to calculate <b>reserve price</b> according to. The
 	 * initial average reserve price is randomly chosen or given, and reserve
 	 * prices in subsequent days (for ads with the similar attributes) are
-	 * adaptively set to maximize the publisher’s profit.
+	 * adaptively set to maximize the publisherï¿½s profit.
 	 */
 	private double dailyBaselineAverage;
 	/**
@@ -89,7 +89,7 @@ public class ReservePriceManager {
 	 *            A daily baseline to calculate <b>reserve price</b> according
 	 *            to. The initial average reserve price is given, and reserve
 	 *            prices in subsequent days (for ads with the similar
-	 *            attributes) are adaptively set to maximize the publisher’s
+	 *            attributes) are adaptively set to maximize the publisherï¿½s
 	 *            profit.
 	 * @param baselineRange
 	 *            Allowed variance range for generated <b>reserve prices</b> by
