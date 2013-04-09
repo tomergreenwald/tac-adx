@@ -252,8 +252,8 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 				// .getMarketSegment(), Matchers
 				// .equalTo(marketSegment)));
 				// Filter by device and types, advertiesr
-				Collection<BidEntry> filteredQueries = Collections2.filter(querySet,
-						new BidPredicate(query));
+				Collection<BidEntry> filteredQueries = Collections2.filter(
+						querySet, new BidPredicate(query));
 				for (BidEntry bidEntry : filteredQueries) {
 					sampler.addState(bidEntry.getWeight(), bidEntry);
 				}
@@ -278,7 +278,10 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			}
 
 			public boolean apply(BidEntry input) {
-				return ! Sets.intersection(adxQuery.getMarketSegments(), input.getMarketSegments()).isEmpty();
+				return (!Sets.intersection(adxQuery.getMarketSegments(),
+						input.getMarketSegments()).isEmpty())
+						|| (adxQuery.getMarketSegments().size() == 0 && input
+								.getMarketSegments().size() == 0);
 			}
 
 		}
