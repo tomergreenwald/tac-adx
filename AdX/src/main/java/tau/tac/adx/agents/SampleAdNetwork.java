@@ -35,6 +35,7 @@ import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 import tau.tac.adx.report.publisher.AdxPublisherReportEntry;
 import edu.umich.eecs.tac.props.Ad;
+import edu.umich.eecs.tac.props.BankStatus;
 
 public class SampleAdNetwork extends Agent {
 
@@ -137,6 +138,10 @@ public class SampleAdNetwork extends Agent {
 				handleAdNetworkReport((AdNetworkReport) content);
 			} else if (content instanceof StartInfo) {
 				handleStartInfo((StartInfo) content);
+			} else if (content instanceof BankStatus) {
+				handleBankStatus((BankStatus) content);
+			} else {
+				log.info("UNKNOWN Message Received: "+content);
 			}
 
 		} catch (NullPointerException e) {
@@ -144,6 +149,10 @@ public class SampleAdNetwork extends Agent {
 					"Exception thrown while trying to parse message." + e);
 			return;
 		}
+	}
+
+	private void handleBankStatus(BankStatus content) {
+		log.info(content.toString());		
 	}
 
 	/**
@@ -213,7 +222,7 @@ public class SampleAdNetwork extends Agent {
 		 * network that offers the lowest budget gets the campaign allocated).
 		 * The advertiser is willing to pay the AdNetwork at most 1$ CPM,
 		 * therefore the total number of impressions may be treated as a reserve
-		 * (upper bound) price for the auction.
+		 * (upper bound) price for the auction. 
 		 */
 		long cmpBid = 1 + Math.abs((randomGenerator.nextLong()) % (com.getReachImps()));
 
@@ -257,7 +266,7 @@ public class SampleAdNetwork extends Agent {
 		adNetworkDailyNotification = notificationMessage;
 
 		log.info("Day " + day + ": Daily notification for campaign " + 
-				adNetworkDailyNotification.getCampaignId() + "(pending " + pendingCampaign.id + ")");
+				adNetworkDailyNotification.getCampaignId());
 
 		String campaignAllocatedTo = " allocated to " + notificationMessage.getWinner();
 
@@ -271,7 +280,7 @@ public class SampleAdNetwork extends Agent {
 		/* add campaign to list of won campaigns */
 			myCampaigns.put(pendingCampaign.id, pendingCampaign);
 			
-			campaignAllocatedTo = " WON at cost " + notificationMessage.getCost();
+			campaignAllocatedTo = " WON at cost " + notificationMessage.getCost() + " (millis)";
 		}
 
 		log.info("Day " + day + ": " + campaignAllocatedTo + ". UCS Level set to "
@@ -306,7 +315,8 @@ public class SampleAdNetwork extends Agent {
 			/* a random bid, for all queries       */
 			/* bidding (CPM) randomly in (0.001,1) */
 			Random rnd = new Random();
-			double rbid = ((1 + rnd.nextLong()) % 1000)/1000;
+			long nextLong = rnd.nextLong();
+			double rbid = ((1 + nextLong) % 1000)/1000.0;
 						
 			/* 
 			 * add bid entries w.r.t. each active campaign with 

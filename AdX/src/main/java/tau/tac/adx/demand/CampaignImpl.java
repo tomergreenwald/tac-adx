@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import tau.tac.adx.AdxManager;
@@ -150,6 +151,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 					.getSimulation()
 					.broadcastAdNetworkRevenue(advertiser,
 							effectiveReachRatio * budget);
+			
+			log.log(Level.INFO,"Campaign " + id + " ended for advertiser " + 
+			   advertiser+ ". Stats " + totals + " Reach " + reachImps +
+			   " ERR " + effectiveReachRatio + " Budget " + budget +
+			   " Revenue " + effectiveReachRatio * budget);
 		}
 	}
 
@@ -161,7 +167,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public void addAdvertiserBid(String advertiser, Long budgetBid) {
 		/* bids above the reserve budget are not considered */
-		if ((budgetBid > 0) && (budgetBid <= RESERVE_BUDGET_FACTOR * reachImps))
+		if ((budgetBid > 0) && (budgetBid <= (RESERVE_BUDGET_FACTOR * reachImps)))
 			advertisersBids.put(advertiser, budgetBid);
 	}
 
@@ -172,7 +178,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public void allocateToAdvertiser(String advertiser) {
-		budget = new Double(reachImps * DEFAULT_BUDGET_FACTOR);
+		budget = new Double(reachImps * DEFAULT_BUDGET_FACTOR) / 1000.0;
 		this.advertiser = advertiser;
 	}
 
@@ -202,7 +208,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 			advertiser = advNames[indices[0]];
 
-			double reserveScore = 1 / (RESERVE_BUDGET_FACTOR * reachImps);
+			double reserveScore = 1000.0 / (RESERVE_BUDGET_FACTOR * reachImps);
 
 			if (advCount == 1)
 				bsecond = reserveScore;

@@ -115,7 +115,7 @@ public class DummyAdNetwork extends Agent {
 
 		} catch (NullPointerException e) {
 			this.log.log(Level.SEVERE,
-					"Null Message received. " + e.getStackTrace());
+					"Excdeption thrown. ", e);
 			return;
 		}
 	}
@@ -126,8 +126,8 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleAdNetworkDailyNotification(
 			AdNetworkDailyNotification adNetNotificationMessage) {
-		log.log(Level.INFO, getName() + " Campaign result: "
-				+ adNetNotificationMessage);
+		//log.log(Level.INFO, getName() + " Campaign result: "
+		//		+ adNetNotificationMessage);
 		adNetworkDailyNotification = adNetNotificationMessage;
 		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId())
 				&& getName().equals(adNetNotificationMessage.getWinner())) {
@@ -143,16 +143,18 @@ public class DummyAdNetwork extends Agent {
 		for (CampaignReportKey campaignKey : campaignReport.keys()) {
 			int cmpId = campaignKey.getCampaignId();
 			CampaignStats cstats = campaignReport.getCampaignReportEntry(campaignKey).getCampaignStats();
-			myCampaigns.get(cmpId).setStats(cstats);
+//			myCampaigns.get(cmpId).setStats(cstats);
 			
+			/*
 			log.fine("Day " + day + ": Updating campaign " + cmpId +" stats: " + 
 					cstats.getTargetedImps() + " tgtImps " + 
 					cstats.getOtherImps() + " nonTgtImps. Cost of imps is " + 
 					cstats.getCost()
 					);
+					*/
 		}		
 
-		log.log(Level.INFO, getName() + campaignReport.toMyString());
+		//log.log(Level.INFO, getName() + campaignReport.toMyString());
 	}
 
 	private void updateCampaignDataOpportunity(
@@ -183,7 +185,7 @@ public class DummyAdNetwork extends Agent {
 
 		AdNetBidMessage bids = new AdNetBidMessage(
 				randomGenerator.nextInt(10), pendingCampaign.id, cmpBid);
-		log.fine("sent campaign bid");
+		//log.fine("sent campaign bid");
 		sendMessage(ServerAddress, bids);
 	}
 
@@ -200,7 +202,7 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleInitialCampaignMessage(
 			InitialCampaignMessage campaignMessage) {
-		log.info(campaignMessage.toString());
+		//log.info(campaignMessage.toString());
 
 		day = 0;
 
@@ -223,7 +225,7 @@ public class DummyAdNetwork extends Agent {
 	}
 
 	private void handleAdNetworkReport(AdNetworkReport queryReport) {
-		this.log.log(Level.INFO, queryReport.toString());
+		//this.log.log(Level.INFO, queryReport.toString());
 
 
 	}
@@ -281,7 +283,7 @@ public class DummyAdNetwork extends Agent {
 							.getMarketSegments();
 					if (campaign.targetSegment == segmentsList.iterator()
 							.next())
-						bidBundle.addQuery(queries[i], (1+rnd.nextLong() % 1000)/1000,
+						bidBundle.addQuery(queries[i], (1+rnd.nextLong() % 1000)/1000.0,
 								new Ad(null), campaign.id, 1);
 				}
 
