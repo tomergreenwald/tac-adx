@@ -55,6 +55,10 @@ public interface Campaign extends TimeListener {
  */
 	Double getBudget();
 
+	public void setTodaysLimit(Double limit);
+
+	public boolean isOverTodaysLimit();
+	
 /**
  * Update an impression allocated to this campaign
  * @param adxUser

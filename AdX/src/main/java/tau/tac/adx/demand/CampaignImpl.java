@@ -13,9 +13,11 @@ import java.util.logging.Logger;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.messages.CampaignLimitSet;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.util.AdxUtils;
+
+import com.google.common.eventbus.Subscribe;
 
 public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final Logger log = Logger.getLogger(CampaignImpl.class.getName());
@@ -48,6 +50,10 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	protected int day;
 	private CampaignStats todays;
 	private CampaignStats totals;
+	
+	private Double limit;
+	private Double tomorrowsLimit;
+	
 	private final SortedMap<Integer, CampaignStats> dayStats;
 
 	public CampaignImpl(QualityManager qualityManager, int reachImps,
@@ -62,7 +68,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		advertisersBids = new HashMap<String, Long>();
 		budget = null;
 		advertiser = null;
-
+		limit = Double.POSITIVE_INFINITY;
+		tomorrowsLimit = Double.POSITIVE_INFINITY;
 		/* the first day for the campaign to be collecting statistics */
 		day = dayStart;
 
@@ -90,7 +97,6 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public int getDayStart() {
 		return dayStart;
-
 	}
 
 	@Override
@@ -98,7 +104,22 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		return dayEnd;
 
 	}
+	
+	
+	public void setTodaysLimit(Double l) { 
+		this.limit = l;
+	}
 
+	public void setTomorowsLimit(Double l) { 
+		this.tomorrowsLimit = l;
+	}
+
+	
+	public boolean isOverTodaysLimit() {
+		return (limit < todays.cost);
+	}
+
+	
 	@Override
 	public MarketSegment getTargetSegment() {
 		return targetSegment;
@@ -122,9 +143,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			double costPerMille) {
 		if (isAllocated()) {
 			todays.cost += costPerMille / 1000.0;
-
-			double imps = (device == Device.mobile ? mobileCoef : 1)
-					* (adType == AdType.video ? videoCoef : 1);
+			
+			double imps = (device == Device.mobile ? mobileCoef : 1.0)
+					* (adType == AdType.video ? videoCoef : 1.0);
 
 			if (MarketSegment.extractSegment(adxUser).contains(targetSegment)) {
 				todays.tartgetedImps += imps;
@@ -144,6 +165,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	public void nextTimeUnit(int timeUnit) {
 		dayStats.put(day, todays);
 		day = timeUnit;
+		limit = tomorrowsLimit;
+		tomorrowsLimit = Double.POSITIVE_INFINITY;;
 		todays = new CampaignStats(0.0, 0.0, 0.0);
 		if (day == dayEnd + 1) { /* was last day - update quality score */
 			totals = getStats(dayStart, dayEnd);
@@ -259,6 +282,13 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		return AccumulatorImpl.accumulate(this,
 				new ArrayList<CampaignStats>(daysRangeStats.values()),
 				new CampaignStats(0.0, 0.0, 0.0)).add(current);
+	}
+
+	@Subscribe
+	public void limitSet(CampaignLimitSet message) {
+		if ((message.getCampaignId() == id) && (message.getAdNetwork().equals(advertiser))) {
+			setTomorowsLimit(message.getLimit());
+		}
 	}
 
 	@Override

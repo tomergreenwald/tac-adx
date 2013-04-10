@@ -4,8 +4,6 @@ public class CampaignStats {
 	double tartgetedImps;
 	double otherImps;
 	double cost;
-
-	
 	
 	public CampaignStats(double timps, double oimps, double cost) {
 		this.tartgetedImps = timps;

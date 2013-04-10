@@ -225,8 +225,10 @@ public class SampleAdNetwork extends Agent {
 		 * (upper bound) price for the auction. 
 		 */
 		long cmpBid = 1 + Math.abs((randomGenerator.nextLong()) % (com.getReachImps()));
+		
+		double cmpBidUnits = cmpBid/1000.0;
 
-		log.info("Day " + day +": Campaign total budget bid (millis): " + cmpBid);
+		log.info("Day " + day +": Campaign total budget bid: " + cmpBidUnits);
 
 		/*
 		 * Adjust ucs bid s.t. target level is achieved.
@@ -280,7 +282,7 @@ public class SampleAdNetwork extends Agent {
 		/* add campaign to list of won campaigns */
 			myCampaigns.put(pendingCampaign.id, pendingCampaign);
 			
-			campaignAllocatedTo = " WON at cost " + notificationMessage.getCost() + " (millis)";
+			campaignAllocatedTo = " WON at cost " + notificationMessage.getCost();
 		}
 
 		log.info("Day " + day + ": " + campaignAllocatedTo + ". UCS Level set to "
@@ -355,6 +357,8 @@ public class SampleAdNetwork extends Agent {
 						bidBundle.addQuery(queries[i], rbid, new Ad(null), campaign.id, 1);
 					}
 				}
+				bidBundle.setCampaignDailySpendLimit(campaign.id, campaign.impsTogo()/1000.0);
+				
 				log.info("Day " + day + ": Updated "+ entCount + " Bid Bundle entries for Campaign id " + campaign.id);				
 			}
 		}

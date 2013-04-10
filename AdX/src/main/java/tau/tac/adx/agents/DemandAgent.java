@@ -16,6 +16,7 @@ import tau.tac.adx.demand.QualityManagerImpl;
 import tau.tac.adx.demand.UserClassificationService;
 import tau.tac.adx.demand.UserClassificationServiceImpl;
 import tau.tac.adx.messages.AuctionMessage;
+import tau.tac.adx.messages.CampaignLimitReached;
 import tau.tac.adx.messages.CampaignNotification;
 import tau.tac.adx.messages.UserClassificationServiceNotification;
 import tau.tac.adx.report.adn.MarketSegment;
@@ -283,11 +284,24 @@ public class DemandAgent extends Builtin {
 		if (cmpn != null) {
 //			log.log(Level.INFO,"IMPRESSED ("+ cmpn.getId() + "," + cmpn.getAdvertiser() + ") segments:" + message.getAuctionResult().getMarketSegments());
 
+			boolean wasOverLimit = cmpn.isOverTodaysLimit();
+						
 			cmpn.impress(message.getUser(), 
 					message.getQuery().getAdType(),
 					message.getQuery().getDevice(),
 					message.getAuctionResult().getWinningPrice()
 					);
+
+			if (wasOverLimit) {
+				/* rare - should warn: not supposed to bid on over-limit campaigns */
+				log.log(Level.WARNING, " Impressed while over limit: " + cmpn.getId());			
+			} else if (cmpn.isOverTodaysLimit()) {
+				/* notify on transition campaign limit expiration */
+				getSimulation().getEventBus().post(
+						new CampaignLimitReached(cmpn.getId(), cmpn.getAdvertiser()));
+				log.log(Level.INFO, " Campaign limit expired Impressed while over limit: " + cmpn.getId());			
+			}
+
 		} else {
 			log.log(Level.SEVERE, "IMPRESSED: Campaign Missing!!! " + message.getAuctionResult());			
 		}
