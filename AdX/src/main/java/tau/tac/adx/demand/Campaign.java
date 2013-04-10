@@ -55,8 +55,6 @@ public interface Campaign extends TimeListener {
  */
 	Double getBudget();
 
-	public void setTodaysLimit(Double limit);
-
 	public boolean isOverTodaysLimit();
 	
 /**
@@ -111,5 +109,7 @@ public interface Campaign extends TimeListener {
 	double getMobileCoef();
 	
 	int getId();
+
+	void preNextTimeUnit(int date);
 
 }

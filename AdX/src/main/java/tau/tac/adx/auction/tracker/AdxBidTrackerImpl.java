@@ -39,6 +39,7 @@ import tau.tac.adx.messages.CampaignLimitSet;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxBidBundle.BidEntry;
 import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.sim.TACAdxSimulation;
 
 import com.botbox.util.ArrayUtils;
 import com.google.common.base.Predicate;
@@ -233,6 +234,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 					return advertiser;
 				}
 			};
+			TACAdxSimulation.eventBus.register(this);
 		}
 
 		@Subscribe
@@ -298,7 +300,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 				/* it is a piggybacked set campaig limit command: notify */		
 				
 				AdxManager.getInstance().getSimulation().getEventBus().post(
-						new CampaignLimitSet(entry.getCampaignId(), advertiser, entry.getDailyLimit()));
+						new CampaignLimitSet(entry.getCampaignId(), advertiser, entry.getWeight() , entry.getDailyLimit()));
 
 			} else {
 			    querySet.add(entry);

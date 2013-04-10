@@ -50,10 +50,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	protected int day;
 	private CampaignStats todays;
 	private CampaignStats totals;
-	
-	private Double limit;
-	private Double tomorrowsLimit;
-	
+
+	private Double budgetlimit;
+	private int impressionLimit;
+	private Double tomorrowsBudgetLimit;
+	private int tomorrowsImpressionLimit;
+
 	private final SortedMap<Integer, CampaignStats> dayStats;
 
 	public CampaignImpl(QualityManager qualityManager, int reachImps,
@@ -68,8 +70,10 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		advertisersBids = new HashMap<String, Long>();
 		budget = null;
 		advertiser = null;
-		limit = Double.POSITIVE_INFINITY;
-		tomorrowsLimit = Double.POSITIVE_INFINITY;
+		budgetlimit = Double.POSITIVE_INFINITY;
+		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+		impressionLimit = Integer.MAX_VALUE;
+		tomorrowsImpressionLimit = Integer.MAX_VALUE;
 		/* the first day for the campaign to be collecting statistics */
 		day = dayStart;
 
@@ -82,6 +86,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		this.mobileCoef = mobileCoef;
 
 		todays = new CampaignStats(0.0, 0.0, 0.0);
+		totals = new CampaignStats(0.0, 0.0, 0.0);
+		AdxManager.getInstance().getSimulation().getEventBus().register(this);
 	}
 
 	@Override
@@ -104,22 +110,21 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		return dayEnd;
 
 	}
-	
-	
-	public void setTodaysLimit(Double l) { 
-		this.limit = l;
+
+//	public void setTodaysBudgetLimit(Double l) {
+//		this.budgetlimit = l;
+//	}
+
+	public void setTomorowsLimit(CampaignLimitSet message) {
+		this.tomorrowsBudgetLimit = message.getBudgetLimit();
+		this.tomorrowsImpressionLimit = message.getImpressionLimit();
 	}
 
-	public void setTomorowsLimit(Double l) { 
-		this.tomorrowsLimit = l;
-	}
-
-	
 	public boolean isOverTodaysLimit() {
-		return (limit < todays.cost);
+		return (budgetlimit < totals.cost + todays.cost)
+				|| (impressionLimit < totals.tartgetedImps + todays.tartgetedImps);
 	}
 
-	
 	@Override
 	public MarketSegment getTargetSegment() {
 		return targetSegment;
@@ -143,7 +148,10 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			double costPerMille) {
 		if (isAllocated()) {
 			todays.cost += costPerMille / 1000.0;
-			
+			if (todays.cost > budgetlimit) {
+				int i = 0;
+			}
+
 			double imps = (device == Device.mobile ? mobileCoef : 1.0)
 					* (adType == AdType.video ? videoCoef : 1.0);
 
@@ -152,6 +160,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			} else {
 				todays.otherImps += imps;
 			}
+		}
+		if (todays.tartgetedImps > 1251) {
+			int i =0;
 		}
 	}
 
@@ -162,14 +173,22 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void nextTimeUnit(int timeUnit) {
+	public void preNextTimeUnit(int timeUnit) {
 		dayStats.put(day, todays);
 		day = timeUnit;
-		limit = tomorrowsLimit;
-		tomorrowsLimit = Double.POSITIVE_INFINITY;;
+		budgetlimit = tomorrowsBudgetLimit;
+		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+		impressionLimit = tomorrowsImpressionLimit;
+		if (totals.tartgetedImps > 1251) {
+			int i =0;
+		}
+		totals = totals.add(todays);
+		if (totals.tartgetedImps > 1251) {
+			int i =0;
+		}
+		tomorrowsImpressionLimit = Integer.MAX_VALUE;
 		todays = new CampaignStats(0.0, 0.0, 0.0);
 		if (day == dayEnd + 1) { /* was last day - update quality score */
-			totals = getStats(dayStart, dayEnd);
 			double effectiveReachRatio = effectiveReachRatio(totals.tartgetedImps);
 			qualityManager.updateQualityScore(advertiser, effectiveReachRatio);
 			AdxManager
@@ -286,8 +305,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Subscribe
 	public void limitSet(CampaignLimitSet message) {
-		if ((message.getCampaignId() == id) && (message.getAdNetwork().equals(advertiser))) {
-			setTomorowsLimit(message.getLimit());
+		if ((message.getCampaignId() == id)
+				&& (message.getAdNetwork().equals(advertiser))) {
+			setTomorowsLimit(message);
 		}
 	}
 
@@ -316,6 +336,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				+ ", advertiser=" + advertiser + ", day=" + day + ", todays="
 				+ todays + ", totals=" + totals + ", dayStats=" + dayStats
 				+ "]";
+	}
+
+	@Override
+	public void nextTimeUnit(int timeUnit) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

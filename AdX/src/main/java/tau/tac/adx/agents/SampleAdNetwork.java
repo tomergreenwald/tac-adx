@@ -193,7 +193,9 @@ public class SampleAdNetwork extends Agent {
 		adxAgentAddress = campaignMessage.getAdxAgentAddress();
 
 		CampaignData campaignData = new CampaignData(initialCampaignMessage);
+		campaignData.setBudget(initialCampaignMessage.getReachImps()/1000.0);
 
+		
 		/*
 		 * The initial campaign is already allocated to our agent so we add it
 		 * to our allocated-campaigns list.
@@ -280,6 +282,8 @@ public class SampleAdNetwork extends Agent {
 				&& (notificationMessage.getCost() != 0) ) {
 
 		/* add campaign to list of won campaigns */
+			pendingCampaign.setBudget(notificationMessage.getCost());
+
 			myCampaigns.put(pendingCampaign.id, pendingCampaign);
 			
 			campaignAllocatedTo = " WON at cost " + notificationMessage.getCost();
@@ -357,7 +361,8 @@ public class SampleAdNetwork extends Agent {
 						bidBundle.addQuery(queries[i], rbid, new Ad(null), campaign.id, 1);
 					}
 				}
-				bidBundle.setCampaignDailySpendLimit(campaign.id, campaign.impsTogo()/1000.0);
+							
+				bidBundle.setCampaignDailyLimit(campaign.id, campaign.impsTogo(), Math.max(0, campaign.budget - campaign.stats.getCost()));
 				
 				log.info("Day " + day + ": Updated "+ entCount + " Bid Bundle entries for Campaign id " + campaign.id);				
 			}
@@ -382,7 +387,7 @@ public class SampleAdNetwork extends Agent {
 			int cmpId = campaignKey.getCampaignId();
 			CampaignStats cstats = campaignReport.getCampaignReportEntry(campaignKey).getCampaignStats();
 			myCampaigns.get(cmpId).setStats(cstats);
-			
+						
 			log.info("Day " + day + ": Updating campaign " + cmpId +" stats: " + 
 					cstats.getTargetedImps() + " tgtImps " + 
 					cstats.getOtherImps() + " nonTgtImps. Cost of imps is " + 
@@ -491,6 +496,20 @@ public class SampleAdNetwork extends Agent {
 	}
 
 	private class CampaignData {
+		/* campaign attributes as set by server */
+		Long reachImps;
+		long dayStart;
+		long dayEnd;
+		MarketSegment targetSegment;
+		double videoCoef;
+		double mobileCoef;
+		int id;
+		
+		/* campaign info as reported */
+		CampaignStats stats;	
+		double budget;
+		
+		
 		public CampaignData(InitialCampaignMessage icm) {
 			reachImps = icm.getReachImps();
 			dayStart = icm.getDayStart();
@@ -499,7 +518,13 @@ public class SampleAdNetwork extends Agent {
 			videoCoef = icm.getVideoCoef();
 			mobileCoef = icm.getMobileCoef();
 			id = icm.getId();
+			
 			stats = new CampaignStats(0,0,0);
+			budget = 0.0;
+		}
+
+		public void setBudget(double d) {
+			budget = d;			
 		}
 
 		public CampaignData(CampaignOpportunityMessage com) {
@@ -511,6 +536,7 @@ public class SampleAdNetwork extends Agent {
 			mobileCoef = com.getMobileCoef();
 			videoCoef = com.getVideoCoef();
 			stats = new CampaignStats(0,0,0);
+			budget = 0.0;
 		}
 
 		@Override
@@ -521,25 +547,15 @@ public class SampleAdNetwork extends Agent {
 					+ mobileCoef + ")";
 		}
 
-		Long impsTogo() {
-			return reachImps - (long)stats.getTargetedImps();
+		int impsTogo() {
+			return (int) Math.max(0,reachImps - stats.getTargetedImps());
 		}
 		
 		void setStats(CampaignStats s) {
 		   stats.setValues(s);	
 		}
 		
-		/* campaign attributes as set by server */
-		Long reachImps;
-		long dayStart;
-		long dayEnd;
-		MarketSegment targetSegment;
-		double videoCoef;
-		double mobileCoef;
-		int id;
-		
-		/* campaign info as reported */
-		CampaignStats stats;		
+	
 	}
 
 }

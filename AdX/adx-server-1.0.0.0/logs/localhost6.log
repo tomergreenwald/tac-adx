@@ -1,14 +1,12 @@
-08/04 22:22:19 INFO file.FileDatabase|infodb: database opened as /specific/a/home/cc/students/cs/marianos/adxgame/tac-adx/AdX/adx-server-1.0.0.0/infodb
-08/04 22:22:19 INFO common.BlockingViewerServer|viewer server started at *:4042
-08/04 19:22:20 INFO sim.Admin|adding manager for simulation type tac13adx
-08/04 19:22:20 INFO server.TACTGateway|TACT Server started at *:6502
-08/04 19:22:25 INFO server.TACTChannel|user tau-1 logged in as tau-1@tact-1 with version 0.9.6 from 127.0.0.1
-08/04 19:22:25 INFO sim.Admin|created simulation 33
-08/04 19:22:27 WARNING sim.Admin|closing old channel tau-1 due to new connection tau-1
-08/04 19:22:27 INFO server.TACTChannel|user tau-1 logged in as tau-1@tact-2 with version 0.9.6 from 127.0.0.1
-08/04 19:23:00 FINE sim.Admin|Entering log for simulation 27
+10/04 23:05:36 INFO file.FileDatabase|infodb: database opened as /specific/a/home/cc/students/cs/marianos/adxgame/tac-adx/AdX/adx-server-1.0.0.0/infodb
+10/04 23:05:36 INFO common.BlockingViewerServer|viewer server started at *:4042
+10/04 20:05:37 INFO sim.Admin|adding manager for simulation type tac13adx
+10/04 20:05:37 INFO server.TACTGateway|TACT Server started at *:6502
+10/04 20:05:38 INFO server.TACTChannel|user tau-1 logged in as tau-1@tact-1 with version 0.9.6 from 127.0.0.1
+10/04 20:05:38 INFO sim.Admin|created simulation 110
+10/04 20:06:00 FINE sim.Admin|Entering log for simulation 104
 ************************************************************
-* Entering log for simulation 27
+* Entering log for simulation 104
 ************************************************************
 
 

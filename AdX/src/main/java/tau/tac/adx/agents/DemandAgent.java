@@ -2,6 +2,7 @@
  */
 package tau.tac.adx.agents;
 
+import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,8 +74,10 @@ public class DemandAgent extends Builtin {
 			auctionTomorrowsCampaign(day);
 			ucs.auction(day);
 
-			consolidateCmpaignStatistics(day);
 			reportAuctionResutls(day);
+			for (Campaign campaign : adNetCampaigns.values()) {
+				campaign.preNextTimeUnit(date);
+			}
 		}
 		getSimulation().getEventBus().post(
 				new UserClassificationServiceNotification(ucs));
@@ -131,14 +134,6 @@ public class DemandAgent extends Builtin {
 			
 			getSimulation().sendUserClassificationAuctionResult(advertiser,
 					adNetworkNotification);
-		}
-	}
-
-	private void consolidateCmpaignStatistics(int date) {
-		/* nothing to consolidate before day 2 (w.r.t. simulated day 1) */
-		if (date >= 2) {
-		   for (Campaign campaign : adNetCampaigns.values())
-			   campaign.nextTimeUnit(date);
 		}
 	}
 
@@ -284,18 +279,23 @@ public class DemandAgent extends Builtin {
 		if (cmpn != null) {
 //			log.log(Level.INFO,"IMPRESSED ("+ cmpn.getId() + "," + cmpn.getAdvertiser() + ") segments:" + message.getAuctionResult().getMarketSegments());
 
-			boolean wasOverLimit = cmpn.isOverTodaysLimit();
+//			boolean wasOverLimit = cmpn.isOverTodaysLimit();
 						
 			cmpn.impress(message.getUser(), 
 					message.getQuery().getAdType(),
 					message.getQuery().getDevice(),
 					message.getAuctionResult().getWinningPrice()
 					);
-
-			if (wasOverLimit) {
-				/* rare - should warn: not supposed to bid on over-limit campaigns */
-				log.log(Level.WARNING, " Impressed while over limit: " + cmpn.getId());			
-			} else if (cmpn.isOverTodaysLimit()) {
+			
+//			if (cmpn.getTodayStats().getTargetedImps() > 10000) {
+//				int i = 0;
+//			}
+//
+//			if (wasOverLimit) {
+//				/* rare - should warn: not supposed to bid on over-limit campaigns */
+//				log.log(Level.WARNING, " Impressed while over limit: " + cmpn.getId());			
+//			} else
+				if (cmpn.isOverTodaysLimit()) {
 				/* notify on transition campaign limit expiration */
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn.getAdvertiser()));
