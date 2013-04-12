@@ -74,10 +74,10 @@ public class DemandAgent extends Builtin {
 			auctionTomorrowsCampaign(day);
 			ucs.auction(day);
 
-			reportAuctionResutls(day);
 			for (Campaign campaign : adNetCampaigns.values()) {
 				campaign.preNextTimeUnit(date);
 			}
+			reportAuctionResutls(day);
 		}
 		getSimulation().getEventBus().post(
 				new UserClassificationServiceNotification(ucs));
@@ -116,8 +116,10 @@ public class DemandAgent extends Builtin {
 				   if (campaign.isAllocated()
 						&& (campaign.getDayStart() < date)    
 						&& (advertiser.equals(campaign.getAdvertiser()))) {
+					   System.out.println("camp[aign: "+campaign.getId() + " totals: "+campaign.getTotals());
 					report.addStatsEntry(campaign.getId(),
-							campaign.getStats(campaign.getDayStart(), date-1));
+//							campaign.getStats(campaign.getDayStart(), date-1));
+							campaign.getTotals());
 				   }
 			   }
 			   getSimulation().sendCampaignReport(advertiser, report);
@@ -299,6 +301,7 @@ public class DemandAgent extends Builtin {
 				/* notify on transition campaign limit expiration */
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn.getAdvertiser()));
+				System.out.println("Campaign limit expired Impressed while over limit: " + cmpn.getId()+", limit was: "+cmpn.getImpressionLimit() +" value is: "+cmpn.getTodayStats().getTargetedImps());
 				log.log(Level.INFO, " Campaign limit expired Impressed while over limit: " + cmpn.getId());			
 			}
 

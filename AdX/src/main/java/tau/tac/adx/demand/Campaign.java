@@ -112,4 +112,8 @@ public interface Campaign extends TimeListener {
 
 	void preNextTimeUnit(int date);
 
+	CampaignStats getTotals();
+	
+	public int getImpressionLimit();
+
 }

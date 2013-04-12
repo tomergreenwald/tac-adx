@@ -53,6 +53,105 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	private Double budgetlimit;
 	private int impressionLimit;
+
+	/**
+	 * @return the log
+	 */
+	public Logger getLog() {
+		return log;
+	}
+
+	/**
+	 * @return the erra
+	 */
+	public static double getErra() {
+		return ERRA;
+	}
+
+	/**
+	 * @return the errb
+	 */
+	public static double getErrb() {
+		return ERRB;
+	}
+
+	/**
+	 * @return the defaultBudgetFactor
+	 */
+	public static Long getDefaultBudgetFactor() {
+		return DEFAULT_BUDGET_FACTOR;
+	}
+
+	/**
+	 * @return the qualityManager
+	 */
+	public QualityManager getQualityManager() {
+		return qualityManager;
+	}
+
+	/**
+	 * @return the reserveBudgetFactor
+	 */
+	public static double getReserveBudgetFactor() {
+		return RESERVE_BUDGET_FACTOR;
+	}
+
+	/**
+	 * @return the advertisersBids
+	 */
+	public Map<String, Long> getAdvertisersBids() {
+		return advertisersBids;
+	}
+
+	/**
+	 * @return the day
+	 */
+	public int getDay() {
+		return day;
+	}
+
+	/**
+	 * @return the todays
+	 */
+	public CampaignStats getTodays() {
+		return todays;
+	}
+
+	/**
+	 * @return the budgetlimit
+	 */
+	public Double getBudgetlimit() {
+		return budgetlimit;
+	}
+
+	/**
+	 * @return the impressionLimit
+	 */
+	public int getImpressionLimit() {
+		return impressionLimit;
+	}
+
+	/**
+	 * @return the tomorrowsBudgetLimit
+	 */
+	public Double getTomorrowsBudgetLimit() {
+		return tomorrowsBudgetLimit;
+	}
+
+	/**
+	 * @return the tomorrowsImpressionLimit
+	 */
+	public int getTomorrowsImpressionLimit() {
+		return tomorrowsImpressionLimit;
+	}
+
+	/**
+	 * @return the dayStats
+	 */
+	public SortedMap<Integer, CampaignStats> getDayStats() {
+		return dayStats;
+	}
+
 	private Double tomorrowsBudgetLimit;
 	private int tomorrowsImpressionLimit;
 
@@ -111,9 +210,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	}
 
-//	public void setTodaysBudgetLimit(Double l) {
-//		this.budgetlimit = l;
-//	}
+	// public void setTodaysBudgetLimit(Double l) {
+	// this.budgetlimit = l;
+	// }
 
 	public void setTomorowsLimit(CampaignLimitSet message) {
 		this.tomorrowsBudgetLimit = message.getBudgetLimit();
@@ -122,7 +221,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	public boolean isOverTodaysLimit() {
 		return (budgetlimit < totals.cost + todays.cost)
-				|| (impressionLimit < totals.tartgetedImps + todays.tartgetedImps);
+				|| (impressionLimit < totals.tartgetedImps
+						+ todays.tartgetedImps);
 	}
 
 	@Override
@@ -161,9 +261,6 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				todays.otherImps += imps;
 			}
 		}
-		if (todays.tartgetedImps > 1251) {
-			int i =0;
-		}
 	}
 
 	double effectiveReachRatio(double imps) {
@@ -179,12 +276,20 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		budgetlimit = tomorrowsBudgetLimit;
 		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
 		impressionLimit = tomorrowsImpressionLimit;
-		if (totals.tartgetedImps > 1251) {
-			int i =0;
+		if (todays.tartgetedImps > impressionLimit + 10
+				&& impressionLimit != (int) Double.POSITIVE_INFINITY) {
+			String s = "\nbudgetlimit: " + budgetlimit + "totals.cost: "
+					+ totals.cost + "todays.cost: " + todays.cost
+					+ "impressionLimit: " + impressionLimit
+					+ "totals.tartgetedImps: " + totals.tartgetedImps
+					+ "todays.tartgetedImps: " + todays.tartgetedImps+"\n";
+			throw new RuntimeException("campaign id: " + this.id + " "
+					+ todays.toString() + " impresssion limit: "
+					+ this.impressionLimit+s);
 		}
 		totals = totals.add(todays);
-		if (totals.tartgetedImps > 1251) {
-			int i =0;
+		if (totals.tartgetedImps > 1300) {
+			int i = 0;
 		}
 		tomorrowsImpressionLimit = Integer.MAX_VALUE;
 		todays = new CampaignStats(0.0, 0.0, 0.0);
@@ -341,7 +446,15 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public void nextTimeUnit(int timeUnit) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public CampaignStats getTotals() {
+		if (totals.getTargetedImps() > 1300) {
+			int i = 0;
+		}
+		return totals;
 	}
 
 }

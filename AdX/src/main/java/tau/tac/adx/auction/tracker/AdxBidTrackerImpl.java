@@ -175,6 +175,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 	@Override
 	public void updateBids(String advertiser, AdxBidBundle bundle) {
+		System.out.println();
 		int index = ArrayUtils.indexOf(advertisers, 0, advertisersCount,
 				advertiser);
 
@@ -240,6 +241,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		@Subscribe
 		public void limitReached(CampaignLimitReached message) {
 			if (message.getAdNetwork().equals(advertiser)) {
+				System.out.println(message);
 				excludedCampaigns.add(message.getCampaignId());
 				queryMap.clear();
 			}
@@ -250,7 +252,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			queryMap.clear();
 			excludedCampaigns.clear();
 		}
-		
+
 		public BidInfo generateBid(AdxQuery query) {
 			WheelSampler<BidEntry> sampler = queryMap.get(query);
 			if (sampler == null) {
@@ -262,7 +264,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 					sampler.addState(bidEntry.getWeight(), bidEntry);
 				}
 			}
-			
+
 			BidEntry sample = sampler.getSample();
 			if (sample == null) {
 				return null;
@@ -278,32 +280,39 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			private AdxQuery adxQuery;
 			private Set<Integer> excludedCampaigns;
 
-			public BidPredicate(AdxQuery adxQuery, Set<Integer> excludedCampaigns) {
+			public BidPredicate(AdxQuery adxQuery,
+					Set<Integer> excludedCampaigns) {
 				this.adxQuery = adxQuery;
 				this.excludedCampaigns = excludedCampaigns;
 			}
 
 			public boolean apply(BidEntry input) {
 				return (((!Sets.intersection(adxQuery.getMarketSegments(),
-						input.getMarketSegments()).isEmpty())
-						|| (adxQuery.getMarketSegments().size() == 0 && input
-								.getMarketSegments().size() == 0))
-						/* exclude campaigns over limit */
-						&& (
-							!excludedCampaigns.contains(input.getCampaignId())
-						));
+						input.getMarketSegments()).isEmpty()) || (adxQuery
+						.getMarketSegments().size() == 0 && input
+						.getMarketSegments().size() == 0))
+				/* exclude campaigns over limit */
+				&& (!excludedCampaigns.contains(input.getCampaignId())));
 			}
 		}
 
 		private synchronized void doAddQuery(BidEntry entry) {
-			if (entry.getKey().getPublisher().equals(AdxBidBundle.CMP_DSL)) {
-				/* it is a piggybacked set campaig limit command: notify */		
-				
-				AdxManager.getInstance().getSimulation().getEventBus().post(
-						new CampaignLimitSet(entry.getCampaignId(), advertiser, entry.getWeight() , entry.getDailyLimit()));
+			if (entry.getKey().getPublisher().startsWith(AdxBidBundle.CMP_DSL)) {
+				/* it is a piggybacked set campaig limit command: notify */
+				System.out.println("ADN: " + advertiser + " Cnmpaign id: "
+						+ entry.getCampaignId() + " impression lmit: "
+						+ entry.getWeight() + " budget limit: "
+						+ entry.getDailyLimit());
+				AdxManager
+						.getInstance()
+						.getSimulation()
+						.getEventBus()
+						.post(new CampaignLimitSet(entry.getCampaignId(),
+								advertiser, entry.getWeight(), entry
+										.getDailyLimit()));
 
 			} else {
-			    querySet.add(entry);
+				querySet.add(entry);
 			}
 		}
 

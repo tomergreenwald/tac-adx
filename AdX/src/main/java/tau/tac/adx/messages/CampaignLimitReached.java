@@ -18,4 +18,13 @@ public class CampaignLimitReached implements AdxMessage {
 		return AdNetwork;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CampaignLimitReached [campaignId=" + campaignId
+				+ ", AdNetwork=" + AdNetwork + "]";
+	}
+
 }
