@@ -26,6 +26,9 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	int effectiveDay;
 	double serviceLevel;
 	double price;
+	
+	/* quality score data */
+	double qualityScore;
 
 	/* campaign allocation data */
 	int campaignId;
@@ -33,17 +36,21 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	double cost;
 
 	public AdNetworkDailyNotification(int effectiveDay, double serviceLevel,
-			double price, int campaignId, String winner, long cost) {
+			double price, double qualityScore, int campaignId, String winner, long cost) {
 		this.effectiveDay = effectiveDay;
 		this.serviceLevel = serviceLevel;
 		this.price = price;
+		this.qualityScore = qualityScore;
 		this.campaignId = campaignId;
 		this.winner = winner;
 		this.cost = cost;
 	}
 
 	public AdNetworkDailyNotification(
-			UserClassificationServiceAdNetData ucsData, Campaign campaign) {
+			UserClassificationServiceAdNetData ucsData, Campaign campaign, double qualityScore) {
+		
+		this.qualityScore = qualityScore; 
+
 		if (ucsData != null) {
 			this.effectiveDay = ucsData.getEffectiveDay();
 			this.serviceLevel = ucsData.getServiceLevel();
@@ -73,6 +80,10 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		return price;
 	}
 
+	public double getQualityScore() {
+		return qualityScore;
+	}
+
 	public int getCampaignId() {
 		return campaignId;
 	}
@@ -97,6 +108,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		effectiveDay = reader.getAttributeAsInt("effectiveDay");
 		serviceLevel = reader.getAttributeAsDouble("serviceLevel");
 		price = reader.getAttributeAsDouble("price");
+		qualityScore = reader.getAttributeAsDouble("qualityScore");
 		campaignId = reader.getAttributeAsInt("campaignId");
 		winner = reader.getAttribute("winner");
 		cost = reader.getAttributeAsDouble("cost");
@@ -107,6 +119,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	public void write(TransportWriter writer) {
 		writer.attr("effectiveDay", effectiveDay)
 				.attr("serviceLevel", serviceLevel).attr("price", price)
+				.attr("qualityScore", qualityScore)
 				.attr("campaignId", campaignId).attr("winner", winner)
 				.attr("cost", cost);
 		super.write(writer);
@@ -121,6 +134,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	public String toString() {
 		return "AdNetworkDailyNotification [effectiveDay=" + effectiveDay
 				+ ", serviceLevel=" + serviceLevel + ", price=" + price
+				+ ", qualityScore=" + qualityScore
 				+ ", campaignId=" + campaignId + ", winner=" + winner
 				+ ", cost=" + cost + "]";
 	}

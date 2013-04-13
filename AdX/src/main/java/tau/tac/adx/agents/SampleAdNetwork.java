@@ -234,6 +234,7 @@ public class SampleAdNetwork extends Agent {
 
 		/*
 		 * Adjust ucs bid s.t. target level is achieved.
+		 * Note: The bid for the user classification service is piggybacked
 		 */
 
 		if (adNetworkDailyNotification != null) {
@@ -249,9 +250,7 @@ public class SampleAdNetwork extends Agent {
 			log.info("Day " + day + ": Initial ucs bid is " + ucsBid);
 		}
 
-		/*
-		 * the bid for the user classification service is piggybacked
-		 */
+		/* Note: Campaign bid is in millis */
 		AdNetBidMessage bids = new AdNetBidMessage(ucsBid, pendingCampaign.id,
 				cmpBid);
 		sendMessage(demandAgentAddress, bids);
@@ -296,7 +295,8 @@ public class SampleAdNetwork extends Agent {
 
 		log.info("Day " + day + ": " + campaignAllocatedTo
 				+ ". UCS Level set to " + notificationMessage.getServiceLevel()
-				+ " at price " + notificationMessage.getPrice());
+				+ " at price " + notificationMessage.getPrice()
+				+ " Qualit Score is: " + notificationMessage.getQualityScore());
 	}
 
 	/**
@@ -323,12 +323,13 @@ public class SampleAdNetwork extends Agent {
 
 			int dayBiddingFor = day + 1;
 
-			/* a random bid, for all queries */
-			/* bidding (CPM) randomly in (0.001,1) */
+			/* A fixed random bid, for all queries of the campaign */
+			/* Note: bidding per 1000 imps (CPM) - no more than average budget revenue per imp */
+			
 			Random rnd = new Random();
-			long nextLong = rnd.nextLong();
-			double rbid = ((1 + nextLong) % 1000) / 1000.0;
-
+			double avgCmpRevenuePerImp = campaign.budget / campaign.reachImps; 
+			double rbid = 1000.0*rnd.nextDouble()*avgCmpRevenuePerImp;
+			
 			/*
 			 * add bid entries w.r.t. each active campaign with remaining
 			 * contracted impressions.

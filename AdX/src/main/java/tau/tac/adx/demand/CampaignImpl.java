@@ -186,9 +186,14 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 		todays = new CampaignStats(0.0, 0.0, 0.0);
 		totals = new CampaignStats(0.0, 0.0, 0.0);
-		AdxManager.getInstance().getSimulation().getEventBus().register(this);
 	}
 
+	@Override
+	public void registerToEventBus() {
+		AdxManager.getInstance().getSimulation().getEventBus().register(this);		
+	}
+
+	
 	@Override
 	public Double getBudget() {
 		return budget;
@@ -359,7 +364,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 			advertiser = advNames[indices[0]];
 
-			double reserveScore = 1000.0 / (RESERVE_BUDGET_FACTOR * reachImps);
+			double reserveScore = 1.0 / (RESERVE_BUDGET_FACTOR * reachImps);
 
 			if (advCount == 1)
 				bsecond = reserveScore;
@@ -367,7 +372,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
 						: reserveScore;
 
-			budget = new Double(qualityScores[indices[0]] / bsecond);
+				budget = new Double(qualityScores[indices[0]] / (1000.0*bsecond));
 		}
 	}
 

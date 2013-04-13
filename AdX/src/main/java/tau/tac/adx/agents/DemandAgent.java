@@ -95,6 +95,8 @@ public class DemandAgent extends Builtin {
 						day + 1 + CMP_LENGTHS[random.nextInt(3)],
 				MarketSegment.randomMarketSegment(), ALOC_CMP_VC, ALOC_CMP_MC);
 
+		pendingCampaign.registerToEventBus();
+		
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
 		getSimulation().sendCampaignOpportunity(
 				new CampaignOpportunityMessage(pendingCampaign, day));
@@ -127,7 +129,7 @@ public class DemandAgent extends Builtin {
 			
 			
 			AdNetworkDailyNotification adNetworkNotification = new AdNetworkDailyNotification(
-					ucs.getAdNetData(advertiser), pendingCampaign);
+					ucs.getAdNetData(advertiser), pendingCampaign, qualityManager.getQualityScore(advertiser));
 
 			/* remove campaign cost for non-winning advertisers */
 			if (!advertiser.equals(pendingCampaign.getAdvertiser())) {

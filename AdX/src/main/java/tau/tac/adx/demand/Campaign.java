@@ -55,7 +55,7 @@ public interface Campaign extends TimeListener {
  */
 	Double getBudget();
 
-	public boolean isOverTodaysLimit();
+	boolean isOverTodaysLimit();
 	
 /**
  * Update an impression allocated to this campaign
@@ -114,6 +114,8 @@ public interface Campaign extends TimeListener {
 
 	CampaignStats getTotals();
 	
-	public int getImpressionLimit();
+	int getImpressionLimit();
+	
+	void registerToEventBus();
 
 }
