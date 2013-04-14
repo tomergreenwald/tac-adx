@@ -176,7 +176,6 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 	@Override
 	public void updateBids(String advertiser, AdxBidBundle bundle) {
-		System.out.println();
 		int index = ArrayUtils.indexOf(advertisers, 0, advertisersCount,
 				advertiser);
 
@@ -242,7 +241,6 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		@Subscribe
 		public void limitReached(CampaignLimitReached message) {
 			if (message.getAdNetwork().equals(advertiser)) {
-				System.out.println(message);
 				excludedCampaigns.add(message.getCampaignId());
 				queryMap.clear();
 			}
@@ -301,10 +299,6 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		private synchronized void doAddQuery(BidEntry entry) {
 			if (entry.getKey().getPublisher().startsWith(AdxBidBundle.CMP_DSL)) {
 				/* it is a piggybacked set campaig limit command: notify */
-				System.out.println("ADN: " + advertiser + " Cnmpaign id: "
-						+ entry.getCampaignId() + " impression lmit: "
-						+ entry.getWeight() + " budget limit: "
-						+ entry.getDailyLimit());
 				AdxManager
 						.getInstance()
 						.getSimulation()

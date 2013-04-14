@@ -125,8 +125,6 @@ public class DemandAgent extends Builtin {
 					if (campaign.isAllocated()
 							&& (campaign.getDayStart() < date)
 							&& (advertiser.equals(campaign.getAdvertiser()))) {
-						System.out.println("camp[aign: " + campaign.getId()
-								+ " totals: " + campaign.getTotals());
 						report.addStatsEntry(campaign.getId(),
 						// campaign.getStats(campaign.getDayStart(), date-1));
 								campaign.getTotals());

@@ -379,9 +379,6 @@ public class SampleAdNetwork extends Agent {
 				double impressionLimit = 0.5 * campaign.impsTogo();
 				double budgetLimit = 0.5 * Math.max(0, campaign.budget
 						- campaign.stats.getCost());
-				System.out.println(this.getName() + "cmapaign id: "
-						+ campaign.id + " set campaign limit: "
-						+ impressionLimit + " budget limit: " + budgetLimit);
 				bidBundle.setCampaignDailyLimit(campaign.id,
 						(int) impressionLimit, budgetLimit);
 				entrySum += entCount;
@@ -391,8 +388,6 @@ public class SampleAdNetwork extends Agent {
 		}
 
 		if (bidBundle != null) {
-			System.out.println(this.getName() + " campaigns left"
-					+ (bidBundle.size() - entrySum - myCampaigns.size()));
 			sendMessage(adxAgentAddress, bidBundle);
 		}
 	}
