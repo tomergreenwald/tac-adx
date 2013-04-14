@@ -56,7 +56,8 @@ public class SimpleAuctionManager implements AuctionManager {
 		Set<MarketSegment> marketSegments = Sets.intersection(
 				query.getMarketSegments(), winningBid.getMarketSegments());
 		adjustedWinningBid.setMarketSegments(marketSegments);
-		return calculateAuctionResult(adjustedWinningBid, secondBid, auctionData);
+		return calculateAuctionResult(adjustedWinningBid, secondBid,
+				auctionData);
 	}
 
 	/**
@@ -125,10 +126,12 @@ public class SimpleAuctionManager implements AuctionManager {
 		}
 		if (winningBid.equals(initializeByAuctionOrder(auctionData
 				.getAuctionOrder()))) {
-			return new AdxAuctionResult(AuctionState.NO_BIDS, null, Double.NaN, participants);
+			return new AdxAuctionResult(AuctionState.NO_BIDS, null, Double.NaN,
+					participants);
 		}
 		if (!passedReservePrice(winningBid, auctionData)) {
-			return new AdxAuctionResult(AuctionState.LOW_BIDS, null, null, participants);
+			return new AdxAuctionResult(AuctionState.LOW_BIDS, null, null,
+					participants);
 		}
 		switch (auctionData.getAuctionPriceType()) {
 		case GENERALIZED_FIRST_PRICE:
@@ -137,7 +140,7 @@ public class SimpleAuctionManager implements AuctionManager {
 		case GENERALIZED_SECOND_PRICE:
 			double winningPrice;
 			if (!passedReservePrice(secondBid, auctionData)) {
-				winningPrice = winningBid.getBid();
+				winningPrice = auctionData.getReservePrice();
 			} else {
 				winningPrice = secondBid.getBid();
 			}
