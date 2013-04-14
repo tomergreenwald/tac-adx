@@ -13,6 +13,7 @@ import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.users.AdxUser;
 
 public interface Campaign extends TimeListener {
 /**
@@ -54,14 +55,16 @@ public interface Campaign extends TimeListener {
  */
 	Double getBudget();
 
+	boolean isOverTodaysLimit();
+	
 /**
  * Update an impression allocated to this campaign
- * @param segment
+ * @param adxUser
  * @param adType
  * @param device
  * @param double1 : paid to the Publisher as determined by AdX auction (in milli units)
  */
-	void impress(MarketSegment segment, AdType adType, Device device, long double1);
+	void impress(AdxUser adxUser, AdType adType, Device device, double cost);
 
 /**
  * 	
@@ -106,5 +109,13 @@ public interface Campaign extends TimeListener {
 	double getMobileCoef();
 	
 	int getId();
+
+	void preNextTimeUnit(int date);
+
+	CampaignStats getTotals();
+	
+	int getImpressionLimit();
+	
+	void registerToEventBus();
 
 }

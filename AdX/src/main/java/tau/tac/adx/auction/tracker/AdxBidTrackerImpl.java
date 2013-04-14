@@ -27,26 +27,25 @@ package tau.tac.adx.auction.tracker;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.hamcrest.Matchers;
-
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.bids.Bidder;
+import tau.tac.adx.messages.CampaignLimitReached;
+import tau.tac.adx.messages.CampaignLimitSet;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxBidBundle.BidEntry;
 import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.report.adn.MarketSegment;
-import ch.lambdaj.Lambda;
+import tau.tac.adx.sim.TACAdxSimulation;
 
 import com.botbox.util.ArrayUtils;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import edu.umich.eecs.tac.props.Ad;
@@ -176,6 +175,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 	@Override
 	public void updateBids(String advertiser, AdxBidBundle bundle) {
+		System.out.println();
 		int index = ArrayUtils.indexOf(advertisers, 0, advertisersCount,
 				advertiser);
 
@@ -221,6 +221,8 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		private double campaignSpendLimit;
 		private final Bidder bidder;
 
+		private Set<Integer> excludedCampaigns = new HashSet<Integer>();
+
 		public AdxQueryBid(final String advertiser, int queryCount) {
 			this.advertiser = advertiser;
 			spendLimits = new double[queryCount];
@@ -233,11 +235,22 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 					return advertiser;
 				}
 			};
+			TACAdxSimulation.eventBus.register(this);
+		}
+
+		@Subscribe
+		public void limitReached(CampaignLimitReached message) {
+			if (message.getAdNetwork().equals(advertiser)) {
+				System.out.println(message);
+				excludedCampaigns.add(message.getCampaignId());
+				queryMap.clear();
+			}
 		}
 
 		public void clearQueries() {
 			querySet.clear();
 			queryMap.clear();
+			excludedCampaigns.clear();
 		}
 
 		public BidInfo generateBid(AdxQuery query) {
@@ -245,20 +258,13 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			if (sampler == null) {
 				sampler = new WheelSampler<AdxBidBundle.BidEntry>();
 				queryMap.put(query, sampler);
-				// for (MarketSegment marketSegment : query.getMarketSegments())
-				// {
-				// List<BidEntry> select = Lambda.select(querySet, Lambda
-				// .having(Lambda.on(BidEntry.class)
-				// .getMarketSegment(), Matchers
-				// .equalTo(marketSegment)));
-				// Filter by device and types, advertiesr
-				Collection<BidEntry> filteredQueries = Collections2.filter(querySet,
-						new BidPredicate(query));
+				Collection<BidEntry> filteredQueries = Collections2.filter(
+						querySet, new BidPredicate(query, excludedCampaigns));
 				for (BidEntry bidEntry : filteredQueries) {
 					sampler.addState(bidEntry.getWeight(), bidEntry);
 				}
-				// }
 			}
+
 			BidEntry sample = sampler.getSample();
 			if (sample == null) {
 				return null;
@@ -272,19 +278,42 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		private class BidPredicate implements Predicate<BidEntry> {
 
 			private AdxQuery adxQuery;
+			private Set<Integer> excludedCampaigns;
 
-			public BidPredicate(AdxQuery adxQuery) {
+			public BidPredicate(AdxQuery adxQuery,
+					Set<Integer> excludedCampaigns) {
 				this.adxQuery = adxQuery;
+				this.excludedCampaigns = excludedCampaigns;
 			}
 
 			public boolean apply(BidEntry input) {
-				return ! Sets.intersection(adxQuery.getMarketSegments(), input.getMarketSegments()).isEmpty();
+				return (((!Sets.intersection(adxQuery.getMarketSegments(),
+						input.getMarketSegments()).isEmpty()) || (adxQuery
+						.getMarketSegments().size() == 0 && input
+						.getMarketSegments().size() == 0))
+				/* exclude campaigns over limit */
+				&& (!excludedCampaigns.contains(input.getCampaignId())));
 			}
-
 		}
 
 		private synchronized void doAddQuery(BidEntry entry) {
-			querySet.add(entry);
+			if (entry.getKey().getPublisher().startsWith(AdxBidBundle.CMP_DSL)) {
+				/* it is a piggybacked set campaig limit command: notify */
+				System.out.println("ADN: " + advertiser + " Cnmpaign id: "
+						+ entry.getCampaignId() + " impression lmit: "
+						+ entry.getWeight() + " budget limit: "
+						+ entry.getDailyLimit());
+				AdxManager
+						.getInstance()
+						.getSimulation()
+						.getEventBus()
+						.post(new CampaignLimitSet(entry.getCampaignId(),
+								advertiser, entry.getWeight(), entry
+										.getDailyLimit()));
+
+			} else {
+				querySet.add(entry);
+			}
 		}
 
 		// TODO: uncomment me

@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import tau.tac.adx.auction.data.AuctionState;
+import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.messages.AuctionMessage;
 
 import com.google.common.eventbus.EventBus;
@@ -85,16 +86,19 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 */
 	@Subscribe
 	public void auctionPerformed(AuctionMessage message) {
-		if (message.getAuctionResult().getAuctionState() == AuctionState.AUCTION_COPMLETED) {
-			String bidder = message.getAuctionResult().getWinningBidInfo()
-					.getBidder().getName();
-			AdNetworkReport report = adNetworkReports.get(bidder);
+		for (String participant : message.getAuctionResult().getParticipants()) {
+			AdNetworkReport report = adNetworkReports.get(participant);
 			if (report == null) {
 				report = new AdNetworkReport();
-				adNetworkReports.put(bidder, report);
+				adNetworkReports.put(participant, report);
+			}
+			boolean hasWon = false;
+			BidInfo winningBidInfo = message.getAuctionResult().getWinningBidInfo();
+			if (winningBidInfo != null) {
+				hasWon = winningBidInfo.getBidder().getName().equals(participant);
 			}
 			report.addBid(message.getAuctionResult(), message.getQuery(),
-					message.getUser());
+					message.getUser(), hasWon);
 		}
 	}
 

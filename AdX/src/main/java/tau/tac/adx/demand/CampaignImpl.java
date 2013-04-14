@@ -7,12 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.messages.CampaignLimitSet;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.users.AdxUser;
+
+import com.google.common.eventbus.Subscribe;
 
 public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final Logger log = Logger.getLogger(CampaignImpl.class.getName());
@@ -45,6 +50,111 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	protected int day;
 	private CampaignStats todays;
 	private CampaignStats totals;
+
+	private Double budgetlimit;
+	private int impressionLimit;
+
+	/**
+	 * @return the log
+	 */
+	public Logger getLog() {
+		return log;
+	}
+
+	/**
+	 * @return the erra
+	 */
+	public static double getErra() {
+		return ERRA;
+	}
+
+	/**
+	 * @return the errb
+	 */
+	public static double getErrb() {
+		return ERRB;
+	}
+
+	/**
+	 * @return the defaultBudgetFactor
+	 */
+	public static Long getDefaultBudgetFactor() {
+		return DEFAULT_BUDGET_FACTOR;
+	}
+
+	/**
+	 * @return the qualityManager
+	 */
+	public QualityManager getQualityManager() {
+		return qualityManager;
+	}
+
+	/**
+	 * @return the reserveBudgetFactor
+	 */
+	public static double getReserveBudgetFactor() {
+		return RESERVE_BUDGET_FACTOR;
+	}
+
+	/**
+	 * @return the advertisersBids
+	 */
+	public Map<String, Long> getAdvertisersBids() {
+		return advertisersBids;
+	}
+
+	/**
+	 * @return the day
+	 */
+	public int getDay() {
+		return day;
+	}
+
+	/**
+	 * @return the todays
+	 */
+	public CampaignStats getTodays() {
+		return todays;
+	}
+
+	/**
+	 * @return the budgetlimit
+	 */
+	public Double getBudgetlimit() {
+		return budgetlimit;
+	}
+
+	/**
+	 * @return the impressionLimit
+	 */
+	public int getImpressionLimit() {
+		return impressionLimit;
+	}
+
+	/**
+	 * @return the tomorrowsBudgetLimit
+	 */
+	public Double getTomorrowsBudgetLimit() {
+		return tomorrowsBudgetLimit;
+	}
+
+	/**
+	 * @return the tomorrowsImpressionLimit
+	 */
+	public int getTomorrowsImpressionLimit() {
+		return tomorrowsImpressionLimit;
+	}
+
+	/**
+	 * @return the dayStats
+	 */
+	public SortedMap<Integer, CampaignStats> getDayStats() {
+		return dayStats;
+	}
+
+	private Double tomorrowsBudgetLimit;
+	private int tomorrowsImpressionLimit;
+
 	private final SortedMap<Integer, CampaignStats> dayStats;
 
 	public CampaignImpl(QualityManager qualityManager, int reachImps,
@@ -59,8 +169,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		advertisersBids = new HashMap<String, Long>();
 		budget = null;
 		advertiser = null;
-
-		day = 0;
+		budgetlimit = Double.POSITIVE_INFINITY;
+		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+		impressionLimit = Integer.MAX_VALUE;
+		tomorrowsImpressionLimit = Integer.MAX_VALUE;
+		/* the first day for the campaign to be collecting statistics */
+		day = dayStart;
 
 		this.qualityManager = qualityManager;
 		this.reachImps = (long) reachImps;
@@ -71,8 +185,15 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		this.mobileCoef = mobileCoef;
 
 		todays = new CampaignStats(0.0, 0.0, 0.0);
+		totals = new CampaignStats(0.0, 0.0, 0.0);
 	}
 
+	@Override
+	public void registerToEventBus() {
+		AdxManager.getInstance().getSimulation().getEventBus().register(this);		
+	}
+
+	
 	@Override
 	public Double getBudget() {
 		return budget;
@@ -86,13 +207,27 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public int getDayStart() {
 		return dayStart;
-
 	}
 
 	@Override
 	public int getDayEnd() {
 		return dayEnd;
 
+	}
+
+	// public void setTodaysBudgetLimit(Double l) {
+	// this.budgetlimit = l;
+	// }
+
+	public void setTomorowsLimit(CampaignLimitSet message) {
+		this.tomorrowsBudgetLimit = message.getBudgetLimit();
+		this.tomorrowsImpressionLimit = message.getImpressionLimit();
+	}
+
+	public boolean isOverTodaysLimit() {
+		return (budgetlimit < totals.cost + todays.cost)
+				|| (impressionLimit < totals.tartgetedImps
+						+ todays.tartgetedImps);
 	}
 
 	@Override
@@ -114,18 +249,22 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void impress(MarketSegment segment, AdType adType, Device device,
-			long costMillis) {
+	public void impress(AdxUser adxUser, AdType adType, Device device,
+			double costPerMille) {
 		if (isAllocated()) {
-			todays.cost += costMillis / 1000.0;
+			todays.cost += costPerMille / 1000.0;
+			if (todays.cost > budgetlimit) {
+				int i = 0;
+			}
 
-			double imps = (device == Device.mobile ? mobileCoef : 1)
-					* (adType == AdType.video ? videoCoef : 1);
+			double imps = (device == Device.mobile ? mobileCoef : 1.0)
+					* (adType == AdType.video ? videoCoef : 1.0);
 
-			if (segment == targetSegment)
+			if (MarketSegment.extractSegment(adxUser).contains(targetSegment)) {
 				todays.tartgetedImps += imps;
-			else
+			} else {
 				todays.otherImps += imps;
+			}
 		}
 	}
 
@@ -136,12 +275,30 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void nextTimeUnit(int timeUnit) {
+	public void preNextTimeUnit(int timeUnit) {
 		dayStats.put(day, todays);
 		day = timeUnit;
+		budgetlimit = tomorrowsBudgetLimit;
+		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+		impressionLimit = tomorrowsImpressionLimit;
+		if (todays.tartgetedImps > impressionLimit + 10
+				&& impressionLimit != (int) Double.POSITIVE_INFINITY) {
+			String s = "\nbudgetlimit: " + budgetlimit + "totals.cost: "
+					+ totals.cost + "todays.cost: " + todays.cost
+					+ "impressionLimit: " + impressionLimit
+					+ "totals.tartgetedImps: " + totals.tartgetedImps
+					+ "todays.tartgetedImps: " + todays.tartgetedImps+"\n";
+			throw new RuntimeException("campaign id: " + this.id + " "
+					+ todays.toString() + " impresssion limit: "
+					+ this.impressionLimit+s);
+		}
+		totals = totals.add(todays);
+		if (totals.tartgetedImps > 1300) {
+			int i = 0;
+		}
+		tomorrowsImpressionLimit = Integer.MAX_VALUE;
 		todays = new CampaignStats(0.0, 0.0, 0.0);
 		if (day == dayEnd + 1) { /* was last day - update quality score */
-			totals = getStats(dayStart, dayEnd);
 			double effectiveReachRatio = effectiveReachRatio(totals.tartgetedImps);
 			qualityManager.updateQualityScore(advertiser, effectiveReachRatio);
 			AdxManager
@@ -149,6 +306,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 					.getSimulation()
 					.broadcastAdNetworkRevenue(advertiser,
 							effectiveReachRatio * budget);
+
+			log.log(Level.INFO, "Campaign " + id + " ended for advertiser "
+					+ advertiser + ". Stats " + totals + " Reach " + reachImps
+					+ " ERR " + effectiveReachRatio + " Budget " + budget
+					+ " Revenue " + effectiveReachRatio * budget);
 		}
 	}
 
@@ -160,7 +322,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public void addAdvertiserBid(String advertiser, Long budgetBid) {
 		/* bids above the reserve budget are not considered */
-		if ((budgetBid > 0) && (budgetBid <= RESERVE_BUDGET_FACTOR * reachImps))
+		if ((budgetBid > 0)
+				&& (budgetBid <= (RESERVE_BUDGET_FACTOR * reachImps)))
 			advertisersBids.put(advertiser, budgetBid);
 	}
 
@@ -171,7 +334,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public void allocateToAdvertiser(String advertiser) {
-		budget = new Double(reachImps * DEFAULT_BUDGET_FACTOR);
+		budget = new Double(reachImps * DEFAULT_BUDGET_FACTOR) / 1000.0;
 		this.advertiser = advertiser;
 	}
 
@@ -201,7 +364,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 			advertiser = advNames[indices[0]];
 
-			double reserveScore = 1 / (RESERVE_BUDGET_FACTOR * reachImps);
+			double reserveScore = 1.0 / (RESERVE_BUDGET_FACTOR * reachImps);
 
 			if (advCount == 1)
 				bsecond = reserveScore;
@@ -209,7 +372,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
 						: reserveScore;
 
-			budget = new Double(qualityScores[indices[0]] / bsecond);
+				budget = new Double(qualityScores[indices[0]] / (1000.0*bsecond));
 		}
 	}
 
@@ -244,9 +407,18 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 																	 */
 		SortedMap<Integer, CampaignStats> daysRangeStats = dayStats.subMap(
 				timeUnitFrom, timeUnitTo + 1);
+
 		return AccumulatorImpl.accumulate(this,
 				new ArrayList<CampaignStats>(daysRangeStats.values()),
 				new CampaignStats(0.0, 0.0, 0.0)).add(current);
+	}
+
+	@Subscribe
+	public void limitSet(CampaignLimitSet message) {
+		if ((message.getCampaignId() == id)
+				&& (message.getAdNetwork().equals(advertiser))) {
+			setTomorowsLimit(message);
+		}
 	}
 
 	@Override
@@ -274,6 +446,20 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				+ ", advertiser=" + advertiser + ", day=" + day + ", todays="
 				+ todays + ", totals=" + totals + ", dayStats=" + dayStats
 				+ "]";
+	}
+
+	@Override
+	public void nextTimeUnit(int timeUnit) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public CampaignStats getTotals() {
+		if (totals.getTargetedImps() > 1300) {
+			int i = 0;
+		}
+		return totals;
 	}
 
 }

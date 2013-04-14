@@ -31,14 +31,6 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.users.AdxUser;
 import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
 
-/**
- * Query report contains impressions, clicks, cost, average position, and ad
- * displayed by the advertiser for each query class during the period as well as
- * the positions and displayed ads of all advertisers during the period for each
- * query class.
- * 
- * @author Ben Cassell, Patrick Jordan, Lee Callender
- */
 public class AdNetworkReport extends
 		AbstractKeyedEntryList<AdNetworkKey, AdNetworkReportEntry> {
 
@@ -102,9 +94,8 @@ public class AdNetworkReport extends
 	 *            {@link AdxQuery}.
 	 * @return Corresponding {@link AdNetworkKey}.
 	 */
-	private AdNetworkKey getAdNetworkKey(MarketSegment marketSegment,
-			AdxQuery query) {
-		return new AdNetworkKey(marketSegment, query.getPublisher(),
+	private AdNetworkKey getAdNetworkKey(AdxUser adxUser, AdxQuery query) {
+		return new AdNetworkKey(adxUser, query.getPublisher(),
 				query.getDevice(), query.getAdType());
 	}
 
@@ -117,18 +108,16 @@ public class AdNetworkReport extends
 	 *            {@link AdxQuery}.
 	 * @param user
 	 *            {@link AdxUser}.
+	 * @param hasWon 
 	 */
 	public void addBid(AdxAuctionResult auctionResult, AdxQuery query,
-			AdxUser user) {
-		Set<MarketSegment> marketSegments = MarketSegment.extractSegment(user);
-		for (MarketSegment marketSegment : marketSegments) {
-			AdNetworkKey adNetworkKey = getAdNetworkKey(marketSegment, query);
-			AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);
-			if (reportEntry == null) {
-				reportEntry = addReportEntry(adNetworkKey);
-			}
-			reportEntry.addAuctionResult(auctionResult);
+			AdxUser user, boolean hasWon) {
+		AdNetworkKey adNetworkKey = getAdNetworkKey(user, query);
+		AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);
+		if (reportEntry == null) {
+			reportEntry = addReportEntry(adNetworkKey);
 		}
+		reportEntry.addAuctionResult(auctionResult, hasWon);
 	}
 
 	/**
@@ -141,6 +130,6 @@ public class AdNetworkReport extends
 		for (AdNetworkReportEntry adNetworkReportEntry : getEntries()) {
 			result = result + adNetworkReportEntry.getCost();
 		}
-		return result;
+		return result / 1000;
 	}
 }

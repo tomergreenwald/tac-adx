@@ -38,8 +38,6 @@ import edu.umich.eecs.tac.auction.BidManager;
  */
 public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	
-	private static Set<MarketSegment> emptySegments  = new HashSet<MarketSegment>(Collections.singletonList(MarketSegment.NONE));
-
 	/**
 	 * {@link AuctionManager}.
 	 */
@@ -109,7 +107,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 			return query;
 		}
 		AdxQuery clone = query.clone();
-		clone.setMarketSegments(emptySegments);
+		clone.setMarketSegments(new HashSet<MarketSegment>());
 		// return clone;
 		return query;
 	}

@@ -66,7 +66,8 @@ public class DistributionUserGenerator implements AdxUserGenerator {
 		Age age = ageGenerator.randomType();
 		Gender gender = genderGenerator.randomType();
 		Income income = incomeGenerator.randomType();
-		double pContinue = Math.random();
+		//FIXME export to configuration
+		double pContinue = 0.1;
 		AdxUser user = new AdxUser(age, gender, income, pContinue, uniqueId);
 		uniqueId++;
 		return user;
