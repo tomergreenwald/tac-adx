@@ -43,6 +43,7 @@ import edu.umich.eecs.tac.props.AdvertiserInfo;
  * The agent repository holds references to all agents in the TAC/AA simulation.
  * 
  * @author Patrick Jordan
+ * @author greenwald
  */
 public interface AdxAgentRepository {
 	/**

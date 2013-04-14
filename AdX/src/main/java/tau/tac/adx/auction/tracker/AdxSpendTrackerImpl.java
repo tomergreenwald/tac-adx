@@ -32,6 +32,7 @@ import com.botbox.util.ArrayUtils;
 import com.google.inject.Inject;
 
 /**
+ * @author greenwald
  * @author Patrick Jordan
  */
 public class AdxSpendTrackerImpl implements AdxSpendTracker {

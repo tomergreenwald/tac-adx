@@ -32,6 +32,7 @@ import edu.umich.eecs.tac.props.QueryEntry;
  * This class provides a skeletal implementation of the {@link QueryEntry}
  * interface.
  * 
+ * @author greenwald
  * @author Patrick Jordan
  */
 public abstract class AdxAbstractQueryEntry extends

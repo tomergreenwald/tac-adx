@@ -1,15 +1,20 @@
 package tau.tac.adx.messages;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class CampaignLimitReached implements AdxMessage {
 	int campaignId;
 	String AdNetwork;
-	
+
 	public CampaignLimitReached(int campaignId, String adNet) {
 		super();
 		this.campaignId = campaignId;
 		this.AdNetwork = adNet;
 	}
-	
+
 	public int getCampaignId() {
 		return campaignId;
 	}
@@ -18,7 +23,9 @@ public class CampaignLimitReached implements AdxMessage {
 		return AdNetwork;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

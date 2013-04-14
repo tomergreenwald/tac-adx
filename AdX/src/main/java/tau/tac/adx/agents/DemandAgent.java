@@ -2,7 +2,6 @@
  */
 package tau.tac.adx.agents;
 
-import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +32,11 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.eventbus.Subscribe;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class DemandAgent extends Builtin {
 
 	private int day;
@@ -86,17 +90,17 @@ public class DemandAgent extends Builtin {
 
 	private void createAndPublishTomorrowsPendingCampaign() {
 		/*
-		 * Create next campaign opportunity (to start on day + 2)  
-		 * and notify competing adNetwork agents
+		 * Create next campaign opportunity (to start on day + 2) and notify
+		 * competing adNetwork agents
 		 */
 
 		pendingCampaign = new CampaignImpl(qualityManager,
-				CMP_REACHS[random.nextInt(3)], day + 2, 
-						day + 1 + CMP_LENGTHS[random.nextInt(3)],
+				CMP_REACHS[random.nextInt(3)], day + 2, day + 1
+						+ CMP_LENGTHS[random.nextInt(3)],
 				MarketSegment.randomMarketSegment(), ALOC_CMP_VC, ALOC_CMP_MC);
 
 		pendingCampaign.registerToEventBus();
-		
+
 		log.log(Level.INFO, "Notifying new campaign opportunity..");
 		getSimulation().sendCampaignOpportunity(
 				new CampaignOpportunityMessage(pendingCampaign, day));
@@ -110,32 +114,36 @@ public class DemandAgent extends Builtin {
 		log.log(Level.INFO, "Pending campaign: " + pendingCampaign);
 
 		for (String advertiser : getAdxAdvertiserAddresses()) {
-			
-			/* we only report adx simulation results starting from day 2 (w.r.t. day 1) */
-			if (date >=2 ) {
-			   CampaignReport report = new CampaignReport();
-		   	   for (Campaign campaign : adNetCampaigns.values()) {
-				   if (campaign.isAllocated()
-						&& (campaign.getDayStart() < date)    
-						&& (advertiser.equals(campaign.getAdvertiser()))) {
-					   System.out.println("camp[aign: "+campaign.getId() + " totals: "+campaign.getTotals());
-					report.addStatsEntry(campaign.getId(),
-//							campaign.getStats(campaign.getDayStart(), date-1));
-							campaign.getTotals());
-				   }
-			   }
-			   getSimulation().sendCampaignReport(advertiser, report);
+
+			/*
+			 * we only report adx simulation results starting from day 2 (w.r.t.
+			 * day 1)
+			 */
+			if (date >= 2) {
+				CampaignReport report = new CampaignReport();
+				for (Campaign campaign : adNetCampaigns.values()) {
+					if (campaign.isAllocated()
+							&& (campaign.getDayStart() < date)
+							&& (advertiser.equals(campaign.getAdvertiser()))) {
+						System.out.println("camp[aign: " + campaign.getId()
+								+ " totals: " + campaign.getTotals());
+						report.addStatsEntry(campaign.getId(),
+						// campaign.getStats(campaign.getDayStart(), date-1));
+								campaign.getTotals());
+					}
+				}
+				getSimulation().sendCampaignReport(advertiser, report);
 			}
-			
-			
+
 			AdNetworkDailyNotification adNetworkNotification = new AdNetworkDailyNotification(
-					ucs.getAdNetData(advertiser), pendingCampaign, qualityManager.getQualityScore(advertiser));
+					ucs.getAdNetData(advertiser), pendingCampaign,
+					qualityManager.getQualityScore(advertiser));
 
 			/* remove campaign cost for non-winning advertisers */
 			if (!advertiser.equals(pendingCampaign.getAdvertiser())) {
 				adNetworkNotification.zeroCost();
-			} 
-			
+			}
+
 			getSimulation().sendUserClassificationAuctionResult(advertiser,
 					adNetworkNotification);
 		}
@@ -145,10 +153,11 @@ public class DemandAgent extends Builtin {
 		/*
 		 * Auction campaign and add to repository
 		 * 
-		 * on day 1 we auction the campaign starting on day 2 for which bids where received on day 0 
-		 * on day n we auction the campaign starting on day n+1 for which bids where received on day n-1
+		 * on day 1 we auction the campaign starting on day 2 for which bids
+		 * where received on day 0 on day n we auction the campaign starting on
+		 * day n+1 for which bids where received on day n-1
 		 * 
-		 * Note: the campaign (pendingCampaign) was created on day n-1 
+		 * Note: the campaign (pendingCampaign) was created on day n-1
 		 */
 		log.log(Level.INFO, "new day " + date + " . Auction pending campaign");
 		if (pendingCampaign != null) {
@@ -281,34 +290,47 @@ public class DemandAgent extends Builtin {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
-//			log.log(Level.INFO,"IMPRESSED ("+ cmpn.getId() + "," + cmpn.getAdvertiser() + ") segments:" + message.getAuctionResult().getMarketSegments());
+			// log.log(Level.INFO,"IMPRESSED ("+ cmpn.getId() + "," +
+			// cmpn.getAdvertiser() + ") segments:" +
+			// message.getAuctionResult().getMarketSegments());
 
-//			boolean wasOverLimit = cmpn.isOverTodaysLimit();
-						
-			cmpn.impress(message.getUser(), 
-					message.getQuery().getAdType(),
-					message.getQuery().getDevice(),
-					message.getAuctionResult().getWinningPrice()
-					);
-			
-//			if (cmpn.getTodayStats().getTargetedImps() > 10000) {
-//				int i = 0;
-//			}
-//
-//			if (wasOverLimit) {
-//				/* rare - should warn: not supposed to bid on over-limit campaigns */
-//				log.log(Level.WARNING, " Impressed while over limit: " + cmpn.getId());			
-//			} else
-				if (cmpn.isOverTodaysLimit()) {
+			// boolean wasOverLimit = cmpn.isOverTodaysLimit();
+
+			cmpn.impress(message.getUser(), message.getQuery().getAdType(),
+					message.getQuery().getDevice(), message.getAuctionResult()
+							.getWinningPrice());
+
+			// if (cmpn.getTodayStats().getTargetedImps() > 10000) {
+			// int i = 0;
+			// }
+			//
+			// if (wasOverLimit) {
+			// /* rare - should warn: not supposed to bid on over-limit
+			// campaigns */
+			// log.log(Level.WARNING, " Impressed while over limit: " +
+			// cmpn.getId());
+			// } else
+			if (cmpn.isOverTodaysLimit()) {
 				/* notify on transition campaign limit expiration */
 				getSimulation().getEventBus().post(
-						new CampaignLimitReached(cmpn.getId(), cmpn.getAdvertiser()));
-				System.out.println("Campaign limit expired Impressed while over limit: " + cmpn.getId()+", limit was: "+cmpn.getImpressionLimit() +" value is: "+cmpn.getTodayStats().getTargetedImps());
-				log.log(Level.INFO, " Campaign limit expired Impressed while over limit: " + cmpn.getId());			
+						new CampaignLimitReached(cmpn.getId(), cmpn
+								.getAdvertiser()));
+				System.out
+						.println("Campaign limit expired Impressed while over limit: "
+								+ cmpn.getId()
+								+ ", limit was: "
+								+ cmpn.getImpressionLimit()
+								+ " value is: "
+								+ cmpn.getTodayStats().getTargetedImps());
+				log.log(Level.INFO,
+						" Campaign limit expired Impressed while over limit: "
+								+ cmpn.getId());
 			}
 
 		} else {
-			log.log(Level.SEVERE, "IMPRESSED: Campaign Missing!!! " + message.getAuctionResult());			
+			log.log(Level.SEVERE,
+					"IMPRESSED: Campaign Missing!!! "
+							+ message.getAuctionResult());
 		}
 	}
 

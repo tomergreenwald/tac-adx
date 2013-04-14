@@ -3,8 +3,13 @@ package tau.tac.adx.report.demand;
 import tau.tac.adx.demand.CampaignStats;
 import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
 
-
-public class CampaignReport extends AbstractKeyedEntryList<CampaignReportKey, CampaignReportEntry>{
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
+public class CampaignReport extends
+		AbstractKeyedEntryList<CampaignReportKey, CampaignReportEntry> {
 
 	/**
 	 * 
@@ -21,13 +26,13 @@ public class CampaignReport extends AbstractKeyedEntryList<CampaignReportKey, Ca
 		return CampaignReportEntry.class;
 	}
 
-	
 	public String toMyString() {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (CampaignReportEntry entry : getEntries()) {
-			stringBuilder.append(entry.getKey()).append(" : ").append(entry).append("\n");
+			stringBuilder.append(entry.getKey()).append(" : ").append(entry)
+					.append("\n");
 		}
-		return "CampaignReport: "+stringBuilder;
+		return "CampaignReport: " + stringBuilder;
 	}
 
 	/**
@@ -38,7 +43,8 @@ public class CampaignReport extends AbstractKeyedEntryList<CampaignReportKey, Ca
 	 * @return {@link CampaignReportEntry}.
 	 * 
 	 */
-	public CampaignReportEntry addReportEntry(CampaignReportKey campaignReportKey) {
+	public CampaignReportEntry addReportEntry(
+			CampaignReportKey campaignReportKey) {
 		lockCheck();
 		int index = addKey(campaignReportKey);
 		return getEntry(index);
@@ -61,7 +67,7 @@ public class CampaignReport extends AbstractKeyedEntryList<CampaignReportKey, Ca
 	/**
 	 * Generates a {@link campaignReportKey} according to given parameters.
 	 * 
-	 * @param  id
+	 * @param id
 	 * @return Corresponding {@link CampaignReportKey}.
 	 */
 	private CampaignReportKey getKey(Integer id) {

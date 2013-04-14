@@ -24,6 +24,11 @@ import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
 
+/**
+ * 
+ * @author greenwald
+ * 
+ */
 public class AdxConfigurationParser {
 
 	private final ConfigManager config;

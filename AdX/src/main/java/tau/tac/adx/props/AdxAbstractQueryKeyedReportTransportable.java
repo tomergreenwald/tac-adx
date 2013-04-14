@@ -35,6 +35,7 @@ import edu.umich.eecs.tac.props.Query;
  * @param <T>
  *            the query entry class
  * 
+ * @author greenwald
  * @author Patrick Jordan
  */
 public abstract class AdxAbstractQueryKeyedReportTransportable<T extends AdxQueryEntry>

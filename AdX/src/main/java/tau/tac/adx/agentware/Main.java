@@ -28,6 +28,11 @@ import java.io.IOException;
 
 import se.sics.isl.util.ArgumentManager;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class Main {
 
 	private static String DEFAULT_HOST = "localhost";
@@ -46,9 +51,8 @@ public class Main {
 		config.addOption("agentName", "name", "set the agent name");
 		config.addOption("agentPassword", "password", "set the agent password");
 		config.addOption("agentImpl", "class", "set the agent implementation");
-		config
-				.addOption("autojoin", "numberOfTimes",
-						"set the number of times to automatically create and join simulations");
+		config.addOption("autojoin", "numberOfTimes",
+				"set the number of times to automatically create and join simulations");
 		config.addOption("log.consoleLevel", "level",
 				"set the console log level");
 		config.addOption("log.fileLevel", "level", "set the file log level");

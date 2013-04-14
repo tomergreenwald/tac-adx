@@ -37,6 +37,7 @@ import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
  * query class.
  * 
  * @author Ben Cassell, Patrick Jordan, Lee Callender
+ * @author greenwald
  */
 public class AdxPublisherReport extends
 		AbstractKeyedEntryList<PublisherCatalogEntry, AdxPublisherReportEntry> {
@@ -118,7 +119,8 @@ public class AdxPublisherReport extends
 	 * @return Corresponding {@link PublisherCatalogEntry}.
 	 */
 	private PublisherCatalogEntry getPublisherCatalogEntry(String publisher) {
-		return new PublisherCatalogEntry(AdxManager.getInstance().getPublisher(publisher));
+		return new PublisherCatalogEntry(AdxManager.getInstance().getPublisher(
+				publisher));
 	}
 
 	public void addQuery(AdxQuery query) {

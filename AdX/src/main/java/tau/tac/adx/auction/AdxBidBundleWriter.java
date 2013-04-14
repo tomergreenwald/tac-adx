@@ -27,7 +27,7 @@ package tau.tac.adx.auction;
 import tau.tac.adx.props.AdxBidBundle;
 
 /**
- * @author Patrick Jordan
+ * @author greenwald
  */
 public interface AdxBidBundleWriter {
 	void writeBundle(String advertiser, AdxBidBundle bundle);

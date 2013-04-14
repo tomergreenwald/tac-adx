@@ -60,7 +60,7 @@ import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
 /**
  * {@link UsersBehavior} implementation.
  * 
- * @author Patrick Jordan, Lee Callender
+ * @author greenwald
  */
 public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 
@@ -293,7 +293,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		Transportable content = message.getContent();
 		if (content instanceof AdxBidBundle) {
 			AdxBidBundle bundle = (AdxBidBundle) content;
-			log.fine("Recieved "+AdxBidBundle.class.getName()+": "+bundle);
+			log.fine("Recieved " + AdxBidBundle.class.getName() + ": " + bundle);
 			bidManager.updateBids(message.getSender(), bundle);
 		}
 	}

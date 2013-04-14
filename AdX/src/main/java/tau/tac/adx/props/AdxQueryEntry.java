@@ -31,6 +31,7 @@ import edu.umich.eecs.tac.props.KeyedEntry;
  * entry} whose key is a query.
  * 
  * @author Patrick Jordan
+ * @author greenwald, Mariano Schain
  */
 public interface AdxQueryEntry extends KeyedEntry<AdxQuery> {
 

@@ -13,6 +13,7 @@ import edu.umich.eecs.tac.props.Ad;
  * as the positions and displayed ads of all advertisers during the period.
  * 
  * @author Patrick Jordan, Lee Callender
+ * @author greenwald
  */
 public class AdxQueryReportEntry extends AbstractQueryEntry {
 	/**

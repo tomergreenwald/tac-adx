@@ -27,10 +27,14 @@ package tau.tac.adx.agentware;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.botbox.util.ArrayQueue;
 import se.sics.tasim.aw.Message;
 
+import com.botbox.util.ArrayQueue;
+
 /**
+ * 
+ * @author Mariano Schain
+ * 
  */
 public class MessageSender extends Thread {
 
@@ -38,7 +42,7 @@ public class MessageSender extends Thread {
 			.getName());
 
 	private final ServerConnection connection;
-	private ArrayQueue messageQueue = new ArrayQueue();
+	private final ArrayQueue messageQueue = new ArrayQueue();
 	private boolean isClosed = false;
 
 	public MessageSender(ServerConnection connection, String name) {
@@ -83,6 +87,7 @@ public class MessageSender extends Thread {
 	// Message sending handling
 	// -------------------------------------------------------------------
 
+	@Override
 	public void run() {
 		do {
 			Message msg = null;

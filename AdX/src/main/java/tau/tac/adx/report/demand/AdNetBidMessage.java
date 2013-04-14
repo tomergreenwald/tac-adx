@@ -6,6 +6,11 @@ import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
 import se.sics.tasim.props.SimpleContent;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class AdNetBidMessage extends SimpleContent {
 
 	private static final long serialVersionUID = -4773426215378916401L;
@@ -13,14 +18,14 @@ public class AdNetBidMessage extends SimpleContent {
 	private double ucsBid;
 	private int campaignId;
 	private Long campaignBudgetBid;
-	
+
 	public AdNetBidMessage(double ucsBid, int campaignId, Long campaignBudgetBid) {
 		this.ucsBid = ucsBid;
 		this.campaignId = campaignId;
 		this.campaignBudgetBid = campaignBudgetBid;
 	}
-	
-	public AdNetBidMessage(int id, Long budget) {				
+
+	public AdNetBidMessage(int id, Long budget) {
 		this.campaignId = id;
 		this.campaignBudgetBid = budget;
 	}
@@ -40,14 +45,15 @@ public class AdNetBidMessage extends SimpleContent {
 		return campaignId;
 	}
 
-	
+	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
-				.append('[').append(ucsBid).append(',').append(campaignId).append(',').append(campaignBudgetBid).append(',');
+				.append('[').append(ucsBid).append(',').append(campaignId)
+				.append(',').append(campaignBudgetBid).append(',');
 		return buf.append(']').toString();
 	}
 
-	
+	@Override
 	public void read(TransportReader reader) throws ParseException {
 		if (isLocked()) {
 			throw new IllegalStateException("locked");
@@ -57,14 +63,14 @@ public class AdNetBidMessage extends SimpleContent {
 		campaignBudgetBid = reader.getAttributeAsLong("budget");
 		super.read(reader);
 	}
-	
-	
+
+	@Override
 	public void write(TransportWriter writer) {
-		writer.attr("ucs", ucsBid).attr("id", campaignId).attr("budget", campaignBudgetBid);
+		writer.attr("ucs", ucsBid).attr("id", campaignId)
+				.attr("budget", campaignBudgetBid);
 		super.write(writer);
 	}
 
-	
 	@Override
 	public String getTransportName() {
 		return getClass().getName();

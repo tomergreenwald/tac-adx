@@ -37,6 +37,11 @@ import se.sics.tasim.sim.Admin;
 import se.sics.tasim.sim.Simulation;
 import se.sics.tasim.sim.SimulationManager;
 
+/**
+ * 
+ * @author greenwald, Mariano Schain
+ * 
+ */
 public class TACAdxManager extends SimulationManager {
 
 	private final static Logger log = Logger.getLogger(TACAdxManager.class

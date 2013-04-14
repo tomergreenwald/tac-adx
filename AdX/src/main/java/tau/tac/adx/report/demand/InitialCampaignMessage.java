@@ -8,6 +8,11 @@ import se.sics.tasim.props.SimpleContent;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.report.adn.MarketSegment;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class InitialCampaignMessage extends SimpleContent {
 
 	private static final long serialVersionUID = -5447083615716436823L;
@@ -88,6 +93,7 @@ public class InitialCampaignMessage extends SimpleContent {
 		return adxAgentAddress;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
 				.append('[').append(id).append(',').append(reachImps)
@@ -110,6 +116,7 @@ public class InitialCampaignMessage extends SimpleContent {
 		return getClass().getName();
 	}
 
+	@Override
 	public void read(TransportReader reader) throws ParseException {
 		if (isLocked()) {
 			throw new IllegalStateException("locked");
@@ -127,6 +134,7 @@ public class InitialCampaignMessage extends SimpleContent {
 		super.read(reader);
 	}
 
+	@Override
 	public void write(TransportWriter writer) {
 		writer.attr("id", id).attr("reachImps", reachImps)
 				.attr("dayStart", dayStart).attr("dayEnd", dayEnd)

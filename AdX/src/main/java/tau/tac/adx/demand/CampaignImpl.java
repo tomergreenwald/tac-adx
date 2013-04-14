@@ -19,6 +19,11 @@ import tau.tac.adx.users.AdxUser;
 
 import com.google.common.eventbus.Subscribe;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final Logger log = Logger.getLogger(CampaignImpl.class.getName());
 	private final static double ERRA = 4.08577;
@@ -127,6 +132,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	/**
 	 * @return the impressionLimit
 	 */
+	@Override
 	public int getImpressionLimit() {
 		return impressionLimit;
 	}
@@ -190,10 +196,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public void registerToEventBus() {
-		AdxManager.getInstance().getSimulation().getEventBus().register(this);		
+		AdxManager.getInstance().getSimulation().getEventBus().register(this);
 	}
 
-	
 	@Override
 	public Double getBudget() {
 		return budget;
@@ -224,6 +229,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		this.tomorrowsImpressionLimit = message.getImpressionLimit();
 	}
 
+	@Override
 	public boolean isOverTodaysLimit() {
 		return (budgetlimit < totals.cost + todays.cost)
 				|| (impressionLimit < totals.tartgetedImps
@@ -287,10 +293,10 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 					+ totals.cost + "todays.cost: " + todays.cost
 					+ "impressionLimit: " + impressionLimit
 					+ "totals.tartgetedImps: " + totals.tartgetedImps
-					+ "todays.tartgetedImps: " + todays.tartgetedImps+"\n";
+					+ "todays.tartgetedImps: " + todays.tartgetedImps + "\n";
 			throw new RuntimeException("campaign id: " + this.id + " "
 					+ todays.toString() + " impresssion limit: "
-					+ this.impressionLimit+s);
+					+ this.impressionLimit + s);
 		}
 		totals = totals.add(todays);
 		if (totals.tartgetedImps > 1300) {
@@ -372,7 +378,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
 						: reserveScore;
 
-				budget = new Double(qualityScores[indices[0]] / (1000.0*bsecond));
+			budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
 		}
 	}
 

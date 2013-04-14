@@ -40,6 +40,9 @@ import se.sics.tasim.props.Alert;
 import se.sics.tasim.props.Ping;
 
 /**
+ * 
+ * @author Mariano Schain
+ * 
  */
 public class ServerConnection implements Runnable {
 
@@ -63,8 +66,8 @@ public class ServerConnection implements Runnable {
 	private DataInputStream input;
 	private DataOutputStream output;
 	private Socket socket;
-	private BinaryTransportWriter transportWriter = new BinaryTransportWriter();
-	private BinaryTransportReader transportReader = new BinaryTransportReader();
+	private final BinaryTransportWriter transportWriter = new BinaryTransportWriter();
+	private final BinaryTransportReader transportReader = new BinaryTransportReader();
 
 	private boolean isAuthenticated = false;
 
@@ -140,9 +143,7 @@ public class ServerConnection implements Runnable {
 			return true;
 
 		} catch (Exception e) {
-			log
-					.log(Level.SEVERE, "(" + id
-							+ ") connection to server failed", e);
+			log.log(Level.SEVERE, "(" + id + ") connection to server failed", e);
 			disconnect();
 			return false;
 		}
@@ -183,6 +184,7 @@ public class ServerConnection implements Runnable {
 	// Client thread - handles communication with the TAC server
 	// -------------------------------------------------------------------
 
+	@Override
 	public void run() {
 		if (delayInMillis > 0) {
 			try {

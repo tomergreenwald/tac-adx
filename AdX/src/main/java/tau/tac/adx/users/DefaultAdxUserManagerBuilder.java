@@ -33,6 +33,7 @@ import edu.umich.eecs.tac.util.config.ConfigProxyUtils;
 
 /**
  * @author Patrick Jordan
+ * @author greenwald
  */
 public class DefaultAdxUserManagerBuilder implements
 		AdxUserBehaviorBuilder<DefaultAdxUserManager> {

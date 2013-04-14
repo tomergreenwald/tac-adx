@@ -52,6 +52,7 @@ import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.util.sampling.WheelSampler;
 
 /**
+ * @author greenwald
  * @author Patrick Jordan
  */
 public class AdxBidTrackerImpl implements AdxBidTracker {
@@ -221,7 +222,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		private double campaignSpendLimit;
 		private final Bidder bidder;
 
-		private Set<Integer> excludedCampaigns = new HashSet<Integer>();
+		private final Set<Integer> excludedCampaigns = new HashSet<Integer>();
 
 		public AdxQueryBid(final String advertiser, int queryCount) {
 			this.advertiser = advertiser;
@@ -277,8 +278,8 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 		private class BidPredicate implements Predicate<BidEntry> {
 
-			private AdxQuery adxQuery;
-			private Set<Integer> excludedCampaigns;
+			private final AdxQuery adxQuery;
+			private final Set<Integer> excludedCampaigns;
 
 			public BidPredicate(AdxQuery adxQuery,
 					Set<Integer> excludedCampaigns) {
@@ -286,6 +287,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 				this.excludedCampaigns = excludedCampaigns;
 			}
 
+			@Override
 			public boolean apply(BidEntry input) {
 				return (((!Sets.intersection(adxQuery.getMarketSegments(),
 						input.getMarketSegments()).isEmpty()) || (adxQuery

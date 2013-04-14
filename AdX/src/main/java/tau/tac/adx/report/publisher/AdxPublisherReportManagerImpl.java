@@ -33,6 +33,7 @@ import com.google.common.eventbus.Subscribe;
 
 /**
  * @author Patrick Jordan, Lee Callender, Akshat Kaul
+ * @author greenwald
  */
 public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager {
 	/**

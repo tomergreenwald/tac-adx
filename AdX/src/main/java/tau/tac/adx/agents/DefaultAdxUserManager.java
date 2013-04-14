@@ -43,7 +43,7 @@ import tau.tac.adx.users.AdxUserQueryManager;
 import com.google.common.eventbus.EventBus;
 
 /**
- * @author Patrick Jordan, Ben Cassell, Lee Callender
+ * @author greenwald
  */
 public class DefaultAdxUserManager implements AdxUserManager {
 	protected Logger log = Logger.getLogger(DefaultAdxUserManager.class

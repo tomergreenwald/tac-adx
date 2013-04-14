@@ -29,6 +29,7 @@ import tau.tac.adx.props.AdxQuery;
 /**
  * The spend tracker tracks the daily spend each advertiser incurs.
  * 
+ * @author greenwald
  * @author Patrick Jordan
  */
 public interface AdxSpendTracker {

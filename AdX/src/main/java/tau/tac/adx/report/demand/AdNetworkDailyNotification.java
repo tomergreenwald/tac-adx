@@ -8,6 +8,11 @@ import se.sics.tasim.props.SimpleContent;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.UserClassificationServiceAdNetData;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class AdNetworkDailyNotification extends SimpleContent {
 
 	/**
@@ -26,7 +31,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	int effectiveDay;
 	double serviceLevel;
 	double price;
-	
+
 	/* quality score data */
 	double qualityScore;
 
@@ -36,7 +41,8 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	double cost;
 
 	public AdNetworkDailyNotification(int effectiveDay, double serviceLevel,
-			double price, double qualityScore, int campaignId, String winner, long cost) {
+			double price, double qualityScore, int campaignId, String winner,
+			long cost) {
 		this.effectiveDay = effectiveDay;
 		this.serviceLevel = serviceLevel;
 		this.price = price;
@@ -47,24 +53,25 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	}
 
 	public AdNetworkDailyNotification(
-			UserClassificationServiceAdNetData ucsData, Campaign campaign, double qualityScore) {
-		
-		this.qualityScore = qualityScore; 
+			UserClassificationServiceAdNetData ucsData, Campaign campaign,
+			double qualityScore) {
+
+		this.qualityScore = qualityScore;
 
 		if (ucsData != null) {
 			this.effectiveDay = ucsData.getEffectiveDay();
 			this.serviceLevel = ucsData.getServiceLevel();
 			this.price = ucsData.getPrice();
 		} else {
-			this.effectiveDay = 0;			
+			this.effectiveDay = 0;
 		}
 
 		if (campaign != null) {
 			this.campaignId = campaign.getId();
 			this.winner = campaign.getAdvertiser();
-			this.cost = campaign.getBudget()==null?0:campaign.getBudget();
+			this.cost = campaign.getBudget() == null ? 0 : campaign.getBudget();
 		} else {
-			this.campaignId = 0;			
+			this.campaignId = 0;
 		}
 	}
 
@@ -100,7 +107,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		cost = 0;
 	}
 
-
+	@Override
 	public void read(TransportReader reader) throws ParseException {
 		if (isLocked()) {
 			throw new IllegalStateException("locked");
@@ -116,6 +123,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		super.read(reader);
 	}
 
+	@Override
 	public void write(TransportWriter writer) {
 		writer.attr("effectiveDay", effectiveDay)
 				.attr("serviceLevel", serviceLevel).attr("price", price)
@@ -134,9 +142,8 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	public String toString() {
 		return "AdNetworkDailyNotification [effectiveDay=" + effectiveDay
 				+ ", serviceLevel=" + serviceLevel + ", price=" + price
-				+ ", qualityScore=" + qualityScore
-				+ ", campaignId=" + campaignId + ", winner=" + winner
-				+ ", cost=" + cost + "]";
+				+ ", qualityScore=" + qualityScore + ", campaignId="
+				+ campaignId + ", winner=" + winner + ", cost=" + cost + "]";
 	}
 
 }

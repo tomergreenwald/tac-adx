@@ -37,6 +37,11 @@ import tau.tac.adx.report.publisher.AdxPublisherReportEntry;
 import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.props.BankStatus;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class SampleAdNetwork extends Agent {
 
 	private final Logger log = Logger
@@ -59,7 +64,7 @@ public class SampleAdNetwork extends Agent {
 	 * {@link CampaignOpportunityMessage}, {@link CampaignReport}, and
 	 * {@link AdNetworkDailyNotification}.
 	 */
-	private Queue<CampaignReport> campaignReports;
+	private final Queue<CampaignReport> campaignReports;
 	private Queue<AdxPublisherReport> adxPublisherReports;
 	private PublisherCatalog publisherCatalog;
 	private InitialCampaignMessage initialCampaignMessage;
@@ -233,8 +238,8 @@ public class SampleAdNetwork extends Agent {
 		log.info("Day " + day + ": Campaign total budget bid: " + cmpBidUnits);
 
 		/*
-		 * Adjust ucs bid s.t. target level is achieved.
-		 * Note: The bid for the user classification service is piggybacked
+		 * Adjust ucs bid s.t. target level is achieved. Note: The bid for the
+		 * user classification service is piggybacked
 		 */
 
 		if (adNetworkDailyNotification != null) {
@@ -324,12 +329,15 @@ public class SampleAdNetwork extends Agent {
 			int dayBiddingFor = day + 1;
 
 			/* A fixed random bid, for all queries of the campaign */
-			/* Note: bidding per 1000 imps (CPM) - no more than average budget revenue per imp */
-			
+			/*
+			 * Note: bidding per 1000 imps (CPM) - no more than average budget
+			 * revenue per imp
+			 */
+
 			Random rnd = new Random();
-			double avgCmpRevenuePerImp = campaign.budget / campaign.reachImps; 
-			double rbid = 1000.0*rnd.nextDouble()*avgCmpRevenuePerImp;
-			
+			double avgCmpRevenuePerImp = campaign.budget / campaign.reachImps;
+			double rbid = 1000.0 * rnd.nextDouble() * avgCmpRevenuePerImp;
+
 			/*
 			 * add bid entries w.r.t. each active campaign with remaining
 			 * contracted impressions.

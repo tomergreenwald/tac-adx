@@ -38,7 +38,7 @@ import edu.umich.eecs.tac.user.UsersBehavior;
 import edu.umich.eecs.tac.util.config.ConfigProxy;
 
 /**
- * @author Lee Callender, Patrick Jordan
+ * @author greenwald
  */
 public class DefaultAdxUsers extends AdxUsers {
 	/**
@@ -58,7 +58,7 @@ public class DefaultAdxUsers extends AdxUsers {
 	@Override
 	public void nextTimeUnit(int date) {
 		usersBehavior.nextTimeUnit(date);
-		if (date>0) {
+		if (date > 0) {
 			sendReportsToAll();
 		}
 	}

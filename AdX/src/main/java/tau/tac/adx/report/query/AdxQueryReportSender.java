@@ -28,6 +28,7 @@ import edu.umich.eecs.tac.props.QueryReport;
 
 /**
  * @author Patrick Jordan
+ * @author greenwald
  */
 public interface AdxQueryReportSender {
 	/**

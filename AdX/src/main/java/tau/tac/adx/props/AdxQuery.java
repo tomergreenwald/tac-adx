@@ -5,8 +5,6 @@ package tau.tac.adx.props;
 
 import java.text.ParseException;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import se.sics.isl.transport.TransportReader;
@@ -99,7 +97,7 @@ public class AdxQuery extends AbstractTransportable implements TacQuery<Adx> {
 		this.device = device;
 		this.adType = adType;
 	}
-	
+
 	/**
 	 * Class constructor.
 	 * 

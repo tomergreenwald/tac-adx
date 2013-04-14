@@ -8,14 +8,20 @@ import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import edu.umich.eecs.tac.props.AbstractTransportableEntry;
 
-public class CampaignReportEntry extends AbstractTransportableEntry<CampaignReportKey> {
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
+public class CampaignReportEntry extends
+		AbstractTransportableEntry<CampaignReportKey> {
 
 	private static final long serialVersionUID = 2856461805359063656L;
 	/** CAMPAIGN_STATS. */
 	private static final String TGT_IMPS = "TGT_IMPS";
 	private static final String NTG_IMPS = "NTG_IMPS";
 	private static final String COST = "COST";
-	
+
 	private CampaignStats stats = new CampaignStats(0, 0, 0);
 
 	/**
@@ -58,9 +64,9 @@ public class CampaignReportEntry extends AbstractTransportableEntry<CampaignRepo
 	protected final void readEntry(final TransportReader reader)
 			throws ParseException {
 		stats = new CampaignStats(reader.getAttributeAsDouble(TGT_IMPS),
-								  reader.getAttributeAsDouble(NTG_IMPS),
-		                          reader.getAttributeAsDouble(COST));
-		
+				reader.getAttributeAsDouble(NTG_IMPS),
+				reader.getAttributeAsDouble(COST));
+
 		reader.nextNode(CampaignReportKey.class.getCanonicalName(), true);
 		setKey((CampaignReportKey) reader.readTransportable());
 	}
@@ -101,13 +107,13 @@ public class CampaignReportEntry extends AbstractTransportableEntry<CampaignRepo
 		CampaignReportEntry other = (CampaignReportEntry) obj;
 		if (stats.getTargetedImps() != other.stats.getTargetedImps())
 			return false;
-		
+
 		if (stats.getOtherImps() != other.stats.getOtherImps())
 			return false;
-		
+
 		if (stats.getCost() != other.stats.getCost())
 			return false;
-		
+
 		return true;
 	}
 
@@ -116,8 +122,9 @@ public class CampaignReportEntry extends AbstractTransportableEntry<CampaignRepo
 	 */
 	@Override
 	public String toString() {
-		return "CampaignReportEntry [tgt imps=" + stats.getTargetedImps() + ", ntg imps="
-				+ stats.getOtherImps() + ", cost=" + stats.getCost() + "]";
+		return "CampaignReportEntry [tgt imps=" + stats.getTargetedImps()
+				+ ", ntg imps=" + stats.getOtherImps() + ", cost="
+				+ stats.getCost() + "]";
 	}
 
 }

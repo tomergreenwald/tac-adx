@@ -7,6 +7,11 @@ import se.sics.isl.transport.TransportWriter;
 import se.sics.isl.transport.Transportable;
 import tau.tac.adx.report.adn.MarketSegment;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class CampaignReportKey implements Transportable {
 	/** CAMPAIGN_ID_KEY. */
 	private static final String CAMPAIGN_ID_KEY = "CAMPAIGN_ID_KEY";
@@ -38,7 +43,6 @@ public class CampaignReportKey implements Transportable {
 		this.campaignId = id;
 	}
 
-
 	/**
 	 * @see se.sics.isl.transport.Transportable#getTransportName()
 	 */
@@ -52,7 +56,8 @@ public class CampaignReportKey implements Transportable {
 	 */
 	@Override
 	public void read(TransportReader reader) throws ParseException {
-		campaignId = Integer.valueOf(reader.getAttribute(CAMPAIGN_ID_KEY,null));		
+		campaignId = Integer
+				.valueOf(reader.getAttribute(CAMPAIGN_ID_KEY, null));
 	}
 
 	/**
@@ -81,7 +86,7 @@ public class CampaignReportKey implements Transportable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		CampaignReportKey other = (CampaignReportKey) obj;
 		if (campaignId != other.campaignId)
 			return false;

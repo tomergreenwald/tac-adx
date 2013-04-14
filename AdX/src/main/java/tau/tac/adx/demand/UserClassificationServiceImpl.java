@@ -7,11 +7,16 @@ import java.util.Map;
 
 import tau.tac.adx.AdxManager;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class UserClassificationServiceImpl implements UserClassificationService {
 
 	private final static double UCS_PROB = 0.9;
 
-	private Map<String, UserClassificationServiceAdNetData> advertisersData = new HashMap<String, UserClassificationServiceAdNetData>();
+	private final Map<String, UserClassificationServiceAdNetData> advertisersData = new HashMap<String, UserClassificationServiceAdNetData>();
 
 	@Override
 	public void updateAdvertiserBid(String advertiser, double ucsBid, int day) {
@@ -23,7 +28,7 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 		}
 		advData.setBid(ucsBid, day);
 	}
-	
+
 	@Override
 	public UserClassificationServiceAdNetData getAdNetData(String advertiser) {
 		return advertisersData.get(advertiser);
@@ -60,7 +65,8 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 						.get(advNames[indices[j]]);
 				levelPrice = ucsProb * bids[indices[j + 1]];
 				advData.setAuctionResult(levelPrice, ucsProb, day);
-				AdxManager.getInstance().getSimulation().broadcastAdNetworkExpense(advNames[j], levelPrice);
+				AdxManager.getInstance().getSimulation()
+						.broadcastAdNetworkExpense(advNames[j], levelPrice);
 				ucsProb = ucsProb * UCS_PROB;
 			}
 		}

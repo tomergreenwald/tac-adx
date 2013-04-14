@@ -19,6 +19,7 @@ import edu.umich.eecs.tac.props.AbstractTransportableEntry;
  * as the positions and displayed ads of all advertisers during the period.
  * 
  * @author Patrick Jordan, Lee Callender
+ * @author greenwald
  */
 public class AdxPublisherReportEntry extends
 		AbstractTransportableEntry<PublisherCatalogEntry> {

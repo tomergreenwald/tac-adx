@@ -68,6 +68,7 @@ import edu.umich.eecs.tac.props.UserPopulationState;
  * TAC/AA simulation.
  * 
  * @author Lee Callender, Patrick Jordan
+ * @author greenwald, Mariano Schain
  */
 public class AdxInfoContextFactory implements ContextFactory {
 	/**

@@ -30,7 +30,6 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.botbox.util.ArrayUtils;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Agent;
 import se.sics.tasim.aw.AgentService;
@@ -39,14 +38,21 @@ import se.sics.tasim.aw.TimeListener;
 import se.sics.tasim.props.SimulationStatus;
 import se.sics.tasim.props.StartInfo;
 
+import com.botbox.util.ArrayUtils;
+
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class AgentServiceImpl extends AgentService {
 
 	private static final Logger log = Logger.getLogger(AgentServiceImpl.class
 			.getName());
 
-	private StartInfo startInfo;
+	private final StartInfo startInfo;
 	private TimeListener[] timeListeners;
-	private SimClient client;
+	private final SimClient client;
 
 	private int currentTimeUnit = -1;
 	private int maxTimeUnits = Integer.MAX_VALUE;
@@ -93,18 +99,22 @@ public class AgentServiceImpl extends AgentService {
 		simulationFinished();
 	}
 
+	@Override
 	protected void deliverToServer(Message message) {
 		client.deliverToServer(message);
 	}
 
+	@Override
 	protected void deliverToServer(int role, Transportable message) {
 		log.severe("Agent can not deliver to role " + role);
 	}
 
+	@Override
 	protected long getServerTime() {
 		return client.getServerTime();
 	}
 
+	@Override
 	protected void deliverToAgent(Message message) {
 		if (isAwaitingNewDay) {
 			isAwaitingNewDay = false;
@@ -138,6 +148,7 @@ public class AgentServiceImpl extends AgentService {
 	private void setupTimer(long startServerTime, int millisPerTimeUnit) {
 		timer = new Timer();
 		timerTask = new TimerTask() {
+			@Override
 			public void run() {
 				tick();
 			}
@@ -199,11 +210,13 @@ public class AgentServiceImpl extends AgentService {
 		}
 	}
 
+	@Override
 	protected synchronized void addTimeListener(TimeListener listener) {
 		timeListeners = (TimeListener[]) ArrayUtils.add(TimeListener.class,
 				timeListeners, listener);
 	}
 
+	@Override
 	protected synchronized void removeTimeListener(TimeListener listener) {
 		timeListeners = (TimeListener[]) ArrayUtils.remove(timeListeners,
 				listener);

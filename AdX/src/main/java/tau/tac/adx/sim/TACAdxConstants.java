@@ -35,6 +35,7 @@ import com.google.common.eventbus.EventBus;
  * Simulations.
  * 
  * @author SICS, Patrick Jordan, Lee Callender
+ * @author Mariano Schain, greenwald
  */
 public final class TACAdxConstants {
 

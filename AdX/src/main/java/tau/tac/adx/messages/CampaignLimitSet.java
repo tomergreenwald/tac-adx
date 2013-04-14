@@ -1,12 +1,18 @@
 package tau.tac.adx.messages;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class CampaignLimitSet implements AdxMessage {
 	int campaignId;
 	String AdNetwork;
 	double budgetLimit;
-	private int impressionLimit;
-	
-	public CampaignLimitSet(int campaignId, String adNet, int impressionLimit, double budgetLimit) {
+	private final int impressionLimit;
+
+	public CampaignLimitSet(int campaignId, String adNet, int impressionLimit,
+			double budgetLimit) {
 		super();
 		this.campaignId = campaignId;
 		this.AdNetwork = adNet;
@@ -42,5 +48,4 @@ public class CampaignLimitSet implements AdxMessage {
 		return impressionLimit;
 	}
 
-	
 }

@@ -33,7 +33,7 @@ import tau.tac.adx.report.publisher.AdxPublisherReportSender;
 import edu.umich.eecs.tac.sim.PublisherInfoSender;
 
 /**
- * @author Lee Callender, Patrick Jordan
+ * @author greenwald
  */
 public abstract class AdxUsers extends Builtin implements
 		AdxPublisherReportSender, AdNetworkReportSender {

@@ -8,9 +8,14 @@ import se.sics.tasim.props.SimpleContent;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.report.adn.MarketSegment;
 
+/**
+ * 
+ * @author Mariano Schain
+ * 
+ */
 public class CampaignOpportunityMessage extends SimpleContent {
 	private static final long serialVersionUID = -2501549665857756943L;
-	
+
 	private int id;
 	private Long reachImps;
 	private int dayStart;
@@ -20,7 +25,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	private double videoCoef;
 	private double mobileCoef;
 	private int day;
-	
+
 	public CampaignOpportunityMessage() {
 	}
 
@@ -35,10 +40,10 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		this.day = day;
 	}
 
-	
-	public CampaignOpportunityMessage(int id, Long reachImps, int dayStart, int dayEnd,
-			MarketSegment targetSegment, double videoCoef, double mobileCoef, int day) {
-				
+	public CampaignOpportunityMessage(int id, Long reachImps, int dayStart,
+			int dayEnd, MarketSegment targetSegment, double videoCoef,
+			double mobileCoef, int day) {
+
 		this.id = id;
 		this.reachImps = reachImps;
 		this.dayStart = dayStart;
@@ -80,14 +85,14 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	public int getDay() {
 		return day;
 	}
-	
-	
-	
+
+	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
-				.append('[').append(id).append(',').append(reachImps).append(',').append(dayStart)
-				.append(',').append(dayEnd).append(',').append(targetSegment)
-				.append(',').append(videoCoef).append(',').append(mobileCoef).append(',')
+				.append('[').append(id).append(',').append(reachImps)
+				.append(',').append(dayStart).append(',').append(dayEnd)
+				.append(',').append(targetSegment).append(',')
+				.append(videoCoef).append(',').append(mobileCoef).append(',')
 				.append(day).append(',');
 		return params(buf).append(']').toString();
 	}
@@ -104,8 +109,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		return getClass().getName();
 	}
 
-
-	
+	@Override
 	public void read(TransportReader reader) throws ParseException {
 		if (isLocked()) {
 			throw new IllegalStateException("locked");
@@ -121,12 +125,14 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		day = reader.getAttributeAsInt("day");
 		super.read(reader);
 	}
-	
-	
+
+	@Override
 	public void write(TransportWriter writer) {
-		writer.attr("id", id).attr("reachImps", reachImps).attr("dayStart", dayStart).attr(
-				"dayEnd", dayEnd).attr("targetSegment",targetSegment.name()).
-				attr("videoCoef", videoCoef).attr("mobileCoef",mobileCoef).attr("day",day);
+		writer.attr("id", id).attr("reachImps", reachImps)
+				.attr("dayStart", dayStart).attr("dayEnd", dayEnd)
+				.attr("targetSegment", targetSegment.name())
+				.attr("videoCoef", videoCoef).attr("mobileCoef", mobileCoef)
+				.attr("day", day);
 		super.write(writer);
 	}
 

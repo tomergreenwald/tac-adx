@@ -31,6 +31,7 @@ import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 
 /**
+ * @author greenwald
  * @author Patrick Jordan
  */
 public interface AdxBidTracker {
