@@ -1,11 +1,25 @@
-10/04 23:12:50 INFO file.FileDatabase|infodb: database opened as /specific/a/home/cc/students/cs/marianos/adxgame/tac-adx/AdX/adx-server-1.0.0.0/infodb
-10/04 23:12:51 INFO common.BlockingViewerServer|viewer server started at *:4042
-10/04 20:12:51 INFO sim.Admin|adding manager for simulation type tac13adx
-10/04 20:12:51 INFO server.TACTGateway|TACT Server started at *:6502
-10/04 20:12:52 INFO server.TACTChannel|user tau-1 logged in as tau-1@tact-1 with version 0.9.6 from 127.0.0.1
-10/04 20:13:00 FINE sim.Admin|Entering log for simulation 107
+16/04 23:29:23 INFO file.FileDatabase|infodb: database opened as E:\tacadx\tac-adx\AdX\adx-server-1.0.0.0\infodb
+16/04 23:29:23 INFO common.BlockingViewerServer|viewer server started at *:4042
+16/04 20:29:23 INFO sim.Admin|adding manager for simulation type tac13adx
+16/04 20:29:23 INFO server.TACTGateway|TACT Server started at *:6502
+16/04 20:29:25 INFO server.TACTChannel|user taux logged in as taux@tact-1 with version 0.9.6 from 127.0.0.1
+16/04 20:30:00 FINE sim.Admin|Entering log for simulation 16
 ************************************************************
-* Entering log for simulation 107
+* Entering log for simulation 16
+************************************************************
+
+
+16/04 20:40:00 INFO is.TACAAResultManager|generating results for simulation 16 to public_html\localhost\history\16\index.html
+16/04 20:41:00 FINE sim.Admin|Entering log for simulation 17
+************************************************************
+* Entering log for simulation 17
+************************************************************
+
+
+16/04 20:51:00 INFO is.TACAAResultManager|generating results for simulation 17 to public_html\localhost\history\17\index.html
+16/04 20:52:00 FINE sim.Admin|Entering log for simulation 18
+************************************************************
+* Entering log for simulation 18
 ************************************************************
 
 
