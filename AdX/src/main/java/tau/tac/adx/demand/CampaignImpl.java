@@ -220,20 +220,19 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	}
 
-	// public void setTodaysBudgetLimit(Double l) {
-	// this.budgetlimit = l;
-	// }
-
 	public void setTomorowsLimit(CampaignLimitSet message) {
 		this.tomorrowsBudgetLimit = message.getBudgetLimit();
 		this.tomorrowsImpressionLimit = message.getImpressionLimit();
+		
+		log.log(Level.INFO, "Campaign " + id + " Tomorrows limits: " 
+		   + tomorrowsBudgetLimit + ", "+ tomorrowsImpressionLimit);
 	}
 
 	@Override
 	public boolean isOverTodaysLimit() {
-		return (budgetlimit < totals.cost + todays.cost)
-				|| (impressionLimit < totals.tartgetedImps
-						+ todays.tartgetedImps);
+		return (budgetlimit < /*totals.cost + */todays.cost)
+				|| (impressionLimit < /*totals.tartgetedImps
+						+ */todays.tartgetedImps);
 	}
 
 	@Override
@@ -282,28 +281,30 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public void preNextTimeUnit(int timeUnit) {
-		dayStats.put(day, todays);
-		day = timeUnit;
-		budgetlimit = tomorrowsBudgetLimit;
-		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
-		impressionLimit = tomorrowsImpressionLimit;
+		/*
 		if (todays.tartgetedImps > impressionLimit + 10
 				&& impressionLimit != (int) Double.POSITIVE_INFINITY) {
-			String s = "\nbudgetlimit: " + budgetlimit + "totals.cost: "
-					+ totals.cost + "todays.cost: " + todays.cost
-					+ "impressionLimit: " + impressionLimit
-					+ "totals.tartgetedImps: " + totals.tartgetedImps
-					+ "todays.tartgetedImps: " + todays.tartgetedImps + "\n";
-			throw new RuntimeException("campaign id: " + this.id + " "
+			String s = "\nbudgetlimit: " + budgetlimit + " totals.cost: "
+					+ totals.cost + " todays.cost: " + todays.cost
+					+ " impressionLimit: " + impressionLimit
+					+ " totals.tartgetedImps: " + totals.tartgetedImps
+					+ " todays.tartgetedImps: " + todays.tartgetedImps + "\n";
+			throw new RuntimeException(" campaign id: " + this.id + " "
 					+ todays.toString() + " impresssion limit: "
 					+ this.impressionLimit + s);
 		}
+        */
+		
+		dayStats.put(day, todays);
 		totals = totals.add(todays);
-		if (totals.tartgetedImps > 1300) {
-			int i = 0;
-		}
-		tomorrowsImpressionLimit = Integer.MAX_VALUE;
 		todays = new CampaignStats(0.0, 0.0, 0.0);
+		day = timeUnit;
+		
+		budgetlimit = tomorrowsBudgetLimit;
+		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+		impressionLimit = tomorrowsImpressionLimit;		
+		tomorrowsImpressionLimit = Integer.MAX_VALUE;
+		
 		if (day == dayEnd + 1) { /* was last day - update quality score */
 			double effectiveReachRatio = effectiveReachRatio(totals.tartgetedImps);
 			qualityManager.updateQualityScore(advertiser, effectiveReachRatio);

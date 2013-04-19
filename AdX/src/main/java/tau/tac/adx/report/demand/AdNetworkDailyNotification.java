@@ -72,6 +72,8 @@ public class AdNetworkDailyNotification extends SimpleContent {
 			this.cost = campaign.getBudget() == null ? 0 : campaign.getBudget();
 		} else {
 			this.campaignId = 0;
+			this.winner = "NONE";
+			this.cost = 0;			
 		}
 	}
 

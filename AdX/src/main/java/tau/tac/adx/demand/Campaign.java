@@ -132,4 +132,6 @@ public interface Campaign extends TimeListener {
 
 	void registerToEventBus();
 
+	Double getBudgetlimit();
+
 }

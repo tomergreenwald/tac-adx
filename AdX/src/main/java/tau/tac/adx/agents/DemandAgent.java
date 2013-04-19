@@ -94,24 +94,35 @@ public class DemandAgent extends Builtin {
 		 * competing adNetwork agents
 		 */
 
-		pendingCampaign = new CampaignImpl(qualityManager,
-				CMP_REACHS[random.nextInt(3)], day + 2, day + 1
-						+ CMP_LENGTHS[random.nextInt(3)],
+		int lastCmpDay = day + 1 + CMP_LENGTHS[random.nextInt(3)];
+		
+		if (lastCmpDay < 60) {
+		
+			pendingCampaign = new CampaignImpl(qualityManager,
+				CMP_REACHS[random.nextInt(3)], day + 2, lastCmpDay,
 				MarketSegment.randomMarketSegment(), ALOC_CMP_VC, ALOC_CMP_MC);
 
-		pendingCampaign.registerToEventBus();
+			pendingCampaign.registerToEventBus();
 
-		log.log(Level.INFO, "Notifying new campaign opportunity..");
-		getSimulation().sendCampaignOpportunity(
+			log.log(Level.INFO, "Day " + day + " :"+ "Notifying new campaign opportunity..");
+			getSimulation().sendCampaignOpportunity(
 				new CampaignOpportunityMessage(pendingCampaign, day));
+		} else {
+			/**
+			 * All campaigns must end during the game
+			 */
+			pendingCampaign = null;
+		}
+		
 	}
 
 	private void reportAuctionResutls(int date) {
 		/*
 		 * report auctions result and campaigns stats to adNet agents
 		 */
-		log.log(Level.INFO, "Reporting auction results...");
-		log.log(Level.INFO, "Pending campaign: " + pendingCampaign);
+		log.log(Level.INFO, "Day " + day + " :"+ "Reporting auction results..." +
+				((pendingCampaign != null) ? pendingCampaign : "No pending campaign")
+				);
 
 		for (String advertiser : getAdxAdvertiserAddresses()) {
 
@@ -125,9 +136,7 @@ public class DemandAgent extends Builtin {
 					if (campaign.isAllocated()
 							&& (campaign.getDayStart() < date)
 							&& (advertiser.equals(campaign.getAdvertiser()))) {
-						report.addStatsEntry(campaign.getId(),
-						// campaign.getStats(campaign.getDayStart(), date-1));
-								campaign.getTotals());
+						report.addStatsEntry(campaign.getId(), campaign.getTotals());
 					}
 				}
 				getSimulation().sendCampaignReport(advertiser, report);
@@ -138,7 +147,7 @@ public class DemandAgent extends Builtin {
 					qualityManager.getQualityScore(advertiser));
 
 			/* remove campaign cost for non-winning advertisers */
-			if (!advertiser.equals(pendingCampaign.getAdvertiser())) {
+			if ((pendingCampaign!= null) && (!advertiser.equals(pendingCampaign.getAdvertiser()))) {
 				adNetworkNotification.zeroCost();
 			}
 
@@ -157,8 +166,8 @@ public class DemandAgent extends Builtin {
 		 * 
 		 * Note: the campaign (pendingCampaign) was created on day n-1
 		 */
-		log.log(Level.INFO, "new day " + date + " . Auction pending campaign");
 		if (pendingCampaign != null) {
+			log.log(Level.INFO, "Day " + day + " : Auction pending campaign: " + pendingCampaign);
 			pendingCampaign.auction();
 			if (pendingCampaign.isAllocated()) {
 				adNetCampaigns.put(pendingCampaign.getAdvertiser(),
@@ -169,13 +178,9 @@ public class DemandAgent extends Builtin {
 						new CampaignNotification(pendingCampaign));
 
 			}
+		} else {
+			log.log(Level.INFO, "Day " + day + " : No pending campaign to auction");			
 		}
-
-		/*
-		 * auction user classification service and announce results to built-in
-		 * agents
-		 */
-		log.log(Level.INFO, "Auction user classification service");
 	}
 
 	/**
@@ -224,6 +229,8 @@ public class DemandAgent extends Builtin {
 					ALOC_CMP_MC);
 
 			campaign.allocateToAdvertiser(advertiser);
+			campaign.registerToEventBus();
+
 			adNetCampaigns.put(advertiser, campaign);
 
 			getSimulation().sendInitialCampaign(
@@ -260,13 +267,15 @@ public class DemandAgent extends Builtin {
 		String sender = message.getSender();
 		Transportable content = message.getContent();
 
-		log.log(Level.INFO, "Got message..");
-
 		if (content instanceof AdNetBidMessage) {
 
 			AdNetBidMessage cbm = (AdNetBidMessage) content;
 
-			log.log(Level.INFO, "..AdNetBidMessage: " + cbm.toString());
+			log.log(Level.INFO, "Day " + day + " :"+ "Got AdNetBidMessage from " 
+			  + sender + " :" 
+			  + " UCS Bid: " + cbm.getUcsBid()
+			  + " Cmp ID: " + cbm.getCampaignId()
+			  + " Cmp Bid: " + cbm.getCampaignBudget());
 
 			/*
 			 * collect campaign bids for campaign opportunities
@@ -288,46 +297,34 @@ public class DemandAgent extends Builtin {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		if (cmpn != null) {
-			// log.log(Level.INFO,"IMPRESSED ("+ cmpn.getId() + "," +
-			// cmpn.getAdvertiser() + ") segments:" +
-			// message.getAuctionResult().getMarketSegments());
-
-			// boolean wasOverLimit = cmpn.isOverTodaysLimit();
 
 			cmpn.impress(message.getUser(), message.getQuery().getAdType(),
 					message.getQuery().getDevice(), message.getAuctionResult()
 							.getWinningPrice());
 
-			// if (cmpn.getTodayStats().getTargetedImps() > 10000) {
-			// int i = 0;
-			// }
-			//
-			// if (wasOverLimit) {
-			// /* rare - should warn: not supposed to bid on over-limit
-			// campaigns */
-			// log.log(Level.WARNING, " Impressed while over limit: " +
-			// cmpn.getId());
-			// } else
 			if (cmpn.isOverTodaysLimit()) {
 				/* notify on transition campaign limit expiration */
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn
 								.getAdvertiser()));
-				System.out
-						.println("Campaign limit expired Impressed while over limit: "
+				log.log(Level.INFO, "Day " + day + " :Campaign limit expired Impressed while over limit: "
 								+ cmpn.getId()
 								+ ", limit was: "
 								+ cmpn.getImpressionLimit()
+								+ ", "
+								+ cmpn.getBudgetlimit()
 								+ " value is: "
-								+ cmpn.getTodayStats().getTargetedImps());
+								+ cmpn.getTodayStats().getTargetedImps()
+								+ ", "
+								+ cmpn.getTodayStats().getCost());
 				log.log(Level.INFO,
-						" Campaign limit expired Impressed while over limit: "
+						"Day " + day + " : Campaign limit expired Impressed while over limit: "
 								+ cmpn.getId());
 			}
 
 		} else {
 			log.log(Level.SEVERE,
-					"IMPRESSED: Campaign Missing!!! "
+					"Day " + day + " : IMPRESSED: Campaign Missing!!! "
 							+ message.getAuctionResult());
 		}
 	}
@@ -335,7 +332,6 @@ public class DemandAgent extends Builtin {
 	@Override
 	public void nextTimeUnit(int timeUnit) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

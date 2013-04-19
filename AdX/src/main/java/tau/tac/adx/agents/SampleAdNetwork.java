@@ -22,9 +22,7 @@ import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
-import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
-import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.AdNetBidMessage;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
@@ -57,15 +55,14 @@ public class SampleAdNetwork extends Agent {
 	/**
 	 * Messages received:
 	 * 
-	 * We keep all the {@link CampaignReport campaign reports} and
-	 * {@link AdxPublisherReport publisher reports} delivered to the agent. We
-	 * also keep the initialization messages {@link PublisherCatalog} and
+	 * We keep all the {@link CampaignReport campaign reports} 
+	 * delivered to the agent. We also keep the initialization 
+	 * messages {@link PublisherCatalog} and
 	 * {@link InitialCampaignMessage} and the most recent messages and reports
 	 * {@link CampaignOpportunityMessage}, {@link CampaignReport}, and
 	 * {@link AdNetworkDailyNotification}.
 	 */
 	private final Queue<CampaignReport> campaignReports;
-	private Queue<AdxPublisherReport> adxPublisherReports;
 	private PublisherCatalog publisherCatalog;
 	private InitialCampaignMessage initialCampaignMessage;
 	private AdNetworkDailyNotification adNetworkDailyNotification;
@@ -124,7 +121,9 @@ public class SampleAdNetwork extends Agent {
 	protected void messageReceived(Message message) {
 		try {
 			Transportable content = message.getContent();
-			log.fine(message.getContent().getClass().toString());
+			
+			//log.fine(message.getContent().getClass().toString());
+			
 			if (content instanceof InitialCampaignMessage) {
 				handleInitialCampaignMessage((InitialCampaignMessage) content);
 			} else if (content instanceof CampaignOpportunityMessage) {
@@ -157,7 +156,7 @@ public class SampleAdNetwork extends Agent {
 	}
 
 	private void handleBankStatus(BankStatus content) {
-		log.info(content.toString());
+		log.info("Day " + day + " :" + content.toString());
 	}
 
 	/**
@@ -246,7 +245,8 @@ public class SampleAdNetwork extends Agent {
 			double ucsLevel = adNetworkDailyNotification.getServiceLevel();
 			double prevUcsBid = ucsBid;
 
-			ucsBid = prevUcsBid * (1 + ucsTargetLevel - ucsLevel);
+			/* UCS Bid should not exceed 0.2 */
+			ucsBid = Math.min(0.1 + 0.1*randomGenerator.nextDouble(), prevUcsBid * (1 + ucsTargetLevel - ucsLevel));
 
 			log.info("Day " + day + ": Adjusting ucs bid: was " + prevUcsBid
 					+ " level reported: " + ucsLevel + " target: "
@@ -270,9 +270,6 @@ public class SampleAdNetwork extends Agent {
 	private void handleAdNetworkDailyNotification(
 			AdNetworkDailyNotification notificationMessage) {
 
-		if (day == 0)
-			++day; /* this is the first message sent by the server on day 1 */
-
 		adNetworkDailyNotification = notificationMessage;
 
 		log.info("Day " + day + ": Daily notification for campaign "
@@ -281,11 +278,6 @@ public class SampleAdNetwork extends Agent {
 		String campaignAllocatedTo = " allocated to "
 				+ notificationMessage.getWinner();
 
-		/*
-		 * if ((pendingCampaign.id ==
-		 * adNetworkDailyNotification.getCampaignId()) &&
-		 * getName().equals(notificationMessage.getWinner())) {
-		 */
 		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId())
 				&& (notificationMessage.getCost() != 0)) {
 
@@ -310,7 +302,10 @@ public class SampleAdNetwork extends Agent {
 	 * to the AdX.
 	 */
 	private void handleSimulationStatus(SimulationStatus simulationStatus) {
+		log.info("Day " + day + " : Simulation Status Received");
 		sendBidAndAds();
+		log.info("Day " + day + " ended. Starting next day");
+		++day;
 	}
 
 	/**
@@ -370,6 +365,7 @@ public class SampleAdNetwork extends Agent {
 									campaign.id, 1);
 						}
 					}
+					
 					if (segmentsList.size() == 0) {
 						++entCount;
 						bidBundle.addQuery(queries[i], rbid, new Ad(null),
@@ -388,6 +384,7 @@ public class SampleAdNetwork extends Agent {
 		}
 
 		if (bidBundle != null) {
+			log.info("Day " + day + ": Sending BidBundle");
 			sendMessage(adxAgentAddress, bidBundle);
 		}
 	}
@@ -396,9 +393,6 @@ public class SampleAdNetwork extends Agent {
 	 * Campaigns performance w.r.t. each allocated campaign
 	 */
 	private void handleCampaignReport(CampaignReport campaignReport) {
-
-		if (day >= 1)
-			++day; /* this is the first message sent by the server on day >= 2 */
 
 		campaignReports.add(campaignReport);
 
@@ -423,8 +417,6 @@ public class SampleAdNetwork extends Agent {
 	 * Users and Publishers statistics: popularity and ad type orientation
 	 */
 	private void handleAdxPublisherReport(AdxPublisherReport adxPublisherReport) {
-		adxPublisherReports.add(adxPublisherReport);
-
 		log.info("Publishers Report: ");
 		for (PublisherCatalogEntry publisherKey : adxPublisherReport.keys()) {
 			AdxPublisherReportEntry entry = adxPublisherReport
@@ -438,8 +430,11 @@ public class SampleAdNetwork extends Agent {
 	 * @param AdNetworkReport
 	 */
 	private void handleAdNetworkReport(AdNetworkReport adnetReport) {
-		log.info("AdNetreport: ");
-		for (AdNetworkKey adnetKey : adnetReport.keys()) {
+		
+		log.info("Day "+ day + " : AdNetworkReport");
+		/*
+		 for (AdNetworkKey adnetKey : adnetReport.keys()) {
+		 
 			double rnd = Math.random();
 			if (rnd > 0.95) {
 				AdNetworkReportEntry entry = adnetReport
@@ -447,7 +442,7 @@ public class SampleAdNetwork extends Agent {
 				log.info(adnetKey + " " + entry);
 			}
 		}
-
+        */
 	}
 
 	@Override
@@ -456,7 +451,10 @@ public class SampleAdNetwork extends Agent {
 		day = 0;
 		bidBundle = new AdxBidBundle();
 		ucsTargetLevel = 0.5 + (randomGenerator.nextInt(5) + 1) / 10.0;
-		ucsBid = 0.5 + 1.5 * randomGenerator.nextDouble();
+		
+		/* initial bid between 0.1 and 0.2 */
+		ucsBid = 0.1 + 0.1*randomGenerator.nextDouble();
+		
 		myCampaigns = new HashMap<Integer, CampaignData>();
 		log.fine("AdNet " + getName() + " simulationSetup");
 	}
@@ -464,7 +462,6 @@ public class SampleAdNetwork extends Agent {
 	@Override
 	protected void simulationFinished() {
 		campaignReports.clear();
-		adxPublisherReports.clear();
 		bidBundle = null;
 	}
 
@@ -506,6 +503,12 @@ public class SampleAdNetwork extends Agent {
 							singleMarketSegment, Device.pc, AdType.video));
 
 				}
+				
+				/**
+				 * An empty segments set is used to indicate the "UNKNOWN" segment
+				 * such queries are matched when the UCS fails to recover the user's
+				 * segments.
+				 */
 				querySet.add(new AdxQuery(publishersName,
 						new HashSet<MarketSegment>(), Device.mobile,
 						AdType.video));
