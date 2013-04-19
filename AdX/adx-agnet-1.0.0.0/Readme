@@ -14,7 +14,7 @@ How to run the agnet:
 	   as specified in the config file.
 	
 How to configure the agnet:
-	1. The agent's configuration file is located at config/aw-1.conf (which is also configurable
+	1. The agent's configuration file is located at "config/aw-1.conf" (which is also configurable
 	   from the "runAgent.sh" file.
 
 How to implement an agent:
@@ -22,6 +22,7 @@ How to implement an agent:
 	2. This class will contain your "business logic" and will be responsible for
 	   communicating with the ADX server.
 	3. After you have finished implementing your agent, you will need to register it
-	   in the configuration file, for it to be loaded by the agentwate.
+	   in the configuration file "config/aw-1.conf", for it to be loaded by the agentwate.
+	   (i.e. agentImpl=tau.tac.adx.agents.SampleAdNetwork).
 	4. An example implementing class is available at "SampleAdNetwork.java"
 		                           
