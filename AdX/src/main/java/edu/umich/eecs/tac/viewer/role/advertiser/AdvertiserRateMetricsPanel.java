@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 
 import se.sics.isl.transport.Transportable;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
+import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -72,30 +73,37 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 		return advertiser;
 	}
 
-	protected void updateCampaigns(AdNetworkDailyNotification dailyNotification) {
-		if (!campaigns.contains(dailyNotification)
-				&& advertiser.equals(dailyNotification.getWinner())
-				&& dailyNotification.getCost() > 0) {
+	protected void updateCampaigns(AdNetworkDailyNotification campaignMessage) {
+		if (!campaigns.contains(campaignMessage)
+				&& advertiser.equals(campaignMessage.getWinner())
+				&& campaignMessage.getCost() > 0) {
 			String campaignAllocatedTo = " allocated to "
-					+ dailyNotification.getWinner();
+					+ campaignMessage.getWinner();
 
-			campaignAllocatedTo = " WON at cost " + dailyNotification.getCost();
+			campaignAllocatedTo = " WON at cost " + campaignMessage.getCost();
 
-			String message = "Day " + dailyNotification.getEffectiveDay()
-					+ ": " + campaignAllocatedTo + ". UCS Level set to "
-					+ dailyNotification.getServiceLevel() + " at price "
-					+ dailyNotification.getPrice() + " Qualit Score is: "
-					+ dailyNotification.getQualityScore();
+			String message = "Day " + campaignMessage.getEffectiveDay() + ": "
+					+ campaignAllocatedTo + ". UCS Level set to "
+					+ campaignMessage.getServiceLevel() + " at price "
+					+ campaignMessage.getPrice() + " Quality Score is: "
+					+ campaignMessage.getQualityScore();
 			area.append(message);
 			area.append("\r\n");
 		}
+	}
 
+	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
+		String message = "Day 0: Beginning at " + campaignMessage.getDayStart()
+				+ ", ending at " + campaignMessage.getDayEnd()
+				+ ", market segments: " + campaignMessage.getTargetSegment();
+		area.append(message);
+		area.append("\r\n");
 	}
 
 	private class DataUpdateListener extends ViewAdaptor {
 
 		@Override
-		public void dataUpdated(final int agent, final int type,
+		public void dataUpdated(final int agentId, final int type,
 				final Transportable value) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -104,11 +112,16 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 					case TACAdxConstants.DU_UCS_REPORT:
 						updateCampaigns((AdNetworkDailyNotification) value);
 						break;
+					case TACAdxConstants.DU_INITIAL_CAMPAIGN:
+						if (agent == agentId) {
+							updateCampaigns((InitialCampaignMessage) value);
+						}
+						break;
 					}
+
 				}
 			});
 
 		}
-
 	}
 }
