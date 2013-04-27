@@ -22,7 +22,6 @@ import java.awt.GridLayout;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -42,19 +41,6 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 	private final String advertiser;
 	private final Set<AdNetworkDailyNotification> campaigns;
 
-	private int impressions;
-	private int clicks;
-	private int conversions;
-	private double revenue;
-	private double cost;
-
-	private JLabel ctrLabel;
-	private JLabel convRateLabel;
-	private JLabel cpcLabel;
-	private JLabel cpmLabel;
-	private JLabel vpcLabel;
-	private JLabel roiLabel;
-
 	private final boolean advertiserBorder;
 	private JTextArea area;
 
@@ -73,41 +59,9 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 		setLayout(new GridLayout(6, 2));
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 
-		ctrLabel = new JLabel("---");
-		ctrLabel.setToolTipText("Click-through Rate");
-		add(new JLabel("CTR:"));
-		add(ctrLabel);
 		area = new JTextArea();
 		add(area);
 
-		// convRateLabel = new JLabel("---");
-		// convRateLabel.setToolTipText("Conversion Rate");
-		// add(new JLabel("Conv. Rate:"));
-		// add(convRateLabel);
-		//
-		// cpmLabel = new JLabel("---");
-		// add(new JLabel("CPM:"));
-		// add(cpmLabel);
-		//
-		// cpcLabel = new JLabel("---");
-		// cpcLabel.setToolTipText("Cost Per Click");
-		// add(new JLabel("CPC:"));
-		// add(cpcLabel);
-		//
-		// vpcLabel = new JLabel("---");
-		// vpcLabel.setToolTipText("Value Per Click");
-		// add(new JLabel("VPC:"));
-		// add(vpcLabel);
-		//
-		// roiLabel = new JLabel("---");
-		// roiLabel.setToolTipText("Return on Investment");
-		// add(new JLabel("ROI:"));
-		// add(roiLabel);
-		//
-		// if (advertiserBorder)
-		// setBorder(BorderFactory.createTitledBorder(advertiser));
-		// else
-		// setBorder(BorderFactory.createTitledBorder("Rate Metrics"));
 	}
 
 	public int getAgent() {
@@ -120,7 +74,8 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 
 	protected void updateCampaigns(AdNetworkDailyNotification dailyNotification) {
 		if (!campaigns.contains(dailyNotification)
-				&& advertiser.equals(dailyNotification.getWinner())) {
+				&& advertiser.equals(dailyNotification.getWinner())
+				&& dailyNotification.getCost() > 0) {
 			String campaignAllocatedTo = " allocated to "
 					+ dailyNotification.getWinner();
 
