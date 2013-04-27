@@ -58,7 +58,7 @@ public class AdNetTabPanel extends SimulationTabPanel {
 		resultsPageModels = new HashMap<Query, ResultsPageModel>();
 
 		this.simulationPanel = simulationPanel;
-		// simulationPanel.addViewListener(new ParticipantListener());
+		simulationPanel.addViewListener(new ParticipantListener());
 		initialize();
 	}
 

@@ -25,6 +25,13 @@
 
 package edu.umich.eecs.tac.viewer.role;
 
+import java.awt.BorderLayout;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JTabbedPane;
+
+import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -33,63 +40,56 @@ import edu.umich.eecs.tac.viewer.auction.ResultsPageModel;
 import edu.umich.eecs.tac.viewer.role.advertiser.AdvertiserInfoTabPanel;
 import edu.umich.eecs.tac.viewer.role.advertiser.AdvertiserOverviewPanel;
 
-import javax.swing.*;
-
-import tau.tac.adx.sim.TACAdxConstants;
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Patrick Jordan
  */
 public class AdvertiserTabPanel extends SimulationTabPanel {
-    private JTabbedPane tabbedPane;
+	private JTabbedPane tabbedPane;
 
-    private Map<String, AdvertiserInfoTabPanel> advertiserInfoPanels;
-    private Map<Query, ResultsPageModel> resultsPageModels;
-    private int participantNum;
-    private TACAASimulationPanel simulationPanel;
+	private final Map<String, AdvertiserInfoTabPanel> advertiserInfoPanels;
+	private final Map<Query, ResultsPageModel> resultsPageModels;
+	private int participantNum;
+	private final TACAASimulationPanel simulationPanel;
 
-    public AdvertiserTabPanel(TACAASimulationPanel simulationPanel) {
-        super(simulationPanel);
-        participantNum = 0;
-        advertiserInfoPanels = new HashMap<String, AdvertiserInfoTabPanel>();
-        resultsPageModels = new HashMap<Query, ResultsPageModel>();
-        
-        this.simulationPanel = simulationPanel;
-        simulationPanel.addViewListener(new ParticipantListener());
-        initialize();
-    }
+	public AdvertiserTabPanel(TACAASimulationPanel simulationPanel) {
+		super(simulationPanel);
+		participantNum = 0;
+		advertiserInfoPanels = new HashMap<String, AdvertiserInfoTabPanel>();
+		resultsPageModels = new HashMap<Query, ResultsPageModel>();
 
-    private void initialize() {
-        setLayout(new BorderLayout());
-        setBackground(TACAAViewerConstants.CHART_BACKGROUND);
-        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        tabbedPane.setBackground(TACAAViewerConstants.CHART_BACKGROUND);
-        add(tabbedPane, BorderLayout.CENTER);
+		this.simulationPanel = simulationPanel;
+		simulationPanel.addViewListener(new ParticipantListener());
+		initialize();
+	}
 
-        AdvertiserOverviewPanel overviewPanel = new AdvertiserOverviewPanel(getSimulationPanel());
-        tabbedPane.addTab("Overview", overviewPanel);
-    }
+	private void initialize() {
+		setLayout(new BorderLayout());
+		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(TACAAViewerConstants.CHART_BACKGROUND);
+		add(tabbedPane, BorderLayout.CENTER);
 
-    private class ParticipantListener extends ViewAdaptor {
+		AdvertiserOverviewPanel overviewPanel = new AdvertiserOverviewPanel(
+				getSimulationPanel());
+		tabbedPane.addTab("Overview", overviewPanel);
+	}
 
-        public void participant(int agent, int role, String name,
-                                int participantID) {
-            if (!advertiserInfoPanels.containsKey(name)
-                    && role == TACAdxConstants.ADVERTISER) {
-                AdvertiserInfoTabPanel infoPanel = new AdvertiserInfoTabPanel(
-                        agent, name, resultsPageModels, simulationPanel,
-                        TACAAViewerConstants.LEGEND_COLORS[participantNum]);
+	private class ParticipantListener extends ViewAdaptor {
 
-                advertiserInfoPanels.put(name, infoPanel);
-                tabbedPane.addTab(name, infoPanel);
-                participantNum++;
-            }
-        }
-    }
+		@Override
+		public void participant(int agent, int role, String name,
+				int participantID) {
+			if (!advertiserInfoPanels.containsKey(name)
+					&& role == TACAdxConstants.AD_NETOWRK_ROLE_ID) {
+				AdvertiserInfoTabPanel infoPanel = new AdvertiserInfoTabPanel(
+						agent, name, resultsPageModels, simulationPanel,
+						TACAAViewerConstants.LEGEND_COLORS[participantNum]);
 
+				advertiserInfoPanels.put(name, infoPanel);
+				tabbedPane.addTab(name, infoPanel);
+				participantNum++;
+			}
+		}
+	}
 
 }

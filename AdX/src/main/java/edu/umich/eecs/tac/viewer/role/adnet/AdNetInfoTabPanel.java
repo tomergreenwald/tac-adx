@@ -33,9 +33,8 @@ import java.util.Map;
 import javax.swing.JTabbedPane;
 
 import se.sics.isl.transport.Transportable;
-import edu.umich.eecs.tac.props.Product;
+import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import edu.umich.eecs.tac.props.Query;
-import edu.umich.eecs.tac.props.RetailCatalog;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -81,25 +80,25 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 				agent, advertiser, legendColor));
 	}
 
-	private void handleRetailCatalog(RetailCatalog retailCatalog) {
+	private void handleCampaign(CampaignOpportunityMessage value) {
 		advertiserQueryTabPanels.clear();
-		for (Product product : retailCatalog) {
-			// Create f0
-			Query f0 = new Query();
+		// for (Product product : value) {
+		// Create f0
+		Query f0 = new Query();
 
-			// Create f1's
-			Query f1Manufacturer = new Query(product.getManufacturer(), null);
-			Query f1Component = new Query(null, product.getComponent());
+		// // Create f1's
+		// Query f1Manufacturer = new Query(product.getManufacturer(), null);
+		// Query f1Component = new Query(null, product.getComponent());
+		//
+		// // Create f2
+		// Query f2 = new Query(product.getManufacturer(),
+		// product.getComponent());
 
-			// Create f2
-			Query f2 = new Query(product.getManufacturer(),
-					product.getComponent());
-
-			createAdvertiserQueryTabPanels(f0);
-			createAdvertiserQueryTabPanels(f1Manufacturer);
-			createAdvertiserQueryTabPanels(f1Component);
-			createAdvertiserQueryTabPanels(f2);
-		}
+		createAdvertiserQueryTabPanels(f0);
+		// createAdvertiserQueryTabPanels(f1Manufacturer);
+		// createAdvertiserQueryTabPanels(f1Component);
+		// createAdvertiserQueryTabPanels(f2);
+		// }
 
 		for (Query query : advertiserQueryTabPanels.keySet()) {
 			tabbedPane.add(
@@ -129,9 +128,8 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 
 		@Override
 		public void dataUpdated(int type, Transportable value) {
-			Class valueType = value.getClass();
-			if (valueType == RetailCatalog.class) {
-				handleRetailCatalog((RetailCatalog) value);
+			if (value instanceof CampaignOpportunityMessage) {
+				handleCampaign((CampaignOpportunityMessage) value);
 			}
 		}
 	}
