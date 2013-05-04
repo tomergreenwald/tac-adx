@@ -77,7 +77,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 
 	private static class AdvertiserMetricsModel extends AbstractTableModel {
 		private static final String[] COLUMN_NAMES = new String[] { "Agent",
-				"Profit", "VPI", "ROI" };
+				"Profit", "VPI", "ROI", "revenue", "cost", "impressions" };
 
 		List<AdvertiserMetricsItem> data;
 
@@ -134,7 +134,13 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			} else if (columnIndex == 2) {
 				return data.get(rowIndex).getVPI();
 			} else if (columnIndex == 3) {
-				return data.get(rowIndex).getROI();
+				return data.get(rowIndex).getRevenue();
+			} else if (columnIndex == 4) {
+				return data.get(rowIndex).getProfit();
+			} else if (columnIndex == 5) {
+				return data.get(rowIndex).getCost();
+			} else if (columnIndex == 6) {
+				return data.get(rowIndex).getImpressions();
 			}
 
 			return null;
@@ -154,6 +160,28 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		private int clicks;
 		private int conversions;
 		private double revenue;
+
+		/**
+		 * @return the impressions
+		 */
+		public int getImpressions() {
+			return impressions;
+		}
+
+		/**
+		 * @return the revenue
+		 */
+		public double getRevenue() {
+			return revenue;
+		}
+
+		/**
+		 * @return the cost
+		 */
+		public double getCost() {
+			return cost;
+		}
+
 		private double cost;
 
 		private AdvertiserInfo advertiserInfo;
