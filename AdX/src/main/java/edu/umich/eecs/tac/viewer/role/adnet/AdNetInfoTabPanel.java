@@ -94,7 +94,6 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 		// Query f2 = new Query(product.getManufacturer(),
 		// product.getComponent());
 
-		createAdvertiserQueryTabPanels(f0);
 		// createAdvertiserQueryTabPanels(f1Manufacturer);
 		// createAdvertiserQueryTabPanels(f1Component);
 		// createAdvertiserQueryTabPanels(f2);
@@ -107,21 +106,6 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 					advertiserQueryTabPanels.get(query));
 		}
 		add(tabbedPane);
-	}
-
-	private void createAdvertiserQueryTabPanels(Query query) {
-		ResultsPageModel model = models.get(query);
-
-		if (model == null) {
-			model = new ResultsPageModel(query, simulationPanel);
-			models.put(query, model);
-		}
-
-		if (!advertiserQueryTabPanels.containsKey(query)) {
-			advertiserQueryTabPanels.put(query, new AdvertiserQueryTabPanel(
-					agent, advertiser, query, model, simulationPanel,
-					legendColor));
-		}
 	}
 
 	private class CatalogListener extends ViewAdaptor {
