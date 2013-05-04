@@ -101,8 +101,8 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 
 	private JFreeChart createTargetedImpressionsChart() {
 		targetedImpressions = new XYSeriesCollection();
-		return createDaySeriesChartWithColors("Imprs", targetedImpressions,
-				false);
+		return createDaySeriesChartWithColors("Impressions",
+				targetedImpressions, false);
 	}
 
 	protected void addTargetedImpressions(String advertiser, int impressions) {
@@ -140,9 +140,10 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 				}
 			});
 		}
-		
+
 		@Override
-		public void dataUpdated(final int agent, final int type, final double value) {
+		public void dataUpdated(final int agent, final int type,
+				final double value) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
