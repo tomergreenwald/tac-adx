@@ -21,7 +21,9 @@ package edu.umich.eecs.tac.viewer.role.advertiser;
 import static edu.umich.eecs.tac.viewer.ViewerChartFactory.createDifferenceChart;
 
 import java.awt.GridLayout;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
@@ -36,6 +38,7 @@ import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignReport;
+import tau.tac.adx.report.demand.CampaignReportEntry;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -50,10 +53,9 @@ public class CampaignGrpahsPanel extends JPanel {
 	private final Set<AdNetworkDailyNotification> campaigns;
 
 	private final boolean advertiserBorder;
-	private final XYSeries reachSeries;
-	private final XYSeriesCollection seriescollection;
+	private final Map<Integer, XYSeries> campaignSeries;
 	private int counter;
-	private int campaignId = 0;
+	private final int campaignId = 0;
 	private int currentDay;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
@@ -61,8 +63,7 @@ public class CampaignGrpahsPanel extends JPanel {
 		this.agent = agent;
 		this.advertiser = advertiser;
 		this.advertiserBorder = advertiserBorder;
-		this.reachSeries = new XYSeries("Reach");
-		seriescollection = new XYSeriesCollection();
+		campaignSeries = new HashMap<Integer, XYSeries>();
 		initialize();
 
 		simulationPanel.addViewListener(new DataUpdateListener());
@@ -73,15 +74,17 @@ public class CampaignGrpahsPanel extends JPanel {
 	private void initialize() {
 		setLayout(new GridLayout(6, 2));
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
+	}
 
-		seriescollection.addSeries(reachSeries);
-
+	private void createGraph(XYSeries reachSeries) {
+		XYSeriesCollection seriescollection = new XYSeriesCollection(
+				reachSeries);
 		JFreeChart chart = createDifferenceChart(advertiserBorder ? null
 				: advertiser, seriescollection);
 		ChartPanel chartpanel = new ChartPanel(chart, false);
 		chartpanel.setMouseZoomable(true, false);
 		add(chartpanel);
-
+		this.repaint();
 	}
 
 	public int getAgent() {
@@ -93,15 +96,18 @@ public class CampaignGrpahsPanel extends JPanel {
 	}
 
 	protected void updateCampaigns(CampaignReport campaignReport) {
-		if (campaignId == 0) {
-			campaignId = campaignReport.getEntry(0).getKey().getCampaignId();
-			System.out.println("set campaign " + campaignId);
+		CampaignReportEntry campaignReportEntry = campaignReport.getEntry(0);
+		Integer campaignId2 = campaignReportEntry.getKey().getCampaignId();
+		if (!campaignSeries.containsKey(campaignId2)) {
+			String string = "Campaign " + campaignId2;
+			System.out.println(agent + " " + string);
+			XYSeries reachSeries = new XYSeries(string);
+			campaignSeries.put(campaignId2, reachSeries);
+			createGraph(reachSeries);
 		}
-		if (campaignId == campaignReport.getEntry(0).getKey().getCampaignId()) {
-			reachSeries.add(currentDay, campaignReport.getEntry(0)
-					.getCampaignStats().getTargetedImps());
-			counter++;
-		}
+		XYSeries reachSeries = campaignSeries.get(campaignId2);
+		reachSeries.add(currentDay, campaignReportEntry.getCampaignStats()
+				.getTargetedImps());
 	}
 
 	protected class DayListener implements TickListener {

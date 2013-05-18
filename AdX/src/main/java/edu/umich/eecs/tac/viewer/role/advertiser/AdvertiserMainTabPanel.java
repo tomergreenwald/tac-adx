@@ -55,24 +55,23 @@ public class AdvertiserMainTabPanel extends SimulationTabPanel {
 	private void initialize() {
 		setLayout(new GridBagLayout());
 
-		// AdvertiserRateMetricsPanel ratesMetricsPanel = new
-		// AdvertiserRateMetricsPanel(
-		// agent, name, simulationPanel, false);
-		//
-		// GridBagConstraints c = new GridBagConstraints();
-		// c.gridx = 0;
-		// c.gridy = 0;
-		// c.weightx = 2;
-		// c.weighty = 1;
-		// c.fill = GridBagConstraints.BOTH;
-		// add(ratesMetricsPanel, c);
+		AdvertiserRateMetricsPanel ratesMetricsPanel = new AdvertiserRateMetricsPanel(
+				agent, name, simulationPanel, false);
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 2;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		add(ratesMetricsPanel, c);
 
 		CampaignGrpahsPanel campaignGrpahsPanel = new CampaignGrpahsPanel(
 				agent, name, simulationPanel, false);
 
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
-		c2.gridy = 0;
+		c2.gridy = 1;
 		c2.weightx = 2;
 		c2.weighty = 2;
 		c2.fill = GridBagConstraints.BOTH;
