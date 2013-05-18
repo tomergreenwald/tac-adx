@@ -33,6 +33,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import se.sics.isl.transport.Transportable;
+import se.sics.tasim.viewer.TickListener;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.sim.TACAdxConstants;
@@ -53,6 +54,7 @@ public class CampaignGrpahsPanel extends JPanel {
 	private final XYSeriesCollection seriescollection;
 	private int counter;
 	private int campaignId = 0;
+	private int currentDay;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
 			TACAASimulationPanel simulationPanel, boolean advertiserBorder) {
@@ -65,6 +67,7 @@ public class CampaignGrpahsPanel extends JPanel {
 
 		simulationPanel.addViewListener(new DataUpdateListener());
 		campaigns = new HashSet<AdNetworkDailyNotification>();
+		simulationPanel.addTickListener(new DayListener());
 	}
 
 	private void initialize() {
@@ -95,13 +98,26 @@ public class CampaignGrpahsPanel extends JPanel {
 			System.out.println("set campaign " + campaignId);
 		}
 		if (campaignId == campaignReport.getEntry(0).getKey().getCampaignId()) {
-			reachSeries.add(counter, campaignReport.getEntry(0)
+			reachSeries.add(currentDay, campaignReport.getEntry(0)
 					.getCampaignStats().getTargetedImps());
-			if (advertiserBorder) {
-
-			}
 			counter++;
 		}
+	}
+
+	protected class DayListener implements TickListener {
+
+		@Override
+		public void simulationTick(long serverTime, int simulationDate) {
+			CampaignGrpahsPanel.this.simulationTick(serverTime, simulationDate);
+		}
+
+		@Override
+		public void tick(long serverTime) {
+		}
+	}
+
+	protected void simulationTick(long serverTime, int simulationDate) {
+		currentDay = simulationDate;
 	}
 
 	private class DataUpdateListener extends ViewAdaptor {
