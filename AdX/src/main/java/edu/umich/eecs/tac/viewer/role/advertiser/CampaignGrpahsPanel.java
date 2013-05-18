@@ -52,6 +52,7 @@ public class CampaignGrpahsPanel extends JPanel {
 	private final XYSeries reachSeries;
 	private final XYSeriesCollection seriescollection;
 	private int counter;
+	private int campaignId = 0;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
 			TACAASimulationPanel simulationPanel, boolean advertiserBorder) {
@@ -89,9 +90,18 @@ public class CampaignGrpahsPanel extends JPanel {
 	}
 
 	protected void updateCampaigns(CampaignReport campaignReport) {
-		reachSeries.add(counter, campaignReport.getEntry(0).getCampaignStats()
-				.getTargetedImps());
-		counter++;
+		if (campaignId == 0) {
+			campaignId = campaignReport.getEntry(0).getKey().getCampaignId();
+			System.out.println("set campaign " + campaignId);
+		}
+		if (campaignId == campaignReport.getEntry(0).getKey().getCampaignId()) {
+			reachSeries.add(counter, campaignReport.getEntry(0)
+					.getCampaignStats().getTargetedImps());
+			if (advertiserBorder) {
+
+			}
+			counter++;
+		}
 	}
 
 	private class DataUpdateListener extends ViewAdaptor {
