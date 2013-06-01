@@ -3,7 +3,6 @@ package tau.tac.adx.report.adn;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -29,19 +28,20 @@ import tau.tac.adx.users.properties.Income;
  */
 public enum MarketSegment {
 
-	FEMALE_YOUNG, FEMALE_OLD, MALE_YOUNG, MALE_OLD, YOUNG_HIGH_INCOME, OLD_HIGH_INCOME, YOUNG_LOW_INCOME, OLD_LOW_INCOME, FEMALE_LOW_INCOME, FEMALE_HIGH_INCOME, MALE_HIGH_INCOME, MALE_LOW_INCOME;
+	MALE, FEMALE, YOUNG, OLD, LOW_INCOME, HIGH_INCOME, FEMALE_YOUNG, FEMALE_OLD, MALE_YOUNG, MALE_OLD, YOUNG_HIGH_INCOME, OLD_HIGH_INCOME, YOUNG_LOW_INCOME, OLD_LOW_INCOME, FEMALE_LOW_INCOME, FEMALE_HIGH_INCOME, MALE_HIGH_INCOME, MALE_LOW_INCOME, FEMALE_YOUNG_LOW_INCOME, FEMALE_OLD_LOW_INCOME, MALE_YOUNG_LOW_INCOME, MALE_OLD_LOW_INCOME, FEMALE_YOUNG_HIGH_INCOME, FEMALE_OLD_HIGH_INCOME, MALE_YOUNG_HIGH_INCOME, MALE_OLD_HIGH_INCOME;
 
 	/**
 	 * A random MarketSegment on demand. The values and the Random are cached.
 	 */
-	private static final List<MarketSegment> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
-    private static final int SIZE = VALUES.size();
+	private static final List<MarketSegment> VALUES = Collections
+			.unmodifiableList(Arrays.asList(values()));
+	private static final int SIZE = VALUES.size();
 	private static final Random RANDOM = new Random();
-	
-	public static MarketSegment randomMarketSegment()  {
-	    return VALUES.get(RANDOM.nextInt(SIZE));
+
+	public static MarketSegment randomMarketSegment() {
+		return VALUES.get(RANDOM.nextInt(SIZE));
 	}
-	
+
 	/**
 	 * Generates a list of matching {@link MarketSegment}s according to a given
 	 * {@link AdxUser user}.
@@ -52,6 +52,7 @@ public enum MarketSegment {
 	 */
 	public static Set<MarketSegment> extractSegment(AdxUser user) {
 		Set<MarketSegment> marketSegments = new HashSet<MarketSegment>();
+		// #FIXME change matching for new types
 		if (user.getGender() == Gender.male) {
 			if (user.getIncome() == Income.low
 					|| user.getIncome() == Income.medium) {
@@ -100,5 +101,5 @@ public enum MarketSegment {
 		}
 		return marketSegments;
 	}
-	
+
 }
