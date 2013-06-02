@@ -7,13 +7,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import tau.tac.adx.AdxManager;
-import tau.tac.adx.ads.properties.AdType;
-import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.sim.TACAdxSimulation;
 
@@ -25,7 +25,7 @@ public class CampaignTest {
 	int dayStart = 5;
 	int dayEnd = 12;
 	// #FIXME fix this test
-	MarketSegment targetSegment = MarketSegment.FEMALE;
+	Set<MarketSegment> targetSegment = MarketSegment.randomMarketSegment();
 	MarketSegment nonTargetSegment = MarketSegment.OLD;
 
 	double vcoef = 2.5;
@@ -44,8 +44,8 @@ public class CampaignTest {
 		qualityMgr.addAdvertiser("a3");
 		// #FIXME fix this test
 		//
-		// campaign = new CampaignImpl(qualityMgr, reachImps, dayStart, dayEnd,
-		// targetSegment, vcoef, mcoef);
+		campaign = new CampaignImpl(qualityMgr, reachImps, dayStart, dayEnd,
+				targetSegment, vcoef, mcoef);
 
 		assertNotNull(campaign);
 	}

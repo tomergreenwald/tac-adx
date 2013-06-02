@@ -17,12 +17,15 @@ import tau.tac.adx.report.adn.MarketSegment;
 public class CampaignOpportunityMessage extends SimpleContent {
 	private static final long serialVersionUID = -2501549665857756943L;
 
+	/**
+	 * The publisher key.
+	 */
+	private static final String MARKET_SEGMENT_KEY = "USER_KEY";
+
 	private int id;
 	private Long reachImps;
 	private int dayStart;
 	private int dayEnd;
-	// #FIXME should this be removed?
-	// private String targetSegmentName;
 	private Set<MarketSegment> targetSegment;
 	private double videoCoef;
 	private double mobileCoef;
@@ -120,25 +123,27 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		reachImps = reader.getAttributeAsLong("reachImps");
 		dayStart = reader.getAttributeAsInt("dayStart");
 		dayEnd = reader.getAttributeAsInt("dayEnd");
-		// targetSegmentName = reader.getAttribute("targetSegment");
-		// #FIXME serialize like
-		/** AdxQuery#readWithLock() */
-		// targetSegment = MarketSegment.valueOf(targetSegmentName);
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
 		day = reader.getAttributeAsInt("day");
+		while (reader.nextNode(MARKET_SEGMENT_KEY, false)) {
+			targetSegment.add(MarketSegment.valueOf(reader
+					.getAttribute(MARKET_SEGMENT_KEY)));
+		}
 		super.read(reader);
 	}
 
 	@Override
 	public void write(TransportWriter writer) {
 		writer.attr("id", id).attr("reachImps", reachImps)
-				.attr("dayStart", dayStart)
-				.attr("dayEnd", dayEnd)
-				// #FIXME fix serialization
-				// .attr("targetSegment", targetSegment.name())
+				.attr("dayStart", dayStart).attr("dayEnd", dayEnd)
 				.attr("videoCoef", videoCoef).attr("mobileCoef", mobileCoef)
 				.attr("day", day);
+		for (MarketSegment marketSegment : targetSegment) {
+			writer.node(MARKET_SEGMENT_KEY)
+					.attr(MARKET_SEGMENT_KEY, marketSegment.toString())
+					.endNode(MARKET_SEGMENT_KEY);
+		}
 		super.write(writer);
 	}
 

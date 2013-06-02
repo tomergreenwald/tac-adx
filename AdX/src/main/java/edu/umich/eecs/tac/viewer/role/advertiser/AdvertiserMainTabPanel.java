@@ -61,7 +61,7 @@ public class AdvertiserMainTabPanel extends SimulationTabPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.weightx = 2;
+		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
 		add(ratesMetricsPanel, c);
@@ -72,10 +72,10 @@ public class AdvertiserMainTabPanel extends SimulationTabPanel {
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
 		c2.gridy = 1;
-		c2.weightx = 2;
-		c2.weighty = 2;
+		c2.weightx = 1;
+		c2.weighty = 1;
 		c2.fill = GridBagConstraints.BOTH;
-		add(campaignGrpahsPanel, c2);
+		// c2.add(campaignGrpahsPanel, c2);
 
 	}
 }

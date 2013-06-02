@@ -18,6 +18,11 @@ public class InitialCampaignMessage extends SimpleContent {
 
 	private static final long serialVersionUID = -5447083615716436823L;
 
+	/**
+	 * The publisher key.
+	 */
+	private static final String MARKET_SEGMENT_KEY = "USER_KEY";
+
 	private int id;
 	private Long reachImps;
 	private int dayStart;
@@ -126,9 +131,10 @@ public class InitialCampaignMessage extends SimpleContent {
 		reachImps = reader.getAttributeAsLong("reachImps");
 		dayStart = reader.getAttributeAsInt("dayStart");
 		dayEnd = reader.getAttributeAsInt("dayEnd");
-		// #FIXME
-		// targetSegmentName = reader.getAttribute("targetSegment");
-		// targetSegment = MarketSegment.valueOf(targetSegmentName);
+		while (reader.nextNode(MARKET_SEGMENT_KEY, false)) {
+			targetSegment.add(MarketSegment.valueOf(reader
+					.getAttribute(MARKET_SEGMENT_KEY)));
+		}
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
 		demandAgentAddress = reader.getAttribute("demandAgentAddress");
@@ -138,15 +144,16 @@ public class InitialCampaignMessage extends SimpleContent {
 
 	@Override
 	public void write(TransportWriter writer) {
-		writer.attr("id", id)
-				.attr("reachImps", reachImps)
-				.attr("dayStart", dayStart)
-				.attr("dayEnd", dayEnd)
-				// #FIXME
-				// .attr("targetSegment", targetSegment.name())
+		writer.attr("id", id).attr("reachImps", reachImps)
+				.attr("dayStart", dayStart).attr("dayEnd", dayEnd)
 				.attr("videoCoef", videoCoef).attr("mobileCoef", mobileCoef)
 				.attr("demandAgentAddress", demandAgentAddress)
 				.attr("adxAgentAddress", adxAgentAddress);
+		for (MarketSegment marketSegment : targetSegment) {
+			writer.node(MARKET_SEGMENT_KEY)
+					.attr(MARKET_SEGMENT_KEY, marketSegment.toString())
+					.endNode(MARKET_SEGMENT_KEY);
+		}
 		super.write(writer);
 	}
 
