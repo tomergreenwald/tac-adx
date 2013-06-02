@@ -24,8 +24,9 @@ public class CampaignTest {
 	int reachImps = 100;
 	int dayStart = 5;
 	int dayEnd = 12;
-	MarketSegment targetSegment = MarketSegment.FEMALE_HIGH_INCOME;
-	MarketSegment nonTargetSegment = MarketSegment.OLD_HIGH_INCOME;
+	// #FIXME fix this test
+	MarketSegment targetSegment = MarketSegment.FEMALE;
+	MarketSegment nonTargetSegment = MarketSegment.OLD;
 
 	double vcoef = 2.5;
 	double mcoef = 0.8;
@@ -41,9 +42,10 @@ public class CampaignTest {
 		qualityMgr.addAdvertiser("a1");
 		qualityMgr.addAdvertiser("a2");
 		qualityMgr.addAdvertiser("a3");
-
-		campaign = new CampaignImpl(qualityMgr, reachImps, dayStart, dayEnd,
-				targetSegment, vcoef, mcoef);
+		// #FIXME fix this test
+		//
+		// campaign = new CampaignImpl(qualityMgr, reachImps, dayStart, dayEnd,
+		// targetSegment, vcoef, mcoef);
 
 		assertNotNull(campaign);
 	}
@@ -119,15 +121,15 @@ public class CampaignTest {
 		assertTrue(campaign.isAllocated());
 	}
 
-//	void multiImpress(Campaign cpgn, boolean targeted, long costMillis,
-//			int multi) {
-//		for (int i = 0; i < multi; i++)
-//			if (targeted)
-//				cpgn.impress(targetSegment, AdType.text, Device.pc, costMillis);
-//			else
-//				cpgn.impress(nonTargetSegment, AdType.text, Device.pc,
-//						costMillis);
-//	}
+	// void multiImpress(Campaign cpgn, boolean targeted, long costMillis,
+	// int multi) {
+	// for (int i = 0; i < multi; i++)
+	// if (targeted)
+	// cpgn.impress(targetSegment, AdType.text, Device.pc, costMillis);
+	// else
+	// cpgn.impress(nonTargetSegment, AdType.text, Device.pc,
+	// costMillis);
+	// }
 
 	@Test
 	@Ignore
@@ -140,12 +142,12 @@ public class CampaignTest {
 		campaign.auction();
 		assertEquals(campaign.getAdvertiser(), "a2");
 		assertEquals(campaign.getBudget(), 80L, 0);
-		//assertFalse(campaign.isActive());
+		// assertFalse(campaign.isActive());
 
 		for (int day = dayStart; day <= dayEnd; day++) {
 			campaign.nextTimeUnit(day);
 			assertTrue(campaign.isActive());
-//			multiImpress(campaign, true, 500, 10);                                                                                                                                                                                          
+			// multiImpress(campaign, true, 500, 10);
 		}
 		AdxManager.getInstance().setSimulation(mock(TACAdxSimulation.class));
 		campaign.nextTimeUnit(dayEnd + 1);

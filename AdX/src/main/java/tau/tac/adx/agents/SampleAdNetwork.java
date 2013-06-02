@@ -55,11 +55,10 @@ public class SampleAdNetwork extends Agent {
 	/**
 	 * Messages received:
 	 * 
-	 * We keep all the {@link CampaignReport campaign reports} 
-	 * delivered to the agent. We also keep the initialization 
-	 * messages {@link PublisherCatalog} and
-	 * {@link InitialCampaignMessage} and the most recent messages and reports
-	 * {@link CampaignOpportunityMessage}, {@link CampaignReport}, and
+	 * We keep all the {@link CampaignReport campaign reports} delivered to the
+	 * agent. We also keep the initialization messages {@link PublisherCatalog}
+	 * and {@link InitialCampaignMessage} and the most recent messages and
+	 * reports {@link CampaignOpportunityMessage}, {@link CampaignReport}, and
 	 * {@link AdNetworkDailyNotification}.
 	 */
 	private final Queue<CampaignReport> campaignReports;
@@ -121,9 +120,9 @@ public class SampleAdNetwork extends Agent {
 	protected void messageReceived(Message message) {
 		try {
 			Transportable content = message.getContent();
-			
-			//log.fine(message.getContent().getClass().toString());
-			
+
+			// log.fine(message.getContent().getClass().toString());
+
 			if (content instanceof InitialCampaignMessage) {
 				handleInitialCampaignMessage((InitialCampaignMessage) content);
 			} else if (content instanceof CampaignOpportunityMessage) {
@@ -246,7 +245,8 @@ public class SampleAdNetwork extends Agent {
 			double prevUcsBid = ucsBid;
 
 			/* UCS Bid should not exceed 0.2 */
-			ucsBid = Math.min(0.1 + 0.1*randomGenerator.nextDouble(), prevUcsBid * (1 + ucsTargetLevel - ucsLevel));
+			ucsBid = Math.min(0.1 + 0.1 * randomGenerator.nextDouble(),
+					prevUcsBid * (1 + ucsTargetLevel - ucsLevel));
 
 			log.info("Day " + day + ": Adjusting ucs bid: was " + prevUcsBid
 					+ " level reported: " + ucsLevel + " target: "
@@ -352,20 +352,21 @@ public class SampleAdNetwork extends Agent {
 							.getMarketSegments();
 
 					for (MarketSegment marketSegment : segmentsList) {
-						if (campaign.targetSegment == marketSegment) {
-							/*
-							 * among matching entries with the same campaign id,
-							 * the AdX randomly chooses an entry according to
-							 * the designated weight. by setting a constant
-							 * weight 1, we create a uniform probability over
-							 * active campaigns
-							 */
-							++entCount;
-							bidBundle.addQuery(queries[i], rbid, new Ad(null),
-									campaign.id, 1);
-						}
+						// #FIXME
+						// if (campaign.targetSegment == marketSegment) {
+						// /*
+						// * among matching entries with the same campaign id,
+						// * the AdX randomly chooses an entry according to
+						// * the designated weight. by setting a constant
+						// * weight 1, we create a uniform probability over
+						// * active campaigns
+						// */
+						// ++entCount;
+						// bidBundle.addQuery(queries[i], rbid, new Ad(null),
+						// campaign.id, 1);
+						// }
 					}
-					
+
 					if (segmentsList.size() == 0) {
 						++entCount;
 						bidBundle.addQuery(queries[i], rbid, new Ad(null),
@@ -430,19 +431,15 @@ public class SampleAdNetwork extends Agent {
 	 * @param AdNetworkReport
 	 */
 	private void handleAdNetworkReport(AdNetworkReport adnetReport) {
-		
-		log.info("Day "+ day + " : AdNetworkReport");
+
+		log.info("Day " + day + " : AdNetworkReport");
 		/*
-		 for (AdNetworkKey adnetKey : adnetReport.keys()) {
-		 
-			double rnd = Math.random();
-			if (rnd > 0.95) {
-				AdNetworkReportEntry entry = adnetReport
-						.getAdNetworkReportEntry(adnetKey);
-				log.info(adnetKey + " " + entry);
-			}
-		}
-        */
+		 * for (AdNetworkKey adnetKey : adnetReport.keys()) {
+		 * 
+		 * double rnd = Math.random(); if (rnd > 0.95) { AdNetworkReportEntry
+		 * entry = adnetReport .getAdNetworkReportEntry(adnetKey);
+		 * log.info(adnetKey + " " + entry); } }
+		 */
 	}
 
 	@Override
@@ -451,10 +448,10 @@ public class SampleAdNetwork extends Agent {
 		day = 0;
 		bidBundle = new AdxBidBundle();
 		ucsTargetLevel = 0.5 + (randomGenerator.nextInt(5) + 1) / 10.0;
-		
+
 		/* initial bid between 0.1 and 0.2 */
-		ucsBid = 0.1 + 0.1*randomGenerator.nextDouble();
-		
+		ucsBid = 0.1 + 0.1 * randomGenerator.nextDouble();
+
 		myCampaigns = new HashMap<Integer, CampaignData>();
 		log.fine("AdNet " + getName() + " simulationSetup");
 	}
@@ -503,11 +500,11 @@ public class SampleAdNetwork extends Agent {
 							singleMarketSegment, Device.pc, AdType.video));
 
 				}
-				
+
 				/**
-				 * An empty segments set is used to indicate the "UNKNOWN" segment
-				 * such queries are matched when the UCS fails to recover the user's
-				 * segments.
+				 * An empty segments set is used to indicate the "UNKNOWN"
+				 * segment such queries are matched when the UCS fails to
+				 * recover the user's segments.
 				 */
 				querySet.add(new AdxQuery(publishersName,
 						new HashSet<MarketSegment>(), Device.mobile,
@@ -530,7 +527,7 @@ public class SampleAdNetwork extends Agent {
 		Long reachImps;
 		long dayStart;
 		long dayEnd;
-		MarketSegment targetSegment;
+		Set<MarketSegment> targetSegment;
 		double videoCoef;
 		double mobileCoef;
 		int id;
@@ -570,8 +567,10 @@ public class SampleAdNetwork extends Agent {
 
 		@Override
 		public String toString() {
-			return "Campaign ID " + id + ": " + "day " + dayStart + " to "
-					+ dayEnd + " " + targetSegment.name() + ", reach: "
+			return "Campaign ID " + id + ": " + "day " + dayStart
+					+ " to "
+					// #FIXME
+					// + dayEnd + " " + targetSegment.name() + ", reach: "
 					+ reachImps + " coefs: (v=" + videoCoef + ", m="
 					+ mobileCoef + ")";
 		}

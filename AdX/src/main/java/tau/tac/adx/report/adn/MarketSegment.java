@@ -1,5 +1,6 @@
 package tau.tac.adx.report.adn;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,18 +29,21 @@ import tau.tac.adx.users.properties.Income;
  */
 public enum MarketSegment {
 
-	MALE, FEMALE, YOUNG, OLD, LOW_INCOME, HIGH_INCOME, FEMALE_YOUNG, FEMALE_OLD, MALE_YOUNG, MALE_OLD, YOUNG_HIGH_INCOME, OLD_HIGH_INCOME, YOUNG_LOW_INCOME, OLD_LOW_INCOME, FEMALE_LOW_INCOME, FEMALE_HIGH_INCOME, MALE_HIGH_INCOME, MALE_LOW_INCOME, FEMALE_YOUNG_LOW_INCOME, FEMALE_OLD_LOW_INCOME, MALE_YOUNG_LOW_INCOME, MALE_OLD_LOW_INCOME, FEMALE_YOUNG_HIGH_INCOME, FEMALE_OLD_HIGH_INCOME, MALE_YOUNG_HIGH_INCOME, MALE_OLD_HIGH_INCOME;
+	MALE, FEMALE, YOUNG, OLD, LOW_INCOME, HIGH_INCOME;
+	
+	private static MarketSegment[] GENDER_SEGMENTS = {MALE, FEMALE};
+	private static MarketSegment[] INCOME_SEGMENTS = {LOW_INCOME, HIGH_INCOME};
+	private static MarketSegment[] AGE_SEGMENTS = {YOUNG, OLD};
 
-	/**
-	 * A random MarketSegment on demand. The values and the Random are cached.
-	 */
-	private static final List<MarketSegment> VALUES = Collections
-			.unmodifiableList(Arrays.asList(values()));
-	private static final int SIZE = VALUES.size();
 	private static final Random RANDOM = new Random();
 
-	public static MarketSegment randomMarketSegment() {
-		return VALUES.get(RANDOM.nextInt(SIZE));
+	public static Set<MarketSegment> randomMarketSegment() {
+		List<MarketSegment> marketSegments = new ArrayList<MarketSegment>();
+		marketSegments.add(GENDER_SEGMENTS[RANDOM.nextInt(GENDER_SEGMENTS.length)]);
+		marketSegments.add(INCOME_SEGMENTS[RANDOM.nextInt(INCOME_SEGMENTS.length)]);
+		marketSegments.add(AGE_SEGMENTS[RANDOM.nextInt(AGE_SEGMENTS.length)]);
+		marketSegments.remove(RANDOM.nextInt(3));
+		return new HashSet<MarketSegment>(marketSegments);
 	}
 
 	/**
@@ -54,50 +58,20 @@ public enum MarketSegment {
 		Set<MarketSegment> marketSegments = new HashSet<MarketSegment>();
 		// #FIXME change matching for new types
 		if (user.getGender() == Gender.male) {
-			if (user.getIncome() == Income.low
-					|| user.getIncome() == Income.medium) {
-				marketSegments.add(MarketSegment.MALE_LOW_INCOME);
-			} else {
-				marketSegments.add(MarketSegment.MALE_HIGH_INCOME);
-			}
-			if (user.getAge() == Age.Age_18_24
-					|| user.getAge() == Age.Age_25_34
-					|| user.getAge() == Age.Age_35_44) {
-				marketSegments.add(MarketSegment.MALE_YOUNG);
-			} else {
-				marketSegments.add(MarketSegment.MALE_OLD);
-			}
+			marketSegments.add(MALE);
 		} else {
-			if (user.getIncome() == Income.low
-					|| user.getIncome() == Income.medium) {
-				marketSegments.add(MarketSegment.FEMALE_LOW_INCOME);
-			} else {
-				marketSegments.add(MarketSegment.FEMALE_HIGH_INCOME);
-			}
-			if (user.getAge() == Age.Age_18_24
-					|| user.getAge() == Age.Age_25_34
-					|| user.getAge() == Age.Age_35_44) {
-				marketSegments.add(MarketSegment.FEMALE_YOUNG);
-			} else {
-				marketSegments.add(MarketSegment.FEMALE_OLD);
-			}
+			marketSegments.add(FEMALE);
 		}
 		if (user.getIncome() == Income.low || user.getIncome() == Income.medium) {
-			if (user.getAge() == Age.Age_18_24
-					|| user.getAge() == Age.Age_25_34
-					|| user.getAge() == Age.Age_35_44) {
-				marketSegments.add(MarketSegment.YOUNG_LOW_INCOME);
-			} else {
-				marketSegments.add(MarketSegment.OLD_LOW_INCOME);
-			}
+			marketSegments.add(LOW_INCOME);
 		} else {
-			if (user.getAge() == Age.Age_18_24
-					|| user.getAge() == Age.Age_25_34
-					|| user.getAge() == Age.Age_35_44) {
-				marketSegments.add(MarketSegment.YOUNG_HIGH_INCOME);
-			} else {
-				marketSegments.add(MarketSegment.OLD_HIGH_INCOME);
-			}
+			marketSegments.add(HIGH_INCOME);
+		}
+		if (user.getAge() == Age.Age_18_24 || user.getAge() == Age.Age_25_34
+				|| user.getAge() == Age.Age_35_44) {
+			marketSegments.add(MarketSegment.YOUNG);
+		} else {
+			marketSegments.add(MarketSegment.OLD);
 		}
 		return marketSegments;
 	}

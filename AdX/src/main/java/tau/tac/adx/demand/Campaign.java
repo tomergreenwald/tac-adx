@@ -8,6 +8,7 @@ package tau.tac.adx.demand;
  * At campaign end the resulting quality is indicated to an associated quality manager.  
  */
 import java.util.Map;
+import java.util.Set;
 
 import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.ads.properties.AdType;
@@ -116,7 +117,7 @@ public interface Campaign extends TimeListener {
 
 	int getDayEnd();
 
-	MarketSegment getTargetSegment();
+	Set<MarketSegment> getTargetSegment();
 
 	double getVideoCoef();
 

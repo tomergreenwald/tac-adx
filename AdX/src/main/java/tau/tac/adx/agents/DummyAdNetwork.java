@@ -114,8 +114,7 @@ public class DummyAdNetwork extends Agent {
 			}
 
 		} catch (NullPointerException e) {
-			this.log.log(Level.SEVERE,
-					"Excdeption thrown. ", e);
+			this.log.log(Level.SEVERE, "Excdeption thrown. ", e);
 			return;
 		}
 	}
@@ -126,8 +125,8 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleAdNetworkDailyNotification(
 			AdNetworkDailyNotification adNetNotificationMessage) {
-		//log.log(Level.INFO, getName() + " Campaign result: "
-		//		+ adNetNotificationMessage);
+		// log.log(Level.INFO, getName() + " Campaign result: "
+		// + adNetNotificationMessage);
 		adNetworkDailyNotification = adNetNotificationMessage;
 		if ((pendingCampaign.id == adNetworkDailyNotification.getCampaignId())
 				&& getName().equals(adNetNotificationMessage.getWinner())) {
@@ -138,23 +137,26 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleCampaignReport(CampaignReport campaignReport) {
 		this.campaignReport = campaignReport;
-				
-		/* for each campaign, the accumulated statistics from day 1 up to day n-1 are reported */
+
+		/*
+		 * for each campaign, the accumulated statistics from day 1 up to day
+		 * n-1 are reported
+		 */
 		for (CampaignReportKey campaignKey : campaignReport.keys()) {
 			int cmpId = campaignKey.getCampaignId();
-			CampaignStats cstats = campaignReport.getCampaignReportEntry(campaignKey).getCampaignStats();
-//			myCampaigns.get(cmpId).setStats(cstats);
-			
-			/*
-			log.fine("Day " + day + ": Updating campaign " + cmpId +" stats: " + 
-					cstats.getTargetedImps() + " tgtImps " + 
-					cstats.getOtherImps() + " nonTgtImps. Cost of imps is " + 
-					cstats.getCost()
-					);
-					*/
-		}		
+			CampaignStats cstats = campaignReport.getCampaignReportEntry(
+					campaignKey).getCampaignStats();
+			// myCampaigns.get(cmpId).setStats(cstats);
 
-		//log.log(Level.INFO, getName() + campaignReport.toMyString());
+			/*
+			 * log.fine("Day " + day + ": Updating campaign " + cmpId
+			 * +" stats: " + cstats.getTargetedImps() + " tgtImps " +
+			 * cstats.getOtherImps() + " nonTgtImps. Cost of imps is " +
+			 * cstats.getCost() );
+			 */
+		}
+
+		// log.log(Level.INFO, getName() + campaignReport.toMyString());
 	}
 
 	private void updateCampaignDataOpportunity(
@@ -183,9 +185,9 @@ public class DummyAdNetwork extends Agent {
 		long cmpBid = Math.abs(randomGenerator.nextLong())
 				% campaignOpportunityMessage.getReachImps();
 
-		AdNetBidMessage bids = new AdNetBidMessage(
-				randomGenerator.nextInt(10), pendingCampaign.id, cmpBid);
-		//log.fine("sent campaign bid");
+		AdNetBidMessage bids = new AdNetBidMessage(randomGenerator.nextInt(10),
+				pendingCampaign.id, cmpBid);
+		// log.fine("sent campaign bid");
 		sendMessage(ServerAddress, bids);
 	}
 
@@ -202,7 +204,7 @@ public class DummyAdNetwork extends Agent {
 
 	private void handleInitialCampaignMessage(
 			InitialCampaignMessage campaignMessage) {
-		//log.info(campaignMessage.toString());
+		// log.info(campaignMessage.toString());
 
 		day = 0;
 
@@ -225,11 +227,9 @@ public class DummyAdNetwork extends Agent {
 	}
 
 	private void handleAdNetworkReport(AdNetworkReport queryReport) {
-		//this.log.log(Level.INFO, queryReport.toString());
-
+		// this.log.log(Level.INFO, queryReport.toString());
 
 	}
-
 
 	@Override
 	protected void simulationSetup() {
@@ -281,10 +281,12 @@ public class DummyAdNetwork extends Agent {
 				for (int i = 0; i < queries.length; i++) {
 					Set<MarketSegment> segmentsList = queries[i]
 							.getMarketSegments();
-					if (campaign.targetSegment == segmentsList.iterator()
-							.next())
-						bidBundle.addQuery(queries[i], (1+rnd.nextLong() % 1000)/1000.0,
-								new Ad(null), campaign.id, 1);
+					// #FIXME
+					// if (campaign.targetSegment == segmentsList.iterator()
+					// .next())
+					bidBundle.addQuery(queries[i],
+							(1 + rnd.nextLong() % 1000) / 1000.0, new Ad(null),
+							campaign.id, 1);
 				}
 
 			}
@@ -334,20 +336,19 @@ public class DummyAdNetwork extends Agent {
 
 	private class CampaignData {
 		void setStats(CampaignStats s) {
-			   stats.setValues(s);	
+			stats.setValues(s);
 		}
 
-		
 		Long reachImps;
 		long dayStart;
 		long dayEnd;
-		MarketSegment targetSegment;
+		Set<MarketSegment> targetSegment;
 		double videoCoef;
 		double mobileCoef;
 		int id;
-		
+
 		/* campaign info as reported */
-		CampaignStats stats;		
+		CampaignStats stats;
 	}
 
 }

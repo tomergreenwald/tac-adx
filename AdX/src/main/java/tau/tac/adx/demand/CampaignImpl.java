@@ -5,6 +5,7 @@ import static edu.umich.eecs.tac.auction.AuctionUtils.hardSort;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -39,7 +40,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	Long reachImps;
 	int dayStart;
 	int dayEnd;
-	MarketSegment targetSegment;
+	Set<MarketSegment> targetSegments;
 	double videoCoef;
 	double mobileCoef;
 
@@ -164,7 +165,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final SortedMap<Integer, CampaignStats> dayStats;
 
 	public CampaignImpl(QualityManager qualityManager, int reachImps,
-			int dayStart, int dayEnd, MarketSegment targetSegment,
+			int dayStart, int dayEnd, Set<MarketSegment> targetSegments,
 			double videoCoef, double mobileCoef) {
 
 		if (qualityManager == null)
@@ -186,7 +187,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		this.reachImps = (long) reachImps;
 		this.dayStart = dayStart;
 		this.dayEnd = dayEnd;
-		this.targetSegment = targetSegment;
+		this.targetSegments = targetSegments;
 		this.videoCoef = videoCoef;
 		this.mobileCoef = mobileCoef;
 
@@ -236,8 +237,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public MarketSegment getTargetSegment() {
-		return targetSegment;
+	public Set<MarketSegment> getTargetSegment() {
+		return targetSegments;
 
 	}
 
@@ -265,7 +266,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			double imps = (device == Device.mobile ? mobileCoef : 1.0)
 					* (adType == AdType.video ? videoCoef : 1.0);
 
-			if (MarketSegment.extractSegment(adxUser).contains(targetSegment)) {
+			if (MarketSegment.extractSegment(adxUser).contains(targetSegments)) {
 				todays.tartgetedImps += imps;
 			} else {
 				todays.otherImps += imps;
@@ -447,7 +448,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	public String toString() {
 		return "CampaignImpl [qualityManager=" + qualityManager + ", id=" + id
 				+ ", reachImps=" + reachImps + ", dayStart=" + dayStart
-				+ ", dayEnd=" + dayEnd + ", targetSegment=" + targetSegment
+				+ ", dayEnd=" + dayEnd + ", targetSegment=" + targetSegments
 				+ ", videoCoef=" + videoCoef + ", mobileCoef=" + mobileCoef
 				+ ", advertisersBids=" + advertisersBids + ", budget=" + budget
 				+ ", advertiser=" + advertiser + ", day=" + day + ", todays="

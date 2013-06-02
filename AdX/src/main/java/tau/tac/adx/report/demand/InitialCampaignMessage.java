@@ -1,6 +1,7 @@
 package tau.tac.adx.report.demand;
 
 import java.text.ParseException;
+import java.util.Set;
 
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
@@ -21,7 +22,7 @@ public class InitialCampaignMessage extends SimpleContent {
 	private Long reachImps;
 	private int dayStart;
 	private int dayEnd;
-	private MarketSegment targetSegment;
+	private Set<MarketSegment> targetSegment;
 	private String targetSegmentName;
 	private double videoCoef;
 	private double mobileCoef;
@@ -45,7 +46,7 @@ public class InitialCampaignMessage extends SimpleContent {
 	}
 
 	public InitialCampaignMessage(int id, Long reachImps, int dayStart,
-			int dayEnd, MarketSegment targetSegment, double videoCoef,
+			int dayEnd, Set<MarketSegment> targetSegment, double videoCoef,
 			double mobileCoef) {
 
 		this.id = id;
@@ -73,7 +74,7 @@ public class InitialCampaignMessage extends SimpleContent {
 		return dayEnd;
 	}
 
-	public MarketSegment getTargetSegment() {
+	public Set<MarketSegment> getTargetSegment() {
 		return targetSegment;
 	}
 
@@ -125,8 +126,9 @@ public class InitialCampaignMessage extends SimpleContent {
 		reachImps = reader.getAttributeAsLong("reachImps");
 		dayStart = reader.getAttributeAsInt("dayStart");
 		dayEnd = reader.getAttributeAsInt("dayEnd");
-		targetSegmentName = reader.getAttribute("targetSegment");
-		targetSegment = MarketSegment.valueOf(targetSegmentName);
+		// #FIXME
+		// targetSegmentName = reader.getAttribute("targetSegment");
+		// targetSegment = MarketSegment.valueOf(targetSegmentName);
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
 		demandAgentAddress = reader.getAttribute("demandAgentAddress");
@@ -136,9 +138,12 @@ public class InitialCampaignMessage extends SimpleContent {
 
 	@Override
 	public void write(TransportWriter writer) {
-		writer.attr("id", id).attr("reachImps", reachImps)
-				.attr("dayStart", dayStart).attr("dayEnd", dayEnd)
-				.attr("targetSegment", targetSegment.name())
+		writer.attr("id", id)
+				.attr("reachImps", reachImps)
+				.attr("dayStart", dayStart)
+				.attr("dayEnd", dayEnd)
+				// #FIXME
+				// .attr("targetSegment", targetSegment.name())
 				.attr("videoCoef", videoCoef).attr("mobileCoef", mobileCoef)
 				.attr("demandAgentAddress", demandAgentAddress)
 				.attr("adxAgentAddress", adxAgentAddress);
