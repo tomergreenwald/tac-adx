@@ -14,6 +14,7 @@ import tau.tac.adx.users.properties.Gender;
 import tau.tac.adx.users.properties.Income;
 
 /**
+ * #FIXME change documentation
  * A set of 12 marketing segments is defined by partitioning each attribute
  * range to two (that is, the user�s Age range to Younger = {44-} and Older =
  * {45+} and the user�s income range to Low = {60-} and High = {60+}). Now, a
