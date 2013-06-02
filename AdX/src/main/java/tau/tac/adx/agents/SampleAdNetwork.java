@@ -126,7 +126,7 @@ public class SampleAdNetwork extends Agent {
 			if (content instanceof InitialCampaignMessage) {
 				handleInitialCampaignMessage((InitialCampaignMessage) content);
 			} else if (content instanceof CampaignOpportunityMessage) {
-				handleICampaignOpportunityMessage((CampaignOpportunityMessage) content);
+				handleCampaignOpportunityMessage((CampaignOpportunityMessage) content);
 			} else if (content instanceof CampaignReport) {
 				handleCampaignReport((CampaignReport) content);
 			} else if (content instanceof AdNetworkDailyNotification) {
@@ -212,7 +212,7 @@ public class SampleAdNetwork extends Agent {
 	 * (on day n) related bids (attempting to win the campaign). The allocation
 	 * (the winner) is announced to the competing agents during day n + 1.
 	 */
-	private void handleICampaignOpportunityMessage(
+	private void handleCampaignOpportunityMessage(
 			CampaignOpportunityMessage com) {
 
 		day = com.getDay();
@@ -351,22 +351,22 @@ public class SampleAdNetwork extends Agent {
 					Set<MarketSegment> segmentsList = queries[i]
 							.getMarketSegments();
 
-					for (MarketSegment marketSegment : segmentsList) {
-						// #FIXME
-						// if (campaign.targetSegment == marketSegment) {
-						// /*
-						// * among matching entries with the same campaign id,
-						// * the AdX randomly chooses an entry according to
-						// * the designated weight. by setting a constant
-						// * weight 1, we create a uniform probability over
-						// * active campaigns
-						// */
-						// ++entCount;
-						// bidBundle.addQuery(queries[i], rbid, new Ad(null),
-						// campaign.id, 1);
-						// }
-					}
+					/**
+					 * Among matching entries with the same campaign id,
+					 * the AdX randomly chooses an entry according to
+					 * the designated weight. by setting a constant
+					 * weight 1, we create a uniform probability over
+					 * matching active campaigns
+					 **/ 
 
+					if (segmentsList.containsAll(campaign.targetSegment) ) {
+						++entCount;
+						bidBundle.addQuery(queries[i], rbid, new Ad(null),
+						   campaign.id, 1);					
+					}
+					/**
+					 * A matching entry for UNKNOWN users
+					 */
 					if (segmentsList.size() == 0) {
 						++entCount;
 						bidBundle.addQuery(queries[i], rbid, new Ad(null),
@@ -465,7 +465,7 @@ public class SampleAdNetwork extends Agent {
 	/**
 	 * A user visit to a publisher's web-site results in an impression
 	 * opportunity (a query) that is characterized by the the publisher, the
-	 * market segment the user may belongs to, the device used (mobile or
+	 * market segment the user may belong to, the device used (mobile or
 	 * desktop) and the ad type (text or video).
 	 * 
 	 * An array of all possible queries is generated here, based on the
@@ -475,29 +475,27 @@ public class SampleAdNetwork extends Agent {
 	private void generateAdxQuerySpace() {
 		if (publisherCatalog != null && queries == null) {
 			Set<AdxQuery> querySet = new HashSet<AdxQuery>();
-
+			
 			/*
 			 * for each web site (publisher) we generate all possible variations
-			 * of device type, ad type, and user market segment
+			 * of device type, ad type, and compound user market segments set
 			 */
 			for (PublisherCatalogEntry publisherCatalogEntry : publisherCatalog) {
 				String publishersName = publisherCatalogEntry
 						.getPublisherName();
-				for (MarketSegment userSegment : MarketSegment.values()) {
-					Set<MarketSegment> singleMarketSegment = new HashSet<MarketSegment>();
-					singleMarketSegment.add(userSegment);
+				for (Set<MarketSegment> userSegments : MarketSegment.compundMarketSegments()) {
+					
+					querySet.add(new AdxQuery(publishersName,
+							userSegments, Device.mobile, AdType.text));
 
 					querySet.add(new AdxQuery(publishersName,
-							singleMarketSegment, Device.mobile, AdType.text));
+							userSegments, Device.pc, AdType.text));
 
 					querySet.add(new AdxQuery(publishersName,
-							singleMarketSegment, Device.pc, AdType.text));
+							userSegments, Device.mobile, AdType.video));
 
 					querySet.add(new AdxQuery(publishersName,
-							singleMarketSegment, Device.mobile, AdType.video));
-
-					querySet.add(new AdxQuery(publishersName,
-							singleMarketSegment, Device.pc, AdType.video));
+							userSegments, Device.pc, AdType.video));
 
 				}
 
@@ -569,8 +567,7 @@ public class SampleAdNetwork extends Agent {
 		public String toString() {
 			return "Campaign ID " + id + ": " + "day " + dayStart
 					+ " to "
-					// #FIXME
-					// + dayEnd + " " + targetSegment.name() + ", reach: "
+					 + dayEnd + " " + MarketSegment.names(targetSegment) + ", reach: "
 					+ reachImps + " coefs: (v=" + videoCoef + ", m="
 					+ mobileCoef + ")";
 		}
