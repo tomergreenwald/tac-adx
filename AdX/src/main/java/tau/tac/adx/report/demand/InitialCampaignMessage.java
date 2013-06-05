@@ -1,6 +1,7 @@
 package tau.tac.adx.report.demand;
 
 import java.text.ParseException;
+import java.util.HashSet;
 import java.util.Set;
 
 import se.sics.isl.transport.TransportReader;
@@ -27,7 +28,7 @@ public class InitialCampaignMessage extends SimpleContent {
 	private Long reachImps;
 	private int dayStart;
 	private int dayEnd;
-	private Set<MarketSegment> targetSegment;
+	private Set<MarketSegment> targetSegment = new HashSet<MarketSegment>();
 	private String targetSegmentName;
 	private double videoCoef;
 	private double mobileCoef;
@@ -131,14 +132,14 @@ public class InitialCampaignMessage extends SimpleContent {
 		reachImps = reader.getAttributeAsLong("reachImps");
 		dayStart = reader.getAttributeAsInt("dayStart");
 		dayEnd = reader.getAttributeAsInt("dayEnd");
-		while (reader.nextNode(MARKET_SEGMENT_KEY, false)) {
-			targetSegment.add(MarketSegment.valueOf(reader
-					.getAttribute(MARKET_SEGMENT_KEY)));
-		}
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
 		demandAgentAddress = reader.getAttribute("demandAgentAddress");
 		adxAgentAddress = reader.getAttribute("adxAgentAddress");
+		while (reader.nextNode(MARKET_SEGMENT_KEY, false)) {
+			targetSegment.add(MarketSegment.valueOf(reader
+					.getAttribute(MARKET_SEGMENT_KEY)));
+		}
 		super.read(reader);
 	}
 

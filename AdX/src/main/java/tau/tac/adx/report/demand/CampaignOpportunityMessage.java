@@ -1,6 +1,7 @@
 package tau.tac.adx.report.demand;
 
 import java.text.ParseException;
+import java.util.HashSet;
 import java.util.Set;
 
 import se.sics.isl.transport.TransportReader;
@@ -26,7 +27,7 @@ public class CampaignOpportunityMessage extends SimpleContent {
 	private Long reachImps;
 	private int dayStart;
 	private int dayEnd;
-	private Set<MarketSegment> targetSegment;
+	private Set<MarketSegment> targetSegment = new HashSet<MarketSegment>();
 	private double videoCoef;
 	private double mobileCoef;
 	private int day;
