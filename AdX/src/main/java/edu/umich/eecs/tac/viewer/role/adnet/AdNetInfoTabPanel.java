@@ -31,9 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import se.sics.isl.transport.Transportable;
+import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
+import tau.tac.adx.report.demand.InitialCampaignMessage;
+import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -42,6 +46,7 @@ import edu.umich.eecs.tac.viewer.auction.ResultsPageModel;
 import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
 import edu.umich.eecs.tac.viewer.role.advertiser.AdvertiserMainTabPanel;
 import edu.umich.eecs.tac.viewer.role.advertiser.AdvertiserQueryTabPanel;
+import edu.umich.eecs.tac.viewer.role.advertiser.CampaignGrpahsTabPanel;
 
 /**
  * @author Guha Balakrishnan
@@ -67,6 +72,7 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 		this.legendColor = legendColor;
 
 		simulationPanel.addViewListener(new CatalogListener());
+		simulationPanel.addViewListener(new DataUpdateListener());
 		initialize();
 	}
 
@@ -115,6 +121,51 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 			if (value instanceof CampaignOpportunityMessage) {
 				handleCampaign((CampaignOpportunityMessage) value);
 			}
+		}
+	}
+
+	protected void updateCampaigns(AdNetworkDailyNotification campaignMessage) {
+		if (advertiser.equals(campaignMessage.getWinner())
+				&& campaignMessage.getCost() > 0) {
+			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(simulationPanel, agent,
+					advertiser, legendColor, campaignMessage.getCampaignId());
+			tabbedPane.add("" + campaignMessage.getCampaignId(), campaignGrpahsTabPanel
+					);
+			tabbedPane.repaint();
+			tabbedPane.revalidate();
+		}
+	}
+
+	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
+		tabbedPane.add("" + campaignMessage.getId(),
+				new CampaignGrpahsTabPanel(simulationPanel, agent, advertiser,
+						legendColor, campaignMessage.getId()));
+		tabbedPane.repaint();
+		tabbedPane.revalidate();
+	}
+
+	private class DataUpdateListener extends ViewAdaptor {
+
+		@Override
+		public void dataUpdated(final int agentId, final int type,
+				final Transportable value) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					switch (type) {
+					case TACAdxConstants.DU_UCS_REPORT:
+						updateCampaigns((AdNetworkDailyNotification) value);
+						break;
+					case TACAdxConstants.DU_INITIAL_CAMPAIGN:
+						if (agent == agentId) {
+							updateCampaigns((InitialCampaignMessage) value);
+						}
+						break;
+					}
+
+				}
+			});
+
 		}
 	}
 }

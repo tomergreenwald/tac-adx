@@ -36,9 +36,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.CampaignReportEntry;
+import tau.tac.adx.report.demand.CampaignReportKey;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -55,15 +57,20 @@ public class CampaignGrpahsPanel extends JPanel {
 	private final boolean advertiserBorder;
 	private final Map<Integer, XYSeries> campaignSeries;
 	private int counter;
-	private final int campaignId = 0;
+	private int campaignId = 0;
 	private int currentDay;
+	private CampaignReportKey key;
+	private XYSeries reachSeries;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
-			TACAASimulationPanel simulationPanel, boolean advertiserBorder) {
+			TACAASimulationPanel simulationPanel, boolean advertiserBorder,
+			int campaignId) {
 		this.agent = agent;
 		this.advertiser = advertiser;
 		this.advertiserBorder = advertiserBorder;
 		campaignSeries = new HashMap<Integer, XYSeries>();
+		this.campaignId = campaignId;
+		key = new CampaignReportKey(campaignId);
 		initialize();
 
 		simulationPanel.addViewListener(new DataUpdateListener());
@@ -72,7 +79,7 @@ public class CampaignGrpahsPanel extends JPanel {
 	}
 
 	private void initialize() {
-		setLayout(new GridLayout(6, 2));
+		setLayout(new GridLayout(1, 1));
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 	}
 
@@ -96,18 +103,34 @@ public class CampaignGrpahsPanel extends JPanel {
 	}
 
 	protected void updateCampaigns(CampaignReport campaignReport) {
-		CampaignReportEntry campaignReportEntry = campaignReport.getEntry(0);
-		Integer campaignId2 = campaignReportEntry.getKey().getCampaignId();
-		if (!campaignSeries.containsKey(campaignId2)) {
-			String string = "Campaign " + campaignId2;
+		// System.out.println(campaignReport.getTransportName() + " : "
+		// + campaignReport.size());
+
+		CampaignReportEntry campaignReportEntry = campaignReport.getEntry(key);
+		if (campaignReportEntry == null) {
+			synchronized (CampaignGrpahsPanel.class) {
+				System.out.println("Campaign report was null id: " + campaignId
+						+ " size: " + campaignReport.size());
+				for (CampaignReportKey campaignReportKey : campaignReport) {
+					System.out.println(campaignReportKey.getCampaignId());
+					System.out.println(campaignReportKey.equals(key));
+				}
+			}
+			return;
+		}
+		if (!campaignSeries.containsKey(campaignId)) {
+			String string = "Campaign " + campaignId;
 			System.out.println(agent + " " + string);
-			XYSeries reachSeries = new XYSeries(string);
-			campaignSeries.put(campaignId2, reachSeries);
+			reachSeries = new XYSeries(string);
+			campaignSeries.put(campaignId, reachSeries);
 			createGraph(reachSeries);
 		}
-		XYSeries reachSeries = campaignSeries.get(campaignId2);
-		reachSeries.add(currentDay, campaignReportEntry.getCampaignStats()
-				.getTargetedImps());
+		CampaignStats campaignStats = campaignReportEntry.getCampaignStats();
+		double targetedImps = campaignStats.getTargetedImps();
+		double otherImps = campaignStats.getOtherImps();
+		System.out.println("camaping: " + campaignId + " imps: " + targetedImps
+				+ " other: " + otherImps);
+		reachSeries.add(currentDay, targetedImps);
 	}
 
 	protected class DayListener implements TickListener {

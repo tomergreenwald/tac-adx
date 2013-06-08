@@ -29,25 +29,29 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+import tau.tac.adx.report.demand.CampaignReport;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
 
 /**
  * @author Guha Balakrishnan
  */
-public class AdvertiserMainTabPanel extends SimulationTabPanel {
+public class CampaignGrpahsTabPanel extends SimulationTabPanel {
 	private final TACAASimulationPanel simulationPanel;
 	private final int agent;
 	private final String name;
 	private final Color legendColor;
+	private final int campaignId;
+	private CampaignGrpahsPanel campaignGrpahsPanel;
 
-	public AdvertiserMainTabPanel(TACAASimulationPanel simulationPanel,
-			int agent, String advertiser, Color legendColor) {
+	public CampaignGrpahsTabPanel(TACAASimulationPanel simulationPanel,
+			int agent, String advertiser, Color legendColor, int campaignId) {
 		super(simulationPanel);
 		this.simulationPanel = simulationPanel;
 		this.agent = agent;
 		this.name = advertiser;
 		this.legendColor = legendColor;
+		this.campaignId = campaignId;
 
 		initialize();
 	}
@@ -55,17 +59,20 @@ public class AdvertiserMainTabPanel extends SimulationTabPanel {
 	private void initialize() {
 		setLayout(new GridBagLayout());
 
-		AdvertiserRateMetricsPanel ratesMetricsPanel = new AdvertiserRateMetricsPanel(
-				agent, name, simulationPanel, false);
+		campaignGrpahsPanel = new CampaignGrpahsPanel(
+				agent, name, simulationPanel, false, campaignId);
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 1;
-		c.weighty = 1;
-		c.fill = GridBagConstraints.BOTH;
-		add(ratesMetricsPanel, c);
+		GridBagConstraints c2 = new GridBagConstraints();
+		c2.gridx = 0;
+		c2.gridy = 0;
+		c2.weightx = 2;
+		c2.weighty = 2;
+		c2.fill = GridBagConstraints.BOTH;
+		add(campaignGrpahsPanel, c2);
 
-
+	}
+	
+	public void update(CampaignReport campaignReport){
+		campaignGrpahsPanel.updateCampaigns(campaignReport);
 	}
 }
