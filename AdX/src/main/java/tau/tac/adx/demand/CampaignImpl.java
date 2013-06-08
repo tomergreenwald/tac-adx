@@ -266,7 +266,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			double imps = (device == Device.mobile ? mobileCoef : 1.0)
 					* (adType == AdType.video ? videoCoef : 1.0);
 
-			if (MarketSegment.extractSegment(adxUser).contains(targetSegments)) {
+			Set<MarketSegment> actualSegments = MarketSegment.extractSegment(adxUser);
+			if (actualSegments.containsAll(targetSegments)) {
 				todays.tartgetedImps += imps;
 			} else {
 				todays.otherImps += imps;
