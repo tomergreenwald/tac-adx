@@ -75,9 +75,15 @@ public class CampaignReportKey implements Transportable {
 		return "CampaignReportKey [campaignId=" + campaignId + "]";
 	}
 
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((campaignId == null) ? 0 : campaignId.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -86,9 +92,11 @@ public class CampaignReportKey implements Transportable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-
 		CampaignReportKey other = (CampaignReportKey) obj;
-		if (campaignId != other.campaignId)
+		if (campaignId == null) {
+			if (other.campaignId != null)
+				return false;
+		} else if (!campaignId.equals(other.campaignId))
 			return false;
 		return true;
 	}
