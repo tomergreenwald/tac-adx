@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.util.Random;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import se.sics.isl.transport.BinaryTransportReader;
 import se.sics.isl.transport.BinaryTransportWriter;
@@ -44,6 +45,7 @@ import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
+import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.props.AdxQuery;
@@ -107,7 +109,9 @@ public class AdNetworkReportTest {
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];
 		AdxUser adxUser = new SimpleUserGenerator().generate(1).get(0);
-		AdNetworkKey key = new AdNetworkKey(adxUser, publisherName, device, adType);
+		int campaignId = (int) (Math.random() * 100);
+		AdNetworkKey key = new AdNetworkKey(adxUser, publisherName, device,
+				adType, campaignId);
 		AdNetworkReportEntry entry = new AdNetworkReportEntry(key);
 		entry.setBidCount(random.nextInt());
 		entry.setCost(random.nextDouble());
@@ -165,8 +169,9 @@ public class AdNetworkReportTest {
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];
 		AdxUser adxUser = new SimpleUserGenerator().generate(1).get(0);
+		int campaignId = (int) (Math.random() * 100);
 		AdNetworkKey key = new AdNetworkKey(adxUser, publisherName, device,
-				adType);
+				adType, campaignId);
 		AdNetworkReportEntry entry = new AdNetworkReportEntry(key);
 		entry.setBidCount(random.nextInt());
 		entry.setCost(random.nextDouble());
@@ -175,8 +180,10 @@ public class AdNetworkReportTest {
 		AuctionState auctionState = AuctionState.values()[random
 				.nextInt(AuctionState.values().length - 1)];
 		double bidPrice = random.nextDouble();
+		Campaign campaign = Mockito.mock(Campaign.class);
+		Mockito.when(campaign.getId()).thenReturn(campaignId);
 		BidInfo winningBidInfo = new BidInfo(bidPrice, null, null, segment,
-				null);
+				campaign);
 		Double winningPrice = random.nextDouble();
 		AdxAuctionResult auctionResult = new AdxAuctionResult(auctionState,
 				winningBidInfo, winningPrice, null);
@@ -194,10 +201,12 @@ public class AdNetworkReportTest {
 
 		assertNotNull(report);
 		assertNotNull(received);
-		//assertEquals(MarketSegment.extractSegment(user).size(), report.size());
+		// assertEquals(MarketSegment.extractSegment(user).size(),
+		// report.size());
 		assertEquals(report.size(), received.size());
+		campaignId = (int) (Math.random() * 100);
 		AdNetworkKey adNetworkKey = new AdNetworkKey(adxUser, publisherName,
-				device, adType);
+				device, adType, campaignId);
 		assertEquals(report.getAdNetworkReportEntry(adNetworkKey),
 				received.getAdNetworkReportEntry(adNetworkKey));
 

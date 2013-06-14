@@ -6,6 +6,7 @@ import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
 import se.sics.isl.transport.Transportable;
 import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
@@ -31,15 +32,16 @@ public class AdNetworkKey implements Transportable {
 	private static final String GENDER_TYPE_KEY = "GENDER_TYPE_KEY";
 	private static final String INCOME_TYPE_KEY = "INCOME_TYPE_KEY";
 	private static final String AGE_TYPE_KEY = "AGE_TYPE_KEY";
+	private static final String CMAPAIGN_ID_TYPE_KEY = "CMAPAIGN_ID_TYPE_KEY";
 
-	/* (non-Javadoc)
+	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "AdNetworkKey [age=" + age + ", income=" + income + ", gender="
 				+ gender + ", publisher=" + publisher + ", device=" + device
-				+ ", adType=" + adType + "]";
+				+ ", adType=" + adType + ", campaignId=" + campaignId + "]";
 	}
 
 	/**
@@ -73,6 +75,11 @@ public class AdNetworkKey implements Transportable {
 	private AdType adType;
 
 	/**
+	 * {@link Campaign#getId()}.
+	 */
+	private int campaignId;
+
+	/**
 	 * @param segment
 	 *            {@link MarketSegment}.
 	 * @param publisher
@@ -81,9 +88,10 @@ public class AdNetworkKey implements Transportable {
 	 *            {@link Device}.
 	 * @param adType
 	 *            {@link AdType}.
+	 * @param campaignId
 	 */
-	public AdNetworkKey(AdxUser adxUser,
-			String publisher, Device device, AdType adType) {
+	public AdNetworkKey(AdxUser adxUser, String publisher, Device device,
+			AdType adType, int campaignId) {
 		super();
 		this.age = adxUser.getAge();
 		this.income = adxUser.getIncome();
@@ -91,11 +99,11 @@ public class AdNetworkKey implements Transportable {
 		this.publisher = publisher;
 		this.device = device;
 		this.adType = adType;
+		this.campaignId = campaignId;
 	}
 
 	public AdNetworkKey() {
 	}
-
 
 	/**
 	 * @return the age
@@ -105,7 +113,8 @@ public class AdNetworkKey implements Transportable {
 	}
 
 	/**
-	 * @param age the age to set
+	 * @param age
+	 *            the age to set
 	 */
 	public void setAge(Age age) {
 		this.age = age;
@@ -119,7 +128,8 @@ public class AdNetworkKey implements Transportable {
 	}
 
 	/**
-	 * @param income the income to set
+	 * @param income
+	 *            the income to set
 	 */
 	public void setIncome(Income income) {
 		this.income = income;
@@ -133,7 +143,8 @@ public class AdNetworkKey implements Transportable {
 	}
 
 	/**
-	 * @param gender the gender to set
+	 * @param gender
+	 *            the gender to set
 	 */
 	public void setGender(Gender gender) {
 		this.gender = gender;
@@ -185,6 +196,21 @@ public class AdNetworkKey implements Transportable {
 	}
 
 	/**
+	 * @return the campaignId
+	 */
+	public int getCampaignId() {
+		return campaignId;
+	}
+
+	/**
+	 * @param campaignId
+	 *            the campaignId to set
+	 */
+	public void setCampaignId(int campaignId) {
+		this.campaignId = campaignId;
+	}
+
+	/**
 	 * @see se.sics.isl.transport.Transportable#getTransportName()
 	 */
 	@Override
@@ -203,6 +229,7 @@ public class AdNetworkKey implements Transportable {
 		gender = Gender.valueOf(reader.getAttribute(GENDER_TYPE_KEY, null));
 		income = Income.valueOf(reader.getAttribute(INCOME_TYPE_KEY, null));
 		age = Age.valueOf(reader.getAttribute(AGE_TYPE_KEY, null));
+		campaignId = reader.getAttributeAsInt(CMAPAIGN_ID_TYPE_KEY, -1);
 
 	}
 
@@ -226,12 +253,13 @@ public class AdNetworkKey implements Transportable {
 		if (income != null) {
 			writer.attr(INCOME_TYPE_KEY, income.toString());
 		}
-		if (age!= null) {
+		if (age != null) {
 			writer.attr(AGE_TYPE_KEY, age.toString());
 		}
+		writer.attr(CMAPAIGN_ID_TYPE_KEY, campaignId);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -240,6 +268,7 @@ public class AdNetworkKey implements Transportable {
 		int result = 1;
 		result = prime * result + ((adType == null) ? 0 : adType.hashCode());
 		result = prime * result + ((age == null) ? 0 : age.hashCode());
+		result = prime * result + campaignId;
 		result = prime * result + ((device == null) ? 0 : device.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + ((income == null) ? 0 : income.hashCode());
@@ -248,7 +277,7 @@ public class AdNetworkKey implements Transportable {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -263,6 +292,8 @@ public class AdNetworkKey implements Transportable {
 		if (adType != other.adType)
 			return false;
 		if (age != other.age)
+			return false;
+		if (campaignId != other.campaignId)
 			return false;
 		if (device != other.device)
 			return false;

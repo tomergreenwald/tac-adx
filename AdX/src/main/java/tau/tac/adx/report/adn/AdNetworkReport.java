@@ -24,8 +24,6 @@
  */
 package tau.tac.adx.report.adn;
 
-import java.util.Set;
-
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.users.AdxUser;
@@ -92,11 +90,14 @@ public class AdNetworkReport extends
 	 *            {@link MarketSegment}.
 	 * @param query
 	 *            {@link AdxQuery}.
+	 * @param auctionResult
 	 * @return Corresponding {@link AdNetworkKey}.
 	 */
-	private AdNetworkKey getAdNetworkKey(AdxUser adxUser, AdxQuery query) {
+	private AdNetworkKey getAdNetworkKey(AdxUser adxUser, AdxQuery query,
+			AdxAuctionResult auctionResult) {
 		return new AdNetworkKey(adxUser, query.getPublisher(),
-				query.getDevice(), query.getAdType());
+				query.getDevice(), query.getAdType(), auctionResult
+						.getWinningBidInfo().getCampaign().getId());
 	}
 
 	/**
@@ -108,11 +109,11 @@ public class AdNetworkReport extends
 	 *            {@link AdxQuery}.
 	 * @param user
 	 *            {@link AdxUser}.
-	 * @param hasWon 
+	 * @param hasWon
 	 */
 	public void addBid(AdxAuctionResult auctionResult, AdxQuery query,
 			AdxUser user, boolean hasWon) {
-		AdNetworkKey adNetworkKey = getAdNetworkKey(user, query);
+		AdNetworkKey adNetworkKey = getAdNetworkKey(user, query, auctionResult);
 		AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);
 		if (reportEntry == null) {
 			reportEntry = addReportEntry(adNetworkKey);
