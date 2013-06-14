@@ -59,7 +59,7 @@ public class CampaignGrpahsPanel extends JPanel {
 	private int counter;
 	private int campaignId = 0;
 	private int currentDay;
-	private CampaignReportKey key;
+	private final CampaignReportKey key;
 	private XYSeries reachSeries;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
@@ -103,24 +103,13 @@ public class CampaignGrpahsPanel extends JPanel {
 	}
 
 	protected void updateCampaigns(CampaignReport campaignReport) {
-		// System.out.println(campaignReport.getTransportName() + " : "
-		// + campaignReport.size());
 
 		CampaignReportEntry campaignReportEntry = campaignReport.getEntry(key);
 		if (campaignReportEntry == null) {
-			synchronized (CampaignGrpahsPanel.class) {
-				System.out.println("Campaign report was null id: " + campaignId
-						+ " size: " + campaignReport.size());
-				for (CampaignReportKey campaignReportKey : campaignReport) {
-					System.out.println(campaignReportKey.getCampaignId());
-					System.out.println(campaignReportKey.equals(key));
-				}
-			}
 			return;
 		}
 		if (!campaignSeries.containsKey(campaignId)) {
 			String string = "Campaign " + campaignId;
-			System.out.println(agent + " " + string);
 			reachSeries = new XYSeries(string);
 			campaignSeries.put(campaignId, reachSeries);
 			createGraph(reachSeries);
@@ -128,8 +117,6 @@ public class CampaignGrpahsPanel extends JPanel {
 		CampaignStats campaignStats = campaignReportEntry.getCampaignStats();
 		double targetedImps = campaignStats.getTargetedImps();
 		double otherImps = campaignStats.getOtherImps();
-		System.out.println("camaping: " + campaignId + " imps: " + targetedImps
-				+ " other: " + otherImps);
 		reachSeries.add(currentDay, targetedImps);
 	}
 
