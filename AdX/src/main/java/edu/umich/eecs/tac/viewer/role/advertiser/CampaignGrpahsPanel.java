@@ -87,7 +87,7 @@ public class CampaignGrpahsPanel extends JPanel {
 		XYSeriesCollection seriescollection = new XYSeriesCollection(
 				reachSeries);
 		JFreeChart chart = createDifferenceChart(advertiserBorder ? null
-				: advertiser, seriescollection);
+				: advertiser, seriescollection, "Day", "Targeted Impressions");
 		ChartPanel chartpanel = new ChartPanel(chart, false);
 		chartpanel.setMouseZoomable(true, false);
 		add(chartpanel);
