@@ -105,9 +105,14 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 		return participants;
 	}
 
+	@Override
 	public String toString() {
-		return "State: " + auctionState.toString() + " Winning: "
-				+ winningPrice.toString() + " Segments: "
-				+ winningBidInfo.getMarketSegments();
+		return "State: "
+				+ auctionState.toString()
+				+ " Winning: "
+				+ winningPrice.toString()
+				+ " Segments: "
+				+ ((winningBidInfo != null) ? winningBidInfo
+						.getMarketSegments() : "");
 	}
 }
