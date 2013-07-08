@@ -134,9 +134,9 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			} else if (columnIndex == 2) {
 				return data.get(rowIndex).getVPI();
 			} else if (columnIndex == 3) {
-				return data.get(rowIndex).getRevenue();
+				return data.get(rowIndex).getROI();
 			} else if (columnIndex == 4) {
-				return data.get(rowIndex).getProfit();
+				return data.get(rowIndex).getRevenue();
 			} else if (columnIndex == 5) {
 				return data.get(rowIndex).getCost();
 			} else if (columnIndex == 6) {
@@ -296,6 +296,21 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 						case TACAdxConstants.DU_AD_NETWORK_WIN_COUNT:
 							item.addImpressions(value);
 							break;
+						}
+					}
+				}
+			});
+
+		}
+
+		@Override
+		public void dataUpdated(final int agent, final int type,
+				final double value) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					if (agent == item.getAgent()) {
+						switch (type) {
 						case TACAdxConstants.DU_AD_NETWORK_REVENUE:
 							item.addRevenue(value);
 							break;
