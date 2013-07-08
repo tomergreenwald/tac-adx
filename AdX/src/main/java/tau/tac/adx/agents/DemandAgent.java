@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.AdxManager;
+import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignImpl;
 import tau.tac.adx.demand.QualityManager;
@@ -306,7 +307,9 @@ public class DemandAgent extends Builtin {
 	public void impressed(AuctionMessage message) {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
-		if (cmpn != null) {
+		AuctionState auctionState = message.getAuctionResult()
+				.getAuctionState();
+		if (auctionState == AuctionState.AUCTION_COPMLETED) {
 
 			cmpn.impress(message.getUser(), message.getQuery().getAdType(),
 					message.getQuery().getDevice(), message.getAuctionResult()
@@ -333,10 +336,6 @@ public class DemandAgent extends Builtin {
 								+ cmpn.getId());
 			}
 
-		} else {
-			log.log(Level.SEVERE,
-					"Day " + day + " : IMPRESSED: Campaign Missing!!! "
-							+ message.getAuctionResult());
 		}
 	}
 
