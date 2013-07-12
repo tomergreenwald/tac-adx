@@ -51,8 +51,13 @@ import edu.umich.eecs.tac.viewer.ViewAdaptor;
 
 /**
  * @author Patrick R. Jordan
+ * @author greenwald
  */
 public class AdNetOverviewMetricsPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final AdvertiserMetricsModel model;
 
 	public AdNetOverviewMetricsPanel(final TACAASimulationPanel simulationPanel) {
@@ -76,6 +81,11 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 	}
 
 	private static class AdvertiserMetricsModel extends AbstractTableModel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		private static final String[] COLUMN_NAMES = new String[] { "Agent",
 				"Profit", "Quality Rating", "ROI", "revenue", "cost",
 				"impressions" };
@@ -158,8 +168,6 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		private final String advertiser;
 
 		private int impressions;
-		private int clicks;
-		private int conversions;
 		private double revenue;
 		private double qualityRating;
 
@@ -224,19 +232,6 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 					.getDistributionCapacity() : Double.NaN;
 		}
 
-		public double getCTR() {
-			return impressions > 0 ? ((double) clicks) / impressions
-					: Double.NaN;
-		}
-
-		public double getConvRate() {
-			return clicks > 0 ? ((double) conversions) / clicks : Double.NaN;
-		}
-
-		public double getCPC() {
-			return cost / clicks;
-		}
-
 		public double getCPM() {
 			return 1000.0 * cost / (impressions);
 		}
@@ -269,16 +264,6 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 
 		protected void setQualityRating(double qualityRating) {
 			this.qualityRating = qualityRating;
-
-			model.fireUpdatedAgent(agent);
-		}
-
-		protected void addClicks(int clicks) {
-			this.clicks += clicks;
-		}
-
-		protected void addConversions(int conversions) {
-			this.conversions += conversions;
 
 			model.fireUpdatedAgent(agent);
 		}
@@ -386,6 +371,11 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 
 	public class MetricsNumberRenderer extends JLabel implements
 			TableCellRenderer {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public MetricsNumberRenderer() {
 			setOpaque(true);
