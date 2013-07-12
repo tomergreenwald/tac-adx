@@ -23,11 +23,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import se.sics.isl.transport.Transportable;
+import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
+import tau.tac.adx.report.demand.CampaignReport;
+import tau.tac.adx.report.demand.CampaignReportKey;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
@@ -44,6 +49,7 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 
 	private final boolean advertiserBorder;
 	private JTextArea area;
+	private int day;
 
 	public AdvertiserRateMetricsPanel(int agent, String advertiser,
 			TACAASimulationPanel simulationPanel, boolean advertiserBorder) {
@@ -54,14 +60,27 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 
 		simulationPanel.addViewListener(new DataUpdateListener());
 		campaigns = new HashSet<AdNetworkDailyNotification>();
+		simulationPanel.addTickListener(new DayListener());
+	}
+
+	protected class DayListener implements TickListener {
+
+		@Override
+		public void tick(long serverTime) {
+		}
+
+		@Override
+		public void simulationTick(long serverTime, int simulationDate) {
+			day = simulationDate;
+		}
 	}
 
 	private void initialize() {
-		setLayout(new GridLayout(6, 2));
+		setLayout(new GridLayout(1, 1));
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 
 		area = new JTextArea();
-		add(area);
+		add(new JScrollPane(area));
 
 	}
 
@@ -100,6 +119,20 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 		area.append("\r\n");
 	}
 
+	private void updateCampaigns(CampaignReport campaignReport) {
+		for (CampaignReportKey campaignKey : campaignReport.keys()) {
+			int cmpId = campaignKey.getCampaignId();
+			CampaignStats cstats = campaignReport.getCampaignReportEntry(
+					campaignKey).getCampaignStats();
+			String message = "Day " + day + ": Updating campaign " + cmpId
+					+ " stats: " + cstats.getTargetedImps() + " tgtImps "
+					+ cstats.getOtherImps() + " nonTgtImps. Cost of imps is "
+					+ cstats.getCost();
+			area.append(message);
+			area.append("\r\n");
+		}
+	}
+
 	private class DataUpdateListener extends ViewAdaptor {
 
 		@Override
@@ -115,6 +148,11 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 					case TACAdxConstants.DU_INITIAL_CAMPAIGN:
 						if (agent == agentId) {
 							updateCampaigns((InitialCampaignMessage) value);
+						}
+						break;
+					case TACAdxConstants.DU_CAMPAIGN_REPORT:
+						if (agent == agentId) {
+							updateCampaigns((CampaignReport) value);
 						}
 						break;
 					}
