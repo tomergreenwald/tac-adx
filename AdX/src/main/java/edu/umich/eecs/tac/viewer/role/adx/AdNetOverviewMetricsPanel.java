@@ -77,7 +77,8 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 
 	private static class AdvertiserMetricsModel extends AbstractTableModel {
 		private static final String[] COLUMN_NAMES = new String[] { "Agent",
-				"Profit", "VPI", "ROI", "revenue", "cost", "impressions" };
+				"Profit", "Quality Rating", "ROI", "revenue", "cost",
+				"impressions" };
 
 		List<AdvertiserMetricsItem> data;
 
@@ -132,7 +133,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			} else if (columnIndex == 1) {
 				return data.get(rowIndex).getProfit();
 			} else if (columnIndex == 2) {
-				return data.get(rowIndex).getVPI();
+				return data.get(rowIndex).getQualityRating();
 			} else if (columnIndex == 3) {
 				return data.get(rowIndex).getROI();
 			} else if (columnIndex == 4) {
@@ -160,12 +161,20 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		private int clicks;
 		private int conversions;
 		private double revenue;
+		private double qualityRating;
 
 		/**
 		 * @return the impressions
 		 */
 		public int getImpressions() {
 			return impressions;
+		}
+
+		/**
+		 * @return the agent's quality rating
+		 */
+		public double getQualityRating() {
+			return qualityRating;
 		}
 
 		/**
@@ -258,6 +267,12 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			model.fireUpdatedAgent(agent);
 		}
 
+		protected void setQualityRating(double qualityRating) {
+			this.qualityRating = qualityRating;
+
+			model.fireUpdatedAgent(agent);
+		}
+
 		protected void addClicks(int clicks) {
 			this.clicks += clicks;
 		}
@@ -316,6 +331,9 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 							break;
 						case TACAdxConstants.DU_AD_NETWORK_EXPENSE:
 							item.addCost(value);
+							break;
+						case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
+							item.setQualityRating(value);
 							break;
 						}
 					}
