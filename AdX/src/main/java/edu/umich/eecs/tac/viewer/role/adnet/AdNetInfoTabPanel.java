@@ -34,6 +34,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import se.sics.isl.transport.Transportable;
+import se.sics.tasim.viewer.TickListener;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
@@ -60,6 +61,10 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 	private Map<Query, AdvertiserQueryTabPanel> advertiserQueryTabPanels;
 	private final Map<Query, ResultsPageModel> models;
 	private final Color legendColor;
+	/**
+	 * current day of simulation
+	 */
+	private int day;
 
 	public AdNetInfoTabPanel(int agent, String advertiser,
 			Map<Query, ResultsPageModel> models,
@@ -73,7 +78,20 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 
 		simulationPanel.addViewListener(new CatalogListener());
 		simulationPanel.addViewListener(new DataUpdateListener());
+		simulationPanel.addTickListener(new DayListener());
 		initialize();
+	}
+
+	protected class DayListener implements TickListener {
+
+		@Override
+		public void tick(long serverTime) {
+		}
+
+		@Override
+		public void simulationTick(long serverTime, int simulationDate) {
+			day = simulationDate;
+		}
 	}
 
 	private void initialize() {
@@ -127,19 +145,19 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 	protected void updateCampaigns(AdNetworkDailyNotification campaignMessage) {
 		if (advertiser.equals(campaignMessage.getWinner())
 				&& campaignMessage.getCost() > 0) {
-			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(simulationPanel, agent,
-					advertiser, legendColor, campaignMessage.getCampaignId());
-			tabbedPane.add("" + campaignMessage.getCampaignId(), campaignGrpahsTabPanel
-					);
+			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
+					simulationPanel, agent, advertiser, legendColor,
+					campaignMessage.getCampaignId());
+			tabbedPane.add("Day " + day, campaignGrpahsTabPanel);
 			tabbedPane.repaint();
 			tabbedPane.revalidate();
 		}
 	}
 
 	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
-		tabbedPane.add("" + campaignMessage.getId(),
-				new CampaignGrpahsTabPanel(simulationPanel, agent, advertiser,
-						legendColor, campaignMessage.getId()));
+		tabbedPane.add("Day " + day, new CampaignGrpahsTabPanel(
+				simulationPanel, agent, advertiser, legendColor,
+				campaignMessage.getId()));
 		tabbedPane.repaint();
 		tabbedPane.revalidate();
 	}
