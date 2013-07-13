@@ -148,16 +148,15 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
 					simulationPanel, agent, advertiser, legendColor,
 					campaignMessage.getCampaignId());
-			tabbedPane.add("Day " + day, campaignGrpahsTabPanel);
+			tabbedPane.add("Day " + (day + 1), campaignGrpahsTabPanel);
 			tabbedPane.repaint();
 			tabbedPane.revalidate();
 		}
 	}
 
 	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
-		tabbedPane.add("Day " + day, new CampaignGrpahsTabPanel(
-				simulationPanel, agent, advertiser, legendColor,
-				campaignMessage.getId()));
+		tabbedPane.add("Day 0", new CampaignGrpahsTabPanel(simulationPanel,
+				agent, advertiser, legendColor, campaignMessage.getId()));
 		tabbedPane.repaint();
 		tabbedPane.revalidate();
 	}
