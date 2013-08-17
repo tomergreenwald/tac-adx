@@ -170,7 +170,7 @@ public final class TACAdxConstants {
 	/**
 	 * The user classification auction result announced to each advertiser.
 	 */
-	public static final int DU_UCS_REPORT = 406;
+	public static final int DU_DEMAND_DAILY_REPORT = 406;
 
 	/**
 	 * AdNet's win count.

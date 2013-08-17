@@ -29,8 +29,10 @@ import javax.swing.SwingUtilities;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.agents.CampaignData;
 import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
+import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.CampaignReportKey;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
@@ -50,6 +52,7 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 	private final boolean advertiserBorder;
 	private JTextArea area;
 	private int day;
+	private CampaignData pendingCampaign;
 
 	public AdvertiserRateMetricsPanel(int agent, String advertiser,
 			TACAASimulationPanel simulationPanel, boolean advertiserBorder) {
@@ -92,29 +95,29 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 		return advertiser;
 	}
 
-	protected void updateCampaigns(AdNetworkDailyNotification campaignMessage) {
-		if (!campaigns.contains(campaignMessage)
-				&& advertiser.equals(campaignMessage.getWinner())
-				&& campaignMessage.getCost() > 0) {
-			String campaignAllocatedTo = " allocated to "
-					+ campaignMessage.getWinner();
+	protected void updateCampaigns(
+			AdNetworkDailyNotification adNetworkDailyNotification) {
+		if ((pendingCampaign.getId() == adNetworkDailyNotification
+				.getCampaignId())
+				&& (adNetworkDailyNotification.getCost() != 0)) {
 
-			campaignAllocatedTo = " WON at cost " + campaignMessage.getCost();
+			String message = "Day "
+					+ adNetworkDailyNotification.getEffectiveDay() + ": "
+					+ "Campaign [" + pendingCampaign.getDayStart() + ", "
+					+ pendingCampaign.getDayEnd() + "] - "
+					+ pendingCampaign.getTargetSegment() + " won at cost "
+					+ adNetworkDailyNotification.getCost();
 
-			String message = "Day " + campaignMessage.getEffectiveDay() + ": "
-					+ campaignAllocatedTo + ". UCS Level set to "
-					+ campaignMessage.getServiceLevel() + " at price "
-					+ campaignMessage.getPrice() + " Quality Score is: "
-					+ campaignMessage.getQualityScore();
 			area.append(message);
 			area.append("\r\n");
 		}
 	}
 
 	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
-		String message = "Day 0: Beginning at " + campaignMessage.getDayStart()
-				+ ", ending at " + campaignMessage.getDayEnd()
-				+ ", market segments: " + campaignMessage.getTargetSegment();
+		String message = "Day 0: Initial campaign ["
+				+ campaignMessage.getDayStart() + ", "
+				+ campaignMessage.getDayEnd() + "] - "
+				+ campaignMessage.getTargetSegment();
 		area.append(message);
 		area.append("\r\n");
 	}
@@ -133,6 +136,11 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 		}
 	}
 
+	protected void handleCampaignOpportunityMessage(
+			CampaignOpportunityMessage com) {
+		pendingCampaign = new CampaignData(com);
+	}
+
 	private class DataUpdateListener extends ViewAdaptor {
 
 		@Override
@@ -141,22 +149,39 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					switch (type) {
-					case TACAdxConstants.DU_UCS_REPORT:
-						updateCampaigns((AdNetworkDailyNotification) value);
-						break;
-					case TACAdxConstants.DU_INITIAL_CAMPAIGN:
-						if (agent == agentId) {
-							updateCampaigns((InitialCampaignMessage) value);
+					if (agentId == agent) {
+						switch (type) {
+						case TACAdxConstants.DU_DEMAND_DAILY_REPORT:
+							updateCampaigns((AdNetworkDailyNotification) value);
+							break;
+						case TACAdxConstants.DU_INITIAL_CAMPAIGN:
+							if (agent == agentId) {
+								updateCampaigns((InitialCampaignMessage) value);
+							}
+							break;
+						case TACAdxConstants.DU_CAMPAIGN_REPORT:
+							if (agent == agentId) {
+								// updateCampaigns((CampaignReport) value);
+							}
+							break;
 						}
-						break;
-					case TACAdxConstants.DU_CAMPAIGN_REPORT:
-						if (agent == agentId) {
-							updateCampaigns((CampaignReport) value);
-						}
-						break;
 					}
 
+				}
+			});
+
+		}
+
+		@Override
+		public void dataUpdated(final int type, final Transportable value) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					switch (type) {
+					case TACAdxConstants.DU_CAMPAIGN_OPPORTUNITY:
+						handleCampaignOpportunityMessage((CampaignOpportunityMessage) value);
+						break;
+					}
 				}
 			});
 

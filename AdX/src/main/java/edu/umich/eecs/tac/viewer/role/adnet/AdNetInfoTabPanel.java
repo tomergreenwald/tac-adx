@@ -170,7 +170,7 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 				@Override
 				public void run() {
 					switch (type) {
-					case TACAdxConstants.DU_UCS_REPORT:
+					case TACAdxConstants.DU_DEMAND_DAILY_REPORT:
 						updateCampaigns((AdNetworkDailyNotification) value);
 						break;
 					case TACAdxConstants.DU_INITIAL_CAMPAIGN:

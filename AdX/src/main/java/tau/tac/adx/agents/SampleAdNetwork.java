@@ -114,6 +114,7 @@ public class SampleAdNetwork extends Agent {
 
 	public SampleAdNetwork() {
 		campaignReports = new LinkedList<CampaignReport>();
+		log.setLevel(Level.OFF);
 	}
 
 	@Override
@@ -212,8 +213,7 @@ public class SampleAdNetwork extends Agent {
 	 * (on day n) related bids (attempting to win the campaign). The allocation
 	 * (the winner) is announced to the competing agents during day n + 1.
 	 */
-	private void handleCampaignOpportunityMessage(
-			CampaignOpportunityMessage com) {
+	private void handleCampaignOpportunityMessage(CampaignOpportunityMessage com) {
 
 		day = com.getDay();
 
@@ -352,17 +352,16 @@ public class SampleAdNetwork extends Agent {
 							.getMarketSegments();
 
 					/**
-					 * Among matching entries with the same campaign id,
-					 * the AdX randomly chooses an entry according to
-					 * the designated weight. by setting a constant
-					 * weight 1, we create a uniform probability over
-					 * matching active campaigns
-					 **/ 
+					 * Among matching entries with the same campaign id, the AdX
+					 * randomly chooses an entry according to the designated
+					 * weight. by setting a constant weight 1, we create a
+					 * uniform probability over matching active campaigns
+					 **/
 
-					if (segmentsList.containsAll(campaign.targetSegment) ) {
+					if (segmentsList.containsAll(campaign.targetSegment)) {
 						++entCount;
 						bidBundle.addQuery(queries[i], rbid, new Ad(null),
-						   campaign.id, 1);					
+								campaign.id, 1);
 					}
 					/**
 					 * A matching entry for UNKNOWN users
@@ -475,7 +474,7 @@ public class SampleAdNetwork extends Agent {
 	private void generateAdxQuerySpace() {
 		if (publisherCatalog != null && queries == null) {
 			Set<AdxQuery> querySet = new HashSet<AdxQuery>();
-			
+
 			/*
 			 * for each web site (publisher) we generate all possible variations
 			 * of device type, ad type, and compound user market segments set
@@ -483,19 +482,20 @@ public class SampleAdNetwork extends Agent {
 			for (PublisherCatalogEntry publisherCatalogEntry : publisherCatalog) {
 				String publishersName = publisherCatalogEntry
 						.getPublisherName();
-				for (Set<MarketSegment> userSegments : MarketSegment.compundMarketSegments()) {
-					
-					querySet.add(new AdxQuery(publishersName,
-							userSegments, Device.mobile, AdType.text));
+				for (Set<MarketSegment> userSegments : MarketSegment
+						.compundMarketSegments()) {
 
-					querySet.add(new AdxQuery(publishersName,
-							userSegments, Device.pc, AdType.text));
+					querySet.add(new AdxQuery(publishersName, userSegments,
+							Device.mobile, AdType.text));
 
-					querySet.add(new AdxQuery(publishersName,
-							userSegments, Device.mobile, AdType.video));
+					querySet.add(new AdxQuery(publishersName, userSegments,
+							Device.pc, AdType.text));
 
-					querySet.add(new AdxQuery(publishersName,
-							userSegments, Device.pc, AdType.video));
+					querySet.add(new AdxQuery(publishersName, userSegments,
+							Device.mobile, AdType.video));
+
+					querySet.add(new AdxQuery(publishersName, userSegments,
+							Device.pc, AdType.video));
 
 				}
 
@@ -518,68 +518,6 @@ public class SampleAdNetwork extends Agent {
 			queries = new AdxQuery[querySet.size()];
 			querySet.toArray(queries);
 		}
-	}
-
-	private class CampaignData {
-		/* campaign attributes as set by server */
-		Long reachImps;
-		long dayStart;
-		long dayEnd;
-		Set<MarketSegment> targetSegment;
-		double videoCoef;
-		double mobileCoef;
-		int id;
-
-		/* campaign info as reported */
-		CampaignStats stats;
-		double budget;
-
-		public CampaignData(InitialCampaignMessage icm) {
-			reachImps = icm.getReachImps();
-			dayStart = icm.getDayStart();
-			dayEnd = icm.getDayEnd();
-			targetSegment = icm.getTargetSegment();
-			videoCoef = icm.getVideoCoef();
-			mobileCoef = icm.getMobileCoef();
-			id = icm.getId();
-
-			stats = new CampaignStats(0, 0, 0);
-			budget = 0.0;
-		}
-
-		public void setBudget(double d) {
-			budget = d;
-		}
-
-		public CampaignData(CampaignOpportunityMessage com) {
-			dayStart = com.getDayStart();
-			dayEnd = com.getDayEnd();
-			id = com.getId();
-			reachImps = com.getReachImps();
-			targetSegment = com.getTargetSegment();
-			mobileCoef = com.getMobileCoef();
-			videoCoef = com.getVideoCoef();
-			stats = new CampaignStats(0, 0, 0);
-			budget = 0.0;
-		}
-
-		@Override
-		public String toString() {
-			return "Campaign ID " + id + ": " + "day " + dayStart
-					+ " to "
-					 + dayEnd + " " + MarketSegment.names(targetSegment) + ", reach: "
-					+ reachImps + " coefs: (v=" + videoCoef + ", m="
-					+ mobileCoef + ")";
-		}
-
-		int impsTogo() {
-			return (int) Math.max(0, reachImps - stats.getTargetedImps());
-		}
-
-		void setStats(CampaignStats s) {
-			stats.setValues(s);
-		}
-
 	}
 
 }

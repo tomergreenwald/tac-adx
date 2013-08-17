@@ -170,7 +170,7 @@ public class AdNetCountTabPanel extends SimulationTabPanel {
 
 					if (agentAddress != null) {
 						switch (type) {
-						case TACAdxConstants.DU_UCS_REPORT:
+						case TACAdxConstants.DU_DEMAND_DAILY_REPORT:
 							AdNetworkDailyNotification adNetworkDailyNotification = (AdNetworkDailyNotification) content;
 							addServiceLevel(agentAddress,
 									adNetworkDailyNotification

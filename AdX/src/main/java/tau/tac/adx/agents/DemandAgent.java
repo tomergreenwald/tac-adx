@@ -160,7 +160,7 @@ public class DemandAgent extends Builtin {
 				adNetworkNotification.zeroCost();
 			}
 
-			getSimulation().sendUserClassificationAuctionResult(advertiser,
+			getSimulation().sendDemandDailyNotification(advertiser,
 					adNetworkNotification);
 		}
 	}
