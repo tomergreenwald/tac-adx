@@ -56,6 +56,8 @@ public class AdNetRevCostPanel extends JPanel {
 	private final XYSeriesCollection seriescollection;
 	private final XYSeries revSeries;
 	private final XYSeries costSeries;
+	private double aggregatedRevenue;
+	private double aggregatedCost;
 	private int currentDay;
 	private Set<Query> queries;
 	private final boolean showBorder;
@@ -109,7 +111,11 @@ public class AdNetRevCostPanel extends JPanel {
 	}
 
 	protected void simulationTick(long serverTime, int simulationDate) {
-		currentDay = simulationDate;
+		if (currentDay != simulationDate) {
+			synchronized (this) {
+				currentDay = simulationDate;
+			}
+		}
 	}
 
 	private class DataUpdateListener extends ViewAdaptor {
@@ -121,12 +127,28 @@ public class AdNetRevCostPanel extends JPanel {
 				@Override
 				public void run() {
 					if (AdNetRevCostPanel.this.agent == agent
-							&& type == TACAdxConstants.DU_AD_NETWORK_BANK_ACCOUNT) {
-						costSeries.add(currentDay, value);
+							&& type == TACAdxConstants.DU_AD_NETWORK_EXPENSE) {
+						synchronized (this) {
+							aggregatedCost += value;
+							costSeries.addOrUpdate(currentDay, aggregatedCost);
+						}
+					} else if (AdNetRevCostPanel.this.agent == agent
+							&& type == TACAdxConstants.DU_AD_NETWORK_REVENUE) {
+						synchronized (this) {
+							aggregatedRevenue += value;
+							revSeries
+									.addOrUpdate(currentDay, aggregatedRevenue);
+						}
 					}
 				}
 			});
 		}
-
 	}
 }
+// if (type == TACAdxConstants.DU_AD_NETWORK_REVENUE) {
+// costSeries.add(currentDay, value);
+// }
+// else if (type ==
+// TACAdxConstants.DU_AD_NETWORK_REVENUE) {
+// revSeries.add(currentDay, value);
+// }
