@@ -102,10 +102,10 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 				&& (adNetworkDailyNotification.getCost() != 0)) {
 
 			String message = "Day "
-					+ adNetworkDailyNotification.getEffectiveDay() + ": "
+					+ adNetworkDailyNotification.getEffectiveDay() + ":\t"
 					+ "Campaign [" + pendingCampaign.getDayStart() + ", "
-					+ pendingCampaign.getDayEnd() + "] - "
-					+ pendingCampaign.getTargetSegment() + " won at cost "
+					+ pendingCampaign.getDayEnd() + "]\t"
+					+ pendingCampaign.getTargetSegment() + "\twon at cost "
 					+ adNetworkDailyNotification.getCost();
 
 			area.append(message);
@@ -114,10 +114,9 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 	}
 
 	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
-		String message = "Day 0: Initial campaign ["
-				+ campaignMessage.getDayStart() + ", "
-				+ campaignMessage.getDayEnd() + "] - "
-				+ campaignMessage.getTargetSegment();
+		String message = "Day 0:\tCampaign [" + campaignMessage.getDayStart()
+				+ ", " + campaignMessage.getDayEnd() + "]\t"
+				+ campaignMessage.getTargetSegment() + "\trecieved";
 		area.append(message);
 		area.append("\r\n");
 	}
