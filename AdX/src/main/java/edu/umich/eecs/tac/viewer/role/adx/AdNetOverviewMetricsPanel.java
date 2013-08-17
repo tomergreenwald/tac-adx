@@ -40,11 +40,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import se.sics.isl.transport.Transportable;
-import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.props.AdvertiserInfo;
-import edu.umich.eecs.tac.props.SalesReport;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
@@ -87,7 +84,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 
 		private static final String[] COLUMN_NAMES = new String[] { "Agent",
-				"Profit", "Quality Rating", "ROI", "revenue", "cost",
+				"Quality Rating", "Profit", "revenue", "adx cost", "ucs cost",
 				"impressions" };
 
 		List<AdvertiserMetricsItem> data;
@@ -141,15 +138,15 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			if (columnIndex == 0) {
 				return data.get(rowIndex).getAdvertiser();
 			} else if (columnIndex == 1) {
-				return data.get(rowIndex).getProfit();
-			} else if (columnIndex == 2) {
 				return data.get(rowIndex).getQualityRating();
+			} else if (columnIndex == 2) {
+				return data.get(rowIndex).getProfit();
 			} else if (columnIndex == 3) {
-				return data.get(rowIndex).getROI();
-			} else if (columnIndex == 4) {
 				return data.get(rowIndex).getRevenue();
+			} else if (columnIndex == 4) {
+				return data.get(rowIndex).getADXCost();
 			} else if (columnIndex == 5) {
-				return data.get(rowIndex).getCost();
+				return data.get(rowIndex).getUCSCost();
 			} else if (columnIndex == 6) {
 				return data.get(rowIndex).getImpressions();
 			}
@@ -195,15 +192,22 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		/**
 		 * @return the cost
 		 */
-		public double getCost() {
-			return cost;
+		public double getADXCost() {
+			return adxCost;
 		}
 
-		private double cost;
+		/**
+		 * @return the cost
+		 */
+		public double getUCSCost() {
+			return ucsCost;
+		}
 
 		private AdvertiserInfo advertiserInfo;
 
 		private final AdvertiserMetricsModel model;
+		private double ucsCost;
+		private double adxCost;
 
 		private AdvertiserMetricsItem(int agent, String advertiser,
 				AdvertiserMetricsModel model,
@@ -224,24 +228,12 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		}
 
 		public double getProfit() {
-			return revenue - cost;
+			return revenue - adxCost - ucsCost;
 		}
 
 		public double getCapacity() {
 			return advertiserInfo != null ? advertiserInfo
 					.getDistributionCapacity() : Double.NaN;
-		}
-
-		public double getCPM() {
-			return 1000.0 * cost / (impressions);
-		}
-
-		public double getVPI() {
-			return (revenue - cost) / impressions;
-		}
-
-		public double getROI() {
-			return (revenue - cost) / cost;
 		}
 
 		protected void addRevenue(double revenue) {
@@ -250,8 +242,14 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			model.fireUpdatedAgent(agent);
 		}
 
-		protected void addCost(double cost) {
-			this.cost += cost;
+		protected void addADXCost(double cost) {
+			this.adxCost += cost;
+
+			model.fireUpdatedAgent(agent);
+		}
+
+		protected void addUCSCost(double cost) {
+			this.ucsCost += cost;
 
 			model.fireUpdatedAgent(agent);
 		}
@@ -314,8 +312,11 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 						case TACAdxConstants.DU_AD_NETWORK_REVENUE:
 							item.addRevenue(value);
 							break;
-						case TACAdxConstants.DU_AD_NETWORK_EXPENSE:
-							item.addCost(value);
+						case TACAdxConstants.DU_AD_NETWORK_ADX_EXPENSE:
+							item.addADXCost(value);
+							break;
+						case TACAdxConstants.DU_AD_NETWORK_UCS_EXPENSE:
+							item.addUCSCost(value);
 							break;
 						case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
 							item.setQualityRating(value);
@@ -325,47 +326,6 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 				}
 			});
 
-		}
-
-		@Override
-		public void dataUpdated(final int agent, final int type,
-				final Transportable value) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (agent == item.getAgent()) {
-						switch (type) {
-						case TACAdxConstants.DU_SALES_REPORT:
-							handleSalesReport((SalesReport) value);
-							break;
-						case TACAdxConstants.DU_AD_NETWORK_REPORT:
-							handleAdNetworkReport((AdNetworkReport) value);
-							break;
-						case TACAdxConstants.DU_ADVERTISER_INFO:
-							handleAdvertiserInfo((AdvertiserInfo) value);
-							break;
-						}
-					}
-				}
-			});
-		}
-
-		private void handleAdvertiserInfo(AdvertiserInfo advertiserInfo) {
-			item.setAdvertiserInfo(advertiserInfo);
-		}
-
-		private void handleAdNetworkReport(AdNetworkReport report) {
-			item.addCost(report.getDailyCost());
-
-		}
-
-		private void handleSalesReport(SalesReport salesReport) {
-			double revenue = 0.0;
-
-			for (int i = 0; i < salesReport.size(); i++) {
-				revenue += salesReport.getRevenue(i);
-			}
-			item.addRevenue(revenue);
 		}
 	}
 

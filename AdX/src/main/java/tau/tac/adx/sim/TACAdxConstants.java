@@ -193,9 +193,19 @@ public final class TACAdxConstants {
 	public static final int DU_AD_NETWORK_EXPENSE = 410;
 
 	/**
+	 * AdNet's expense.
+	 */
+	public static final int DU_AD_NETWORK_UCS_EXPENSE = 411;
+
+	/**
+	 * AdNet's expense.
+	 */
+	public static final int DU_AD_NETWORK_ADX_EXPENSE = 412;
+
+	/**
 	 * The bank account status for a specific agent (int or long or double).
 	 */
-	public static final int DU_AD_NETWORK_BANK_ACCOUNT = 411;
+	public static final int DU_AD_NETWORK_BANK_ACCOUNT = 413;
 
 	/**
 	 * The TAC AA Publisher role.

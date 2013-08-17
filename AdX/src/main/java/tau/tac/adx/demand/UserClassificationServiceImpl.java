@@ -66,7 +66,7 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 				levelPrice = ucsProb * bids[indices[j + 1]];
 				advData.setAuctionResult(levelPrice, ucsProb, day);
 				AdxManager.getInstance().getSimulation()
-						.broadcastAdNetworkExpense(advNames[j], levelPrice);
+						.broadcastUCSWin(advNames[j], levelPrice);
 				ucsProb = ucsProb * UCS_PROB;
 			}
 		}
