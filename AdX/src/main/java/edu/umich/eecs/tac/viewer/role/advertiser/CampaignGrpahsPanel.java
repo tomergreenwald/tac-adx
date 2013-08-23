@@ -50,6 +50,8 @@ import edu.umich.eecs.tac.viewer.ViewAdaptor;
  * @author Patrick R. Jordan
  */
 public class CampaignGrpahsPanel extends JPanel {
+	private static final double ERR_A = 4.08577;
+	private static final double ERR_B = 3.08577;
 	private final int agent;
 	private final String advertiser;
 	private final Set<AdNetworkDailyNotification> campaigns;
@@ -122,18 +124,20 @@ public class CampaignGrpahsPanel extends JPanel {
 		double targetedImps = campaignStats.getTargetedImps();
 		double otherImps = campaignStats.getOtherImps();
 		if (targetedImps != 0) {
-			reachSeries.add(targetedImps, targetedImps
-					/ expectedImpressionReach);
+			for (int i = 1; i <= 100; i++) {
+				double err = calcEffectiveReachRatio(targetedImps / i * 100,
+						expectedImpressionReach);
+				reachSeries.add(targetedImps / i * 100, err);
+			}
 		}
 	}
 
 	private double calcEffectiveReachRatio(double currentReach,
 			double expectedReach) {
-		double a = 1, b = 1;
 		return 2
-				/ a
-				* (Math.atan(a * currentReach / expectedReach - b) - Math
-						.atan(-b));
+				/ ERR_A
+				* (Math.atan(ERR_A * currentReach / expectedReach - ERR_B) - Math
+						.atan(-ERR_B));
 	}
 
 	protected class DayListener implements TickListener {
