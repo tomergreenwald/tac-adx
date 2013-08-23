@@ -62,6 +62,7 @@ public class CampaignGrpahsPanel extends JPanel {
 	private final CampaignReportKey key;
 	private XYSeries reachSeries;
 	private final long expectedImpressionReach;
+	private double err;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
 			TACAASimulationPanel simulationPanel, boolean advertiserBorder,
@@ -89,7 +90,8 @@ public class CampaignGrpahsPanel extends JPanel {
 		XYSeriesCollection seriescollection = new XYSeriesCollection(
 				reachSeries);
 		JFreeChart chart = createDifferenceChart(advertiserBorder ? null
-				: advertiser, seriescollection, "Day", "Targeted Impressions");
+				: advertiser, seriescollection, "Reach Count",
+				"Reach percentage");
 		ChartPanel chartpanel = new ChartPanel(chart, false);
 		chartpanel.setMouseZoomable(true, false);
 		add(chartpanel);
@@ -119,7 +121,19 @@ public class CampaignGrpahsPanel extends JPanel {
 		CampaignStats campaignStats = campaignReportEntry.getCampaignStats();
 		double targetedImps = campaignStats.getTargetedImps();
 		double otherImps = campaignStats.getOtherImps();
-		reachSeries.add(currentDay, targetedImps / expectedImpressionReach);
+		if (targetedImps != 0) {
+			reachSeries.add(targetedImps, targetedImps
+					/ expectedImpressionReach);
+		}
+	}
+
+	private double calcEffectiveReachRatio(double currentReach,
+			double expectedReach) {
+		double a = 1, b = 1;
+		return 2
+				/ a
+				* (Math.atan(a * currentReach / expectedReach - b) - Math
+						.atan(-b));
 	}
 
 	protected class DayListener implements TickListener {
