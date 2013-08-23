@@ -43,15 +43,18 @@ public class CampaignGrpahsTabPanel extends SimulationTabPanel {
 	private final Color legendColor;
 	private final int campaignId;
 	private CampaignGrpahsPanel campaignGrpahsPanel;
+	private final long expectedImpressionReach;
 
 	public CampaignGrpahsTabPanel(TACAASimulationPanel simulationPanel,
-			int agent, String advertiser, Color legendColor, int campaignId) {
+			int agent, String advertiser, Color legendColor, int campaignId,
+			long expectedImpressionReach) {
 		super(simulationPanel);
 		this.simulationPanel = simulationPanel;
 		this.agent = agent;
 		this.name = advertiser;
 		this.legendColor = legendColor;
 		this.campaignId = campaignId;
+		this.expectedImpressionReach = expectedImpressionReach;
 
 		initialize();
 	}
@@ -59,8 +62,8 @@ public class CampaignGrpahsTabPanel extends SimulationTabPanel {
 	private void initialize() {
 		setLayout(new GridBagLayout());
 
-		campaignGrpahsPanel = new CampaignGrpahsPanel(
-				agent, name, simulationPanel, false, campaignId);
+		campaignGrpahsPanel = new CampaignGrpahsPanel(agent, name,
+				simulationPanel, false, campaignId, expectedImpressionReach);
 
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
@@ -71,8 +74,8 @@ public class CampaignGrpahsTabPanel extends SimulationTabPanel {
 		add(campaignGrpahsPanel, c2);
 
 	}
-	
-	public void update(CampaignReport campaignReport){
+
+	public void update(CampaignReport campaignReport) {
 		campaignGrpahsPanel.updateCampaigns(campaignReport);
 	}
 }

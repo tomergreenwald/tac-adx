@@ -61,16 +61,18 @@ public class CampaignGrpahsPanel extends JPanel {
 	private int currentDay;
 	private final CampaignReportKey key;
 	private XYSeries reachSeries;
+	private final long expectedImpressionReach;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
 			TACAASimulationPanel simulationPanel, boolean advertiserBorder,
-			int campaignId) {
+			int campaignId, long expectedImpressionReach) {
 		this.agent = agent;
 		this.advertiser = advertiser;
 		this.advertiserBorder = advertiserBorder;
 		campaignSeries = new HashMap<Integer, XYSeries>();
 		this.campaignId = campaignId;
 		key = new CampaignReportKey(campaignId);
+		this.expectedImpressionReach = expectedImpressionReach;
 		initialize();
 
 		simulationPanel.addViewListener(new DataUpdateListener());
@@ -117,7 +119,7 @@ public class CampaignGrpahsPanel extends JPanel {
 		CampaignStats campaignStats = campaignReportEntry.getCampaignStats();
 		double targetedImps = campaignStats.getTargetedImps();
 		double otherImps = campaignStats.getOtherImps();
-		reachSeries.add(currentDay, targetedImps);
+		reachSeries.add(currentDay, targetedImps / expectedImpressionReach);
 	}
 
 	protected class DayListener implements TickListener {

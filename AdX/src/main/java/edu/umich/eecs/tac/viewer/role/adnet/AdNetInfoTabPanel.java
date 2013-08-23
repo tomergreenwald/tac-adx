@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 
 import se.sics.isl.transport.Transportable;
 import se.sics.tasim.viewer.TickListener;
+import tau.tac.adx.agents.CampaignData;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
@@ -65,6 +66,7 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 	 * current day of simulation
 	 */
 	private int day;
+	private CampaignData pendingCampaign;
 
 	public AdNetInfoTabPanel(int agent, String advertiser,
 			Map<Query, ResultsPageModel> models,
@@ -145,20 +147,30 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 	protected void updateCampaigns(AdNetworkDailyNotification campaignMessage) {
 		if (advertiser.equals(campaignMessage.getWinner())
 				&& campaignMessage.getCost() > 0) {
-			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
-					simulationPanel, agent, advertiser, legendColor,
-					campaignMessage.getCampaignId());
-			tabbedPane.add("Day " + (day + 1), campaignGrpahsTabPanel);
-			tabbedPane.repaint();
-			tabbedPane.revalidate();
+			if ((pendingCampaign.getId() == campaignMessage.getCampaignId())
+					&& (campaignMessage.getCost() != 0)) {
+				CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
+						simulationPanel, agent, advertiser, legendColor,
+						campaignMessage.getCampaignId(),
+						pendingCampaign.getReachImps());
+				tabbedPane.add("Day " + (day + 1), campaignGrpahsTabPanel);
+				tabbedPane.repaint();
+				tabbedPane.revalidate();
+			}
 		}
 	}
 
 	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
 		tabbedPane.add("Day 0", new CampaignGrpahsTabPanel(simulationPanel,
-				agent, advertiser, legendColor, campaignMessage.getId()));
+				agent, advertiser, legendColor, campaignMessage.getId(),
+				campaignMessage.getReachImps()));
 		tabbedPane.repaint();
 		tabbedPane.revalidate();
+	}
+
+	protected void handleCampaignOpportunityMessage(
+			CampaignOpportunityMessage com) {
+		pendingCampaign = new CampaignData(com);
 	}
 
 	private class DataUpdateListener extends ViewAdaptor {
@@ -180,6 +192,21 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 						break;
 					}
 
+				}
+			});
+
+		}
+
+		@Override
+		public void dataUpdated(final int type, final Transportable value) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					switch (type) {
+					case TACAdxConstants.DU_CAMPAIGN_OPPORTUNITY:
+						handleCampaignOpportunityMessage((CampaignOpportunityMessage) value);
+						break;
+					}
 				}
 			});
 
