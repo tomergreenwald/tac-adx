@@ -125,9 +125,9 @@ public class CampaignGrpahsPanel extends JPanel {
 		double otherImps = campaignStats.getOtherImps();
 		if (targetedImps != 0) {
 			for (int i = 1; i <= 100; i++) {
-				double err = calcEffectiveReachRatio(targetedImps / i * 100,
+				double err = calcEffectiveReachRatio(targetedImps * i / 100,
 						expectedImpressionReach);
-				reachSeries.add(targetedImps / i * 100, err);
+				reachSeries.add(targetedImps * i / 100, err);
 			}
 		}
 	}
