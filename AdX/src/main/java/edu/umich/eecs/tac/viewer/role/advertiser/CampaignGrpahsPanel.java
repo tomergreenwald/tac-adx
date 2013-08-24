@@ -91,6 +91,15 @@ public class CampaignGrpahsPanel extends JPanel {
 	private void createGraph(XYSeries reachSeries) {
 		XYSeriesCollection seriescollection = new XYSeriesCollection(
 				reachSeries);
+
+		XYSeries maxSeries = new XYSeries("Total");
+		for (int i = 1; i <= 1000; i++) {
+			double err = calcEffectiveReachRatio(expectedImpressionReach * i
+					/ 1000, expectedImpressionReach);
+			maxSeries.add(expectedImpressionReach * i / 1000, err);
+		}
+
+		seriescollection.addSeries(maxSeries);
 		JFreeChart chart = createDifferenceChart(advertiserBorder ? null
 				: advertiser, seriescollection, "Reach Count",
 				"Reach percentage");
