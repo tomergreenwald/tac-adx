@@ -154,14 +154,7 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 							updateCampaigns((AdNetworkDailyNotification) value);
 							break;
 						case TACAdxConstants.DU_INITIAL_CAMPAIGN:
-							if (agent == agentId) {
-								updateCampaigns((InitialCampaignMessage) value);
-							}
-							break;
-						case TACAdxConstants.DU_CAMPAIGN_REPORT:
-							if (agent == agentId) {
-								// updateCampaigns((CampaignReport) value);
-							}
+							updateCampaigns((InitialCampaignMessage) value);
 							break;
 						}
 					}
