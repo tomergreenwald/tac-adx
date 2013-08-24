@@ -145,18 +145,15 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 	}
 
 	protected void updateCampaigns(AdNetworkDailyNotification campaignMessage) {
-		if (advertiser.equals(campaignMessage.getWinner())
-				&& campaignMessage.getCost() > 0) {
-			if ((pendingCampaign.getId() == campaignMessage.getCampaignId())
-					&& (campaignMessage.getCost() != 0)) {
-				CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
-						simulationPanel, agent, advertiser, legendColor,
-						campaignMessage.getCampaignId(),
-						pendingCampaign.getReachImps());
-				tabbedPane.add("Day " + (day + 1), campaignGrpahsTabPanel);
-				tabbedPane.repaint();
-				tabbedPane.revalidate();
-			}
+		if ((pendingCampaign.getId() == campaignMessage.getCampaignId())
+				&& (campaignMessage.getCost() != 0)) {
+			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
+					simulationPanel, agent, advertiser, legendColor,
+					campaignMessage.getCampaignId(),
+					pendingCampaign.getReachImps());
+			tabbedPane.add("Day " + (day + 1), campaignGrpahsTabPanel);
+			tabbedPane.repaint();
+			tabbedPane.revalidate();
 		}
 	}
 
@@ -181,17 +178,18 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					switch (type) {
-					case TACAdxConstants.DU_DEMAND_DAILY_REPORT:
-						updateCampaigns((AdNetworkDailyNotification) value);
-						break;
-					case TACAdxConstants.DU_INITIAL_CAMPAIGN:
-						if (agent == agentId) {
-							updateCampaigns((InitialCampaignMessage) value);
+					if (agentId == agent) {
+						switch (type) {
+						case TACAdxConstants.DU_DEMAND_DAILY_REPORT:
+							updateCampaigns((AdNetworkDailyNotification) value);
+							break;
+						case TACAdxConstants.DU_INITIAL_CAMPAIGN:
+							if (agent == agentId) {
+								updateCampaigns((InitialCampaignMessage) value);
+							}
+							break;
 						}
-						break;
 					}
-
 				}
 			});
 
