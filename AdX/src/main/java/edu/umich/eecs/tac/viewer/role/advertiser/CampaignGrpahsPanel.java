@@ -65,6 +65,7 @@ public class CampaignGrpahsPanel extends JPanel {
 	private XYSeries reachSeries;
 	private final long expectedImpressionReach;
 	private double err;
+	private XYSeries maxSeries;
 
 	public CampaignGrpahsPanel(int agent, String advertiser,
 			TACAASimulationPanel simulationPanel, boolean advertiserBorder,
@@ -92,7 +93,7 @@ public class CampaignGrpahsPanel extends JPanel {
 		XYSeriesCollection seriescollection = new XYSeriesCollection(
 				reachSeries);
 
-		XYSeries maxSeries = new XYSeries("Total");
+		maxSeries = new XYSeries("Total");
 		for (int i = 1; i <= 1000; i++) {
 			double err = calcEffectiveReachRatio(expectedImpressionReach * i
 					/ 1000, expectedImpressionReach);
@@ -131,13 +132,22 @@ public class CampaignGrpahsPanel extends JPanel {
 		}
 		CampaignStats campaignStats = campaignReportEntry.getCampaignStats();
 		double targetedImps = campaignStats.getTargetedImps();
-		double otherImps = campaignStats.getOtherImps();
 		if (targetedImps != 0) {
 			for (int i = 1; i <= 100; i++) {
-				double err = calcEffectiveReachRatio(targetedImps * i / 100,
+				double index = targetedImps * i / 100;
+				double err = calcEffectiveReachRatio(index,
 						expectedImpressionReach);
-				reachSeries.add(targetedImps * i / 100, err);
+				reachSeries.add(index, err);
 			}
+
+			for (int i = 1; i <= 1000; i++) {
+				long index = expectedImpressionReach * i / 1000;
+				if (index < targetedImps) {
+					maxSeries.remove(index);
+					maxSeries.add(index, 0);
+				}
+			}
+			this.repaint();
 		}
 	}
 
