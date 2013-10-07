@@ -101,7 +101,6 @@ public class AdxManager {
 	@Subscribe
 	public void addCampaign(CampaignNotification campaign) {
 		campaignMap.put(campaign.getCampaign().getId(), campaign.getCampaign());
-		log.fine(campaign.toString());
 	}
 
 	public Campaign getCampaign(int campaignId) {

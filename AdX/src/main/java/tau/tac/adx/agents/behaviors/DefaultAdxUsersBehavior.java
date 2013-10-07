@@ -45,7 +45,6 @@ import tau.tac.adx.users.AdxUserBehaviorBuilder;
 import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUsersBehavior;
 import edu.umich.eecs.tac.auction.BidManager;
-import edu.umich.eecs.tac.auction.DefaultPublisherBehavior;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.sim.AgentRepository;
@@ -207,7 +206,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	 */
 	@Override
 	public void setup() {
-		log = Logger.getLogger(DefaultPublisherBehavior.class.getName());
+		log = Logger.getLogger(getClass().getName());
 		virtualDays = config.getPropertyAsInt("virtual_days", 0);
 		setupBidManager();
 
@@ -293,7 +292,8 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		Transportable content = message.getContent();
 		if (content instanceof AdxBidBundle) {
 			AdxBidBundle bundle = (AdxBidBundle) content;
-			log.fine("Recieved " + AdxBidBundle.class.getName() + ": " + bundle);
+			log.finer("Recieved " + AdxBidBundle.class.getName() + ": "
+					+ bundle);
 			bidManager.updateBids(message.getSender(), bundle);
 		}
 	}

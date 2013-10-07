@@ -126,6 +126,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	/**
 	 * @return the budgetlimit
 	 */
+	@Override
 	public Double getBudgetlimit() {
 		return budgetlimit;
 	}
@@ -224,16 +225,17 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	public void setTomorowsLimit(CampaignLimitSet message) {
 		this.tomorrowsBudgetLimit = message.getBudgetLimit();
 		this.tomorrowsImpressionLimit = message.getImpressionLimit();
-		
-		log.log(Level.INFO, "Campaign " + id + " Tomorrows limits: " 
-		   + tomorrowsBudgetLimit + ", "+ tomorrowsImpressionLimit);
+
+		log.log(Level.FINER, "Campaign " + id + " Tomorrows limits: "
+				+ tomorrowsBudgetLimit + ", " + tomorrowsImpressionLimit);
 	}
 
 	@Override
 	public boolean isOverTodaysLimit() {
-		return (budgetlimit < /*totals.cost + */todays.cost)
-				|| (impressionLimit < /*totals.tartgetedImps
-						+ */todays.tartgetedImps);
+		return (budgetlimit < /* totals.cost + */todays.cost)
+				|| (impressionLimit < /*
+									 * totals.tartgetedImps +
+									 */todays.tartgetedImps);
 	}
 
 	@Override
@@ -266,7 +268,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			double imps = (device == Device.mobile ? mobileCoef : 1.0)
 					* (adType == AdType.video ? videoCoef : 1.0);
 
-			Set<MarketSegment> actualSegments = MarketSegment.extractSegment(adxUser);
+			Set<MarketSegment> actualSegments = MarketSegment
+					.extractSegment(adxUser);
 			if (actualSegments.containsAll(targetSegments)) {
 				todays.tartgetedImps += imps;
 			} else {
@@ -284,29 +287,26 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public void preNextTimeUnit(int timeUnit) {
 		/*
-		if (todays.tartgetedImps > impressionLimit + 10
-				&& impressionLimit != (int) Double.POSITIVE_INFINITY) {
-			String s = "\nbudgetlimit: " + budgetlimit + " totals.cost: "
-					+ totals.cost + " todays.cost: " + todays.cost
-					+ " impressionLimit: " + impressionLimit
-					+ " totals.tartgetedImps: " + totals.tartgetedImps
-					+ " todays.tartgetedImps: " + todays.tartgetedImps + "\n";
-			throw new RuntimeException(" campaign id: " + this.id + " "
-					+ todays.toString() + " impresssion limit: "
-					+ this.impressionLimit + s);
-		}
-        */
-		
+		 * if (todays.tartgetedImps > impressionLimit + 10 && impressionLimit !=
+		 * (int) Double.POSITIVE_INFINITY) { String s = "\nbudgetlimit: " +
+		 * budgetlimit + " totals.cost: " + totals.cost + " todays.cost: " +
+		 * todays.cost + " impressionLimit: " + impressionLimit +
+		 * " totals.tartgetedImps: " + totals.tartgetedImps +
+		 * " todays.tartgetedImps: " + todays.tartgetedImps + "\n"; throw new
+		 * RuntimeException(" campaign id: " + this.id + " " + todays.toString()
+		 * + " impresssion limit: " + this.impressionLimit + s); }
+		 */
+
 		dayStats.put(day, todays);
 		totals = totals.add(todays);
 		todays = new CampaignStats(0.0, 0.0, 0.0);
 		day = timeUnit;
-		
+
 		budgetlimit = tomorrowsBudgetLimit;
 		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
-		impressionLimit = tomorrowsImpressionLimit;		
+		impressionLimit = tomorrowsImpressionLimit;
 		tomorrowsImpressionLimit = Integer.MAX_VALUE;
-		
+
 		if (day == dayEnd + 1) { /* was last day - update quality score */
 			double effectiveReachRatio = effectiveReachRatio(totals.tartgetedImps);
 			qualityManager.updateQualityScore(advertiser, effectiveReachRatio);
@@ -447,14 +447,23 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public String toString() {
-		return "CampaignImpl [qualityManager=" + qualityManager + ", id=" + id
-				+ ", reachImps=" + reachImps + ", dayStart=" + dayStart
-				+ ", dayEnd=" + dayEnd + ", targetSegment=" + targetSegments
-				+ ", videoCoef=" + videoCoef + ", mobileCoef=" + mobileCoef
+		return "CampaignImpl [id=" + id + ", reachImps=" + reachImps
+				+ ", dayStart=" + dayStart + ", dayEnd=" + dayEnd
+				+ ", targetSegment=" + targetSegments + ", videoCoef="
+				+ videoCoef + ", mobileCoef=" + mobileCoef
 				+ ", advertisersBids=" + advertisersBids + ", budget=" + budget
 				+ ", advertiser=" + advertiser + ", day=" + day + ", todays="
 				+ todays + ", totals=" + totals + ", dayStats=" + dayStats
 				+ "]";
+	}
+
+	@Override
+	public String logToString() {
+		return "CampaignImpl [id=" + id + ", reachImps=" + reachImps
+				+ ", dayStart=" + dayStart + ", dayEnd=" + dayEnd
+				+ ", targetSegment=" + targetSegments + ", videoCoef="
+				+ videoCoef + ", mobileCoef=" + mobileCoef + ", budget="
+				+ budget + ", advertiser=" + advertiser + "]";
 	}
 
 	@Override

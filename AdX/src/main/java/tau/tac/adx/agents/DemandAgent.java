@@ -106,8 +106,10 @@ public class DemandAgent extends Builtin {
 
 			pendingCampaign.registerToEventBus();
 
-			log.log(Level.INFO, "Day " + day + " :"
-					+ "Notifying new campaign opportunity..");
+			log.log(Level.INFO,
+					"Day " + day + " :"
+							+ "Notifying new campaign opportunity: "
+							+ pendingCampaign.logToString());
 			getSimulation().sendCampaignOpportunity(
 					new CampaignOpportunityMessage(pendingCampaign, day));
 		} else {
@@ -123,11 +125,11 @@ public class DemandAgent extends Builtin {
 		/*
 		 * report auctions result and campaigns stats to adNet agents
 		 */
-		log.log(Level.INFO, "Day "
+		log.log(Level.FINE, "Day "
 				+ day
 				+ " :"
 				+ "Reporting auction results..."
-				+ ((pendingCampaign != null) ? pendingCampaign
+				+ ((pendingCampaign != null) ? pendingCampaign.logToString()
 						: "No pending campaign"));
 
 		for (String advertiser : getAdxAdvertiserAddresses()) {
@@ -177,7 +179,7 @@ public class DemandAgent extends Builtin {
 		 */
 		if (pendingCampaign != null) {
 			log.log(Level.INFO, "Day " + day + " : Auction pending campaign: "
-					+ pendingCampaign);
+					+ pendingCampaign.logToString());
 			pendingCampaign.auction();
 			if (pendingCampaign.isAllocated()) {
 				adNetCampaigns.put(pendingCampaign.getAdvertiser(),
@@ -232,7 +234,7 @@ public class DemandAgent extends Builtin {
 		 * Allocate an initial campaign to each competing adNet agent and notify
 		 */
 		for (String advertiser : getAdxAdvertiserAddresses()) {
-			log.log(Level.INFO, "allocating initial campaigns");
+
 			qualityManager.addAdvertiser(advertiser);
 			Campaign campaign = new CampaignImpl(qualityManager,
 					aloc_cmp_reach, 1, ALOC_CMP_LENGTH,
@@ -240,6 +242,8 @@ public class DemandAgent extends Builtin {
 					ALOC_CMP_MC);
 
 			campaign.allocateToAdvertiser(advertiser);
+			log.log(Level.FINE,
+					"Allocating initial campaign : " + campaign.logToString());
 			campaign.registerToEventBus();
 
 			adNetCampaigns.put(advertiser, campaign);
@@ -282,7 +286,7 @@ public class DemandAgent extends Builtin {
 
 			AdNetBidMessage cbm = (AdNetBidMessage) content;
 
-			log.log(Level.INFO,
+			log.log(Level.FINE,
 					"Day " + day + " :" + "Got AdNetBidMessage from " + sender
 							+ " :" + " UCS Bid: " + cbm.getUcsBid()
 							+ " Cmp ID: " + cbm.getCampaignId() + " Cmp Bid: "
@@ -320,7 +324,7 @@ public class DemandAgent extends Builtin {
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn
 								.getAdvertiser()));
-				log.log(Level.INFO,
+				log.log(Level.FINER,
 						"Day "
 								+ day
 								+ " :Campaign limit expired Impressed while over limit: "
@@ -329,11 +333,6 @@ public class DemandAgent extends Builtin {
 								+ cmpn.getBudgetlimit() + " value is: "
 								+ cmpn.getTodayStats().getTargetedImps() + ", "
 								+ cmpn.getTodayStats().getCost());
-				log.log(Level.INFO,
-						"Day "
-								+ day
-								+ " : Campaign limit expired Impressed while over limit: "
-								+ cmpn.getId());
 			}
 
 		}

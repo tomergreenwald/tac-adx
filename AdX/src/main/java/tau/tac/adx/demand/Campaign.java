@@ -135,4 +135,6 @@ public interface Campaign extends TimeListener {
 
 	Double getBudgetlimit();
 
+	String logToString();
+
 }
