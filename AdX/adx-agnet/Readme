@@ -40,3 +40,5 @@ How to run the log parser:
 			Campaign information messages
 		-adnet
 			Ad Network messages
+		-all
+			Show all messags (unformatted)
