@@ -27,4 +27,16 @@ How to implement an agent:
 	4. An example implementing class is available at "SampleAdNetwork.java"
 	5. To assure that your code will be available to run, generate a "jar" file from your
 	   code base and insert it into the "lib" folder.
-		                           
+How to run the log parser:
+	1. Edit the runLogParser.sh and change the "-file LOG_FILE_PATH/game.slg.gz" to point to your desired log file.
+	2. Enable different log messages with these flags:
+		-ucs
+			User classification messages
+		-rating 
+			User rating score messages
+		-bank
+			Bank status messages
+		-campaign
+			Campaign information messages
+		-adnet
+			Ad Network messages
