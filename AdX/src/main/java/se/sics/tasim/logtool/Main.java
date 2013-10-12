@@ -80,6 +80,7 @@ public class Main extends java.awt.event.WindowAdapter {
 		config.addOption("bank", "Show bank balance messages");
 		config.addOption("campaign", "Show campaign messages");
 		config.addOption("adnet", "Show adnet messages");
+		config.addOption("all", "Show all messages");
 
 		config.addOption("version", "show the version");
 		config.addHelp("h", "show this help message");

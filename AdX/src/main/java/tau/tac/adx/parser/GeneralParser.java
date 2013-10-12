@@ -45,6 +45,7 @@ public class GeneralParser extends Parser {
 	private boolean bank = false;
 	private boolean campaign = false;
 	private boolean adnet = false;
+	private boolean all = false;
 
 	public GeneralParser(LogReader reader, ConfigManager configManager) {
 		super(reader);
@@ -76,6 +77,7 @@ public class GeneralParser extends Parser {
 		bank = configManager.getPropertyAsBoolean("bank", false);
 		campaign = configManager.getPropertyAsBoolean("campaign", false);
 		adnet = configManager.getPropertyAsBoolean("adnet", false);
+		all = configManager.getPropertyAsBoolean("all", false);
 		// System.out.println(StringUtils.rightPad("Day", 20) + "\t"
 		// + StringUtils.rightPad("Agent", 20) + "\tQuality Score");
 	}
@@ -87,7 +89,12 @@ public class GeneralParser extends Parser {
 
 	@Override
 	protected void message(int sender, int receiver, Transportable content) {
-		if (content instanceof AdNetworkDailyNotification) {
+		if (all) {
+			System.out.println(getBasicInfoString(receiver)
+					+ StringUtils.rightPad(content.getClass().getSimpleName()
+							+ ": ", 30) + content);
+		}
+		if (!all && content instanceof AdNetworkDailyNotification) {
 			if (ucs) {
 				AdNetworkDailyNotification dailyNotification = (AdNetworkDailyNotification) content;
 				System.out.println(getBasicInfoString(receiver)
@@ -100,12 +107,12 @@ public class GeneralParser extends Parser {
 						+ StringUtils.rightPad("Quality rating: ", 20)
 						+ dailyNotification.getQualityScore());
 			}
-		} else if (bank && content instanceof BankStatus) {
+		} else if (!all && bank && content instanceof BankStatus) {
 			BankStatus status = (BankStatus) content;
 			System.out.println(getBasicInfoString(receiver)
 					+ StringUtils.rightPad("Bank balance: ", 20)
 					+ status.getAccountBalance());
-		} else if (campaign && content instanceof CampaignReport) {
+		} else if (!all && campaign && content instanceof CampaignReport) {
 			CampaignReport campaignReport = (CampaignReport) content;
 			for (CampaignReportKey campaignReportKey : campaignReport) {
 				CampaignReportEntry reportEntry = campaignReport
@@ -124,7 +131,7 @@ public class GeneralParser extends Parser {
 						+ "\t Cost: " + campaignStats.getCost());
 			}
 
-		} else if (adnet && content instanceof AdNetworkReport) {
+		} else if (!all && adnet && content instanceof AdNetworkReport) {
 			AdNetworkReport adNetworkReport = (AdNetworkReport) content;
 			for (AdNetworkKey adNetworkKey : adNetworkReport) {
 				AdNetworkReportEntry reportEntry = adNetworkReport
