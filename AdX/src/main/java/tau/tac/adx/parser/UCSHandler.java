@@ -1,4 +1,4 @@
-package edu.umich.eecs.tac.parser.bankstatus;
+package tau.tac.adx.parser;
 
 import java.io.IOException;
 import java.text.ParseException;

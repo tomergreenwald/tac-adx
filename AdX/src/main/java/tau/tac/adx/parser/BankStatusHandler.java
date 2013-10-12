@@ -1,4 +1,4 @@
-package edu.umich.eecs.tac.parser.bankstatus;
+package tau.tac.adx.parser;
 
 import se.sics.isl.util.IllegalConfigurationException;
 import se.sics.tasim.logtool.LogReader;

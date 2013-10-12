@@ -1,4 +1,4 @@
-package edu.umich.eecs.tac.parser.bankstatus;
+package tau.tac.adx.parser;
 
 import java.util.List;
 
