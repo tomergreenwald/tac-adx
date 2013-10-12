@@ -7,9 +7,14 @@ import se.sics.isl.util.ConfigManager;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.tasim.props.SimulationStatus;
+import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
+import tau.tac.adx.report.demand.CampaignReport;
+import tau.tac.adx.report.demand.CampaignReportEntry;
+import tau.tac.adx.report.demand.CampaignReportKey;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.Parser;
+import edu.umich.eecs.tac.props.BankStatus;
 
 /**
  * <code>BankStatusParser</code> is a simple example of a TAC AA parser that
@@ -34,6 +39,8 @@ public class GeneralParser extends Parser {
 
 	private boolean ucs = false;
 	private boolean rating = false;
+	private boolean bank = false;
+	private boolean campaign = false;
 
 	public GeneralParser(LogReader reader, ConfigManager configManager) {
 		super(reader);
@@ -62,6 +69,8 @@ public class GeneralParser extends Parser {
 		System.out.println("****General Log Prser***");
 		ucs = configManager.getPropertyAsBoolean("ucs", false);
 		rating = configManager.getPropertyAsBoolean("rating", false);
+		bank = configManager.getPropertyAsBoolean("rating", false);
+		campaign = configManager.getPropertyAsBoolean("rating", false);
 		// System.out.println(StringUtils.rightPad("Day", 20) + "\t"
 		// + StringUtils.rightPad("Agent", 20) + "\tQuality Score");
 	}
@@ -76,21 +85,48 @@ public class GeneralParser extends Parser {
 		if (content instanceof AdNetworkDailyNotification) {
 			if (ucs) {
 				AdNetworkDailyNotification dailyNotification = (AdNetworkDailyNotification) content;
-				System.out.println(StringUtils.rightPad("" + day, 5) + "\t"
-						+ StringUtils.rightPad(participantNames[receiver], 20)
-						+ "\t" + StringUtils.rightPad("UCS Level: ", 20)
+				System.out.println(getBasicInfoString(receiver)
+						+ StringUtils.rightPad("UCS level: ", 20)
 						+ dailyNotification.getServiceLevel());
 			}
 			if (rating) {
 				AdNetworkDailyNotification dailyNotification = (AdNetworkDailyNotification) content;
-				System.out.println(StringUtils.rightPad("" + day, 5) + "\t"
-						+ StringUtils.rightPad(participantNames[receiver], 20)
-						+ "\t" + StringUtils.rightPad("Quality rating: ", 20)
+				System.out.println(getBasicInfoString(receiver)
+						+ StringUtils.rightPad("Quality rating: ", 20)
 						+ dailyNotification.getQualityScore());
 			}
+		} else if (bank && content instanceof BankStatus) {
+			BankStatus status = (BankStatus) content;
+			System.out.println(getBasicInfoString(receiver)
+					+ StringUtils.rightPad("Bank balance: ", 20)
+					+ status.getAccountBalance());
+		} else if (campaign && content instanceof CampaignReport) {
+			CampaignReport campaignReport = (CampaignReport) content;
+			for (CampaignReportKey campaignReportKey : campaignReport) {
+				CampaignReportEntry reportEntry = campaignReport
+						.getEntry(campaignReportKey);
+				CampaignStats campaignStats = reportEntry.getCampaignStats();
+				System.out.println(getBasicInfoString(receiver)
+						+ StringUtils.rightPad("Campaign report: ", 20)
+						+ StringUtils.rightPad(
+								"#" + campaignReportKey.getCampaignId(), 5)
+						+ "\t Targeted Impressions: "
+						+ StringUtils.rightPad(
+								"" + campaignStats.getTargetedImps(), 5)
+						+ "\t Non Targeted Impressions: "
+						+ StringUtils.rightPad(
+								"" + campaignStats.getOtherImps(), 5)
+						+ "\t Cost: " + campaignStats.getCost());
+			}
+
 		} else if (content instanceof SimulationStatus) {
 			SimulationStatus ss = (SimulationStatus) content;
 			day = ss.getCurrentDate();
 		}
+	}
+
+	private String getBasicInfoString(int receiver) {
+		return StringUtils.rightPad("" + day, 5) + "\t"
+				+ StringUtils.rightPad(participantNames[receiver], 20) + "\t";
 	}
 }
