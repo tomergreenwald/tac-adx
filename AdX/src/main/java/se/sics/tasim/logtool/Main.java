@@ -27,6 +27,7 @@
 package se.sics.tasim.logtool;
 
 import java.io.IOException;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -41,6 +42,7 @@ public class Main extends java.awt.event.WindowAdapter {
 	private Main() {
 	}
 
+	@Override
 	public void windowClosing(java.awt.event.WindowEvent e) {
 		System.exit(1);
 	}
@@ -72,6 +74,13 @@ public class Main extends java.awt.event.WindowAdapter {
 		config.addOption("verbose", "set for verbose output");
 		config.addOption("log.consoleLevel", "level",
 				"set the console log level");
+
+		config.addOption("ucs", "Show user classification messages");
+		config.addOption("rating", "Show rating messages");
+		config.addOption("bank", "Show bank balance messages");
+		config.addOption("campaign", "Show campaign messages");
+		config.addOption("adnet", "Show adnet messages");
+
 		config.addOption("version", "show the version");
 		config.addHelp("h", "show this help message");
 		config.addHelp("help");
@@ -134,8 +143,8 @@ public class Main extends java.awt.event.WindowAdapter {
 					.getScreenSize();
 			w.add(new java.awt.Label(message));
 			w.pack();
-			w.setLocation((d.width - w.getWidth()) / 2, (d.height - w
-					.getHeight()) / 2);
+			w.setLocation((d.width - w.getWidth()) / 2,
+					(d.height - w.getHeight()) / 2);
 			w.addWindowListener(new Main());
 			w.setVisible(true);
 		} else {
@@ -144,3 +153,4 @@ public class Main extends java.awt.event.WindowAdapter {
 	}
 
 } // Main
+

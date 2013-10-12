@@ -8,6 +8,9 @@ import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.tasim.props.SimulationStatus;
 import tau.tac.adx.demand.CampaignStats;
+import tau.tac.adx.report.adn.AdNetworkKey;
+import tau.tac.adx.report.adn.AdNetworkReport;
+import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import tau.tac.adx.report.demand.AdNetworkDailyNotification;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.CampaignReportEntry;
@@ -41,6 +44,7 @@ public class GeneralParser extends Parser {
 	private boolean rating = false;
 	private boolean bank = false;
 	private boolean campaign = false;
+	private boolean adnet = false;
 
 	public GeneralParser(LogReader reader, ConfigManager configManager) {
 		super(reader);
@@ -69,8 +73,9 @@ public class GeneralParser extends Parser {
 		System.out.println("****General Log Prser***");
 		ucs = configManager.getPropertyAsBoolean("ucs", false);
 		rating = configManager.getPropertyAsBoolean("rating", false);
-		bank = configManager.getPropertyAsBoolean("rating", false);
-		campaign = configManager.getPropertyAsBoolean("rating", false);
+		bank = configManager.getPropertyAsBoolean("bank", false);
+		campaign = configManager.getPropertyAsBoolean("campaign", false);
+		adnet = configManager.getPropertyAsBoolean("adnet", false);
 		// System.out.println(StringUtils.rightPad("Day", 20) + "\t"
 		// + StringUtils.rightPad("Agent", 20) + "\tQuality Score");
 	}
@@ -117,6 +122,22 @@ public class GeneralParser extends Parser {
 						+ StringUtils.rightPad(
 								"" + campaignStats.getOtherImps(), 5)
 						+ "\t Cost: " + campaignStats.getCost());
+			}
+
+		} else if (adnet && content instanceof AdNetworkReport) {
+			AdNetworkReport adNetworkReport = (AdNetworkReport) content;
+			for (AdNetworkKey adNetworkKey : adNetworkReport) {
+				AdNetworkReportEntry reportEntry = adNetworkReport
+						.getEntry(adNetworkKey);
+				System.out.println(getBasicInfoString(receiver)
+						+ StringUtils.rightPad("Ad Network report: ", 20)
+						+ "Bid count: "
+						+ StringUtils.rightPad("" + reportEntry.getBidCount(),
+								5)
+						+ "\t Win count: "
+						+ StringUtils.rightPad("" + reportEntry.getWinCount(),
+								5) + "\t Cost: "
+						+ StringUtils.rightPad("" + reportEntry.getCost(), 5));
 			}
 
 		} else if (content instanceof SimulationStatus) {
