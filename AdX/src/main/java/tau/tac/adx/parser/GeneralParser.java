@@ -20,15 +20,15 @@ import edu.umich.eecs.tac.Parser;
 import edu.umich.eecs.tac.props.BankStatus;
 
 /**
- * <code>BankStatusParser</code> is a simple example of a TAC AA parser that
- * prints out all advertiser's BankStatus received in a simulation from the
- * simulation log file.
+ * <code>GeneralParser</code> is a simple example of a TAC Adx parser that
+ * prints out a variety of messages received in a simulation from the simulation
+ * log file.
  * <p>
  * <p/>
  * The class <code>Parser</code> is inherited to provide base functionality for
- * TAC AA log processing.
+ * TAC Adx log processing.
  * 
- * @author - Lee Callender
+ * @author - greenwald
  * 
  * @see edu.umich.eecs.tac.Parser
  */
@@ -78,13 +78,6 @@ public class GeneralParser extends Parser {
 		campaign = configManager.getPropertyAsBoolean("campaign", false);
 		adnet = configManager.getPropertyAsBoolean("adnet", false);
 		all = configManager.getPropertyAsBoolean("all", false);
-		// System.out.println(StringUtils.rightPad("Day", 20) + "\t"
-		// + StringUtils.rightPad("Agent", 20) + "\tQuality Score");
-	}
-
-	@Override
-	protected void dataUpdated(int type, Transportable content) {
-
 	}
 
 	@Override
