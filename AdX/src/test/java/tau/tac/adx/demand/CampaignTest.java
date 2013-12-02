@@ -141,16 +141,16 @@ public class CampaignTest {
 		campaign.addAdvertiserBid("a3", 120L);
 		campaign.auction();
 		assertEquals(campaign.getAdvertiser(), "a2");
-		assertEquals(campaign.getBudget(), 80L, 0);
+		assertEquals(campaign.getBudget(), 0.080, 0);
 		// assertFalse(campaign.isActive());
 
 		for (int day = dayStart; day <= dayEnd; day++) {
-			campaign.nextTimeUnit(day);
+			campaign.preNextTimeUnit(day);
 			assertTrue(campaign.isActive());
 			// multiImpress(campaign, true, 500, 10);
 		}
 		AdxManager.getInstance().setSimulation(mock(TACAdxSimulation.class));
-		campaign.nextTimeUnit(dayEnd + 1);
+		campaign.preNextTimeUnit(dayEnd + 2);
 		assertFalse(campaign.isActive());
 
 		dstats = campaign.getStats(dayStart, dayEnd);

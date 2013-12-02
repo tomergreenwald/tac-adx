@@ -60,6 +60,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private Double budgetlimit;
 	private int impressionLimit;
 
+	private Double totalBudgetlimit;
+	private int totalImpressionLimit;
+
 	/**
 	 * @return the log
 	 */
@@ -131,12 +134,23 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		return budgetlimit;
 	}
 
+	@Override
+	public Double getTotalBudgetlimit() {
+		return totalBudgetlimit;
+	}
+
+	
 	/**
 	 * @return the impressionLimit
 	 */
 	@Override
 	public int getImpressionLimit() {
 		return impressionLimit;
+	}
+
+	@Override
+	public int getTotalImpressionLimit() {
+		return totalImpressionLimit;
 	}
 
 	/**
@@ -178,8 +192,10 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		budget = null;
 		advertiser = null;
 		budgetlimit = Double.POSITIVE_INFINITY;
+		totalBudgetlimit = Double.POSITIVE_INFINITY;
 		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
 		impressionLimit = Integer.MAX_VALUE;
+		totalImpressionLimit = Integer.MAX_VALUE;
 		tomorrowsImpressionLimit = Integer.MAX_VALUE;
 		/* the first day for the campaign to be collecting statistics */
 		day = dayStart;
@@ -232,12 +248,20 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public boolean isOverTodaysLimit() {
-		return (budgetlimit < /* totals.cost + */todays.cost)
-				|| (impressionLimit < /*
-									 * totals.tartgetedImps +
-									 */todays.tartgetedImps);
+		return (budgetlimit < todays.cost)
+				|| (impressionLimit < todays.tartgetedImps);
 	}
 
+	@Override	
+	public boolean isOverTotalLimits() {
+		return (totalBudgetlimit < totals.cost + todays.cost)
+				|| (totalImpressionLimit < 
+									  totals.tartgetedImps +
+									  todays.tartgetedImps);
+	}
+
+	
+	
 	@Override
 	public Set<MarketSegment> getTargetSegment() {
 		return targetSegments;
@@ -297,15 +321,17 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		 * + " impresssion limit: " + this.impressionLimit + s); }
 		 */
 
-		dayStats.put(day, todays);
-		totals = totals.add(todays);
-		todays = new CampaignStats(0.0, 0.0, 0.0);
-		day = timeUnit;
+		if (timeUnit >= dayStart) {
+			dayStats.put(day, todays);
+			totals = totals.add(todays);
+			todays = new CampaignStats(0.0, 0.0, 0.0);
+			day = timeUnit;
 
-		budgetlimit = tomorrowsBudgetLimit;
-		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
-		impressionLimit = tomorrowsImpressionLimit;
-		tomorrowsImpressionLimit = Integer.MAX_VALUE;
+			budgetlimit = tomorrowsBudgetLimit;
+			tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+			impressionLimit = tomorrowsImpressionLimit;
+			tomorrowsImpressionLimit = Integer.MAX_VALUE;
+		}
 
 		if (day == dayEnd + 1) { /* was last day - update quality score */
 			double effectiveReachRatio = effectiveReachRatio(totals.tartgetedImps);
@@ -401,6 +427,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
+	public boolean shouldReport() {
+		return (isAllocated() && (day <= dayEnd + 1) && (day >= dayStart));
+	}
+	
+	
+	@Override
 	public boolean isAllocated() {
 		return (budget != null) && (advertiser != null);
 	}
@@ -426,7 +458,13 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	public void limitSet(CampaignLimitSet message) {
 		if ((message.getCampaignId() == id)
 				&& (message.getAdNetwork().equals(advertiser))) {
-			setTomorowsLimit(message);
+			
+			if (message.getIsTotal()) {
+				totalBudgetlimit = message.getBudgetLimit();
+				totalImpressionLimit = message.getImpressionLimit();
+			} else {
+				setTomorowsLimit(message);
+			}
 		}
 	}
 

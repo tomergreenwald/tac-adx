@@ -144,7 +144,7 @@ public class DemandAgent extends Builtin {
 					if (campaign.isAllocated()
 							&& (campaign.getDayStart() < date)
 							&& (advertiser.equals(campaign.getAdvertiser()))
-							&& (campaign.isActive())) {
+							&& (campaign.shouldReport())) {
 						report.addStatsEntry(campaign.getId(),
 								campaign.getTotals());
 					}
@@ -319,7 +319,7 @@ public class DemandAgent extends Builtin {
 					message.getQuery().getDevice(), message.getAuctionResult()
 							.getWinningPrice());
 
-			if (cmpn.isOverTodaysLimit()) {
+			if (cmpn.isOverTodaysLimit() || cmpn.isOverTotalLimits()) {
 				/* notify on transition campaign limit expiration */
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn
@@ -328,13 +328,16 @@ public class DemandAgent extends Builtin {
 						"Day "
 								+ day
 								+ " :Campaign limit expired Impressed while over limit: "
-								+ cmpn.getId() + ", limit was: "
+								+ cmpn.getId() + ", daily limit was: "
 								+ cmpn.getImpressionLimit() + ", "
-								+ cmpn.getBudgetlimit() + " value is: "
+								+ cmpn.getBudgetlimit() +  " values are: "
 								+ cmpn.getTodayStats().getTargetedImps() + ", "
-								+ cmpn.getTodayStats().getCost());
+								+ cmpn.getTodayStats().getCost() + ", total limit was: "
+								+ cmpn.getTotalImpressionLimit() + ", "
+								+ cmpn.getTotalBudgetlimit() + " total values are: "
+								+ cmpn.getTotals().getTargetedImps() + cmpn.getTodayStats().getTargetedImps() + ", "
+								+ cmpn.getTotals().getCost() + cmpn.getTodayStats().getCost());
 			}
-
 		}
 	}
 

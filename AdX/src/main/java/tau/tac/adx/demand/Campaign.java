@@ -95,6 +95,12 @@ public interface Campaign extends TimeListener {
 
 	/**
 	 * 
+	 * @return true if should send report about campaign at current day 
+	 */
+	boolean shouldReport();
+
+	/**
+	 * 
 	 * @return true is advertiser and budget were set (by auction or otherwise)
 	 */
 	boolean isAllocated();
@@ -136,5 +142,11 @@ public interface Campaign extends TimeListener {
 	Double getBudgetlimit();
 
 	String logToString();
+
+	Double getTotalBudgetlimit();
+
+	int getTotalImpressionLimit();
+
+	boolean isOverTotalLimits();
 
 }

@@ -303,7 +303,17 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 						.getInstance()
 						.getSimulation()
 						.getEventBus()
-						.post(new CampaignLimitSet(entry.getCampaignId(),
+						.post(new CampaignLimitSet(false, entry.getCampaignId(),
+								advertiser, entry.getWeight(), entry
+										.getDailyLimit()));
+
+			} else if (entry.getKey().getPublisher().startsWith(AdxBidBundle.CMP_TSL)) {
+				/* it is a piggybacked set campain total limit command: notify */
+				AdxManager
+						.getInstance()
+						.getSimulation()
+						.getEventBus()
+						.post(new CampaignLimitSet(true, entry.getCampaignId(),
 								advertiser, entry.getWeight(), entry
 										.getDailyLimit()));
 
