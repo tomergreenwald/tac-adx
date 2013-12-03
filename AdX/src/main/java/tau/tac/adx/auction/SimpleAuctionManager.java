@@ -97,7 +97,7 @@ public class SimpleAuctionManager implements AuctionManager {
 			AuctionOrder auctionOrder) {
 		switch (auctionOrder) {
 		case HIGHEST_WINS:
-			return first >= second;
+			return first > second;
 		case LOWEST_WINS:
 			return first < second;
 		default:
