@@ -45,7 +45,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	double mobileCoef;
 
 	/* auction info */
-	private final static double RESERVE_BUDGET_FACTOR = 1.0;
+	private final static double RESERVE_MAX_BUDGET_FACTOR = 1.0;
+	private final static double RESERVE_MIN_BUDGET_FACTOR = 0.1;
 	private final Map<String, Long> advertisersBids;
 
 	/* set upon campaign allocation/auction */
@@ -102,7 +103,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	 * @return the reserveBudgetFactor
 	 */
 	public static double getReserveBudgetFactor() {
-		return RESERVE_BUDGET_FACTOR;
+		return RESERVE_MAX_BUDGET_FACTOR;
 	}
 
 	/**
@@ -356,9 +357,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public void addAdvertiserBid(String advertiser, Long budgetBid) {
-		/* bids above the reserve budget are not considered */
-		if ((budgetBid > 0)
-				&& (budgetBid <= (RESERVE_BUDGET_FACTOR * reachImps)))
+		/* bids above the reserve budget or below the min (adjusted by quality rating) are not considered */
+		if ((budgetBid >= ((RESERVE_MIN_BUDGET_FACTOR * reachImps) / qualityManager.getQualityScore(advertiser)))
+				&& (budgetBid <= (RESERVE_MAX_BUDGET_FACTOR * reachImps * qualityManager.getQualityScore(advertiser))))
 			advertisersBids.put(advertiser, budgetBid);
 	}
 
@@ -397,17 +398,20 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 			hardSort(scores, indices);
 
-			advertiser = advNames[indices[0]];
+			double reserveScore = 1.0 / (RESERVE_MAX_BUDGET_FACTOR * reachImps);
 
-			double reserveScore = 1.0 / (RESERVE_BUDGET_FACTOR * reachImps);
-
-			if (advCount == 1)
-				bsecond = reserveScore;
-			else
-				bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
+			if (scores[indices[0]] >= reserveScore) {
+				
+				advertiser = advNames[indices[0]];
+			
+				if (advCount == 1)
+					bsecond = reserveScore;
+				else
+					bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
 						: reserveScore;
 
-			budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
+					budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
+			}
 		}
 	}
 

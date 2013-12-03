@@ -189,7 +189,11 @@ public class DemandAgent extends Builtin {
 				getSimulation().getEventBus().post(
 						new CampaignNotification(pendingCampaign));
 
+			} else { /* not allocated, auction failed (reserve not met) */
+				log.log(Level.INFO, "Day " + day
+						+ " : Campaign auction: Not allocated");				
 			}
+			
 		} else {
 			log.log(Level.INFO, "Day " + day
 					+ " : No pending campaign to auction");
