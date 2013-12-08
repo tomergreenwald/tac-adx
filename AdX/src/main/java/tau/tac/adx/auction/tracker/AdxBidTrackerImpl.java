@@ -287,12 +287,10 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 			@Override
 			public boolean apply(BidEntry input) {
-				return (((!Sets.intersection(adxQuery.getMarketSegments(),
-						input.getMarketSegments()).isEmpty()) || (adxQuery
-						.getMarketSegments().size() == 0 && input
-						.getMarketSegments().size() == 0))
+				return (((adxQuery.getMarketSegments().containsAll(
+						input.getMarketSegments()))
 				/* exclude campaigns over limit */
-				&& (!excludedCampaigns.contains(input.getCampaignId())));
+				&& (!excludedCampaigns.contains(input.getCampaignId()))));
 			}
 		}
 
