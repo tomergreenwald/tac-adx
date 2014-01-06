@@ -118,12 +118,23 @@ public class LogManager {
 			// Show the game data as XML to standard out
 			generateXML(dataFileName);
 		} else {
-			try {
-				sessionStarted();
-				processDataFile(dataFileName);
-			} finally {
-				sessionEnded();
+			File path = new File(dataFileName);
+			if (path.isFile()) {
+				parseFile(dataFileName);
+			} else {
+				for(File file: path.listFiles()) {
+					parseFile(file.getAbsolutePath());
+				}
 			}
+		}
+	}
+
+	private void parseFile(String dataFileName) {
+		try {
+			sessionStarted();
+			processDataFile(dataFileName);
+		} finally {
+			sessionEnded();
 		}
 	}
 
