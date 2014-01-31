@@ -6,3 +6,4 @@
 *.~1~
 *.class
 AdX/target/
+*.gz
