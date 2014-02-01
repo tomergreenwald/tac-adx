@@ -42,6 +42,21 @@ public class Participant {
 	private long totalImpressions;
 	private long totalClicks;
 	private long totalConversions;
+	private double qualityRating;
+
+	/**
+	 * @return the qualityRating
+	 */
+	public double getQualityRating() {
+		return qualityRating;
+	}
+
+	/**
+	 * @param qualityRating the qualityRating to set
+	 */
+	public void setQualityRating(double qualityRating) {
+		this.qualityRating = qualityRating;
+	}
 
 	private StartInfo startInfo;
 
