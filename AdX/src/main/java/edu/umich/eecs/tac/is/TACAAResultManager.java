@@ -75,11 +75,7 @@ public class TACAAResultManager extends ResultManager {
 
 		html.table("border=1").colgroup(1).colgroup(11, "align=right").tr().th(
 				"Player").th("Revenue", "align=center").th("Cost",
-				"align=center").th("Impressions", "align=center").th("Clicks",
-				"align=center").th("Conversions", "align=center").th("CTR",
-				"align=center").th("CPM", "align=center").th("CPC",
-				"align=center").th("VPC", "align=center").th("ROI",
-				"align=center").th("Result", "align=center");
+				"align=center").th("Impressions", "align=center").th("Result", "align=center");
 
 		ParticipantInfo[] agentInfos = null;
 		String[] agentColors = null;
@@ -97,14 +93,6 @@ public class TACAAResultManager extends ResultManager {
 				double result = player.getResult();
 
 				long impressions = player.getImpressions();
-				long clicks = player.getClicks();
-				long conversions = player.getConversions();
-
-				double roi = player.getROI();
-				double cpc = player.getCPC();
-				double ctr = player.getCTR();
-				double cpm = player.getCPI() * 1000.0;
-				double vpc = player.getValuePerClick();
 
 				agentInfos[i] = agentInfo;
 				if (result < 0) {
@@ -120,41 +108,7 @@ public class TACAAResultManager extends ResultManager {
 						agentInfo.isBuiltinAgent() ? "<em>" + name + "</em>"
 								: name).td(getAmountAsString(revenue)).td(
 						getAmountAsString(cost)).td(
-						getAmountAsString(impressions)).td(
-						getAmountAsString(clicks)).td(
-						getAmountAsString(conversions));
-
-				if (!Double.isNaN(ctr)) {
-					html.td(getAmountAsString(ctr * 100)).text(" %");
-				} else {
-					html.td("0");
-				}
-
-				if (!Double.isNaN(cpm)) {
-					html.td(getAmountAsString(ctr));
-				} else {
-					html.td("0");
-				}
-
-				if (!Double.isNaN(cpc)) {
-					html.td(getAmountAsString(cpc));
-				} else {
-					html.td("0");
-				}
-
-				if (!Double.isNaN(vpc)) {
-					html.td();
-					formatAmount(html, vpc);
-				} else {
-					html.td("0");
-				}
-
-				if (!Double.isNaN(roi)) {
-					html.td();
-					formatAmount(html, roi * 100, " %");
-				} else {
-					html.td("0");
-				}
+						getAmountAsString(impressions));
 
 				html.td();
 				formatAmount(html, result);
