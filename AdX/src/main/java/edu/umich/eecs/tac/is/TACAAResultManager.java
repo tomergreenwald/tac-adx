@@ -21,7 +21,6 @@ import tau.tac.adx.sim.TACAdxConstants;
 import com.botbox.html.HtmlWriter;
 
 import edu.umich.eecs.tac.Participant;
-import edu.umich.eecs.tac.TACAASimulationInfo;
 
 
 public class TACAAResultManager extends ResultManager {
@@ -37,7 +36,7 @@ public class TACAAResultManager extends ResultManager {
 	}
 
 	protected void generateResult() throws IOException {
-		TACAASimulationInfo simInfo;
+		TACAdxSimulationInfo simInfo;
 		LogReader reader = getLogReader();
 		int simulationID = reader.getSimulationID();
 		String serverName = reader.getServerName();
