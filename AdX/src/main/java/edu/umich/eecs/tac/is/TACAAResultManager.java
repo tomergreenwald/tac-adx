@@ -59,7 +59,7 @@ public class TACAAResultManager extends ResultManager {
 		HtmlWriter html = new HtmlWriter(new FileWriter(destinationFile));
 
 		Participant[] participants = simInfo
-				.getParticipantsByRole(TACAdxConstants.ADVERTISER);
+				.getParticipantsByRole(TACAdxConstants.AD_NETOWRK_ROLE_ID);
 
 		if (participants != null) {
 			participants = participants.clone();
