@@ -37,7 +37,8 @@ import edu.umich.eecs.tac.props.BankStatus;
 public class Participant {
 	private ParticipantInfo info;
 	private double totalResult;
-	private double totalCost;
+	private double totalUCSCost;
+	private double totalADXCost;
 	private double totalRevenue;
 	private long totalImpressions;
 	private long totalClicks;
@@ -104,16 +105,28 @@ public class Participant {
 		this.totalResult = result;
 	}
 
-	public double getCost() {
-		return totalCost;
+	public double getUCSCost() {
+		return totalUCSCost;
 	}
 
-	public void setCost(double Cost) {
-		this.totalCost = Cost;
+	public void setUCSCost(double Cost) {
+		this.totalUCSCost = Cost;
 	}
 
-	public void addCost(double Cost) {
-		this.totalCost += Cost;
+	public void addUCSCost(double Cost) {
+		this.totalUCSCost += Cost;
+	}
+	
+	public double getADXCost() {
+		return totalADXCost;
+	}
+
+	public void setADXCost(double Cost) {
+		this.totalADXCost = Cost;
+	}
+
+	public void addADXCost(double Cost) {
+		this.totalADXCost += Cost;
 	}
 
 	public double getRevenue() {
@@ -152,38 +165,6 @@ public class Participant {
 		this.totalClicks += clicks;
 	}
 
-	public long getConversions() {
-		return totalConversions;
-	}
-
-	public void setConversions(long conversions) {
-		this.totalConversions = conversions;
-	}
-
-	public void addConversions(long conversions) {
-		this.totalConversions += conversions;
-	}
-
-	public double getCTR() {
-		return getClicks() / ((double) getImpressions());
-	}
-
-	public double getCPC() {
-		return getCost() / ((double) getClicks());
-	}
-
-	public double getCPI() {
-		return getCost() / ((double) getImpressions());
-	}
-
-	public double getROI() {
-		return getResult() / getCost();
-	}
-
-	public double getConversionRate() {
-		return getConversions() / ((double) getClicks());
-	}
-
 	public double getValuePerClick() {
 		return getResult() / ((double) getClicks());
 	}
@@ -211,14 +192,23 @@ public class Participant {
 	public void messageSentToRole(int date, int role, Transportable content) {
 	}
 
+
 	// -------------------------------------------------------------------
 	// For debug output
 	// -------------------------------------------------------------------
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer().append("Participant[").append(
-				totalCost).append(',').append(totalRevenue).append(',').append(
-				totalResult);
-		return sb.append(']').toString();
+		return "Participant [info=" + info + ", totalResult=" + totalResult
+				+ ", totalUCSCost=" + totalUCSCost + ", totalADXCost="
+				+ totalADXCost + ", totalRevenue=" + totalRevenue
+				+ ", totalImpressions=" + totalImpressions + ", totalClicks="
+				+ totalClicks + ", totalConversions=" + totalConversions
+				+ ", qualityRating=" + qualityRating + ", startInfo="
+				+ startInfo + ", numberOfDays=" + numberOfDays + "]";
 	}
+
 }

@@ -74,8 +74,9 @@ public class TACAAResultManager extends ResultManager {
 				+ InfoServer.getServerTimeAsString(reader.getStartTime()));
 
 		html.table("border=1").colgroup(1).colgroup(11, "align=right").tr().th(
-				"Player").th("Revenue", "align=center").th("Cost",
-				"align=center").th("Impressions", "align=center").th("Result", "align=center");
+				"Player").th("Revenue", "align=center").th("ADX Cost", "align=center")
+				.th("UCS Cost", "align=center")
+				.th("Impressions", "align=center").th("Result", "align=center");
 
 		ParticipantInfo[] agentInfos = null;
 		String[] agentColors = null;
@@ -88,7 +89,8 @@ public class TACAAResultManager extends ResultManager {
 				Participant player = participants[i];
 				ParticipantInfo agentInfo = player.getInfo();
 				String name = agentInfo.getName();
-				double cost = player.getCost();
+				double adxCost = player.getADXCost();
+				double ucsCost = player.getUCSCost();
 				double revenue = player.getRevenue();
 				double result = player.getResult();
 
@@ -107,7 +109,7 @@ public class TACAAResultManager extends ResultManager {
 				html.tr().td(
 						agentInfo.isBuiltinAgent() ? "<em>" + name + "</em>"
 								: name).td(getAmountAsString(revenue)).td(
-						getAmountAsString(cost)).td(
+						getAmountAsString(adxCost)).td(getAmountAsString(ucsCost)).td(
 						getAmountAsString(impressions));
 
 				html.td();

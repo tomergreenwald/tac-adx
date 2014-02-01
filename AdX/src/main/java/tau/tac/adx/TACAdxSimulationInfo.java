@@ -254,10 +254,10 @@ public class TACAdxSimulationInfo extends Parser {
 			revenue(agentIndex, value);
 			break;
 		case TACAdxConstants.DU_AD_NETWORK_ADX_EXPENSE:
-			cost(agentIndex, value);
+			adxCost(agentIndex, value);
 			break;
 		case TACAdxConstants.DU_AD_NETWORK_UCS_EXPENSE:
-			cost(agentIndex, value);
+			ucsCost(agentIndex, value);
 			break;
 		case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
 			qualityRating(agentIndex, value);
@@ -292,9 +292,14 @@ public class TACAdxSimulationInfo extends Parser {
 		p.setQualityRating(value);
 	}
 	
-	private void cost(int agentIndex, double value) {
+	private void ucsCost(int agentIndex, double value) {
 		Participant p = getParticipant(agentIndex);
-		p.addCost(value);
+		p.addUCSCost(value);
+	}
+	
+	private void adxCost(int agentIndex, double value) {
+		Participant p = getParticipant(agentIndex);
+		p.addADXCost(value);
 	}
 
 	private void revenue(int agentIndex, double value) {
@@ -305,13 +310,6 @@ public class TACAdxSimulationInfo extends Parser {
 	protected void impressions(int agent, long amount) {
 		Participant agentInfo = getParticipant(agent);
 		agentInfo.addImpressions(amount);
-	}
-
-	protected void transaction(int source, int recipient, double amount) {
-		Participant sourceParticipant = getParticipant(source);
-		Participant recipientParticipant = getParticipant(recipient);
-		recipientParticipant.addRevenue(amount);
-		sourceParticipant.addCost(amount);
 	}
 
 	protected void nextDay(int date, long serverTime) {
