@@ -27,7 +27,6 @@ package edu.umich.eecs.tac.logviewer;
 import se.sics.tasim.logtool.LogHandler;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.isl.util.IllegalConfigurationException;
-import edu.umich.eecs.tac.TACAASimulationInfo;
 import edu.umich.eecs.tac.logviewer.util.SimulationParser;
 import edu.umich.eecs.tac.logviewer.gui.PositiveBoundedRangeModel;
 import edu.umich.eecs.tac.logviewer.gui.MainWindow;
