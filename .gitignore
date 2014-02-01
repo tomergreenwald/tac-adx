@@ -7,3 +7,4 @@
 *.class
 AdX/target/
 *.gz
+AdX/adx-server/public_html/localhost/
