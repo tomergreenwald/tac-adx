@@ -14,6 +14,7 @@ import se.sics.tasim.is.common.InfoServer;
 import se.sics.tasim.is.common.ResultManager;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
+import tau.tac.adx.TACAdxSimulationInfo;
 import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.sim.TACAdxConstants;
 
@@ -42,7 +43,7 @@ public class TACAAResultManager extends ResultManager {
 		String serverName = reader.getServerName();
 		reader.setContext(new AdxInfoContextFactory().createContext());
 		try {
-			simInfo = new TACAASimulationInfo(reader);
+			simInfo = new TACAdxSimulationInfo(reader);
 		} catch (Exception e) {
 			throw (IOException) new IOException(
                     "could not parse simulation log "+simulationID)
