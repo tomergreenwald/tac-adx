@@ -149,4 +149,6 @@ public interface Campaign extends TimeListener {
 
 	boolean isOverTotalLimits();
 
+	void setRandomAllocPr(Double rap);
+
 }

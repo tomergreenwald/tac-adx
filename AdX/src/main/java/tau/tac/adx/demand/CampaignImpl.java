@@ -5,6 +5,7 @@ import static edu.umich.eecs.tac.auction.AuctionUtils.hardSort;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -31,6 +32,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final static double ERRB = -3.08577;
 
 	private final static Long DEFAULT_BUDGET_FACTOR = 1L;
+	private final static Double DEFAULT_RANDOM_ALLOC_PR = new Double(0.3);
+	
+	private static Random random = new Random();
 
 	/* maintains quality score - notified upon campaign end */
 	protected QualityManager qualityManager;
@@ -45,6 +49,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	double mobileCoef;
 
 	/* auction info */
+	private Double randomAllocPr;
 	private final static double RESERVE_MAX_BUDGET_FACTOR = 1.0;
 	private final static double RESERVE_MIN_BUDGET_FACTOR = 0.1;
 	private final Map<String, Long> advertisersBids;
@@ -187,6 +192,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		if (qualityManager == null)
 			throw new NullPointerException("qualityManager cannot be null");
 
+		randomAllocPr = DEFAULT_RANDOM_ALLOC_PR;
 		id = hashCode();
 		dayStats = new TreeMap<Integer, CampaignStats>();
 		advertisersBids = new HashMap<String, Long>();
@@ -213,6 +219,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		totals = new CampaignStats(0.0, 0.0, 0.0);
 	}
 
+	@Override
+	public void setRandomAllocPr(Double rap) {
+		randomAllocPr = rap;
+	}
+
+	
 	@Override
 	public void registerToEventBus() {
 		AdxManager.getInstance().getSimulation().getEventBus().register(this);
@@ -396,21 +408,29 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				i++;
 			}
 
-			hardSort(scores, indices);
-
-			double reserveScore = 1.0 / (RESERVE_MAX_BUDGET_FACTOR * reachImps);
-
-			if (scores[indices[0]] >= reserveScore) {
+			if (random.nextDouble() < randomAllocPr) { /* allocate campaign to a random bidder */
+				int ri = random.nextInt(advCount);
+				advertiser = advNames[ri]; 
+				budget = bids[ri];
 				
-				advertiser = advNames[indices[0]];
+			} else {
 			
-				if (advCount == 1)
-					bsecond = reserveScore;
-				else
-					bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
-						: reserveScore;
+				hardSort(scores, indices);
 
-					budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
+				double reserveScore = 1.0 / (RESERVE_MAX_BUDGET_FACTOR * reachImps);
+
+				if (scores[indices[0]] >= reserveScore) {
+				
+					advertiser = advNames[indices[0]];
+			
+					if (advCount == 1)
+						bsecond = reserveScore;
+					else
+						bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
+							: reserveScore;
+
+						budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
+				}
 			}
 		}
 	}
