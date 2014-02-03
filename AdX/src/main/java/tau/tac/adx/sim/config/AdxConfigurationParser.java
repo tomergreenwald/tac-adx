@@ -3,9 +3,11 @@ package tau.tac.adx.sim.config;
 import static tau.tac.adx.sim.TACAdxConstants.AD_NETOWRK_ROLE_ID;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import se.sics.isl.util.ConfigManager;
 import se.sics.tasim.sim.SimulationAgent;
@@ -93,11 +95,18 @@ public class AdxConfigurationParser {
 	 * @return {@link PublisherCatalog} parsed from the configuration file.
 	 */
 	public PublisherCatalog createPublisherCatalog() {
+		Random r = new Random();
+
 		PublisherCatalog catalog = new PublisherCatalog();
+		String[] skus = config.getPropertyAsArray("publishers.list");
 
-		String[] skus = config.getPropertyAsArray("publisher.rating");
-
-		for (String sku : skus) {
+		/* select a subset for this instance : assuming items of skus are distinct */
+		Set<String> subsetskus = new HashSet<String>();
+		while(subsetskus.size() < config.getPropertyAsInt("publishers.subset.size", 3)) {
+			subsetskus.add(skus[r.nextInt(skus.length)]);
+		}
+		
+		for (String sku : subsetskus) {
 			String name = config.getProperty(String.format("catalog.%s.name",
 					sku));
 			int rating = config.getPropertyAsInt(
