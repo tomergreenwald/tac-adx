@@ -46,14 +46,23 @@ public class DemandAgent extends Builtin {
 	private static int total_population;
 	private static int aloc_cmp_reach;
 
-	private static final int ALOC_CMP_LENGTH = 5;
+	private static final int ALOC_CMP_LENGTH_DEFAULT = 5;
+	private static int   alloc_cmp_length;
 
-	private static final double ALOC_CMP_VC = 2.0;
-	private static final double ALOC_CMP_MC = 1.5;
+	private static final double CMP_VC_DEFAULT = 2.0;
+	private static double   cmp_vc;
+
+	private static final double CMP_MC_DEFAULT = 1.5;
+	private static double   cmp_mc;
 
 	private static Random random;
 
-	private static int[] CMP_LENGTHS = { 3, 5, 10 };
+	private static int[] CMP_LENGTHS_DEFAULT = { 3, 5, 10 };
+	private static int   CMP_LENGTHS_COUNT_DEFAULT = 3;
+	
+	private static int[] cmp_lengths;
+	private static int   cmp_lengths_count;
+
 	private static int[] CMP_REACHS;
 
 	private Logger log;
@@ -95,14 +104,14 @@ public class DemandAgent extends Builtin {
 		 * competing adNetwork agents
 		 */
 
-		int lastCmpDay = day + 1 + CMP_LENGTHS[random.nextInt(3)];
+		int lastCmpDay = day + 1 + cmp_lengths[random.nextInt(cmp_lengths_count)];
 
 		if (lastCmpDay < 60) {
 
 			pendingCampaign = new CampaignImpl(qualityManager,
 					CMP_REACHS[random.nextInt(3)], day + 2, lastCmpDay,
-					MarketSegment.randomMarketSegment(), ALOC_CMP_VC,
-					ALOC_CMP_MC);
+					MarketSegment.randomMarketSegment(), cmp_vc,
+					cmp_mc);
 
 			pendingCampaign.registerToEventBus();
 
@@ -205,17 +214,40 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	protected void setup() {
+		int numOfCompetitors = getSimulation().getNumberOfAdvertisers();
+		
 		random = new Random();
-
+		
 		total_population = getSimulation().getConfig().getPropertyAsInt(
 				"adxusers.population_size", TOTAL_POPULATION_DEFAULT);
 
-		CMP_REACHS = new int[3];
-		CMP_REACHS[0] = total_population / 2;
-		CMP_REACHS[1] = total_population;
-		CMP_REACHS[2] = total_population * 3 / 2;
+		alloc_cmp_length = getSimulation().getConfig().getPropertyAsInt(
+				"campaigns.preallocated.length", ALOC_CMP_LENGTH_DEFAULT);
+		
+		cmp_vc =  getSimulation().getConfig().getPropertyAsDouble(
+				"campaigns.video_coef", CMP_VC_DEFAULT);
+		
+		cmp_mc =  getSimulation().getConfig().getPropertyAsDouble(
+				"campaigns.mobile_coef", CMP_MC_DEFAULT);
+		
+		String[] cmp_lengths_str = getSimulation().getConfig().getPropertyAsArray("campaigns.lengths");
+		if (cmp_lengths_str == null) {
+			cmp_lengths_count = CMP_LENGTHS_COUNT_DEFAULT;
+			cmp_lengths = CMP_LENGTHS_DEFAULT;			
+		} else {
+			cmp_lengths_count = cmp_lengths_str.length;
+			cmp_lengths = new int[cmp_lengths_count];
+			for (int i = 0; i < cmp_lengths_count; i++) {
+				cmp_lengths[i] = Integer.parseInt(cmp_lengths_str[i]);
+			}
+		}
+		
+		CMP_REACHS = new int[cmp_lengths_count];
+		for (int i = 0; i < cmp_lengths_count; i++) { /* each campaign should target 1/competitiors of the population daily */
+			CMP_REACHS[i] = (total_population / numOfCompetitors) * cmp_lengths[i];
+		}
 
-		aloc_cmp_reach = total_population / 8;
+		aloc_cmp_reach = total_population / numOfCompetitors;
 
 		this.log = Logger.getLogger(DemandAgent.class.getName());
 
@@ -241,9 +273,9 @@ public class DemandAgent extends Builtin {
 
 			qualityManager.addAdvertiser(advertiser);
 			Campaign campaign = new CampaignImpl(qualityManager,
-					aloc_cmp_reach, 1, ALOC_CMP_LENGTH,
-					MarketSegment.randomMarketSegment(), ALOC_CMP_VC,
-					ALOC_CMP_MC);
+					aloc_cmp_reach, 1, alloc_cmp_length,
+					MarketSegment.randomMarketSegment(), cmp_vc,
+					cmp_mc);
 
 			campaign.allocateToAdvertiser(advertiser);
 			log.log(Level.FINE,
