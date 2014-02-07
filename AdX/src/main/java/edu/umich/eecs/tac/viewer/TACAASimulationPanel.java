@@ -42,6 +42,7 @@ import se.sics.tasim.viewer.ViewerPanel;
 import edu.umich.eecs.tac.viewer.role.AgentSupport;
 import edu.umich.eecs.tac.viewer.role.adnet.AdNetTabPanel;
 import edu.umich.eecs.tac.viewer.role.adx.AdxDashboardTabPanel;
+import edu.umich.eecs.tac.viewer.role.campaign.CampaignTabPanel;
 
 /**
  * @author Patrick Jordan
@@ -84,6 +85,8 @@ public class TACAASimulationPanel extends JPanel implements TickListener,
 				new AdxDashboardTabPanel(this), "Click to view ADX Dashboard");
 		tabbedPane.addTab("AdNet", null, new AdNetTabPanel(this),
 				"Click to view AdNets");
+		tabbedPane.addTab("Campaigns", null, new CampaignTabPanel(this),
+				"Click to view Campaigns");
 		// tabbedPane.addTab("Dashboard", null, new MainTabPanel(this),
 		// "Click to view main dashboard");
 		// tabbedPane.addTab("Advertisers", null, new AdvertiserTabPanel(this),
