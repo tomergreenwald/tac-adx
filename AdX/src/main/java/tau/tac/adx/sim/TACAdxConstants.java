@@ -26,6 +26,7 @@ package tau.tac.adx.sim;
 
 import tau.tac.adx.agents.DemandAgent;
 import tau.tac.adx.report.adn.AdNetworkReport;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 
 import com.google.common.eventbus.EventBus;
@@ -206,6 +207,11 @@ public final class TACAdxConstants {
 	 * The bank account status for a specific agent (int or long or double).
 	 */
 	public static final int DU_AD_NETWORK_BANK_ACCOUNT = 413;
+	
+	/**
+	 * @see {@link CampaignAuctionReport}.
+	 */
+	public static final int DU_CAMPAIGN_AUCTION_REPORT = 414;
 
 	/**
 	 * The TAC AA Publisher role.
