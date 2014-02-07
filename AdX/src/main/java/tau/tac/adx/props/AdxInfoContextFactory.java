@@ -42,6 +42,9 @@ import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.CampaignReportEntry;
 import tau.tac.adx.report.demand.CampaignReportKey;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportEntry;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportKey;
 import tau.tac.adx.report.publisher.AdxPublisherReport;
 import tau.tac.adx.report.publisher.AdxPublisherReportEntry;
 import edu.umich.eecs.tac.props.Ad;
@@ -162,6 +165,9 @@ public class AdxInfoContextFactory implements ContextFactory {
 		con.addTransportable(new CampaignReportKey());
 		con.addTransportable(new AdNetworkDailyNotification());
 		con.addTransportable(new AdNetBidMessage());
+		con.addTransportable(new CampaignAuctionReport());
+		con.addTransportable(new CampaignAuctionReportEntry());
+		con.addTransportable(new CampaignAuctionReportKey());
 
 		// Cache the last context
 		lastContext = con;
