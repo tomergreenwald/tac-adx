@@ -17,6 +17,9 @@ import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.messages.CampaignLimitSet;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportEntry;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportKey;
 import tau.tac.adx.users.AdxUser;
 
 import com.google.common.eventbus.Subscribe;
@@ -387,7 +390,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void auction() {
+	public CampaignAuctionReport auction() {
+		CampaignAuctionReport auctionReport = null;
+		
 		double bsecond;
 		int advCount = advertisersBids.size();
 		advertiser = "";
@@ -432,7 +437,28 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 						budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
 				}
 			}
+			auctionReport = generateAuctionReport(advNames, bids, qualityScores);
 		}
+		return auctionReport;
+	}
+
+	/**
+	 * Generates a {@link CampaignAuctionReport} according to given parameters.
+	 * @param advNames Ad networks' names.
+	 * @param bids Given bids.
+	 * @param qualityScores Ad networks' quality scores.
+	 * @return {@link CampaignAuctionReport} according to given parameters.
+	 */
+	private CampaignAuctionReport generateAuctionReport(String[] advNames, double[] bids,
+			double[] qualityScores) {
+		CampaignAuctionReport campaignAuctionReport = new CampaignAuctionReport(id);
+		for (int i = 0; i < advNames.length; i++) {
+			CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(advNames[i]);
+			CampaignAuctionReportEntry addReportEntry = campaignAuctionReport.addReportEntry(campaignReportKey);
+			addReportEntry.setActualBid(bids[i]);
+			addReportEntry.setEffctiveBid(bids[i] * qualityScores[i]);
+		}
+		return campaignAuctionReport;
 	}
 
 	@Override

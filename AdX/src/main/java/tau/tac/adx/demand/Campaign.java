@@ -14,6 +14,7 @@ import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
 import tau.tac.adx.users.AdxUser;
 
 /**
@@ -49,9 +50,11 @@ public interface Campaign extends TimeListener {
 
 	/**
 	 * Conduct auction among bidding advertisers. Auction results in allocating
-	 * to the winning advertiser and setting the contract's related budget
+	 * to the winning advertiser and setting the contract's related budget.
+	 * 
+	 * @return  {@link CampaignAuctionReport}.
 	 */
-	void auction();
+	CampaignAuctionReport auction();
 
 	/**
 	 * 
