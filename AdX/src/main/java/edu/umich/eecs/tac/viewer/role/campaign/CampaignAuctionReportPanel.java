@@ -76,8 +76,8 @@ public class CampaignAuctionReportPanel extends JPanel {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private static final String[] COLUMN_NAMES = new String[] { "Ad Network", "Actual bid",
-			"Effective Bid", "Quality Rating"};
+		private static final String[] COLUMN_NAMES = new String[] { "Ad Network", "Effective bid",
+			"Actual Bid", "Quality Rating"};
 
 		private CampaignAuctionReport campaignAuctionReport;
 
@@ -104,9 +104,9 @@ public class CampaignAuctionReportPanel extends JPanel {
 			if (columnIndex == 0) {
 				return entry.getKey().getAdnetName();
 			} else if (columnIndex == 1) {
-				return entry.getActualBid();
-			} else if (columnIndex == 2) {
 				return entry.getEffctiveBid();
+			} else if (columnIndex == 2) {
+				return entry.getActualBid();
 			} else if (columnIndex == 3) {
 				return entry.getEffctiveBid() / entry.getActualBid();
 			}
