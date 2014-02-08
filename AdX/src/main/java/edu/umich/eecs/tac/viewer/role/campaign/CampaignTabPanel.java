@@ -40,8 +40,6 @@ import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import edu.umich.eecs.tac.viewer.auction.ResultsPageModel;
 import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
-import edu.umich.eecs.tac.viewer.role.adx.AdNetCountTabPanel;
-import edu.umich.eecs.tac.viewer.role.adx.AdNetOverviewPanel;
 
 /**
  * @author Tomer Greenwald
@@ -73,10 +71,6 @@ public class CampaignTabPanel extends SimulationTabPanel {
 		tabbedPane = new JTabbedPane(JTabbedPane.RIGHT);
 		tabbedPane.setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 		add(tabbedPane, BorderLayout.CENTER);
-
-		AdNetOverviewPanel overviewPanel = new AdNetOverviewPanel(
-				getSimulationPanel());
-		tabbedPane.addTab("Overview", overviewPanel);
 	}
 	
 	protected class DayListener implements TickListener {
