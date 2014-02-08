@@ -70,7 +70,7 @@ public class CampaignTabPanel extends SimulationTabPanel {
 	private void initialize() {
 		setLayout(new BorderLayout());
 		setBackground(TACAAViewerConstants.CHART_BACKGROUND);
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.RIGHT);
 		tabbedPane.setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 		add(tabbedPane, BorderLayout.CENTER);
 
