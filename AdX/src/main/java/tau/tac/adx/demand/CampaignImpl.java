@@ -413,6 +413,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				i++;
 			}
 
+			hardSort(scores, indices);
+			
 			if (random.nextDouble() < randomAllocPr) { /* allocate campaign to a random bidder */
 				int ri = random.nextInt(advCount);
 				advertiser = advNames[ri]; 
@@ -420,7 +422,6 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				
 			} else {
 			
-				hardSort(scores, indices);
 
 				double reserveScore = 1.0 / (RESERVE_MAX_BUDGET_FACTOR * reachImps);
 
@@ -437,7 +438,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 						budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
 				}
 			}
-			auctionReport = generateAuctionReport(advNames, bids, qualityScores);
+			auctionReport = generateAuctionReport(advNames, bids, qualityScores, indices);
 		}
 		return auctionReport;
 	}
@@ -447,16 +448,17 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	 * @param advNames Ad networks' names.
 	 * @param bids Given bids.
 	 * @param qualityScores Ad networks' quality scores.
+	 * @param indices 
 	 * @return {@link CampaignAuctionReport} according to given parameters.
 	 */
 	private CampaignAuctionReport generateAuctionReport(String[] advNames, double[] bids,
-			double[] qualityScores) {
+			double[] qualityScores, int[] indices) {
 		CampaignAuctionReport campaignAuctionReport = new CampaignAuctionReport(id);
-		for (int i = 0; i < advNames.length; i++) {
-			CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(advNames[i]);
+		for (int i = advNames.length - 1; i >= 0; i--) {
+			CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(advNames[indices[i]]);
 			CampaignAuctionReportEntry addReportEntry = campaignAuctionReport.addReportEntry(campaignReportKey);
-			addReportEntry.setActualBid(bids[i]);
-			addReportEntry.setEffctiveBid(bids[i] * qualityScores[i]);
+			addReportEntry.setActualBid(bids[indices[i]]);
+			addReportEntry.setEffctiveBid(bids[indices[i]] * qualityScores[indices[i]]);
 		}
 		return campaignAuctionReport;
 	}
