@@ -82,9 +82,8 @@ public class CampaignTabPanel extends SimulationTabPanel {
 			if(value instanceof CampaignAuctionReport) {
 				CampaignAuctionReport campaignAuctionReport = (CampaignAuctionReport) value;
 				if(!campaignInfoPanels.containsKey(campaignAuctionReport.getCampaignID())) {
-					CampaignInfoTabPanel infoPanel = new CampaignInfoTabPanel(campaignAuctionReport.getCampaignID(),
-							resultsPageModels, simulationPanel,
-							TACAAViewerConstants.LEGEND_COLORS[participantNum]);
+					CampaignInfoTabPanel infoPanel = new CampaignInfoTabPanel(campaignAuctionReport,
+							simulationPanel);
 
 					campaignInfoPanels.put(campaignAuctionReport.getCampaignID(), infoPanel);
 					tabbedPane.addTab("Campaign " + campaignAuctionReport.getCampaignID(), infoPanel);
