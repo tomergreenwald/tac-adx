@@ -41,7 +41,7 @@ import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
 import edu.umich.eecs.tac.viewer.role.adx.AdNetOverviewPanel;
 
 /**
- * @author Patrick Jordan
+ * @author Tomer Greenwald
  */
 public class CampaignTabPanel extends SimulationTabPanel {
 	private JTabbedPane tabbedPane;
