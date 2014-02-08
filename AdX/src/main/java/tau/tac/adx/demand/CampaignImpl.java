@@ -438,7 +438,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 						budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
 				}
 			}
-			auctionReport = generateAuctionReport(advNames, bids, qualityScores, indices);
+			auctionReport = generateAuctionReport(advNames, bids, qualityScores, indices, advertiser);
 		}
 		return auctionReport;
 	}
@@ -449,10 +449,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	 * @param bids Given bids.
 	 * @param qualityScores Ad networks' quality scores.
 	 * @param indices 
+	 * @param winner 
 	 * @return {@link CampaignAuctionReport} according to given parameters.
 	 */
 	private CampaignAuctionReport generateAuctionReport(String[] advNames, double[] bids,
-			double[] qualityScores, int[] indices) {
+			double[] qualityScores, int[] indices, String winner) {
 		CampaignAuctionReport campaignAuctionReport = new CampaignAuctionReport(id);
 		for (int i = advNames.length - 1; i >= 0; i--) {
 			CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(advNames[indices[i]]);
@@ -460,6 +461,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			addReportEntry.setActualBid(bids[indices[i]]);
 			addReportEntry.setEffctiveBid(bids[indices[i]] * qualityScores[indices[i]]);
 		}
+		campaignAuctionReport.setWinner(winner);
 		return campaignAuctionReport;
 	}
 
