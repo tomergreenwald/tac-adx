@@ -22,8 +22,14 @@ public class CampaignAuctionReport extends
 	/** Campaign id key. */
 	private static String CAMPAIGN_ID_KEY = "CAMPAIGN_ID_KEY"; 
 	
+	/** Campaign winner key. */
+	private static String WINNER_KEY = "WINNER_KEY";
+	
 	/** Campaign ID. */
 	private int campaignID;
+	
+	/** Campaign winner*/
+	private String winner;
 
 	/**
 	 * Default constructor.
@@ -44,6 +50,20 @@ public class CampaignAuctionReport extends
 	 */
 	public void setCampaignID(int campaignID) {
 		this.campaignID = campaignID;
+	}
+
+	/**
+	 * @return the winner
+	 */
+	public String getWinner() {
+		return winner;
+	}
+
+	/**
+	 * @param winner the winner to set
+	 */
+	public void setWinner(String winner) {
+		this.winner = winner;
 	}
 
 	/**
@@ -106,11 +126,13 @@ public class CampaignAuctionReport extends
 	protected void readBeforeEntries(TransportReader reader)
 			throws ParseException {
 		campaignID = reader.getAttributeAsInt(CAMPAIGN_ID_KEY);
+		winner = reader.getAttribute(WINNER_KEY);
 	}
 	
 	@Override
 	protected void writeBeforeEntries(TransportWriter writer) {
 		writer.attr(CAMPAIGN_ID_KEY, campaignID);
+		writer.attr(WINNER_KEY, winner);
 	}
 
 }
