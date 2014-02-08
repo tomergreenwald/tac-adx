@@ -30,11 +30,13 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.messages.AuctionMessage;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserManager;
@@ -111,6 +113,9 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 			for (AdxUser user : users) {
 				handleUserActivity(user, auctioneer);
+			}
+			for(AdxPublisher publisher : AdxManager.getInstance().getPublishers()) {
+				publisher.getReservePriceManager().updateDailyBaselineAverage();
 			}
 			// update publishers' reserve price
 			log.finest("FINISH OF USER TRIGGER");
