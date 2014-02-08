@@ -38,6 +38,7 @@ import javax.swing.table.TableCellRenderer;
 
 import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
 import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportEntry;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportKey;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 
@@ -50,10 +51,19 @@ public class CampaignAuctionReportPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final AdvertiserMetricsModel model;
+	private int winnerRow;
 
 	public CampaignAuctionReportPanel(CampaignAuctionReport campaignAuctionReport, final TACAASimulationPanel simulationPanel) {
 		model = new AdvertiserMetricsModel(campaignAuctionReport, simulationPanel);
-
+		winnerRow = 0;
+		for (int i = 0; i < campaignAuctionReport.size(); i++) {
+			CampaignAuctionReportEntry entry = campaignAuctionReport.getEntry(i);
+			if(entry.getKey().getAdnetName().equals(campaignAuctionReport.getWinner())) {
+				break;
+			} else {
+				winnerRow++;
+			}
+		}
 		initialize();
 	}
 
@@ -142,8 +152,12 @@ public class CampaignAuctionReportPanel extends JPanel {
 				setBackground(table.getSelectionBackground());
 				setForeground(table.getSelectionForeground());
 			} else {
-				if(row == 0) {
-					setBackground(Color.GREEN);
+				if(row == winnerRow) {
+					if(row == 0) {
+						setBackground(Color.orange);
+					} else {
+						setBackground(Color.magenta);
+					}
 				} else {
 				setBackground(table.getBackground());
 				setForeground(table.getForeground());
