@@ -31,7 +31,8 @@ import java.util.Map;
 
 import javax.swing.JTabbedPane;
 
-import tau.tac.adx.sim.TACAdxConstants;
+import se.sics.isl.transport.Transportable;
+import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
 import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
@@ -46,7 +47,7 @@ import edu.umich.eecs.tac.viewer.role.adx.AdNetOverviewPanel;
 public class CampaignTabPanel extends SimulationTabPanel {
 	private JTabbedPane tabbedPane;
 
-	private final Map<String, CampaignInfoTabPanel> advertiserInfoPanels;
+	private final Map<Integer, CampaignInfoTabPanel> campaignInfoPanels;
 	private final Map<Query, ResultsPageModel> resultsPageModels;
 	private int participantNum;
 	private final TACAASimulationPanel simulationPanel;
@@ -54,7 +55,7 @@ public class CampaignTabPanel extends SimulationTabPanel {
 	public CampaignTabPanel(TACAASimulationPanel simulationPanel) {
 		super(simulationPanel);
 		participantNum = 0;
-		advertiserInfoPanels = new HashMap<String, CampaignInfoTabPanel>();
+		campaignInfoPanels = new HashMap<Integer, CampaignInfoTabPanel>();
 		resultsPageModels = new HashMap<Query, ResultsPageModel>();
 
 		this.simulationPanel = simulationPanel;
@@ -75,19 +76,20 @@ public class CampaignTabPanel extends SimulationTabPanel {
 	}
 
 	private class ParticipantListener extends ViewAdaptor {
-
+		
 		@Override
-		public void participant(int agent, int role, String name,
-				int participantID) {
-			if (!advertiserInfoPanels.containsKey(name)
-					&& role == TACAdxConstants.AD_NETOWRK_ROLE_ID) {
-				CampaignInfoTabPanel infoPanel = new CampaignInfoTabPanel(agent,
-						name, resultsPageModels, simulationPanel,
-						TACAAViewerConstants.LEGEND_COLORS[participantNum]);
+		public void dataUpdated(int type, Transportable value) {
+			if(value instanceof CampaignAuctionReport) {
+				CampaignAuctionReport campaignAuctionReport = (CampaignAuctionReport) value;
+				if(!campaignInfoPanels.containsKey(campaignAuctionReport.getCampaignID())) {
+					CampaignInfoTabPanel infoPanel = new CampaignInfoTabPanel(campaignAuctionReport.getCampaignID(),
+							resultsPageModels, simulationPanel,
+							TACAAViewerConstants.LEGEND_COLORS[participantNum]);
 
-				advertiserInfoPanels.put(name, infoPanel);
-				tabbedPane.addTab(name, infoPanel);
-				participantNum++;
+					campaignInfoPanels.put(campaignAuctionReport.getCampaignID(), infoPanel);
+					tabbedPane.addTab("Campaign " + campaignAuctionReport.getCampaignID(), infoPanel);
+					participantNum++;
+				}
 			}
 		}
 	}

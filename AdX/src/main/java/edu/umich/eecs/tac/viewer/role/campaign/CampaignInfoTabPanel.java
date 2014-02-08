@@ -55,8 +55,7 @@ import edu.umich.eecs.tac.viewer.role.advertiser.CampaignGrpahsTabPanel;
  */
 public class CampaignInfoTabPanel extends SimulationTabPanel {
 
-	private final int agent;
-	private final String advertiser;
+	private final int campaignID;
 	private final TACAASimulationPanel simulationPanel;
 	private JTabbedPane tabbedPane;
 	private Map<Query, AdvertiserQueryTabPanel> advertiserQueryTabPanels;
@@ -68,12 +67,10 @@ public class CampaignInfoTabPanel extends SimulationTabPanel {
 	private int day;
 	private CampaignData pendingCampaign;
 
-	public CampaignInfoTabPanel(int agent, String advertiser,
-			Map<Query, ResultsPageModel> models,
+	public CampaignInfoTabPanel(int campaignID, Map<Query, ResultsPageModel> models,
 			TACAASimulationPanel simulationPanel, Color legendColor) {
 		super(simulationPanel);
-		this.agent = agent;
-		this.advertiser = advertiser;
+		this.campaignID = campaignID;
 		this.simulationPanel = simulationPanel;
 		this.models = models;
 		this.legendColor = legendColor;
@@ -103,7 +100,7 @@ public class CampaignInfoTabPanel extends SimulationTabPanel {
 		tabbedPane = new JTabbedPane(JTabbedPane.RIGHT);
 		tabbedPane.setBackground(TACAAViewerConstants.CHART_BACKGROUND);
 		tabbedPane.add("Main", new AdvertiserMainTabPanel(simulationPanel,
-				agent, advertiser, legendColor));
+				campaignID, "", legendColor));
 	}
 
 	private void handleCampaign(CampaignOpportunityMessage value) {
@@ -148,7 +145,7 @@ public class CampaignInfoTabPanel extends SimulationTabPanel {
 		if ((pendingCampaign.getId() == campaignMessage.getCampaignId())
 				&& (campaignMessage.getCost() != 0)) {
 			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
-					simulationPanel, agent, advertiser, legendColor,
+					simulationPanel, campaignID, "", legendColor,
 					campaignMessage.getCampaignId(),
 					pendingCampaign.getReachImps());
 			tabbedPane.add("Day " + (day + 1), campaignGrpahsTabPanel);
@@ -159,7 +156,7 @@ public class CampaignInfoTabPanel extends SimulationTabPanel {
 
 	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
 		tabbedPane.add("Day 0", new CampaignGrpahsTabPanel(simulationPanel,
-				agent, advertiser, legendColor, campaignMessage.getId(),
+				campaignID, "", legendColor, campaignMessage.getId(),
 				campaignMessage.getReachImps()));
 		tabbedPane.repaint();
 		tabbedPane.revalidate();
@@ -178,13 +175,13 @@ public class CampaignInfoTabPanel extends SimulationTabPanel {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					if (agentId == agent) {
+					if (agentId == campaignID) {
 						switch (type) {
 						case TACAdxConstants.DU_DEMAND_DAILY_REPORT:
 							updateCampaigns((AdNetworkDailyNotification) value);
 							break;
 						case TACAdxConstants.DU_INITIAL_CAMPAIGN:
-							if (agent == agentId) {
+							if (campaignID == agentId) {
 								updateCampaigns((InitialCampaignMessage) value);
 							}
 							break;
