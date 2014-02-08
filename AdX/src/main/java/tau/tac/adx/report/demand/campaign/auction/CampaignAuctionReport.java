@@ -33,6 +33,20 @@ public class CampaignAuctionReport extends
 	}
 
 	/**
+	 * @return the campaignID
+	 */
+	public int getCampaignID() {
+		return campaignID;
+	}
+
+	/**
+	 * @param campaignID the campaignID to set
+	 */
+	public void setCampaignID(int campaignID) {
+		this.campaignID = campaignID;
+	}
+
+	/**
 	 * @param campaignID
 	 */
 	public CampaignAuctionReport(int campaignID) {
