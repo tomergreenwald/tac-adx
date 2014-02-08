@@ -24,6 +24,7 @@
  */
 package edu.umich.eecs.tac.viewer.role.campaign;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 
@@ -63,7 +64,7 @@ public class CampaignAuctionReportPanel extends JPanel {
 
 		MetricsNumberRenderer renderer = new MetricsNumberRenderer();
 		JTable table = new JTable(model);
-		for (int i = 2; i < 4; i++) {
+		for (int i = 1; i < 4; i++) {
 			table.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -135,13 +136,18 @@ public class CampaignAuctionReportPanel extends JPanel {
 		public Component getTableCellRendererComponent(JTable table,
 				Object object, boolean isSelected, boolean hasFocus, int row,
 				int column) {
+			
 
 			if (isSelected) {
 				setBackground(table.getSelectionBackground());
 				setForeground(table.getSelectionForeground());
 			} else {
+				if(row == 0) {
+					setBackground(Color.GREEN);
+				} else {
 				setBackground(table.getBackground());
 				setForeground(table.getForeground());
+				}
 			}
 
 			setHorizontalAlignment(JLabel.RIGHT);
