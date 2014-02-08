@@ -455,7 +455,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private CampaignAuctionReport generateAuctionReport(String[] advNames, double[] bids,
 			double[] qualityScores, int[] indices, String winner) {
 		CampaignAuctionReport campaignAuctionReport = new CampaignAuctionReport(id);
-		for (int i = advNames.length - 1; i >= 0; i--) {
+		for (int i = 0; i < advNames.length; i++) {
 			CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(advNames[indices[i]]);
 			CampaignAuctionReportEntry addReportEntry = campaignAuctionReport.addReportEntry(campaignReportKey);
 			addReportEntry.setActualBid(bids[indices[i]]);
