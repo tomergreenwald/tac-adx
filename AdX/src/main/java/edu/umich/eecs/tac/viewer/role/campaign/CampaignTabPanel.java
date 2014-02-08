@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.swing.JTabbedPane;
 
 import se.sics.isl.transport.Transportable;
+import se.sics.tasim.viewer.TickListener;
 import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
 import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.viewer.TACAASimulationPanel;
@@ -39,6 +40,7 @@ import edu.umich.eecs.tac.viewer.TACAAViewerConstants;
 import edu.umich.eecs.tac.viewer.ViewAdaptor;
 import edu.umich.eecs.tac.viewer.auction.ResultsPageModel;
 import edu.umich.eecs.tac.viewer.role.SimulationTabPanel;
+import edu.umich.eecs.tac.viewer.role.adx.AdNetCountTabPanel;
 import edu.umich.eecs.tac.viewer.role.adx.AdNetOverviewPanel;
 
 /**
@@ -47,6 +49,7 @@ import edu.umich.eecs.tac.viewer.role.adx.AdNetOverviewPanel;
 public class CampaignTabPanel extends SimulationTabPanel {
 	private JTabbedPane tabbedPane;
 
+	private int currentDay;
 	private final Map<Integer, CampaignInfoTabPanel> campaignInfoPanels;
 	private final Map<Query, ResultsPageModel> resultsPageModels;
 	private int participantNum;
@@ -60,6 +63,7 @@ public class CampaignTabPanel extends SimulationTabPanel {
 
 		this.simulationPanel = simulationPanel;
 		simulationPanel.addViewListener(new ParticipantListener());
+		simulationPanel.addTickListener(new DayListener());
 		initialize();
 	}
 
@@ -74,6 +78,17 @@ public class CampaignTabPanel extends SimulationTabPanel {
 				getSimulationPanel());
 		tabbedPane.addTab("Overview", overviewPanel);
 	}
+	
+	protected class DayListener implements TickListener {
+		@Override
+		public void simulationTick(long serverTime, int simulationDate) {
+			currentDay = simulationDate;
+		}
+
+		@Override
+		public void tick(long serverTime) {
+		}
+	}
 
 	private class ParticipantListener extends ViewAdaptor {
 		
@@ -86,7 +101,7 @@ public class CampaignTabPanel extends SimulationTabPanel {
 							simulationPanel);
 
 					campaignInfoPanels.put(campaignAuctionReport.getCampaignID(), infoPanel);
-					tabbedPane.addTab("Campaign " + campaignAuctionReport.getCampaignID(), infoPanel);
+					tabbedPane.addTab("Day #"+ currentDay + " - " + campaignAuctionReport.getCampaignID(), infoPanel);
 					participantNum++;
 				}
 			}
