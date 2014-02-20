@@ -83,6 +83,7 @@ public class AdxPublisherReport extends
 		AdxPublisherReportEntry entry = getEntry(index);
 		entry.setPopularity(publisherReportEntry.getPopularity());
 		entry.setAdTypeOrientation(publisherReportEntry.getAdTypeOrientation());
+		entry.setReservePriceBaseline(publisherReportEntry.getReservePriceBaseline());
 	}
 
 	/**
@@ -130,9 +131,9 @@ public class AdxPublisherReport extends
 		if (publisherReportEntry == null) {
 			publisherReportEntry = new AdxPublisherReportEntry(
 					publisherCatalogEntry);
-			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
 			publisherReportEntry.setReservePriceBaseline(AdxManager.getInstance()
 					.getPublisher(query.getPublisher()).getReservePriceManager().getDailyBaselineAverage());
+			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
 		}
 		publisherReportEntry.addQuery(query);
 	}
