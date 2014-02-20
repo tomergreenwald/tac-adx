@@ -44,6 +44,12 @@ public class AdxPublisherReportEntry extends
 	 */
 	private static final String POPULARITY_TRANSPORT_NAME = "PopularityEntry";
 
+	/** Reserve price baseline key. */
+	private static String RESERVE_PRICE_BASELINE_KEY = "RESERVE_PRICE_BASELINE_KEY";
+	
+	/** Active reserve price for the report. */
+	private double reservePriceBaseline;
+
 	/**
 	 * {@link AdxPublisher}'s popularity - number of visits to the publisher.
 	 */
@@ -110,6 +116,20 @@ public class AdxPublisherReportEntry extends
 	}
 
 	/**
+	 * @return the reservePriceBaseline
+	 */
+	public double getReservePriceBaseline() {
+		return reservePriceBaseline;
+	}
+
+	/**
+	 * @param reservePriceBaseline the reservePriceBaseline to set
+	 */
+	public void setReservePriceBaseline(double reservePriceBaseline) {
+		this.reservePriceBaseline = reservePriceBaseline;
+	}
+
+	/**
 	 * Reads the pricing information from the reader.
 	 * 
 	 * @param reader
@@ -123,6 +143,7 @@ public class AdxPublisherReportEntry extends
 		adTypeOrientation.clear();
 		String attribute = reader
 				.getAttribute(PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME);
+		reservePriceBaseline = reader.getAttributeAsDouble(RESERVE_PRICE_BASELINE_KEY);
 		setKey(new PublisherCatalogEntry(attribute));
 		popularity = reader.getAttributeAsInt(POPULARITY_TRANSPORT_NAME);
 		while (reader.nextNode(AD_TYPE_ORIENTATION_ENTRY_TRANSPORT_NAME, false)) {
@@ -142,6 +163,7 @@ public class AdxPublisherReportEntry extends
 		writer.attr(PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME, getKey()
 				.getPublisherName());
 		writer.attr(POPULARITY_TRANSPORT_NAME, popularity);
+		writer.attr(RESERVE_PRICE_BASELINE_KEY, reservePriceBaseline);
 
 		for (Entry<AdType, Integer> entry : adTypeOrientation.entrySet()) {
 			writeAdTypeEntry(writer, entry.getValue(), entry.getKey());

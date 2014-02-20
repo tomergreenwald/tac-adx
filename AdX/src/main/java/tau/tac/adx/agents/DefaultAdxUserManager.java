@@ -30,6 +30,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.messages.AuctionMessage;
 import tau.tac.adx.props.AdxQuery;
@@ -109,6 +110,10 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 			Collections.shuffle(users, random);
 
+			for(AdxPublisher publisher : AdxManager.getInstance().getPublishers()) {
+				publisher.getReservePriceManager().updateDailyBaselineAverage();
+			}
+			
 			for (AdxUser user : users) {
 				handleUserActivity(user, auctioneer);
 			}
