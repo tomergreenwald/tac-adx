@@ -167,4 +167,12 @@ public class ReservePriceManager {
 		}
 		return bestReservePrice;
 	}
+
+	/**
+	 * @return the dailyBaselineAverage
+	 */
+	public double getDailyBaselineAverage() {
+		return dailyBaselineAverage;
+	}
+
 }

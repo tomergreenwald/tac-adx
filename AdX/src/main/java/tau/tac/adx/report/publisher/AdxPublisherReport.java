@@ -131,6 +131,8 @@ public class AdxPublisherReport extends
 			publisherReportEntry = new AdxPublisherReportEntry(
 					publisherCatalogEntry);
 			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
+			publisherReportEntry.setReservePriceBaseline(AdxManager.getInstance()
+					.getPublisher(query.getPublisher()).getReservePriceManager().getDailyBaselineAverage());
 		}
 		publisherReportEntry.addQuery(query);
 	}
