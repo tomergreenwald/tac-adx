@@ -38,6 +38,11 @@ public class AdxPublisherReportEntry extends
 	 * The {@link PublisherCatalogEntry} transport name.
 	 */
 	private static final String PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME = "PublisherCatalogEntry";
+	
+	/**
+	 * The popularity transport name.
+	 */
+	private static final String POPULARITY_TRANSPORT_NAME = "PopularityEntry";
 
 	/**
 	 * {@link AdxPublisher}'s popularity - number of visits to the publisher.
@@ -119,6 +124,7 @@ public class AdxPublisherReportEntry extends
 		String attribute = reader
 				.getAttribute(PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME);
 		setKey(new PublisherCatalogEntry(attribute));
+		popularity = reader.getAttributeAsInt(POPULARITY_TRANSPORT_NAME);
 		while (reader.nextNode(AD_TYPE_ORIENTATION_ENTRY_TRANSPORT_NAME, false)) {
 			readAdTypeEntry(reader);
 		}
@@ -135,6 +141,7 @@ public class AdxPublisherReportEntry extends
 	protected final void writeEntry(final TransportWriter writer) {
 		writer.attr(PUBLISHER_CATALOG_NAME_ENTRY_TRANSPORT_NAME, getKey()
 				.getPublisherName());
+		writer.attr(POPULARITY_TRANSPORT_NAME, popularity);
 
 		for (Entry<AdType, Integer> entry : adTypeOrientation.entrySet()) {
 			writeAdTypeEntry(writer, entry.getValue(), entry.getKey());
@@ -154,10 +161,8 @@ public class AdxPublisherReportEntry extends
 	protected final void writeAdTypeEntry(final TransportWriter writer,
 			final Integer orientation, final AdType adType) {
 		writer.node(AD_TYPE_ORIENTATION_ENTRY_TRANSPORT_NAME);
-
 		writer.attr("Oreintation", orientation);
 		writer.attr("AdType", adType.toString());
-
 		writer.endNode(AD_TYPE_ORIENTATION_ENTRY_TRANSPORT_NAME);
 	}
 
@@ -172,14 +177,9 @@ public class AdxPublisherReportEntry extends
 	protected final void readAdTypeEntry(final TransportReader reader)
 			throws ParseException {
 		reader.enterNode();
-
 		int orientation = reader.getAttributeAsInt("Oreintation", 0);
-
-		// reader.nextNode(AdType.class.getSimpleName(), true);
-
 		AdType adType = AdType.valueOf(reader.getAttribute("AdType"));
 		adTypeOrientation.put(adType, orientation);
-
 		reader.exitNode();
 	}
 
