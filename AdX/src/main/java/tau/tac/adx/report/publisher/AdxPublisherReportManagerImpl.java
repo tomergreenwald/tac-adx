@@ -45,7 +45,7 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	/**
 	 * The query reports
 	 */
-	private final AdxPublisherReport publisherReport = new AdxPublisherReport();
+	private AdxPublisherReport publisherReport = new AdxPublisherReport();
 
 	/**
 	 * The {@link AdxPublisherReportSender}.
@@ -91,6 +91,7 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	@Override
 	public void sendReportsToAll() {
 		publisherReportSender.broadcastPublisherReport(publisherReport);
+		publisherReport  = new AdxPublisherReport();
 	}
 
 }
