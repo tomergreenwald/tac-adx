@@ -9,3 +9,4 @@ AdX/target/
 *.gz
 AdX/adx-server/public_html/localhost/
 AdX/adx-server/logs/
+AdX/adx-agnet/logs/
