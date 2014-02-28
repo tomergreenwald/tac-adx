@@ -23,7 +23,7 @@ public class ReservePriceManager {
 	/**
 	 * Number of digits after decimal point to keep.
 	 */
-	private static final int DIGITS_AFTER_DECIMAL_POINT = 4;
+	private static final int DIGITS_AFTER_DECIMAL_POINT = 2;
 	/**
 	 * Initial daily baseline average string. Allows configuration of
 	 * {@link #dailyBaselineAverage} via a {@link ConfigProxy}.
@@ -114,7 +114,7 @@ public class ReservePriceManager {
 	 */
 	public double generateReservePrice() {
 		return AdxUtils.cutDouble(Math.random() * baselineRange
-				* DIGITS_AFTER_DECIMAL_POINT + dailyBaselineAverage
+				* 2 + dailyBaselineAverage
 				- baselineRange, DIGITS_AFTER_DECIMAL_POINT);
 	}
 
