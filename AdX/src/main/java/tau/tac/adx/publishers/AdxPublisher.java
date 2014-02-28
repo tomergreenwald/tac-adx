@@ -12,6 +12,7 @@ import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.Publisher;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
@@ -76,9 +77,9 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 	private double relativePopularity;
 
 	/**
-	 * The {@link AdxPublisher}'s {@link ReservePriceManager}.
+	 * The {@link AdxPublisher}'s {@link UserAdTypeReservePriceManager}.
 	 */
-	private ReservePriceManager reservePriceManager;
+	private UserAdTypeReservePriceManager reservePriceManager;
 
 	/**
 	 * @param probabilityMaps
@@ -99,7 +100,7 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 	 *            impression (i.e., ad opportunities ) according to a predefined
 	 *            probability distribution.
 	 * @param reservePriceManager
-	 *            The {@link AdxPublisher}'s {@link ReservePriceManager}.
+	 *            The {@link AdxPublisher}'s {@link UserAdTypeReservePriceManager}.
 	 * @param name
 	 *            {@link AdxPublisher Publisher's} name.
 	 */
@@ -107,7 +108,7 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps,
 			Map<Device, Double> deviceProbabilityMap,
 			double relativePopularity, double pImpressions,
-			ReservePriceManager reservePriceManager, String name) {
+			UserAdTypeReservePriceManager reservePriceManager, String name) {
 		this.probabilityMaps = probabilityMaps;
 		this.adTypeDistribution = adAttributeProbabilityMaps
 				.getAdTypeDistribution();
@@ -163,7 +164,7 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 	/**
 	 * @return the reservePriceManager
 	 */
-	public ReservePriceManager getReservePriceManager() {
+	public UserAdTypeReservePriceManager getReservePriceManager() {
 		return reservePriceManager;
 	}
 
@@ -220,7 +221,7 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 	 * @param reservePriceManager
 	 *            the reservePriceManager to set
 	 */
-	public void setReservePriceManager(ReservePriceManager reservePriceManager) {
+	public void setReservePriceManager(UserAdTypeReservePriceManager reservePriceManager) {
 		this.reservePriceManager = reservePriceManager;
 	}
 
@@ -312,7 +313,6 @@ public class AdxPublisher implements KeyedEntry<AdxPublisher> {
 		pImpressions = publisherReader.getpImpressions();
 		probabilityMaps = publisherReader.getProbabilityMaps();
 		relativePopularity = publisherReader.getRelativePopularity();
-		reservePriceManager = publisherReader.getReservePriceManager();
 	}
 
 	/**

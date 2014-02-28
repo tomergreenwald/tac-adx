@@ -131,8 +131,9 @@ public class AdxPublisherReport extends
 		if (publisherReportEntry == null) {
 			publisherReportEntry = new AdxPublisherReportEntry(
 					publisherCatalogEntry);
+			// FIXME: this line doesn't take into account that there is a different reserve price per query type
 			publisherReportEntry.setReservePriceBaseline(AdxManager.getInstance()
-					.getPublisher(query.getPublisher()).getReservePriceManager().getDailyBaselineAverage());
+					.getPublisher(query.getPublisher()).getReservePriceManager().getDailyBaselineAverage(query));
 			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
 		}
 		publisherReportEntry.addQuery(query);

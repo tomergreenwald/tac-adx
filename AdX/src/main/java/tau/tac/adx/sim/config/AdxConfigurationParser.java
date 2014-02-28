@@ -17,6 +17,7 @@ import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
@@ -115,7 +116,7 @@ public class AdxConfigurationParser {
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps = extractAdTypeAffiliation(sku);
 			AdxUserAttributeProbabilityMaps adxUserAttributeProbabilityMaps = extractUserAffiliation(sku);
 			Map<Device, Double> deviceAffiliation = extractDeviceAffiliation(sku);
-			ReservePriceManager reservePriceManager = extractReservePriceInfo(sku);
+			UserAdTypeReservePriceManager reservePriceManager = extractReservePriceInfo(sku);
 			AdxPublisher publisher = new AdxPublisher(
 					adxUserAttributeProbabilityMaps,
 					adAttributeProbabilityMaps, deviceAffiliation, rating, 0,
@@ -129,7 +130,7 @@ public class AdxConfigurationParser {
 	}
 
 	/**
-	 * Extracts {@link ReservePriceManager} from configuration file.
+	 * Extracts {@link UserAdTypeReservePriceManager} from configuration file.
 	 * 
 	 * @param config
 	 *            {@link ConfigManager} to read properties from.
@@ -137,7 +138,7 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return Extracted {@link ReservePriceManager}.
 	 */
-	private ReservePriceManager extractReservePriceInfo(String sku) {
+	private UserAdTypeReservePriceManager extractReservePriceInfo(String sku) {
 		double dailyBaselineAverage = config.getPropertyAsDouble(String.format(
 				"catalog.%s.reserve_price.daily_baseline_average", sku), 0);
 		double baselineRange = config.getPropertyAsDouble(
@@ -145,7 +146,7 @@ public class AdxConfigurationParser {
 				0);
 		double updateCoefficient = config.getPropertyAsDouble(String.format(
 				"catalog.%s.reserve_price.update_coeffecient", sku), 0);
-		ReservePriceManager reservePriceManager = new ReservePriceManager(
+		UserAdTypeReservePriceManager reservePriceManager = new UserAdTypeReservePriceManager(
 				dailyBaselineAverage, baselineRange, updateCoefficient);
 		return reservePriceManager;
 	}

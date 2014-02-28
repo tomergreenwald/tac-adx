@@ -143,6 +143,9 @@ public class ReservePriceManager {
 	 * @return Updated {@link #dailyBaselineAverage}.
 	 */
 	public double updateDailyBaselineAverage() {
+		if (profitMap.size() == 0) {
+			addImpressionForPrice(0);
+		}
 		double highestProfitsPrice = getMostProfitableReservePrice();
 		profitMap.clear();
 		dailyBaselineAverage = updateCoefficient * dailyBaselineAverage
