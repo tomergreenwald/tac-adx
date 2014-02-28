@@ -131,8 +131,9 @@ public class AdxPublisherReport extends
 			publisherReportEntry = new AdxPublisherReportEntry(
 					publisherCatalogEntry);
 			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
+			//FIXME there should be a different baseline per query
 			publisherReportEntry.setReservePriceBaseline(AdxManager.getInstance()
-					.getPublisher(query.getPublisher()).getReservePriceManager().getDailyBaselineAverage());
+					.getPublisher(query.getPublisher()).getReservePriceManager().getDailyBaselineAverage(query));
 		}
 		publisherReportEntry.addQuery(query);
 	}
