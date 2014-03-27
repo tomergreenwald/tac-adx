@@ -38,18 +38,18 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	/* campaign allocation data */
 	int campaignId;
 	String winner;
-	double cost;
+	long costMillis;
 
 	public AdNetworkDailyNotification(int effectiveDay, double serviceLevel,
 			double price, double qualityScore, int campaignId, String winner,
-			long cost) {
+			long costMillis) {
 		this.effectiveDay = effectiveDay;
 		this.serviceLevel = serviceLevel;
 		this.price = price;
 		this.qualityScore = qualityScore;
 		this.campaignId = campaignId;
 		this.winner = winner;
-		this.cost = cost;
+		this.costMillis = costMillis;
 	}
 
 	public AdNetworkDailyNotification(
@@ -69,11 +69,11 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		if (campaign != null) {
 			this.campaignId = campaign.getId();
 			this.winner = campaign.getAdvertiser();
-			this.cost = campaign.getBudget() == null ? 0 : campaign.getBudget();
+			this.costMillis = campaign.getBudgetMillis();
 		} else {
 			this.campaignId = 0;
 			this.winner = "NONE";
-			this.cost = 0;			
+			this.costMillis = 0;			
 		}
 	}
 
@@ -101,12 +101,12 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		return winner;
 	}
 
-	public double getCost() {
-		return cost;
+	public long getCostMillis() {
+		return costMillis;
 	}
 
 	public void zeroCost() {
-		cost = 0;
+		costMillis = 0;
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		qualityScore = reader.getAttributeAsDouble("qualityScore");
 		campaignId = reader.getAttributeAsInt("campaignId");
 		winner = reader.getAttribute("winner");
-		cost = reader.getAttributeAsDouble("cost");
+		costMillis = reader.getAttributeAsLong("costMillis");
 
 		super.read(reader);
 	}
@@ -131,7 +131,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 				.attr("serviceLevel", serviceLevel).attr("price", price)
 				.attr("qualityScore", qualityScore)
 				.attr("campaignId", campaignId).attr("winner", winner)
-				.attr("cost", cost);
+				.attr("costMillis", costMillis);
 		super.write(writer);
 	}
 
@@ -145,7 +145,7 @@ public class AdNetworkDailyNotification extends SimpleContent {
 		return "AdNetworkDailyNotification [effectiveDay=" + effectiveDay
 				+ ", serviceLevel=" + serviceLevel + ", price=" + price
 				+ ", qualityScore=" + qualityScore + ", campaignId="
-				+ campaignId + ", winner=" + winner + ", cost=" + cost + "]";
+				+ campaignId + ", winner=" + winner + ", costMillis=" + costMillis + "]";
 	}
 
 }

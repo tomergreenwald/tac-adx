@@ -66,7 +66,7 @@ public interface Campaign extends TimeListener {
 	 * 
 	 * @return contract budget
 	 */
-	Double getBudget();
+	long getBudgetMillis();
 
 	boolean isOverTodaysLimit();
 

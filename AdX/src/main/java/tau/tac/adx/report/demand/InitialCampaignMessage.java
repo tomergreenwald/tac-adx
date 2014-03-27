@@ -34,6 +34,7 @@ public class InitialCampaignMessage extends SimpleContent {
 	private double mobileCoef;
 	private String demandAgentAddress;
 	private String adxAgentAddress;
+	private long budgetMillis;
 
 	public InitialCampaignMessage() {
 	}
@@ -49,11 +50,12 @@ public class InitialCampaignMessage extends SimpleContent {
 		this.mobileCoef = campaign.getMobileCoef();
 		this.demandAgentAddress = demandAgentAddress;
 		this.adxAgentAddress = adxAgentAddress;
+		this.budgetMillis = campaign.getBudgetMillis();
 	}
 
 	public InitialCampaignMessage(int id, Long reachImps, int dayStart,
 			int dayEnd, Set<MarketSegment> targetSegment, double videoCoef,
-			double mobileCoef) {
+			double mobileCoef, long budgetMillis) {
 
 		this.id = id;
 		this.reachImps = reachImps;
@@ -62,6 +64,7 @@ public class InitialCampaignMessage extends SimpleContent {
 		this.targetSegment = targetSegment;
 		this.videoCoef = videoCoef;
 		this.mobileCoef = mobileCoef;
+		this.budgetMillis = budgetMillis;
 	}
 
 	public int getId() {
@@ -100,11 +103,16 @@ public class InitialCampaignMessage extends SimpleContent {
 		return adxAgentAddress;
 	}
 
+	public long getBudgetMillis() {
+		return budgetMillis;
+	}
+
+	
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer().append(getTransportName())
 				.append('[').append(id).append(',').append(reachImps)
-				.append(',').append(dayStart).append(',').append(dayEnd)
+				.append(',').append(dayStart).append(',').append(dayEnd).append(',').append(budgetMillis)
 				.append(',').append(targetSegment).append(',')
 				.append(videoCoef).append(',').append(mobileCoef).append(',')
 				.append(demandAgentAddress).append(',');
@@ -134,6 +142,7 @@ public class InitialCampaignMessage extends SimpleContent {
 		dayEnd = reader.getAttributeAsInt("dayEnd");
 		videoCoef = reader.getAttributeAsDouble("videoCoef");
 		mobileCoef = reader.getAttributeAsDouble("mobileCoef");
+		budgetMillis = reader.getAttributeAsLong("budgetMillis");
 		demandAgentAddress = reader.getAttribute("demandAgentAddress");
 		adxAgentAddress = reader.getAttribute("adxAgentAddress");
 		while (reader.nextNode(MARKET_SEGMENT_KEY, false)) {
@@ -147,7 +156,7 @@ public class InitialCampaignMessage extends SimpleContent {
 	public void write(TransportWriter writer) {
 		writer.attr("id", id).attr("reachImps", reachImps)
 				.attr("dayStart", dayStart).attr("dayEnd", dayEnd)
-				.attr("videoCoef", videoCoef).attr("mobileCoef", mobileCoef)
+				.attr("videoCoef", videoCoef).attr("mobileCoef", mobileCoef).attr("budgetMillis", budgetMillis)
 				.attr("demandAgentAddress", demandAgentAddress)
 				.attr("adxAgentAddress", adxAgentAddress);
 		for (MarketSegment marketSegment : targetSegment) {

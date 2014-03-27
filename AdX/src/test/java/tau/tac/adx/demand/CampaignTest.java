@@ -74,7 +74,7 @@ public class CampaignTest {
 		assertNull(campaign.getAdvertiser());
 		campaign.auction();
 		assertEquals(campaign.getAdvertiser(), "a1");
-		assertEquals(campaign.getBudget(), 0.1, 0);
+		assertEquals(campaign.getBudgetMillis(), 100, 0);
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class CampaignTest {
 		assertNull(campaign.getAdvertiser());
 		campaign.auction();
 		assertEquals("", campaign.getAdvertiser());
-		assertNull(campaign.getBudget());
+		assertEquals(campaign.getBudgetMillis(), 0);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class CampaignTest {
 		campaign.addAdvertiserBid("a3", 120L);
 		campaign.auction();
 		assertEquals(campaign.getAdvertiser(), "a2");
-		assertEquals(campaign.getBudget(), 0.08, 0.001);
+		assertEquals(campaign.getBudgetMillis(), 80, 0.001);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class CampaignTest {
 		campaign.addAdvertiserBid("a3", 80L);
 		campaign.auction();
 		assertEquals(campaign.getAdvertiser(), "a3");
-		assertEquals(campaign.getBudget(), 0.1, 0);
+		assertEquals(campaign.getBudgetMillis(), 100, 0);
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class CampaignTest {
 		campaign.addAdvertiserBid("a3", 120L);
 		campaign.auction();
 		assertEquals(campaign.getAdvertiser(), "a2");
-		assertEquals(campaign.getBudget(), 0.080, 0);
+		assertEquals(campaign.getBudgetMillis(), 80, 0);
 		// assertFalse(campaign.isActive());
 
 		for (int day = dayStart; day <= dayEnd; day++) {

@@ -146,7 +146,7 @@ public class AdNetInfoTabPanel extends SimulationTabPanel {
 
 	protected void updateCampaigns(AdNetworkDailyNotification campaignMessage) {
 		if ((pendingCampaign.getId() == campaignMessage.getCampaignId())
-				&& (campaignMessage.getCost() != 0)) {
+				&& (campaignMessage.getCostMillis() != 0)) {
 			CampaignGrpahsTabPanel campaignGrpahsTabPanel = new CampaignGrpahsTabPanel(
 					simulationPanel, agent, advertiser, legendColor,
 					campaignMessage.getCampaignId(),

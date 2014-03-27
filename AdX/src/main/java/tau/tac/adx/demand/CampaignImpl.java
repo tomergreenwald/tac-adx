@@ -58,7 +58,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final Map<String, Long> advertisersBids;
 
 	/* set upon campaign allocation/auction */
-	Double budget;
+	long budgetMillis;
 	String advertiser;
 
 	/* current day id and accounting info */
@@ -199,7 +199,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		id = hashCode();
 		dayStats = new TreeMap<Integer, CampaignStats>();
 		advertisersBids = new HashMap<String, Long>();
-		budget = null;
+		budgetMillis = 0;
 		advertiser = null;
 		budgetlimit = Double.POSITIVE_INFINITY;
 		totalBudgetlimit = Double.POSITIVE_INFINITY;
@@ -234,8 +234,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public Double getBudget() {
-		return budget;
+	public long getBudgetMillis() {
+		return budgetMillis;
 	}
 
 	@Override
@@ -356,12 +356,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 					.getInstance()
 					.getSimulation()
 					.broadcastAdNetworkRevenue(advertiser,
-							effectiveReachRatio * budget);
+							effectiveReachRatio * (budgetMillis/1000.0));
 
 			log.log(Level.INFO, "Campaign " + id + " ended for advertiser "
 					+ advertiser + ". Stats " + totals + " Reach " + reachImps
-					+ " ERR " + effectiveReachRatio + " Budget " + budget
-					+ " Revenue " + effectiveReachRatio * budget);
+					+ " ERR " + effectiveReachRatio + " Budget " + (budgetMillis/1000.0)
+					+ " Revenue " + effectiveReachRatio * (budgetMillis/1000.0));
 		}
 	}
 
@@ -371,11 +371,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void addAdvertiserBid(String advertiser, Long budgetBid) {
+	public void addAdvertiserBid(String advertiser, Long budgetBidMillis) {
 		/* bids above the reserve budget or below the min (adjusted by quality rating) are not considered */
-		if ((budgetBid >= ((RESERVE_MIN_BUDGET_FACTOR * reachImps) / qualityManager.getQualityScore(advertiser)))
-				&& (budgetBid <= (RESERVE_MAX_BUDGET_FACTOR * reachImps * qualityManager.getQualityScore(advertiser))))
-			advertisersBids.put(advertiser, budgetBid);
+		if ((budgetBidMillis >= ((RESERVE_MIN_BUDGET_FACTOR * reachImps) / qualityManager.getQualityScore(advertiser)))
+				&& (budgetBidMillis <= (RESERVE_MAX_BUDGET_FACTOR * reachImps * qualityManager.getQualityScore(advertiser))))
+			advertisersBids.put(advertiser, budgetBidMillis);
 	}
 
 	@Override
@@ -385,7 +385,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public void allocateToAdvertiser(String advertiser) {
-		budget = new Double(reachImps * DEFAULT_BUDGET_FACTOR) / 1000.0;
+		budgetMillis = reachImps * DEFAULT_BUDGET_FACTOR;
 		this.advertiser = advertiser;
 	}
 
@@ -399,7 +399,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		if (advCount > 0) {
 			String[] advNames = new String[advCount];
 			double[] qualityScores = new double[advCount];
-			double[] bids = new double[advCount];
+			long[] bids = new long[advCount];
 			double[] scores = new double[advCount];
 			int[] indices = new int[advCount];
 
@@ -418,7 +418,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			if (random.nextDouble() < randomAllocPr) { /* allocate campaign to a random bidder */
 				int ri = random.nextInt(advCount);
 				advertiser = advNames[ri]; 
-				budget = bids[ri];
+				budgetMillis = bids[ri];
 				
 			} else {
 			
@@ -435,9 +435,10 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 						bsecond = (scores[indices[1]] > reserveScore) ? scores[indices[1]]
 							: reserveScore;
 
-						budget = new Double(qualityScores[indices[0]] / (1000.0 * bsecond));
+					budgetMillis = (long) (qualityScores[indices[0]] / bsecond);
 				}
 			}
+			
 			auctionReport = generateAuctionReport(advNames, bids, qualityScores, indices, advertiser);
 		}
 		return auctionReport;
@@ -452,7 +453,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	 * @param winner 
 	 * @return {@link CampaignAuctionReport} according to given parameters.
 	 */
-	private CampaignAuctionReport generateAuctionReport(String[] advNames, double[] bids,
+	private CampaignAuctionReport generateAuctionReport(String[] advNames, long[] bids,
 			double[] qualityScores, int[] indices, String winner) {
 		CampaignAuctionReport campaignAuctionReport = new CampaignAuctionReport(id);
 		for (int i = 0; i < advNames.length; i++) {
@@ -488,7 +489,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	
 	@Override
 	public boolean isAllocated() {
-		return (budget != null) && (advertiser != null);
+		return (budgetMillis != 0) && (advertiser != null);
 	}
 
 	@Override
@@ -543,7 +544,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				+ ", dayStart=" + dayStart + ", dayEnd=" + dayEnd
 				+ ", targetSegment=" + targetSegments + ", videoCoef="
 				+ videoCoef + ", mobileCoef=" + mobileCoef
-				+ ", advertisersBids=" + advertisersBids + ", budget=" + budget
+				+ ", advertisersBids=" + advertisersBids + ", budgetMillis=" + budgetMillis
 				+ ", advertiser=" + advertiser + ", day=" + day + ", todays="
 				+ todays + ", totals=" + totals + ", dayStats=" + dayStats
 				+ "]";
@@ -554,8 +555,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		return "CampaignImpl [id=" + id + ", reachImps=" + reachImps
 				+ ", dayStart=" + dayStart + ", dayEnd=" + dayEnd
 				+ ", targetSegment=" + targetSegments + ", videoCoef="
-				+ videoCoef + ", mobileCoef=" + mobileCoef + ", budget="
-				+ budget + ", advertiser=" + advertiser + "]";
+				+ videoCoef + ", mobileCoef=" + mobileCoef + ", budgetMillis="
+				+ budgetMillis + ", advertiser=" + advertiser + "]";
 	}
 
 	@Override

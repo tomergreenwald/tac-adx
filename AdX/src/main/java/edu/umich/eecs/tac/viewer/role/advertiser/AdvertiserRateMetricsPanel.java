@@ -99,14 +99,14 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 			AdNetworkDailyNotification adNetworkDailyNotification) {
 		if ((pendingCampaign.getId() == adNetworkDailyNotification
 				.getCampaignId())
-				&& (adNetworkDailyNotification.getCost() != 0)) {
+				&& (adNetworkDailyNotification.getCostMillis() != 0)) {
 
 			String message = "Day "
 					+ adNetworkDailyNotification.getEffectiveDay() + ":\t"
 					+ "Range [" + pendingCampaign.getDayStart() + ", "
 					+ pendingCampaign.getDayEnd() + "]\t"
-					+ pendingCampaign.getTargetSegment() + "\twon at cost "
-					+ adNetworkDailyNotification.getCost();
+					+ pendingCampaign.getTargetSegment() + "\twon at cost (Millis)"
+					+ adNetworkDailyNotification.getCostMillis();
 
 			area.append(message);
 			area.append("\r\n");
