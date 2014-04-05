@@ -99,13 +99,24 @@ public class AdxConfigurationParser {
 		Random r = new Random();
 
 		PublisherCatalog catalog = new PublisherCatalog();
-		String[] skus = config.getPropertyAsArray("publishers.list");
+		String[] skus1 = config.getPropertyAsArray("publishers.list.1");
+		String[] skus2 = config.getPropertyAsArray("publishers.list.2");
+		String[] skus3 = config.getPropertyAsArray("publishers.list.3");
 
 		/* select a subset for this instance : assuming items of skus are distinct */
 		Set<String> subsetskus = new HashSet<String>();
-		while(subsetskus.size() < config.getPropertyAsInt("publishers.subset.size", 3)) {
-			subsetskus.add(skus[r.nextInt(skus.length)]);
+		int subsetsize = config.getPropertyAsInt("publishers.subset.size", 2);
+		
+		while(subsetskus.size() < subsetsize) {
+			subsetskus.add(skus1[r.nextInt(skus1.length)]);
 		}
+		while(subsetskus.size() < 2*subsetsize) {
+			subsetskus.add(skus2[r.nextInt(skus2.length)]);
+		}
+		while(subsetskus.size() < 3*subsetsize) {
+			subsetskus.add(skus3[r.nextInt(skus3.length)]);
+		}
+		
 		
 		for (String sku : subsetskus) {
 			String name = config.getProperty(String.format("catalog.%s.name",
