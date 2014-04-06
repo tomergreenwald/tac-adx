@@ -151,12 +151,12 @@ public class AdxConfigurationParser {
 	 */
 	private UserAdTypeReservePriceManager extractReservePriceInfo(String sku) {
 		double dailyBaselineAverage = config.getPropertyAsDouble(String.format(
-				"catalog.%s.reserve_price.daily_baseline_average", sku), 0);
+				"catalog.%s.reserve_price.daily_baseline_average", sku), 0.001);
 		double baselineRange = config.getPropertyAsDouble(
 				String.format("catalog.%s.reserve_price.baseline_range", sku),
-				0);
+				0.001);
 		double updateCoefficient = config.getPropertyAsDouble(String.format(
-				"catalog.%s.reserve_price.update_coeffecient", sku), 0);
+				"catalog.%s.reserve_price.update_coeffecient", sku), 0.6);
 		UserAdTypeReservePriceManager reservePriceManager = new UserAdTypeReservePriceManager(
 				dailyBaselineAverage, baselineRange, updateCoefficient);
 		return reservePriceManager;

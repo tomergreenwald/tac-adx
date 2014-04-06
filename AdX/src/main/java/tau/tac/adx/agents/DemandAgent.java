@@ -3,6 +3,7 @@
 package tau.tac.adx.agents;
 
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,10 +46,6 @@ public class DemandAgent extends Builtin {
 
 	private static final int TOTAL_POPULATION_DEFAULT = 10000;
 	private static int total_population;
-	private static int aloc_cmp_reach;
-
-	private static final int ALOC_CMP_LENGTH_DEFAULT = 5;
-	private static int   alloc_cmp_length;
 
 	private static final double CMP_VC_DEFAULT = 2.0;
 	private static double   cmp_vc;
@@ -56,6 +53,13 @@ public class DemandAgent extends Builtin {
 	private static final double CMP_MC_DEFAULT = 1.5;
 	private static double   cmp_mc;
 
+	private static final double CMP_VC_OFFSET_DEFAULT = 2.0;
+	private static double   cmp_vc_offset;
+
+	private static final double CMP_MC_OFFSET_DEFAULT = 1.5;
+	private static double   cmp_mc_offset;
+
+	
 	private static Random random;
 
 	private static int[] CMP_LENGTHS_DEFAULT = { 3, 5, 10 };
@@ -64,7 +68,11 @@ public class DemandAgent extends Builtin {
 	private static int[] cmp_lengths;
 	private static int   cmp_lengths_count;
 
-	private static int[] CMP_REACHS;
+	private static Double[] CMP_REACHLEVELS_DEFAULT = { 0.2, 0.5, 0.8 };
+	private static int   CMP_REACHLEVELS_COUNT_DEFAULT = 3;
+	
+	private static Double[] cmp_reachlevels;
+	private static int   cmp_reachlevels_count;
 
 	private Logger log;
 
@@ -105,14 +113,18 @@ public class DemandAgent extends Builtin {
 		 * competing adNetwork agents
 		 */
 
-		int lastCmpDay = day + 1 + cmp_lengths[random.nextInt(cmp_lengths_count)];
+		int cmplength = cmp_lengths[random.nextInt(cmp_lengths_count)];
+		int lastCmpDay = day + 1 + cmplength;
 
 		if (lastCmpDay < 60) {
 
+			Set<MarketSegment> target = MarketSegment.randomMarketSegment();
+			int reach = cmp_reachlevels[random.nextInt(cmp_reachlevels_count)].intValue() * MarketSegment.marketSegmentSize(target) * cmplength;
+			
 			pendingCampaign = new CampaignImpl(qualityManager,
-					CMP_REACHS[random.nextInt(3)], day + 2, lastCmpDay,
-					MarketSegment.randomMarketSegment(), cmp_vc,
-					cmp_mc);
+					reach, day + 2, lastCmpDay,
+					target, cmp_vc + cmp_vc_offset*random.nextDouble(),
+					cmp_mc + cmp_mc_offset*random.nextDouble());
 
 			pendingCampaign.registerToEventBus();
 
@@ -224,15 +236,18 @@ public class DemandAgent extends Builtin {
 		
 		total_population = getSimulation().getConfig().getPropertyAsInt(
 				"adxusers.population_size", TOTAL_POPULATION_DEFAULT);
-
-		alloc_cmp_length = getSimulation().getConfig().getPropertyAsInt(
-				"campaigns.preallocated.length", ALOC_CMP_LENGTH_DEFAULT);
 		
 		cmp_vc =  getSimulation().getConfig().getPropertyAsDouble(
 				"campaigns.video_coef", CMP_VC_DEFAULT);
 		
 		cmp_mc =  getSimulation().getConfig().getPropertyAsDouble(
 				"campaigns.mobile_coef", CMP_MC_DEFAULT);
+
+		cmp_vc_offset =  getSimulation().getConfig().getPropertyAsDouble(
+				"campaigns.video_coef_offset", CMP_VC_OFFSET_DEFAULT);
+		
+		cmp_mc_offset =  getSimulation().getConfig().getPropertyAsDouble(
+				"campaigns.mobile_coef_offset", CMP_MC_OFFSET_DEFAULT);
 		
 		String[] cmp_lengths_str = getSimulation().getConfig().getPropertyAsArray("campaigns.lengths");
 		if (cmp_lengths_str == null) {
@@ -246,13 +261,18 @@ public class DemandAgent extends Builtin {
 			}
 		}
 		
-		CMP_REACHS = new int[cmp_lengths_count];
-		for (int i = 0; i < cmp_lengths_count; i++) { /* each campaign should target 1/competitiors of the population daily */
-			CMP_REACHS[i] = (total_population / numOfCompetitors) * cmp_lengths[i];
+		String[] cmp_reachlevels_str = getSimulation().getConfig().getPropertyAsArray("campaigns.reachlevels");
+		if (cmp_reachlevels_str == null) {
+			cmp_reachlevels_count = CMP_REACHLEVELS_COUNT_DEFAULT;
+			cmp_reachlevels = CMP_REACHLEVELS_DEFAULT;			
+		} else {
+			cmp_reachlevels_count = cmp_reachlevels_str.length;
+			cmp_reachlevels = new Double[cmp_reachlevels_count];
+			for (int i = 0; i < cmp_reachlevels_count; i++) {
+				cmp_reachlevels[i] = Double.parseDouble(cmp_reachlevels_str[i]);
+			}
 		}
-
-		aloc_cmp_reach = total_population / numOfCompetitors;
-
+		
 		this.log = Logger.getLogger(DemandAgent.class.getName());
 
 		log.info("setting up...");
@@ -275,11 +295,15 @@ public class DemandAgent extends Builtin {
 		 */
 		for (String advertiser : getAdxAdvertiserAddresses()) {
 
+			int cmplength = cmp_lengths[1];
+			Set<MarketSegment> target = MarketSegment.randomMarketSegment2();
+			int reach = cmp_reachlevels[1].intValue() * MarketSegment.marketSegmentSize(target) * cmplength;
+			 
 			qualityManager.addAdvertiser(advertiser);
 			Campaign campaign = new CampaignImpl(qualityManager,
-					aloc_cmp_reach, 1, alloc_cmp_length,
-					MarketSegment.randomMarketSegment(), cmp_vc,
-					cmp_mc);
+					reach, 1, cmplength,
+					target, cmp_vc + cmp_vc_offset*random.nextDouble(),
+					cmp_mc + cmp_mc_offset*random.nextDouble());
 
 			campaign.allocateToAdvertiser(advertiser);
 			log.log(Level.FINE,
