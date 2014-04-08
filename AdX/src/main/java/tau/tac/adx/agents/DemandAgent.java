@@ -119,7 +119,7 @@ public class DemandAgent extends Builtin {
 		if (lastCmpDay < 60) {
 
 			Set<MarketSegment> target = MarketSegment.randomMarketSegment();
-			int reach = cmp_reachlevels[random.nextInt(cmp_reachlevels_count)].intValue() * MarketSegment.marketSegmentSize(target) * cmplength;
+			int reach = (int) (cmp_reachlevels[random.nextInt(cmp_reachlevels_count)] * MarketSegment.marketSegmentSize(target) * cmplength);
 			
 			pendingCampaign = new CampaignImpl(qualityManager,
 					reach, day + 2, lastCmpDay,
