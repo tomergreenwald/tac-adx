@@ -31,7 +31,7 @@ public class AdxUser extends User implements Cloneable, TacUser<Adx> {
 	/** User's activity {@link UserState state}. */
 	private UserState userState;
 	/** Unique user id. */
-	private final int uniqueId;
+	private int uniqueId;
 
 	/**
 	 * @param age
@@ -113,6 +113,13 @@ public class AdxUser extends User implements Cloneable, TacUser<Adx> {
 	 */
 	public int getUniqueId() {
 		return uniqueId;
+	}
+
+	/**
+	 * @param uniqueId the uniqueId to set
+	 */
+	public void setUniqueId(int uniqueId) {
+		this.uniqueId = uniqueId;
 	}
 
 	/**
