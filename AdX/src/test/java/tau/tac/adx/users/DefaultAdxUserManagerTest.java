@@ -82,7 +82,7 @@ public class DefaultAdxUserManagerTest {
 		users = (List<AdxUser>) userGenerator.generate(populationSize);
 
 		publisherCatalog = new PublisherCatalog();
-		publisherCatalog.addPublisher(mock(AdxPublisher.class));
+		publisherCatalog.addPublisher(mock(AdxPublisher.class, Mockito.RETURNS_DEEP_STUBS));
 		Map<Device, Integer> deviceDistributionMap = new HashMap<Device, Integer>();
 		deviceDistributionMap.put(Device.pc, random.nextInt(10) + 1);
 		deviceDistributionMap.put(Device.mobile, random.nextInt(10) + 1);
