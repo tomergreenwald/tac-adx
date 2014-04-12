@@ -20,7 +20,6 @@ import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
-import tau.tac.adx.users.generators.PopulationUserGenerator;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
 import tau.tac.adx.users.properties.Age;
@@ -36,6 +35,68 @@ import edu.umich.eecs.tac.props.AdvertiserInfo;
 public class AdxConfigurationParser {
 
 	private final ConfigManager config;
+
+	private String[] names = { "yahoo", "cnn", "nyt", "hfn", "msn", "fox",
+			"amazon", "ebay", "wallmart", "target", "bestbuy", "sears",
+			"webmd", "ehow", "ask", "tripadvisor", "cnet", "weather" };
+
+	private double[] ratings = { 0.16, 0.022, 0.031, 0.081, 0.182, 0.031,
+			0.128, 0.085, 0.38, 0.02, 0.016, 0.016, 0.025, 0.025, 0.05, 0.016,
+			0.17, 0.058 };
+
+	private double[] adTypeText = { 0.7, 0.5, 0.5, 0.7, 0.5, 0.9, 0.7, 0.5,
+			0.9, 0.7, 0.5, 0.9, 0.7, 0.5, 0.5, 0.9, 0.7, 0.5 };
+
+	private double[] adTypeVideo = { 0.3, 0.5, 0.5, 0.3, 0.5, 0.1, 0.3, 0.5,
+			0.1, 0.3, 0.5, 0.1, 0.3, 0.5, 0.5, 0.1, 0.3, 0.5 };
+
+	private double[] age1 = { 0.122, 0.102, 0.092, 0.102, 0.102, 0.092, 0.092,
+			0.092, 0.072, 0.092, 0.102, 0.092, 0.092, 0.102, 0.102, 0.082,
+			0.122, 0.092 };
+	private double[] age2 = { 0.171, 0.161, 0.151, 0.161, 0.161, 0.151, 0.151,
+			0.161, 0.151, 0.171, 0.141, 0.121, 0.151, 0.151, 0.131, 0.161,
+			0.151, 0.151 };
+	private double[] age3 = { 0.167, 0.167, 0.167, 0.167, 0.167, 0.167, 0.167,
+			0.157, 0.167, 0.177, 0.167, 0.167, 0.157, 0.157, 0.157, 0.177,
+			0.157, 0.167 };
+	private double[] age4 = { 0.184, 0.194, 0.194, 0.194, 0.194, 0.194, 0.194,
+			0.194, 0.204, 0.184, 0.204, 0.204, 0.194, 0.194, 0.204, 0.204,
+			0.184, 0.204 };
+	private double[] age5 = { 0.164, 0.174, 0.174, 0.174, 0.174, 0.184, 0.184,
+			0.174, 0.184, 0.173, 0.174, 0.184, 0.184, 0.174, 0.184, 0.174,
+			0.174, 0.184 };
+	private double[] age6 = { 0.192, 0.202, 0.202, 0.202, 0.202, 0.212, 0.212,
+			0.222, 0.222, 0.202, 0.212, 0.232, 0.222, 0.222, 0.222, 0.212,
+			0.212, 0.202 };
+
+	private double[] genderMale = { 0.496, 0.486, 0.476, 0.466, 0.476, 0.486,
+			0.476, 0.486, 0.456, 0.456, 0.476, 0.466, 0.456, 0.476, 0.486,
+			0.466, 0.506, 0.476 };
+
+	private double[] income1 = { 0.53, 0.48, 0.47, 0.47, 0.49, 0.46, 0.50,
+			0.50, 0.17, 0.45, 0.465, 0.45, 0.46, 0.50, 0.50, 0.465, 0.48,
+			0.455, };
+	private double[] income2 = { 0.27, 0.27, 0.26, 0.27, 0.27, 0.26, 0.27,
+			0.27, 0.47, 0.27, 0.26, 0.25, 0.265, 0.27, 0.28, 0.26, 0.265, 0.265 };
+	private double[] income3 = { 0.13, 0.16, 0.17, 0.17, 0.16, 0.18, 0.15,
+			0.15, 0.28, 0.19, 0.18, 0.20, 0.185, 0.15, 0.15, 0.175, 0.165,
+			0.185 };
+	private double[] income4 = { 0.07, 0.09, 0.1, 0.09, 0.08, 0.10, 0.08, 0.08,
+			0.17, 0.09, 0.095, 0.10, 0.09, 0.08, 0.07, 0.10, 0.09, 0.095, };
+
+	private double[] devicePc = { 0.74, 0.76, 0.77, 0.78, 0.75, 0.76, 0.79,
+			0.78, 0.82, 0.81, 0.8, 0.81, 0.76, 0.72, 0.72, 0.70, 0.73, 0.69 };
+	private double[] deviceMobile = { 0.26, 0.24, 0.23, 0.22, 0.25, 0.24, 0.21,
+			0.22, 0.18, 0.19, 0.2, 0.19, 0.24, 0.28, 0.28, 0.30, 0.27, 0.31 };
+
+	private double[] reservePriceDailyBaselineAverage = { 0.001, 0.001, 0.001,
+			0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001,
+			0.001, 0.001, 0.001, 0.001, 0.001, 0.001 };
+	private double[] reservePriceBaselineRange = { 0.001, 0.001, 0.001, 0.001,
+			0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001,
+			0.001, 0.001, 0.001, 0.001, 0.001 };
+	private double[] reservePriceUpdateCoeffecient = { 0.6, 0.6, 0.6, 0.6, 0.6,
+			0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6 };
 
 	/**
 	 * @param config
@@ -85,22 +146,9 @@ public class AdxConfigurationParser {
 	 * @return {@link List} of {@link AdxUser}s.
 	 */
 	public List<AdxUser> createUserPopulation() {
-		Map<AdxUser, Integer> weights = new HashMap<AdxUser, Integer>();
 		int populationSize = config.getPropertyAsInt(
 				"adxusers.population_size", 0);
-		
-		int populationTypesSize = config.getPropertyAsInt(
-				"population.types.size", 0);
-				for (int i = 1; i <= populationTypesSize; i++) {
-			Age age = Age.valueOf(config.getProperty(String.format("population.%s.age",	i)));
-			Gender gender = Gender.valueOf(config.getProperty(String.format("population.%s.gender",	i)));
-			Income income = Income.valueOf(config.getProperty(String.format("population.%s.income",	i)));
-			int probability = config.getPropertyAsInt(String.format("population.%s.probability",	i), 0);
-			AdxUser adxUser = new AdxUser(age, gender, income, 0, 0);
-			weights.put(adxUser, probability);
-		}
-		
-		PopulationUserGenerator generator = new PopulationUserGenerator(weights);
+		SimpleUserGenerator generator = new SimpleUserGenerator();
 		return generator.generate(populationSize);
 	}
 
@@ -117,26 +165,26 @@ public class AdxConfigurationParser {
 		String[] skus2 = config.getPropertyAsArray("publishers.list.2");
 		String[] skus3 = config.getPropertyAsArray("publishers.list.3");
 
-		/* select a subset for this instance : assuming items of skus are distinct */
-		Set<String> subsetskus = new HashSet<String>();
+		/*
+		 * select a subset for this instance : assuming items of skus are
+		 * distinct
+		 */
+		Set<Integer> subsetskus = new HashSet<Integer>();
 		int subsetsize = config.getPropertyAsInt("publishers.subset.size", 2);
-		
-		while(subsetskus.size() < subsetsize) {
-			subsetskus.add(skus1[r.nextInt(skus1.length)]);
+
+		while (subsetskus.size() < subsetsize) {
+			subsetskus.add(Integer.parseInt(skus1[r.nextInt(skus1.length)]));
 		}
-		while(subsetskus.size() < 2*subsetsize) {
-			subsetskus.add(skus2[r.nextInt(skus2.length)]);
+		while (subsetskus.size() < 2 * subsetsize) {
+			subsetskus.add(Integer.parseInt(skus2[r.nextInt(skus2.length)]));
 		}
-		while(subsetskus.size() < 3*subsetsize) {
-			subsetskus.add(skus3[r.nextInt(skus3.length)]);
+		while (subsetskus.size() < 3 * subsetsize) {
+			subsetskus.add(Integer.parseInt(skus3[r.nextInt(skus3.length)]));
 		}
-		
-		
-		for (String sku : subsetskus) {
-			String name = config.getProperty(String.format("catalog.%s.name",
-					sku));
-			int rating = config.getPropertyAsInt(
-					String.format("catalog.%s.rating", sku), 0);
+
+		for (Integer sku : subsetskus) {
+			String name = names[sku];
+			double rating = ratings[sku];
 
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps = extractAdTypeAffiliation(sku);
 			AdxUserAttributeProbabilityMaps adxUserAttributeProbabilityMaps = extractUserAffiliation(sku);
@@ -163,14 +211,10 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return Extracted {@link ReservePriceManager}.
 	 */
-	private UserAdTypeReservePriceManager extractReservePriceInfo(String sku) {
-		double dailyBaselineAverage = config.getPropertyAsDouble(String.format(
-				"catalog.%s.reserve_price.daily_baseline_average", sku), 0.001);
-		double baselineRange = config.getPropertyAsDouble(
-				String.format("catalog.%s.reserve_price.baseline_range", sku),
-				0.001);
-		double updateCoefficient = config.getPropertyAsDouble(String.format(
-				"catalog.%s.reserve_price.update_coeffecient", sku), 0.6);
+	private UserAdTypeReservePriceManager extractReservePriceInfo(Integer sku) {
+		double dailyBaselineAverage = reservePriceDailyBaselineAverage[sku];
+		double baselineRange = reservePriceBaselineRange[sku];
+		double updateCoefficient = reservePriceUpdateCoeffecient[sku];
 		UserAdTypeReservePriceManager reservePriceManager = new UserAdTypeReservePriceManager(
 				dailyBaselineAverage, baselineRange, updateCoefficient);
 		return reservePriceManager;
@@ -186,16 +230,10 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return {@link Device} affiliation {@link Map}.
 	 */
-	private Map<Device, Double> extractDeviceAffiliation(String sku) {
+	private Map<Device, Double> extractDeviceAffiliation(Integer sku) {
 		Map<Device, Double> deviceDistribution = new HashMap<Device, Double>();
-		deviceDistribution.put(
-				Device.pc,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.device.pc", sku), 0));
-		deviceDistribution.put(
-				Device.mobile,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.device.mobile", sku), 0));
+		deviceDistribution.put(Device.pc, devicePc[sku]);
+		deviceDistribution.put(Device.mobile, deviceMobile[sku]);
 		return deviceDistribution;
 	}
 
@@ -209,7 +247,7 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return {@link AdxUserAttributeProbabilityMaps}.
 	 */
-	private AdxUserAttributeProbabilityMaps extractUserAffiliation(String sku) {
+	private AdxUserAttributeProbabilityMaps extractUserAffiliation(Integer sku) {
 		Map<Age, Double> ageDistribution = extractAgeDistribution(sku);
 		Map<Gender, Double> genderDistribution = extractGenderDistribution(sku);
 		Map<Income, Double> incomeDistribution = extractIncomeDistribution(sku);
@@ -228,24 +266,12 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return {@link Income} affiliation {@link Map}.
 	 */
-	private Map<Income, Double> extractIncomeDistribution(String sku) {
+	private Map<Income, Double> extractIncomeDistribution(Integer sku) {
 		Map<Income, Double> ageDistribution = new HashMap<Income, Double>();
-		ageDistribution.put(
-				Income.low,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.income.low", sku), 0));
-		ageDistribution.put(
-				Income.medium,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.income.medium", sku), 0));
-		ageDistribution.put(
-				Income.high,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.income.high", sku), 0));
-		ageDistribution.put(
-				Income.very_high,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.income.very_high", sku), 0));
+		ageDistribution.put(Income.low, income1[sku]);
+		ageDistribution.put(Income.medium, income2[sku]);
+		ageDistribution.put(Income.high, income3[sku]);
+		ageDistribution.put(Income.very_high, income3[sku]);
 		return ageDistribution;
 
 	}
@@ -260,10 +286,9 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return {@link Gender} affiliation {@link Map}.
 	 */
-	private Map<Gender, Double> extractGenderDistribution(String sku) {
+	private Map<Gender, Double> extractGenderDistribution(Integer sku) {
 		Map<Gender, Double> genderDistribution = new HashMap<Gender, Double>();
-		double maleAffiliation = config.getPropertyAsDouble(
-				String.format("catalog.%s.gender.male", sku), 0);
+		double maleAffiliation = genderMale[sku];
 		genderDistribution.put(Gender.male, maleAffiliation);
 		genderDistribution.put(Gender.female, 1 - maleAffiliation);
 		return genderDistribution;
@@ -279,32 +304,14 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return {@link Age} affiliation {@link Map}.
 	 */
-	private Map<Age, Double> extractAgeDistribution(String sku) {
+	private Map<Age, Double> extractAgeDistribution(Integer sku) {
 		Map<Age, Double> ageDistribution = new HashMap<Age, Double>();
-		ageDistribution.put(
-				Age.Age_18_24,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.age.age1", sku), 0));
-		ageDistribution.put(
-				Age.Age_25_34,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.age.age2", sku), 0));
-		ageDistribution.put(
-				Age.Age_35_44,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.age.age3", sku), 0));
-		ageDistribution.put(
-				Age.Age_45_54,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.age.age4", sku), 0));
-		ageDistribution.put(
-				Age.Age_55_64,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.age.age5", sku), 0));
-		ageDistribution.put(
-				Age.Age_65_PLUS,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.age.age6", sku), 0));
+		ageDistribution.put(Age.Age_18_24, age1[sku]);
+		ageDistribution.put(Age.Age_25_34, age2[sku]);
+		ageDistribution.put(Age.Age_35_44, age3[sku]);
+		ageDistribution.put(Age.Age_45_54, age4[sku]);
+		ageDistribution.put(Age.Age_55_64, age5[sku]);
+		ageDistribution.put(Age.Age_65_PLUS, age6[sku]);
 		return ageDistribution;
 	}
 
@@ -317,16 +324,10 @@ public class AdxConfigurationParser {
 	 *            Current <b>sku</b> id.
 	 * @return {@link AdAttributeProbabilityMaps}.
 	 */
-	private AdAttributeProbabilityMaps extractAdTypeAffiliation(String sku) {
+	private AdAttributeProbabilityMaps extractAdTypeAffiliation(Integer sku) {
 		Map<AdType, Double> adTypeDistribution = new HashMap<AdType, Double>();
-		adTypeDistribution.put(
-				AdType.text,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.adtype.text", sku), 0));
-		adTypeDistribution.put(
-				AdType.video,
-				config.getPropertyAsDouble(
-						String.format("catalog.%s.adtype.video", sku), 0));
+		adTypeDistribution.put(AdType.text, adTypeText[sku]);
+		adTypeDistribution.put(AdType.video, adTypeVideo[sku]);
 		AdAttributeProbabilityMaps adAttributeProbabilityMaps = new AdAttributeProbabilityMaps(
 				adTypeDistribution);
 		return adAttributeProbabilityMaps;
