@@ -24,7 +24,7 @@ How to implement an agent:
 	3. After you have finished implementing your agent, you will need to register it
 	   in the configuration file "config/aw-1.conf", for it to be loaded by the agentwate.
 	   (i.e. agentImpl=tau.tac.adx.agents.SampleAdNetwork).
-	4. An example implementing class is available at "SampleAdNetwork.java"
+	4. An example implementing class is available at "SimpleAdNetwork.java"
 	5. To assure that your code will be available to run, generate a "jar" file from your
 	   code base and insert it into the "lib" folder.
 How to run the log parser:
