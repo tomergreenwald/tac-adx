@@ -30,4 +30,7 @@ public interface QualityManager {
 	 * @return current quality score
 	 */
 	double getQualityScore(String advertiser);
+	
+	public String logToString();
+
 }

@@ -147,12 +147,25 @@ public class DemandAgent extends Builtin {
 		/*
 		 * report auctions result and campaigns stats to adNet agents
 		 */
+
 		log.log(Level.FINE, "Day "
 				+ day
 				+ " :"
-				+ "Reporting auction results..."
-				+ ((pendingCampaign != null) ? pendingCampaign.logToString()
-						: "No pending campaign"));
+				+ "Quality Ratings... "
+				+ qualityManager.logToString());
+		
+		log.log(Level.FINE, "Day "
+				+ day
+				+ " :"
+				+ "Reporting campaign auction results... "
+				+ ((pendingCampaign != null) ? pendingCampaign.logToString() : "No pending campaign"));
+		
+		log.log(Level.FINE, "Day "
+				+ day
+				+ " :"
+				+ "Reporting UCS auction results... "
+				+  ucs.logToString());
+
 
 		for (String advertiser : getAdxAdvertiserAddresses()) {
 
@@ -321,6 +334,8 @@ public class DemandAgent extends Builtin {
 					new CampaignNotification(campaign));
 
 			ucs.updateAdvertiserBid(advertiser, 0, 0);
+			getSimulation().getEventBus().post(
+					new UserClassificationServiceNotification(ucs));
 		}
 	}
 

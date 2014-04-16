@@ -35,5 +35,10 @@ public class UserClassificationServiceAdNetData {
 		this.serviceLevel = serviceLevel;
 		this.effectiveDay = day;
 	}
+	
+	public String logToString() {
+		return "[efday=" + effectiveDay + ", level=" + serviceLevel
+				+ ", price=" + price + "] ";
+	}
 
 }

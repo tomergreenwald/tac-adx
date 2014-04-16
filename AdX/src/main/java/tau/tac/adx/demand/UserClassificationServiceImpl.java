@@ -24,6 +24,7 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 				.get(advertiser);
 		if (advData == null) {
 			advData = new UserClassificationServiceAdNetData();
+			advData.setAuctionResult(0,1.0,1);
 			advertisersData.put(advertiser, advData);
 		}
 		advData.setBid(ucsBid, day);
@@ -64,12 +65,20 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 				UserClassificationServiceAdNetData advData = advertisersData
 						.get(advNames[indices[j]]);
 				levelPrice = ucsProb * bids[indices[j + 1]];
-				advData.setAuctionResult(levelPrice, ucsProb, day);
+				advData.setAuctionResult(levelPrice, ucsProb, day + 1);
 				AdxManager.getInstance().getSimulation()
 						.broadcastUCSWin(advNames[j], levelPrice);
 				ucsProb = ucsProb * UCS_PROB;
 			}
 		}
 	}
-
+	
+	@Override
+	public String logToString() {
+		String ret = new String("");
+		for (String adv : advertisersData.keySet()) {
+			ret = ret + adv + advertisersData.get(adv).logToString();			
+		}
+		return ret;
+	}
 }
