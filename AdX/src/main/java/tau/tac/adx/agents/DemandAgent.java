@@ -95,7 +95,7 @@ public class DemandAgent extends Builtin {
 			zeroDayInitialization();
 		} else {
 			auctionTomorrowsCampaign(day);
-			ucs.auction(day);
+			ucs.auction(day, true);
 
 			for (Campaign campaign : adNetCampaigns.values()) {
 				campaign.preNextTimeUnit(date);

@@ -37,9 +37,11 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 	}
 
 	@Override
-	public void auction(int day) {
+	public void auction(int day, boolean broadcast) {
 		advertisersData.clear();
-		advertisersData.putAll(tomorrowsAdvertisersData);
+		for (String advertiser : tomorrowsAdvertisersData.keySet()){
+			advertisersData.put(advertiser, tomorrowsAdvertisersData.get(advertiser).clone());
+		}
 		int advCount = tomorrowsAdvertisersData.size();
 
 		if (advCount > 0) {
@@ -69,8 +71,10 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 						.get(advNames[indices[j]]);
 				levelPrice = ucsProb * bids[indices[j+1]];
 				advData.setAuctionResult(levelPrice, ucsProb, day + 1);
-				AdxManager.getInstance().getSimulation()
-						.broadcastUCSWin(advNames[j], levelPrice);
+				if (broadcast){
+					AdxManager.getInstance().getSimulation()
+							.broadcastUCSWin(advNames[j], levelPrice);
+				}
 				ucsProb = ucsProb * UCS_PROB;
 			}
 		}

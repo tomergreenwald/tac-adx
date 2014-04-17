@@ -13,6 +13,34 @@ public class UserClassificationServiceAdNetData {
 	double bid;
 	int daySubmitted;
 
+	/**
+	 * @param effectiveDay
+	 * @param serviceLevel
+	 * @param price
+	 * @param bid
+	 * @param daySubmitted
+	 */
+	public UserClassificationServiceAdNetData(int effectiveDay,
+			double serviceLevel, double price, double bid, int daySubmitted) {
+		super();
+		this.effectiveDay = effectiveDay;
+		this.serviceLevel = serviceLevel;
+		this.price = price;
+		this.bid = bid;
+		this.daySubmitted = daySubmitted;
+	}
+	
+	/**
+	 * 
+	 */
+	public UserClassificationServiceAdNetData() {
+		super();
+	}
+
+	public UserClassificationServiceAdNetData clone() {
+		return new UserClassificationServiceAdNetData(effectiveDay, serviceLevel, price, bid, daySubmitted);
+	}
+
 	public int getEffectiveDay() {
 		return effectiveDay;
 	}
