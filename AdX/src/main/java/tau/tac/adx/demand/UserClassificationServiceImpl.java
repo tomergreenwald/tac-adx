@@ -17,15 +17,16 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 	private final static double UCS_PROB = 0.9;
 
 	private final Map<String, UserClassificationServiceAdNetData> advertisersData = new HashMap<String, UserClassificationServiceAdNetData>();
+	private final Map<String, UserClassificationServiceAdNetData> tomorrowsAdvertisersData = new HashMap<String, UserClassificationServiceAdNetData>();
 
 	@Override
 	public void updateAdvertiserBid(String advertiser, double ucsBid, int day) {
-		UserClassificationServiceAdNetData advData = advertisersData
+		UserClassificationServiceAdNetData advData = tomorrowsAdvertisersData
 				.get(advertiser);
 		if (advData == null) {
 			advData = new UserClassificationServiceAdNetData();
 			advData.setAuctionResult(0,1.0,1);
-			advertisersData.put(advertiser, advData);
+			tomorrowsAdvertisersData.put(advertiser, advData);
 		}
 		advData.setBid(ucsBid, day);
 	}
@@ -37,7 +38,9 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 
 	@Override
 	public void auction(int day) {
-		int advCount = advertisersData.size();
+		advertisersData.clear();
+		advertisersData.putAll(tomorrowsAdvertisersData);
+		int advCount = tomorrowsAdvertisersData.size();
 
 		if (advCount > 0) {
 			String[] advNames = new String[advCount + 1];
@@ -46,9 +49,9 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 
 			int i = 0;
 
-			for (String advName : advertisersData.keySet()) {
+			for (String advName : tomorrowsAdvertisersData.keySet()) {
 				advNames[i] = new String(advName);
-				bids[i] = advertisersData.get(advName).bid;
+				bids[i] = tomorrowsAdvertisersData.get(advName).bid;
 				indices[i] = i;
 				i++;
 			}
@@ -62,9 +65,9 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 			double ucsProb = 1.0;
 			double levelPrice = 0;
 			for (int j = 0; j < advCount; j++) {
-				UserClassificationServiceAdNetData advData = advertisersData
+				UserClassificationServiceAdNetData advData = tomorrowsAdvertisersData
 						.get(advNames[indices[j]]);
-				levelPrice = ucsProb * bids[indices[j + 1]];
+				levelPrice = ucsProb * bids[indices[j]];
 				advData.setAuctionResult(levelPrice, ucsProb, day + 1);
 				AdxManager.getInstance().getSimulation()
 						.broadcastUCSWin(advNames[j], levelPrice);
