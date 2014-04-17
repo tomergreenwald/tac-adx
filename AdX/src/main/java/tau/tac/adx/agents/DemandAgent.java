@@ -217,7 +217,7 @@ public class DemandAgent extends Builtin {
 					+ pendingCampaign.logToString());
 			CampaignAuctionReport campaignAuctionReport = pendingCampaign.auction();
 			if (campaignAuctionReport != null) {
-				getSimulation().sendCampaignAuctionReport(campaignAuctionReport);
+				getSimulation().sendCampaignAuctionReport(campaignAuctionReport);				
 			}
 			if (pendingCampaign.isAllocated()) {
 				adNetCampaigns.put(pendingCampaign.getAdvertiser(),

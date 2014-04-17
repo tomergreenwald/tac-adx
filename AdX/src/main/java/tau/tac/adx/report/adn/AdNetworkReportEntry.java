@@ -35,7 +35,7 @@ public class AdNetworkReportEntry extends
 	 */
 	private int winCount;
 	/**
-	 * Total cost of wins
+	 * Total cost of wins (millis)
 	 */
 	private double cost;
 
@@ -194,7 +194,7 @@ public class AdNetworkReportEntry extends
 	 */
 	@Override
 	public String toString() {
-		return "AdNetworkReportEntry [bidCount=" + bidCount + ", winCount="
+		return "AdNetworkReportEntry " + getKey() + "[bidCount=" + bidCount + ", winCount="
 				+ winCount + ", cost=" + cost + "]";
 	}
 

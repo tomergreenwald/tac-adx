@@ -131,7 +131,7 @@ public class GeneralParser extends Parser {
 						.getEntry(adNetworkKey);
 				System.out.println(getBasicInfoString(receiver)
 						+ StringUtils.rightPad("Ad Network report: ", 20)
-						+ "Bid count: "
+						+ adNetworkKey + "," + "Bid count: "
 						+ StringUtils.rightPad("" + reportEntry.getBidCount(),
 								5)
 						+ "\t Win count: "
