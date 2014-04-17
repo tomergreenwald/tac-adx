@@ -36,5 +36,15 @@ public class QualityManagerImpl implements QualityManager {
 	public double getQualityScore(String advertiser) {
 		return advertisersScores.get(advertiser);
 	}
+	
+	@Override
+	public String logToString() {
+		String ret = new String("Quality Retings ");
+		for (String adv : advertisersScores.keySet()) {
+			ret = ret + adv + ": " + advertisersScores.get(adv);			
+		}
+		return ret;
+	}
+
 
 }

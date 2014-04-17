@@ -12,4 +12,7 @@ public interface UserClassificationService {
 	public UserClassificationServiceAdNetData getAdNetData(String advertiser);
 
 	public void auction(int day);
+	
+	public String logToString();
+
 }
