@@ -67,13 +67,14 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 			double ucsProb = 1.0;
 			double levelPrice = 0;
 			for (int j = 0; j < advCount; j++) {
+				String advertiser = advNames[indices[j]];
 				UserClassificationServiceAdNetData advData = tomorrowsAdvertisersData
-						.get(advNames[indices[j]]);
+						.get(advertiser);
 				levelPrice = ucsProb * bids[indices[j+1]];
 				advData.setAuctionResult(levelPrice, ucsProb, day + 1);
 				if (broadcast){
 					AdxManager.getInstance().getSimulation()
-							.broadcastUCSWin(advNames[j], levelPrice);
+							.broadcastUCSWin(advertiser, levelPrice);
 				}
 				ucsProb = ucsProb * UCS_PROB;
 			}
