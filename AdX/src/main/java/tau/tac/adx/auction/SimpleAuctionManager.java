@@ -190,7 +190,7 @@ public class SimpleAuctionManager implements AuctionManager {
 		if (auctionData.getReservePrice().equals(Double.NaN)) {
 			return true;
 		}
-		return betterThan(bid.getBid(), auctionData.getReservePrice(),
+		return betterThan(bid.getBid() / 1000, auctionData.getReservePrice(),
 				auctionData.getAuctionOrder());
 	}
 
