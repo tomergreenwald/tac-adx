@@ -5,6 +5,7 @@ package tau.tac.adx.sim;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 import se.sics.tasim.aw.TimeListener;
 import tau.tac.adx.Adx;
@@ -44,6 +45,8 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	 * {@link BidManager}.
 	 */
 	private final AdxBidManager bidManager;
+	
+	private final Random random;
 
 	/**
 	 * @param auctionManager
@@ -58,6 +61,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 			AdxBidManager bidManager, EventBus eventBus) {
 		this.auctionManager = auctionManager;
 		this.bidManager = bidManager;
+		this.random = new Random();
 		eventBus.register(this);
 	}
 
@@ -101,7 +105,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 				.getInstance().getUserClassificationService();
 		UserClassificationServiceAdNetData adNetData = userClassificationService
 				.getAdNetData(advertiser);
-		if (adNetData.getServiceLevel() > 0) {
+		if (adNetData.getServiceLevel() <= random.nextDouble()) {
 			return query;
 		}
 		AdxQuery clone = query.clone();
