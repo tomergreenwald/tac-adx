@@ -148,7 +148,9 @@ public class AdxConfigurationParser {
 	public List<AdxUser> createUserPopulation() {
 		int populationSize = config.getPropertyAsInt(
 				"adxusers.population_size", 0);
-		SimpleUserGenerator generator = new SimpleUserGenerator();
+		double pContinue = config.getPropertyAsDouble(
+				"adxusers.pcontinue", 0);
+		SimpleUserGenerator generator = new SimpleUserGenerator(pContinue);
 		return generator.generate(populationSize);
 	}
 

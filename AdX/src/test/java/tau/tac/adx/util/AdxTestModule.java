@@ -40,6 +40,8 @@ import com.google.inject.Singleton;
  */
 public class AdxTestModule extends AbstractModule {
 
+	private static final double DEFAULT_PCONTINUE = 0.3;
+
 	/**
 	 * Generates the {@link Collection} of {@link AdxUser users} that will be
 	 * used across the {@link AdX} system.<br>
@@ -50,10 +52,15 @@ public class AdxTestModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public Collection<AdxUser> getUesrs() {
-		SimpleUserGenerator userGenerator = new SimpleUserGenerator();
+		SimpleUserGenerator userGenerator = new SimpleUserGenerator(Math.random());
 		Collection<AdxUser> users = userGenerator
 				.generate(TestConstants.USER_COUNT);
 		return users;
+	}
+	
+	@Provides
+	public AdxUserGenerator getAdxUserGenerator() {
+		return new SimpleUserGenerator(DEFAULT_PCONTINUE);
 	}
 
 	/**
@@ -62,7 +69,6 @@ public class AdxTestModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(AdxQueryGenerator.class).to(SimpleAdxQueryGenerator.class);
-		bind(AdxUserGenerator.class).to(SimpleUserGenerator.class);
 		bind(AdxPublisherGenerator.class).to(SimplePublisherGenerator.class);
 		bind(AdTypeGenerator.class).to(SimpleAdTypeGenerator.class);
 		bind(DeviceGenerator.class).to(SimpleDeviceGenerator.class);

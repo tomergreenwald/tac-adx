@@ -121,13 +121,8 @@ public class DefaultAdxUserQueryManagerTest {
 		DefaultAdxUserQueryManager manager = new DefaultAdxUserQueryManager(
 				catalog, users, deviceDistributionMap, adTypeDistributionMap,
 				random);
-		manager.nextTimeUnit(0);
-
 		AdxUser nsUser = userGenerator.generate(1).iterator().next();
-
-		assertEquals(manager.generateQuery(nsUser), null);
-
-		AdxQuery isQuery = manager.generateQuery(users.get(0));
+		AdxQuery isQuery = manager.generateQuery(nsUser);
 		assertNotNull(isQuery);
 	}
 }

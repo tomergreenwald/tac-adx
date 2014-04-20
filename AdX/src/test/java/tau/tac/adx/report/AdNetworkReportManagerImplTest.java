@@ -57,8 +57,10 @@ public class AdNetworkReportManagerImplTest {
 		int campaignId2 = (int) (Math.random() * 100);
 		Campaign campaign = Mockito.mock(Campaign.class);
 		Mockito.when(campaign.getId()).thenReturn(campaignId);
+		Mockito.when(campaign.getAdvertiser()).thenReturn("1");
 		Campaign campaign2 = Mockito.mock(Campaign.class);
 		Mockito.when(campaign2.getId()).thenReturn(campaignId2);
+		Mockito.when(campaign2.getAdvertiser()).thenReturn("2");
 		MarketSegment segment = MarketSegment.values()[random
 				.nextInt(MarketSegment.values().length - 1)];
 		Double winningPrice = random.nextDouble();
@@ -75,7 +77,7 @@ public class AdNetworkReportManagerImplTest {
 				campaign);
 		AdxAuctionResult auctionResult = new AdxAuctionResult(auctionState,
 				winningBidInfo, winningPrice, bidInfos );
-		SimpleUserGenerator userGenerator = new SimpleUserGenerator();
+		SimpleUserGenerator userGenerator = new SimpleUserGenerator(random.nextDouble());
 		AdxUser user = userGenerator.generate(1).get(0);
 		AdxQueryGenerator generator = Utils.getInjector().getInstance(
 				AdxQueryGenerator.class);

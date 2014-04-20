@@ -109,7 +109,7 @@ public class AdNetworkReportTest {
 				.nextInt(MarketSegment.values().length - 1)];
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];
-		AdxUser adxUser = new SimpleUserGenerator().generate(1).get(0);
+		AdxUser adxUser = new SimpleUserGenerator(random.nextDouble()).generate(1).get(0);
 		int campaignId = (int) (Math.random() * 100);
 		AdNetworkKey key = new AdNetworkKey(adxUser, publisherName, device,
 				adType, campaignId);
@@ -169,7 +169,7 @@ public class AdNetworkReportTest {
 				.nextInt(MarketSegment.values().length - 1)];
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];
-		AdxUser adxUser = new SimpleUserGenerator().generate(1).get(0);
+		AdxUser adxUser = new SimpleUserGenerator(random.nextDouble()).generate(1).get(0);
 		int campaignId = (int) (Math.random() * 100);
 		AdNetworkKey key = new AdNetworkKey(adxUser, publisherName, device,
 				adType, campaignId);
@@ -188,7 +188,7 @@ public class AdNetworkReportTest {
 		Double winningPrice = random.nextDouble();
 		AdxAuctionResult auctionResult = new AdxAuctionResult(auctionState,
 				winningBidInfo, winningPrice, null);
-		SimpleUserGenerator userGenerator = new SimpleUserGenerator();
+		SimpleUserGenerator userGenerator = new SimpleUserGenerator(random.nextDouble());
 		AdxUser user = userGenerator.generate(1).get(0);
 		AdxQueryGenerator generator = Utils.getInjector().getInstance(
 				AdxQueryGenerator.class);

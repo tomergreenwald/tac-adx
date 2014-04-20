@@ -151,7 +151,7 @@ public class AdxPublisherReportTest {
 		PublisherCatalogEntry key = new PublisherCatalogEntry(publisherName);
 		AdxPublisherReportEntry entry = new AdxPublisherReportEntry(key);
 		AdxPublisherReport report = new AdxPublisherReport();
-		AdxUserGenerator userGenerator = new SimpleUserGenerator();
+		AdxUserGenerator userGenerator = new SimpleUserGenerator(random.nextDouble());
 		AdxUser user = userGenerator.generate(1).iterator().next();
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];

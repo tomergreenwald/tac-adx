@@ -41,28 +41,10 @@ import com.google.inject.Singleton;
 public class AdxModule extends AbstractModule {
 
 	/**
-	 * Generates the {@link Collection} of {@link AdxUser users} that will be
-	 * used across the {@link AdX} system.<br>
-	 * The collection will be a {@link Singleton}.
-	 * 
-	 * @return A {@link Collection} of {@link AdxUser users}.
-	 */
-	@Provides
-	@Singleton
-	public Collection<AdxUser> getUesrs() {
-		SimpleUserGenerator userGenerator = new SimpleUserGenerator();
-		Collection<AdxUser> users = userGenerator
-				.generate(TestConstants.USER_COUNT);
-		return users;
-	}
-
-	/**
 	 * @see com.google.inject.AbstractModule#configure()
 	 */
 	@Override
 	protected void configure() {
-		bind(AdxQueryGenerator.class).to(SimpleAdxQueryGenerator.class);
-		bind(AdxUserGenerator.class).to(SimpleUserGenerator.class);
 		bind(AdxPublisherGenerator.class).to(SimplePublisherGenerator.class);
 		bind(AdTypeGenerator.class).to(SimpleAdTypeGenerator.class);
 		bind(DeviceGenerator.class).to(SimpleDeviceGenerator.class);

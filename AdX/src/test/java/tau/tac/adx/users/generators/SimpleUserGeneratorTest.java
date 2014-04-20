@@ -32,7 +32,7 @@ public class SimpleUserGeneratorTest {
 	 */
 	@Test
 	public void testGenerate() {
-		SimpleUserGenerator generator = new SimpleUserGenerator();
+		SimpleUserGenerator generator = new SimpleUserGenerator(Math.random());
 		int amount = Math.abs(new Random()
 				.nextInt(TestConstants.AMOUNT_TO_GENERATE));
 		Collection<AdxUser> users = generator.generate(amount);

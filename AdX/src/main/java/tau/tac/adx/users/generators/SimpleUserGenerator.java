@@ -24,6 +24,13 @@ public class SimpleUserGenerator implements AdxUserGenerator {
 
 	/** Unique user id. */
 	private static AtomicInteger uniqueId = new AtomicInteger();
+	
+	/** User Continuation Probability. */
+	private double pContinue;
+
+	public SimpleUserGenerator(double pContinue) {
+		this.pContinue = pContinue;
+	}
 
 	/**
 	 * @see GenericGenerator#generate(int)
@@ -65,7 +72,6 @@ public class SimpleUserGenerator implements AdxUserGenerator {
 		Age age = randomAge();
 		Gender gender = randomGender();
 		Income income = randomIncome();
-		double pContinue = Math.random();
 		AdxUser user = new AdxUser(age, gender, income, pContinue,
 				uniqueId.incrementAndGet());
 		return user;
