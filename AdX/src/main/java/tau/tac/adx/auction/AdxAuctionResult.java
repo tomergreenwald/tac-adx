@@ -3,7 +3,7 @@
  */
 package tau.tac.adx.auction;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import tau.tac.adx.Adx;
@@ -37,9 +37,9 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	private final Double winningPrice;
 
 	/**
-	 * List of participants in the auction.
+	 * Collection of {@link BidInfo}s.
 	 */
-	private final List<String> participants;
+	private final Collection<BidInfo> bidInfos;
 
 	/**
 	 * @param auctionState
@@ -52,12 +52,12 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	 *            List of participants in the auction.
 	 */
 	public AdxAuctionResult(AuctionState auctionState, BidInfo winningBidInfo,
-			Double winningPrice, List<String> participants) {
+			Double winningPrice, Collection<BidInfo> bidInfos) {
 		super();
 		this.auctionState = auctionState;
 		this.winningBidInfo = winningBidInfo;
 		this.winningPrice = winningPrice;
-		this.participants = participants;
+		this.bidInfos = bidInfos;
 	}
 
 	/**
@@ -99,20 +99,20 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 	}
 
 	/**
-	 * @return the participants
+	 * @return the bidInfos
 	 */
-	public List<String> getParticipants() {
-		return participants;
+	public Collection<BidInfo> getBidInfos() {
+		return bidInfos;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "State: "
-				+ auctionState.toString()
-				+ " Winning: "
-				+ winningPrice.toString()
-				+ " Segments: "
-				+ ((winningBidInfo != null) ? winningBidInfo
-						.getMarketSegments() : "");
+		return "AdxAuctionResult [auctionState=" + auctionState
+				+ ", winningBidInfo=" + winningBidInfo + ", winningPrice="
+				+ winningPrice + ", bidInfos=" + bidInfos + "]";
 	}
+
 }

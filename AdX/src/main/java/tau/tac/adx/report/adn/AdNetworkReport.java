@@ -24,9 +24,9 @@
  */
 package tau.tac.adx.report.adn;
 
-import tau.tac.adx.auction.AdxAuctionResult;
+import tau.tac.adx.demand.Campaign;
+import tau.tac.adx.messages.AuctionMessage;
 import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.users.AdxUser;
 import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
 
 public class AdNetworkReport extends
@@ -93,32 +93,28 @@ public class AdNetworkReport extends
 	 * @param auctionResult
 	 * @return Corresponding {@link AdNetworkKey}.
 	 */
-	private AdNetworkKey getAdNetworkKey(AdxUser adxUser, AdxQuery query,
-			AdxAuctionResult auctionResult) {
-		return new AdNetworkKey(adxUser, query.getPublisher(),
-				query.getDevice(), query.getAdType(), auctionResult
-						.getWinningBidInfo().getCampaign().getId());
+	private AdNetworkKey getAdNetworkKey(AuctionMessage message, int campaignId) {
+		AdxQuery query = message.getQuery();
+		return new AdNetworkKey(message.getUser(), query.getPublisher(),
+				query.getDevice(), query.getAdType(), campaignId);
 	}
 
 	/**
 	 * Adds bid related data to the report.
 	 * 
-	 * @param auctionResult
-	 *            {@link AdxAuctionResult}.
-	 * @param query
-	 *            {@link AdxQuery}.
-	 * @param user
-	 *            {@link AdxUser}.
+	 * @param auctionMessage
+	 *            {@link AuctionMessage}.
+	 * @param campaignId
+	 *            {@link Campaign}.
 	 * @param hasWon
 	 */
-	public void addBid(AdxAuctionResult auctionResult, AdxQuery query,
-			AdxUser user, boolean hasWon) {
-		AdNetworkKey adNetworkKey = getAdNetworkKey(user, query, auctionResult);
+	public void addBid(AuctionMessage auctionMessage, int campaignId, boolean hasWon) {
+		AdNetworkKey adNetworkKey = getAdNetworkKey(auctionMessage, campaignId);
 		AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);
 		if (reportEntry == null) {
 			reportEntry = addReportEntry(adNetworkKey);
 		}
-		reportEntry.addAuctionResult(auctionResult, hasWon);
+		reportEntry.addAuctionResult(auctionMessage.getAuctionResult(), hasWon);
 	}
 
 	/**

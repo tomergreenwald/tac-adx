@@ -47,6 +47,7 @@ import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.messages.AuctionMessage;
 import tau.tac.adx.props.AdxInfoContextFactory;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.generators.AdxQueryGenerator;
@@ -192,7 +193,8 @@ public class AdNetworkReportTest {
 		AdxQueryGenerator generator = Utils.getInjector().getInstance(
 				AdxQueryGenerator.class);
 		AdxQuery query = generator.generate(1).iterator().next();
-		report.addBid(auctionResult, query, user, false);
+		AuctionMessage auctionMessage = new AuctionMessage(auctionResult, query, user);
+		report.addBid(auctionMessage, 0, false);
 		report.lock();
 
 		byte[] buffer = getBytesForTransportable(writer, report);
@@ -219,6 +221,6 @@ public class AdNetworkReportTest {
 	public void testAddQueryToReport() {
 		AdNetworkReport report = new AdNetworkReport();
 
-		report.addBid(null, null, null, false);
+		report.addBid(null, 0, false);
 	}
 }

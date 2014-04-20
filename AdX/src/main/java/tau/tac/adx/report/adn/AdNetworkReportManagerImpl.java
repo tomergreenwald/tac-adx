@@ -86,8 +86,9 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 */
 	@Subscribe
 	public void auctionPerformed(AuctionMessage message) {
-		for (String participant : message.getAuctionResult().getParticipants()) {
-			AdNetworkReport report = adNetworkReports.get(participant);
+		for (BidInfo bidInfo : message.getAuctionResult().getBidInfos()) {
+			String participant = bidInfo.getBidder().getName();
+			AdNetworkReport report = adNetworkReports.get(participant );
 			if (report == null) {
 				report = new AdNetworkReport();
 				adNetworkReports.put(participant, report);
@@ -99,8 +100,7 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 				hasWon = winningBidInfo.getBidder().getName()
 						.equals(participant);
 			}
-			report.addBid(message.getAuctionResult(), message.getQuery(),
-					message.getUser(), hasWon);
+			report.addBid(message, bidInfo.getCampaign().getId(), hasWon);
 		}
 	}
 
@@ -114,5 +114,12 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 					entry.getValue());
 		}
 		adNetworkReports.clear();
+	}
+	
+	/**
+	 * @return the adNetworkReports
+	 */
+	public Map<String, AdNetworkReport> getAdNetworkReports() {
+		return adNetworkReports;
 	}
 }
