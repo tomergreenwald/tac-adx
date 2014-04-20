@@ -316,6 +316,7 @@ public class DemandAgent extends Builtin {
 			int reach = (int) (cmp_reachlevels[1] * MarketSegment.marketSegmentSize(target) * cmplength);
 			 
 			qualityManager.addAdvertiser(advertiser);
+			qualityManager.updateQualityScore(advertiser, 1.0);
 			Campaign campaign = new CampaignImpl(qualityManager,
 					reach, 1, cmplength,
 					target, cmp_vc + cmp_vc_offset*random.nextDouble(),
