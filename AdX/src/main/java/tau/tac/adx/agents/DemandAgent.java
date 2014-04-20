@@ -135,6 +135,9 @@ public class DemandAgent extends Builtin {
 			getSimulation().sendCampaignOpportunity(
 					new CampaignOpportunityMessage(pendingCampaign, day));
 		} else {
+			log.log(Level.INFO,
+					"Day " + day + " :"
+							+ " A campaign was not published today because its randomized length was too long");
 			/**
 			 * All campaigns must end during the game
 			 */
