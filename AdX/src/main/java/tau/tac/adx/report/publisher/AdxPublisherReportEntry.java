@@ -86,7 +86,7 @@ public class AdxPublisherReportEntry extends
 	}
 
 	/**
-	 * @return the popularity
+	 * @return the popularity of the publisher - the number of times it was visited by users
 	 */
 	public int getPopularity() {
 		return popularity;
