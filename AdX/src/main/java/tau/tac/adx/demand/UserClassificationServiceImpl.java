@@ -59,7 +59,7 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 			}
 
 			advNames[advCount] = "Zero";
-			bids[advCount] = Double.NEGATIVE_INFINITY;
+			bids[advCount] = 0;
 			indices[advCount] = advCount;
 
 			hardSort(bids, indices);
