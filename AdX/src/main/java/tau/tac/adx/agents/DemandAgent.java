@@ -374,7 +374,7 @@ public class DemandAgent extends Builtin {
 							+ " :" + " UCS Bid: " + cbm.getUcsBid()
 							+ " Cmp ID: " + cbm.getCampaignId() + " Cmp Bid: "
 							+ cbm.getCampaignBudget());
-			if (cbm.getUcsBid() < 0) {
+			if (!(cbm.getUcsBid() >= 0)) {
 				log.log(Level.WARNING,
 						"Day " + day + " :" + "UCS bid was negative and will be ignored");
 				return;
