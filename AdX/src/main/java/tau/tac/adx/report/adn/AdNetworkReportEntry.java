@@ -35,7 +35,7 @@ public class AdNetworkReportEntry extends
 	 */
 	private int winCount;
 	/**
-	 * Total cost of wins (millis)
+	 * Total cost of wins
 	 */
 	private double cost;
 
