@@ -3,7 +3,9 @@ package tau.tac.adx.demand;
 import static edu.umich.eecs.tac.auction.AuctionUtils.hardSort;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -404,7 +406,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			int[] indices = new int[advCount];
 
 			int i = 0;
-			for (String advName : advertisersBids.keySet()) {
+			
+			List<String> advNamesList = new ArrayList<String>(advertisersBids.keySet());
+			Collections.shuffle(advNamesList);
+			
+			for (String advName : advNamesList) {
 				advNames[i] = new String(advName);
 				bids[i] = advertisersBids.get(advName);
 				qualityScores[i] = qualityManager.getQualityScore(advName);

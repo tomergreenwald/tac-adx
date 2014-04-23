@@ -2,7 +2,10 @@ package tau.tac.adx.demand;
 
 import static edu.umich.eecs.tac.auction.AuctionUtils.hardSort;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import tau.tac.adx.AdxManager;
@@ -51,7 +54,10 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 
 			int i = 0;
 
-			for (String advName : tomorrowsAdvertisersData.keySet()) {
+			List<String> advNamesList = new ArrayList<String>(tomorrowsAdvertisersData.keySet());
+			Collections.shuffle(advNamesList);
+			
+			for (String advName : advNamesList) {
 				advNames[i] = new String(advName);
 				bids[i] = tomorrowsAdvertisersData.get(advName).bid;
 				indices[i] = i;
