@@ -4,6 +4,7 @@
 package tau.tac.adx.auction.data;
 
 import java.util.Collection;
+import java.util.List;
 
 import tau.tac.adx.bids.BidInfo;
 
@@ -26,7 +27,7 @@ public class AuctionData {
 	/**
 	 * {@link Collection} of {@link BidInfo}s.
 	 */
-	Collection<BidInfo> bidInfoCollection;
+	List<BidInfo> bidInfos;
 	/**
 	 * Reserve price value. {@link Double#NaN} if not existing.
 	 */
@@ -35,16 +36,16 @@ public class AuctionData {
 	/**
 	 * @param auctionOrder
 	 * @param auctionPriceType
-	 * @param bidInfoCollection
+	 * @param bidInfos
 	 * @param reservePrice
 	 */
 	public AuctionData(AuctionOrder auctionOrder,
 			AuctionPriceType auctionPriceType,
-			Collection<BidInfo> bidInfoCollection, Double reservePrice) {
+			List<BidInfo> bidInfos, Double reservePrice) {
 		super();
 		this.auctionOrder = auctionOrder;
 		this.auctionPriceType = auctionPriceType;
-		this.bidInfoCollection = bidInfoCollection;
+		this.bidInfos = bidInfos;
 		this.reservePrice = reservePrice;
 	}
 
@@ -79,18 +80,17 @@ public class AuctionData {
 	}
 
 	/**
-	 * @return the bidInfoCollection
+	 * @return the bidInfos
 	 */
-	public Collection<BidInfo> getBidInfoCollection() {
-		return bidInfoCollection;
+	public List<BidInfo> getBidInfos() {
+		return bidInfos;
 	}
 
 	/**
-	 * @param bidInfoCollection
-	 *            the bidInfoCollection to set
+	 * @param bidInfos the bidInfos to set
 	 */
-	public void setBidInfoCollection(Collection<BidInfo> bidInfoCollection) {
-		this.bidInfoCollection = bidInfoCollection;
+	public void setBidInfos(List<BidInfo> bidInfos) {
+		this.bidInfos = bidInfos;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class AuctionData {
 		this.reservePrice = reservePrice;
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -120,16 +120,12 @@ public class AuctionData {
 		result = prime
 				* result
 				+ ((auctionPriceType == null) ? 0 : auctionPriceType.hashCode());
-		result = prime
-				* result
-				+ ((bidInfoCollection == null) ? 0 : bidInfoCollection
-						.hashCode());
 		result = prime * result
 				+ ((reservePrice == null) ? 0 : reservePrice.hashCode());
 		return result;
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -145,11 +141,6 @@ public class AuctionData {
 			return false;
 		if (auctionPriceType != other.auctionPriceType)
 			return false;
-		if (bidInfoCollection == null) {
-			if (other.bidInfoCollection != null)
-				return false;
-		} else if (!bidInfoCollection.equals(other.bidInfoCollection))
-			return false;
 		if (reservePrice == null) {
 			if (other.reservePrice != null)
 				return false;
@@ -157,5 +148,6 @@ public class AuctionData {
 			return false;
 		return true;
 	}
+
 
 }

@@ -5,6 +5,8 @@ package tau.tac.adx.sim;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import se.sics.tasim.aw.TimeListener;
@@ -70,13 +72,13 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	 */
 	@Override
 	public AdxAuctionResult runAuction(AdxQuery query) {
-		Collection<BidInfo> bidInfoCollection = generateBidInfos(query);
+		List<BidInfo> bidInfos = generateBidInfos(query);
 
 		UserAdTypeReservePriceManager reservePriceManager = AdxManager.getInstance()
 				.getPublisher(query.getPublisher()).getReservePriceManager();
 		Double reservePrice = reservePriceManager.generateReservePrice(query);
 		AuctionData auctionData = new AuctionData(AuctionOrder.HIGHEST_WINS,
-				AuctionPriceType.GENERALIZED_SECOND_PRICE, bidInfoCollection,
+				AuctionPriceType.GENERALIZED_SECOND_PRICE, bidInfos,
 				reservePrice);
 		AdxAuctionResult auctionResult = auctionManager.runAuction(auctionData, query);
 		if (auctionResult.getAuctionState() == AuctionState.AUCTION_COPMLETED) {
@@ -85,8 +87,8 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 		return auctionResult;
 	}
 
-	private Collection<BidInfo> generateBidInfos(AdxQuery query) {
-		Collection<BidInfo> bidInfoCollection = new HashSet<BidInfo>();
+	private List<BidInfo> generateBidInfos(AdxQuery query) {
+		List<BidInfo> bidInfos = new LinkedList<BidInfo>();
 		String[] advertisers = AdxManager.getInstance().getSimulation()
 				.getAdxAdvertiserAddresses();
 		for (final String advertiser : advertisers) {
@@ -94,10 +96,10 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 			BidInfo bidInfo = bidManager
 					.getBidInfo(advertiser, classifiedQuery);
 			if (bidInfo != null) {
-				bidInfoCollection.add(bidInfo);
+				bidInfos.add(bidInfo);
 			}
 		}
-		return bidInfoCollection;
+		return bidInfos;
 	}
 
 	private AdxQuery getClassifiedQuery(String advertiser, AdxQuery query) {

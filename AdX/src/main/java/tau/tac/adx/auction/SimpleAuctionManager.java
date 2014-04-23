@@ -3,7 +3,9 @@
  */
 package tau.tac.adx.auction;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import tau.tac.adx.auction.data.AuctionData;
@@ -14,6 +16,7 @@ import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.report.adn.MarketSegment;
 
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
@@ -41,7 +44,9 @@ public class SimpleAuctionManager implements AuctionManager {
 				.getAuctionOrder());
 		BidInfo secondBid = initializeByAuctionOrder(auctionData
 				.getAuctionOrder());
-		for (BidInfo bidInfo : auctionData.getBidInfoCollection()) {
+		List<BidInfo> bidInfos = auctionData.getBidInfos();
+		Collections.shuffle(bidInfos);
+		for (BidInfo bidInfo : bidInfos) {
 			if (betterBid(bidInfo, winningBid, auctionData.getAuctionOrder())) {
 				secondBid = winningBid;
 				winningBid = bidInfo;
@@ -121,16 +126,16 @@ public class SimpleAuctionManager implements AuctionManager {
 		if (winningBid.equals(initializeByAuctionOrder(auctionData
 				.getAuctionOrder()))) {
 			return new AdxAuctionResult(AuctionState.NO_BIDS, null, Double.NaN,
-					auctionData.getBidInfoCollection());
+					auctionData.getBidInfos());
 		}
 		if (!passedReservePrice(winningBid, auctionData)) {
 			return new AdxAuctionResult(AuctionState.LOW_BIDS, null, null,
-					auctionData.getBidInfoCollection());
+					auctionData.getBidInfos());
 		}
 		switch (auctionData.getAuctionPriceType()) {
 		case GENERALIZED_FIRST_PRICE:
 			return new AdxAuctionResult(AuctionState.AUCTION_COPMLETED,
-					winningBid, winningBid.getBid(), auctionData.getBidInfoCollection());
+					winningBid, winningBid.getBid(), auctionData.getBidInfos());
 		case GENERALIZED_SECOND_PRICE:
 			double winningPrice;
 			if (!passedReservePrice(secondBid, auctionData)) {
@@ -139,7 +144,7 @@ public class SimpleAuctionManager implements AuctionManager {
 				winningPrice = secondBid.getBid();
 			}
 			return new AdxAuctionResult(AuctionState.AUCTION_COPMLETED,
-					winningBid, winningPrice, auctionData.getBidInfoCollection());
+					winningBid, winningPrice, auctionData.getBidInfos());
 		default:
 			throw switchCaseException(auctionData);
 		}
