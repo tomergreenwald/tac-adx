@@ -82,6 +82,8 @@ public class DemandAgent extends Builtin {
 
 	private UserClassificationService ucs;
 
+	private boolean bidsAllowed = false;
+	
 	/**
 	 * Default constructor.
 	 */
@@ -90,6 +92,7 @@ public class DemandAgent extends Builtin {
 	}
 
 	public void preNextTimeUnit(int date) {
+		bidsAllowed = false;
 		day = date;
 		if (day == 0) {
 			zeroDayInitialization();
@@ -105,6 +108,7 @@ public class DemandAgent extends Builtin {
 		getSimulation().getEventBus().post(
 				new UserClassificationServiceNotification(ucs));
 		createAndPublishTomorrowsPendingCampaign();
+		bidsAllowed = true;
 	}
 
 	private void createAndPublishTomorrowsPendingCampaign() {
@@ -377,6 +381,12 @@ public class DemandAgent extends Builtin {
 			if (!(cbm.getUcsBid() >= 0)) {
 				log.log(Level.WARNING,
 						"Day " + day + " :" + "UCS bid was negative and will be ignored");
+				return;
+			}
+			
+			if (!bidsAllowed) {
+				log.log(Level.SEVERE,
+						"Day " + day + " :" + "AdNetBid out of sync, while not allowed - ignoring");				
 				return;
 			}
 
