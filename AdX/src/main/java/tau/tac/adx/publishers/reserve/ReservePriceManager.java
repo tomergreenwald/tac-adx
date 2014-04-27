@@ -57,6 +57,12 @@ public class ReservePriceManager {
 	private final TreeMap<Double, AtomicLong> profitMap = new TreeMap<Double, AtomicLong>();
 
 	/**
+	 * Number of times this service was requested per day. Re-initialized to 0
+	 * upon every call to {@link #updateDailyBaselineAverage()}
+	 */
+	private int dailyRequests;
+
+	/**
 	 * {@link ConfigProxy} to use.
 	 */
 	ConfigProxy config;
@@ -82,6 +88,7 @@ public class ReservePriceManager {
 				INITIAL_DAILY_BASELINE_AVERAGE, 0);
 		this.baselineRange = baselineRange;
 		this.updateCoefficient = updateCoefficient;
+		this.dailyRequests = 0;
 	}
 
 	/**
@@ -106,6 +113,7 @@ public class ReservePriceManager {
 		this.dailyBaselineAverage = dailyBaselineAverage;
 		this.baselineRange = baselineRange;
 		this.updateCoefficient = updateCoefficient;
+		this.dailyRequests = 0;
 	}
 
 	/**
@@ -113,9 +121,10 @@ public class ReservePriceManager {
 	 *         average</b> and the <b>baseline range</b>.
 	 */
 	public double generateReservePrice() {
-		return AdxUtils.cutDouble(Math.random() * baselineRange
-				* 2 + dailyBaselineAverage
-				- baselineRange, DIGITS_AFTER_DECIMAL_POINT);
+		dailyRequests++;
+		return AdxUtils.cutDouble(Math.random() * baselineRange * 2
+				+ dailyBaselineAverage - baselineRange,
+				DIGITS_AFTER_DECIMAL_POINT);
 	}
 
 	/**
@@ -143,13 +152,20 @@ public class ReservePriceManager {
 	 * @return Updated {@link #dailyBaselineAverage}.
 	 */
 	public double updateDailyBaselineAverage() {
-		if (profitMap.size() == 0) {
-			addImpressionForPrice(0);
+		if (dailyRequests == 0) {
+			// do nothing
+		} else {
+			double highestProfitsPrice;
+			if (profitMap.size() == 0) {
+				highestProfitsPrice = 0;
+			} else {
+				highestProfitsPrice = getMostProfitableReservePrice();
+			}
+			profitMap.clear();
+			dailyBaselineAverage = updateCoefficient * dailyBaselineAverage
+					+ (1 - updateCoefficient) * highestProfitsPrice;
 		}
-		double highestProfitsPrice = getMostProfitableReservePrice();
-		profitMap.clear();
-		dailyBaselineAverage = updateCoefficient * dailyBaselineAverage
-				+ (1 - updateCoefficient) * highestProfitsPrice;
+		dailyRequests = 0;
 		return dailyBaselineAverage;
 	}
 
