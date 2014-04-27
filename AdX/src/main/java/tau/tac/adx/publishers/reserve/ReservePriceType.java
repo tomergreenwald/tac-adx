@@ -31,6 +31,15 @@ class ReservePriceType {
 	}
 
 	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ReservePriceType [marketSegment=" + marketSegment + ", adType="
+				+ adType + "]";
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
