@@ -89,12 +89,12 @@ public class AdxConfigurationParser {
 	private double[] deviceMobile = { 0.26, 0.24, 0.23, 0.22, 0.25, 0.24, 0.21,
 			0.22, 0.18, 0.19, 0.2, 0.19, 0.24, 0.28, 0.28, 0.30, 0.27, 0.31 };
 
-	private double[] reservePriceDailyBaselineAverage = { 0.001, 0.001, 0.001,
-			0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001,
-			0.001, 0.001, 0.001, 0.001, 0.001, 0.001 };
-	private double[] reservePriceBaselineRange = { 0.001, 0.001, 0.001, 0.001,
-			0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001,
-			0.001, 0.001, 0.001, 0.001, 0.001 };
+	private double[] reservePriceDailyBaselineAverage = { 0.1, 0.1, 0.1,
+			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+			0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
+	private double[] reservePriceBaselineRange = { 0.1, 0.1, 0.1, 0.1,
+			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+			0.1, 0.1, 0.1, 0.1, 0.1 };
 	private double[] reservePriceUpdateCoeffecient = { 0.6, 0.6, 0.6, 0.6, 0.6,
 			0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6 };
 
