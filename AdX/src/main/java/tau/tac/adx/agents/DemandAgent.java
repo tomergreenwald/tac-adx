@@ -406,7 +406,7 @@ public class DemandAgent extends Builtin {
 	}
 
 	@Subscribe
-	public void impressed(AuctionMessage message) {
+	public synchronized void impressed(AuctionMessage message) {
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		AuctionState auctionState = message.getAuctionResult()

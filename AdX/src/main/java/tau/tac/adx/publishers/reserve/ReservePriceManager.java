@@ -120,7 +120,7 @@ public class ReservePriceManager {
 	 * @return A random reserve price according to the <b>daily baseline
 	 *         average</b> and the <b>baseline range</b>.
 	 */
-	public double generateReservePrice() {
+	public synchronized double generateReservePrice() {
 		dailyRequests++;
 		return AdxUtils.cutDouble(Math.random() * baselineRange * 2
 				+ dailyBaselineAverage - baselineRange,
@@ -134,7 +134,7 @@ public class ReservePriceManager {
 	 * @param reservePrice
 	 *            Reserve price to update data for.
 	 */
-	public void addImpressionForPrice(double reservePrice) {
+	public synchronized void addImpressionForPrice(double reservePrice) {
 		if (!profitMap.containsKey(reservePrice)) {
 			profitMap.put(reservePrice, new AtomicLong());
 		}
