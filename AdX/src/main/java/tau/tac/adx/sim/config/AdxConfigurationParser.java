@@ -20,6 +20,7 @@ import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.users.generators.PopulationUserGenerator;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
 import tau.tac.adx.users.properties.Age;
@@ -146,11 +147,22 @@ public class AdxConfigurationParser {
 	 * @return {@link List} of {@link AdxUser}s.
 	 */
 	public List<AdxUser> createUserPopulation() {
+		Map<AdxUser, Integer> weights = new HashMap<AdxUser, Integer>();
 		int populationSize = config.getPropertyAsInt(
 				"adxusers.population_size", 0);
-		double pContinue = config.getPropertyAsDouble(
-				"adxusers.pcontinue", 0);
-		SimpleUserGenerator generator = new SimpleUserGenerator(pContinue);
+		
+		int populationTypesSize = config.getPropertyAsInt(
+				"population.types.size", 0);
+				for (int i = 1; i <= populationTypesSize; i++) {
+			Age age = Age.valueOf(config.getProperty(String.format("population.%s.age",	i)));
+			Gender gender = Gender.valueOf(config.getProperty(String.format("population.%s.gender",	i)));
+			Income income = Income.valueOf(config.getProperty(String.format("population.%s.income",	i)));
+			int probability = config.getPropertyAsInt(String.format("population.%s.probability",	i), 0);
+			AdxUser adxUser = new AdxUser(age, gender, income, 0, 0);
+			weights.put(adxUser, probability);
+		}
+		
+		PopulationUserGenerator generator = new PopulationUserGenerator(weights);
 		return generator.generate(populationSize);
 	}
 
