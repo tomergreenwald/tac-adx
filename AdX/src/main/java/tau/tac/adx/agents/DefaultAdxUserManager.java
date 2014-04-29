@@ -65,7 +65,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final AdxUserQueryManager queryManager;
 	
-	private final ExecutorService executor = Executors.newFixedThreadPool(4);
+	static private final ExecutorService executor = Executors.newFixedThreadPool(4);
 
 	/**
 	 * Global {@link EventBus}.
