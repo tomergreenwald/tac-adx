@@ -24,9 +24,14 @@
  */
 package tau.tac.adx.agents;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
@@ -59,6 +64,8 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	private final PublisherCatalog publisherCatalog;
 
 	private final AdxUserQueryManager queryManager;
+	
+	static private final ExecutorService executor = Executors.newFixedThreadPool(4);
 
 	/**
 	 * Global {@link EventBus}.
@@ -114,13 +121,57 @@ public class DefaultAdxUserManager implements AdxUserManager {
 				publisher.getReservePriceManager().updateDailyBaselineAverage();
 			}
 			
+			
+			Collection<HandleUserActivityCallable> tasks = new LinkedList<DefaultAdxUserManager.HandleUserActivityCallable>();
+			
+			long pre;
+			long post;
+			
+			
+			log.fine("##################################### S-Adding users as tasks");
+			pre = System.currentTimeMillis();
 			for (AdxUser user : users) {
-				handleUserActivity(user, auctioneer);
+				tasks.add(new HandleUserActivityCallable(user,auctioneer));
+			}
+			post = System.currentTimeMillis();
+			log.fine("##################################### E-Adding users as tasks - total time in millis: " +(post - pre));
+			try {
+				log.fine("##################################### S-Invoking users activity");
+				pre =  System.currentTimeMillis();
+				executor.invokeAll(tasks);
+				post =  System.currentTimeMillis();
+				log.fine("##################################### E-Invoking users activity - total time in millis: " +(post - pre));
+			} catch (InterruptedException e) {
+				log.severe(e.toString());
 			}
 			// update publishers' reserve price
 			log.finest("FINISH OF USER TRIGGER");
 		}
 
+	}
+	
+	private class HandleUserActivityCallable implements Callable<Object> {
+		
+		private AdxUser user;
+		
+		private AdxAuctioneer auctioneer;
+
+		/**
+		 * @param user
+		 * @param auctioneer
+		 */
+		public HandleUserActivityCallable(AdxUser user, AdxAuctioneer auctioneer) {
+			super();
+			this.user = user;
+			this.auctioneer = auctioneer;
+		}
+
+		@Override
+		public Object call() throws Exception {
+			handleUserActivity(user, auctioneer);
+			return null;
+		}
+		
 	}
 
 	/**

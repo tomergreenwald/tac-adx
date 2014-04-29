@@ -98,7 +98,7 @@ public class UserAdTypeReservePriceManager implements
 	 *            {@link AdxQuery} used for its properties.
 	 * @return The matching {@link ReservePriceManager}.
 	 */
-	private ReservePriceManager getReservePriceManager(AdxQuery adxQuery) {
+	private synchronized ReservePriceManager getReservePriceManager(AdxQuery adxQuery) {
 		ReservePriceType type = getType(adxQuery);
 		if (!reservePriceManagers.containsKey(type)) {
 			ReservePriceManager reservePriceManager = new ReservePriceManager(
