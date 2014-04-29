@@ -40,11 +40,17 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 	}
 
 	@Override
+	public UserClassificationServiceAdNetData getTomorrowsAdNetData(String advertiser) {
+		return tomorrowsAdvertisersData.get(advertiser);
+	}
+
+	@Override
 	public void auction(int day, boolean broadcast) {
 		advertisersData.clear();
 		for (String advertiser : tomorrowsAdvertisersData.keySet()){
 			advertisersData.put(advertiser, tomorrowsAdvertisersData.get(advertiser).clone());
 		}
+
 		int advCount = tomorrowsAdvertisersData.size();
 
 		if (advCount > 0) {

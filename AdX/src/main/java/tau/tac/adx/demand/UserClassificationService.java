@@ -15,4 +15,6 @@ public interface UserClassificationService {
 	
 	public String logToString();
 
+	public UserClassificationServiceAdNetData getTomorrowsAdNetData(String advertiser);
+
 }

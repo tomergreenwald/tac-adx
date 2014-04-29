@@ -91,7 +91,7 @@ public class DemandAgent extends Builtin {
 		super(TACAdxConstants.DEMAND_AGENT_NAME);
 	}
 
-	public void preNextTimeUnit(int date) {
+	public void preNextTimeUnit(int date) { 
 		bidsAllowed = false;
 		day = date;
 		if (day == 0) {
@@ -195,7 +195,7 @@ public class DemandAgent extends Builtin {
 			}
 
 			AdNetworkDailyNotification adNetworkNotification = new AdNetworkDailyNotification(
-					ucs.getAdNetData(advertiser), pendingCampaign,
+					ucs.getTomorrowsAdNetData(advertiser), pendingCampaign,
 					qualityManager.getQualityScore(advertiser));
 
 			/* remove campaign cost for non-winning advertisers */
