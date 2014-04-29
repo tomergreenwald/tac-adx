@@ -154,4 +154,6 @@ public interface Campaign extends TimeListener {
 
 	void setRandomAllocPr(Double rap);
 
+	boolean shouldWarnLimits();
+
 }

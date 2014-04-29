@@ -417,12 +417,13 @@ public class DemandAgent extends Builtin {
 					message.getQuery().getDevice(), message.getAuctionResult()
 							.getWinningPrice());
 
-			if (cmpn.isOverTodaysLimit() || cmpn.isOverTotalLimits()) {
+			// warn/post to adx only once in a while
+			if (cmpn.shouldWarnLimits()) {	
 				/* notify on transition campaign limit expiration */
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn
 								.getAdvertiser()));
-				log.log(Level.FINER,
+				log.log(Level.WARNING,
 						"Day "
 								+ day
 								+ " :Campaign limit expired Impressed while over limit: "

@@ -73,6 +73,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	private Double totalBudgetlimit;
 	private int totalImpressionLimit;
+	
+	private int overLimitsWarnings = 0; 
 
 	/**
 	 * @return the log
@@ -301,7 +303,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public void impress(AdxUser adxUser, AdType adType, Device device,
 			double costPerMille) {
-		if (isAllocated()) {
+		if (isAllocated() && (!isOverTodaysLimit()) || (!isOverTotalLimits())) {
 			todays.cost += costPerMille / 1000.0;
 			if (todays.cost > budgetlimit) {
 				int i = 0;
@@ -578,5 +580,14 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		}
 		return totals;
 	}
-
+	
+	public boolean shouldWarnLimits() {
+		if (isOverTodaysLimit() || isOverTotalLimits()) {
+			if (overLimitsWarnings % 10 == 0) {
+				return true;
+			}
+			overLimitsWarnings++;		
+		}
+		return false;
+	}
 }
