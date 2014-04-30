@@ -24,6 +24,9 @@
  */
 package tau.tac.adx.report.adn;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.messages.AuctionMessage;
 import tau.tac.adx.props.AdxQuery;
@@ -36,6 +39,11 @@ public class AdNetworkReport extends
 	 * The serial version id.
 	 */
 	private static final long serialVersionUID = -7957495904471250085L;
+	
+	/**
+	 * Caching map. Used instead of the AbstractKeyedEntryList data structure for fast querying.
+	 */
+	private Map<AdNetworkKey, AdNetworkReportEntry> entryMap = new HashMap<AdNetworkKey, AdNetworkReportEntry>();
 
 	/**
 	 * Returns the {@link AdNetworkReportEntry} class.
@@ -66,7 +74,9 @@ public class AdNetworkReport extends
 	public AdNetworkReportEntry addReportEntry(AdNetworkKey adNetworkKey) {
 		lockCheck();
 		int index = addKey(adNetworkKey);
-		return getEntry(index);
+		AdNetworkReportEntry entry = getEntry(index);
+		entryMap.put(adNetworkKey, entry);
+		return entry;
 	}
 
 	/**
@@ -80,7 +90,7 @@ public class AdNetworkReport extends
 	 */
 	public AdNetworkReportEntry getAdNetworkReportEntry(
 			AdNetworkKey adNetworkKey) {
-		return getEntry(adNetworkKey);
+		return entryMap.get(adNetworkKey);
 	}
 
 	/**
