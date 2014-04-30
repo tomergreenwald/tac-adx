@@ -90,6 +90,20 @@ public class AdNetworkReport extends
 	 */
 	public AdNetworkReportEntry getAdNetworkReportEntry(
 			AdNetworkKey adNetworkKey) {
+        return getEntry(adNetworkKey);
+	}
+	
+	/**
+	 * Retrieves an {@link AdNetworkReportEntry} keyed with a
+	 * {@link AdNetworkKey} from the cached map.
+	 * 
+	 * @param adNetworkKey
+	 *            {@link AdNetworkKey}.
+	 * @return {@link AdNetworkReportEntry}.
+	 * 
+	 */
+	private AdNetworkReportEntry getCachedAdNetworkReportEntry(
+			AdNetworkKey adNetworkKey) {
 		return entryMap.get(adNetworkKey);
 	}
 
@@ -120,7 +134,7 @@ public class AdNetworkReport extends
 	 */
 	public void addBid(AuctionMessage auctionMessage, int campaignId, boolean hasWon) {
 		AdNetworkKey adNetworkKey = getAdNetworkKey(auctionMessage, campaignId);
-		AdNetworkReportEntry reportEntry = getAdNetworkReportEntry(adNetworkKey);
+		AdNetworkReportEntry reportEntry = getCachedAdNetworkReportEntry(adNetworkKey);
 		if (reportEntry == null) {
 			reportEntry = addReportEntry(adNetworkKey);
 		}
