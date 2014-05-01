@@ -24,10 +24,15 @@
  */
 package tau.tac.adx.report.publisher;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalogEntry;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.report.adn.AdNetworkKey;
+import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
 
 /**
@@ -46,6 +51,11 @@ public class AdxPublisherReport extends
 	 * The serial version id.
 	 */
 	private static final long serialVersionUID = -7957495904471250085L;
+	
+	/**
+	 * Caching map. Used instead of the AbstractKeyedEntryList data structure for fast querying.
+	 */
+	private Map<PublisherCatalogEntry, AdxPublisherReportEntry> entryMap = new HashMap<PublisherCatalogEntry, AdxPublisherReportEntry>();
 
 	/**
 	 * Returns the {@link AdxPublisherReportEntry} class.
@@ -84,6 +94,7 @@ public class AdxPublisherReport extends
 		entry.setPopularity(publisherReportEntry.getPopularity());
 		entry.setAdTypeOrientation(publisherReportEntry.getAdTypeOrientation());
 		entry.setReservePriceBaseline(publisherReportEntry.getReservePriceBaseline());
+		entryMap.put(publisher, entry);
 	}
 
 	/**
@@ -98,6 +109,20 @@ public class AdxPublisherReport extends
 	public AdxPublisherReportEntry getPublisherReportEntry(
 			PublisherCatalogEntry publisher) {
 		return getEntry(publisher);
+	}
+	
+	/**
+	 * Retrieves an {@link AdNetworkReportEntry} keyed with a
+	 * {@link AdNetworkKey} from the cached map.
+	 * 
+	 * @param adNetworkKey
+	 *            {@link AdNetworkKey}.
+	 * @return {@link AdNetworkReportEntry}.
+	 * 
+	 */
+	private AdxPublisherReportEntry getCachedPublisherReportEntry(
+			PublisherCatalogEntry publisher) {
+		return entryMap.get(publisher);
 	}
 
 	/**
@@ -127,7 +152,7 @@ public class AdxPublisherReport extends
 	public void addQuery(AdxQuery query) {
 		PublisherCatalogEntry publisherCatalogEntry = getPublisherCatalogEntry(query
 				.getPublisher());
-		AdxPublisherReportEntry publisherReportEntry = getPublisherReportEntry(publisherCatalogEntry);
+		AdxPublisherReportEntry publisherReportEntry = getCachedPublisherReportEntry(publisherCatalogEntry);
 		if (publisherReportEntry == null) {
 			publisherReportEntry = new AdxPublisherReportEntry(
 					publisherCatalogEntry);
