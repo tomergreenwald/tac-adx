@@ -5,7 +5,9 @@ package tau.tac.adx.publishers.reserve;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import tau.tac.adx.agents.DefaultAdxUserManager;
 import tau.tac.adx.props.AdxQuery;
 
 /**
@@ -16,6 +18,9 @@ import tau.tac.adx.props.AdxQuery;
  */
 public class UserAdTypeReservePriceManager implements
 		MultiReservePriceManager<AdxQuery> {
+
+	protected Logger log = Logger.getLogger(DefaultAdxUserManager.class
+			.getName());
 
 	private Map<ReservePriceType, ReservePriceManager> reservePriceManagers = new HashMap<ReservePriceType, ReservePriceManager>();
 
@@ -79,8 +84,11 @@ public class UserAdTypeReservePriceManager implements
 
 	@Override
 	public void updateDailyBaselineAverage() {
-		for(ReservePriceManager reservePriceManager : reservePriceManagers.values()){
-			reservePriceManager.updateDailyBaselineAverage();
+		for (ReservePriceType priceType : reservePriceManagers.keySet()) {
+			double updateDailyBaselineAverage = reservePriceManagers.get(
+					priceType).updateDailyBaselineAverage();
+			log.fine("Updated reserve price for " + priceType + " to "
+					+ updateDailyBaselineAverage);
 		}
 	}
 
@@ -98,7 +106,8 @@ public class UserAdTypeReservePriceManager implements
 	 *            {@link AdxQuery} used for its properties.
 	 * @return The matching {@link ReservePriceManager}.
 	 */
-	private synchronized ReservePriceManager getReservePriceManager(AdxQuery adxQuery) {
+	private synchronized ReservePriceManager getReservePriceManager(
+			AdxQuery adxQuery) {
 		ReservePriceType type = getType(adxQuery);
 		if (!reservePriceManagers.containsKey(type)) {
 			ReservePriceManager reservePriceManager = new ReservePriceManager(

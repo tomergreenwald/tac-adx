@@ -116,6 +116,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			Collections.shuffle(users, random);
 
 			for(AdxPublisher publisher : AdxManager.getInstance().getPublishers()) {
+				log.fine("Updating reserve prices for " + publisher.getName());
 				publisher.getReservePriceManager().updateDailyBaselineAverage();
 			}
 			
