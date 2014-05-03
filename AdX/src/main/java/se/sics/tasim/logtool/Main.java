@@ -81,6 +81,7 @@ public class Main extends java.awt.event.WindowAdapter {
 		config.addOption("campaign", "Show campaign messages");
 		config.addOption("adnet", "Show adnet messages");
 		config.addOption("all", "Show all messages");
+		config.addOption("verify", "Verify messages");
 
 		config.addOption("version", "show the version");
 		config.addHelp("h", "show this help message");
