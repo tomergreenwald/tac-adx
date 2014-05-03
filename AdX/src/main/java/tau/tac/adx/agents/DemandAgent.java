@@ -28,8 +28,6 @@ import tau.tac.adx.report.demand.CampaignOpportunityMessage;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
-import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportEntry;
-import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReportKey;
 import tau.tac.adx.sim.Builtin;
 import tau.tac.adx.sim.TACAdxConstants;
 
@@ -226,16 +224,7 @@ public class DemandAgent extends Builtin {
 					+ pendingCampaign.logToString());
 			CampaignAuctionReport campaignAuctionReport = pendingCampaign.auction();
 			if (campaignAuctionReport != null) {
-				getSimulation().sendCampaignAuctionReport(campaignAuctionReport);
-				String winner = campaignAuctionReport.getWinner();
-				CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(
-						winner);
-				CampaignAuctionReportEntry campaignReportEntry = campaignAuctionReport
-						.getCampaignReportEntry(campaignReportKey);
-				getSimulation()
-						.broadcastCampaignWin(
-								winner,
-								campaignReportEntry.getActualBid() / 1000);
+				getSimulation().sendCampaignAuctionReport(campaignAuctionReport);				
 			}
 			if (pendingCampaign.isAllocated()) {
 				adNetCampaigns.put(pendingCampaign.getAdvertiser(),

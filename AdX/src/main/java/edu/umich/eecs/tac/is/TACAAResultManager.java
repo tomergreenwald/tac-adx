@@ -75,7 +75,7 @@ public class TACAAResultManager extends ResultManager {
 
 		html.table("border=1").colgroup(1).colgroup(11, "align=right").tr().th(
 				"Player").th("Revenue", "align=center").th("ADX Cost", "align=center")
-				.th("UCS Cost", "align=center").th("Campaign Cost", "align=center")
+				.th("UCS Cost", "align=center")
 				.th("Impressions", "align=center").th("Result", "align=center");
 
 		ParticipantInfo[] agentInfos = null;
@@ -91,7 +91,6 @@ public class TACAAResultManager extends ResultManager {
 				String name = agentInfo.getName();
 				double adxCost = player.getADXCost();
 				double ucsCost = player.getUCSCost();
-				double campaignCost = player.getCampaignCost();
 				double revenue = player.getRevenue();
 				double result = player.getResult();
 
@@ -110,7 +109,7 @@ public class TACAAResultManager extends ResultManager {
 				html.tr().td(
 						agentInfo.isBuiltinAgent() ? "<em>" + name + "</em>"
 								: name).td(getAmountAsString(revenue)).td(
-						getAmountAsString(adxCost)).td(getAmountAsString(ucsCost)).td(getAmountAsString(campaignCost)).td(
+						getAmountAsString(adxCost)).td(getAmountAsString(ucsCost)).td(
 						getAmountAsString(impressions));
 
 				html.td();

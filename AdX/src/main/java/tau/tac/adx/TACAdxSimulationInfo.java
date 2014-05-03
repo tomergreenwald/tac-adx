@@ -259,9 +259,6 @@ public class TACAdxSimulationInfo extends Parser {
 		case TACAdxConstants.DU_AD_NETWORK_UCS_EXPENSE:
 			ucsCost(agentIndex, value);
 			break;
-		case TACAdxConstants.DU_AD_NETWORK_CAMPAIGN_EXPENSE:
-			campaignCost(agentIndex, value);
-			break;
 		case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
 			qualityRating(agentIndex, value);
 			break;
@@ -298,11 +295,6 @@ public class TACAdxSimulationInfo extends Parser {
 	private void ucsCost(int agentIndex, double value) {
 		Participant p = getParticipant(agentIndex);
 		p.addUCSCost(value);
-	}
-	
-	private void campaignCost(int agentIndex, double value) {
-		Participant p = getParticipant(agentIndex);
-		p.addCampaignCost(value);
 	}
 	
 	private void adxCost(int agentIndex, double value) {

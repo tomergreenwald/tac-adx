@@ -84,7 +84,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 
 		private static final String[] COLUMN_NAMES = new String[] { "Agent",
-				"Quality Rating", "Profit", "revenue", "adx cost", "ucs cost", "Campaigns cost",
+				"Quality Rating", "Profit", "revenue", "adx cost", "ucs cost",
 				"impressions" };
 
 		List<AdvertiserMetricsItem> data;
@@ -148,8 +148,6 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			} else if (columnIndex == 5) {
 				return data.get(rowIndex).getUCSCost();
 			} else if (columnIndex == 6) {
-				return data.get(rowIndex).getCampaignCost();
-			} else if (columnIndex == 7) {
 				return data.get(rowIndex).getImpressions();
 			}
 
@@ -205,19 +203,11 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 			return ucsCost;
 		}
 
-		/**
-		 * @return the campaigns cost
-		 */
-		public double getCampaignCost() {
-			return campaignCost;
-		}
-
 		private AdvertiserInfo advertiserInfo;
 
 		private final AdvertiserMetricsModel model;
 		private double ucsCost;
 		private double adxCost;
-		private double campaignCost;
 
 		private AdvertiserMetricsItem(int agent, String advertiser,
 				AdvertiserMetricsModel model,
@@ -238,7 +228,7 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 		}
 
 		public double getProfit() {
-			return revenue - adxCost - ucsCost - campaignCost;
+			return revenue - adxCost - ucsCost;
 		}
 
 		public double getCapacity() {
@@ -260,12 +250,6 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 
 		protected void addUCSCost(double cost) {
 			this.ucsCost += cost;
-
-			model.fireUpdatedAgent(agent);
-		}
-
-		protected void addCampaignCost(double cost) {
-			this.campaignCost += cost;
 
 			model.fireUpdatedAgent(agent);
 		}
@@ -333,9 +317,6 @@ public class AdNetOverviewMetricsPanel extends JPanel {
 							break;
 						case TACAdxConstants.DU_AD_NETWORK_UCS_EXPENSE:
 							item.addUCSCost(value);
-							break;
-						case TACAdxConstants.DU_AD_NETWORK_CAMPAIGN_EXPENSE:
-							item.addCampaignCost(value);
 							break;
 						case TACAdxConstants.DU_AD_NETWORK_QUALITY_RATING:
 							item.setQualityRating(value);

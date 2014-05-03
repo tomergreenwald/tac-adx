@@ -212,11 +212,6 @@ public final class TACAdxConstants {
 	 * @see {@link CampaignAuctionReport}.
 	 */
 	public static final int DU_CAMPAIGN_AUCTION_REPORT = 414;
-	
-	/**
-	 * AdNet's expense.
-	 */
-	public static final int DU_AD_NETWORK_CAMPAIGN_EXPENSE = 415;
 
 	/**
 	 * The TAC AA Publisher role.

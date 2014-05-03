@@ -38,7 +38,6 @@ public class Participant {
 	private ParticipantInfo info;
 	private double totalResult;
 	private double totalUCSCost;
-	private double totalCampaignCost;
 	private double totalADXCost;
 	private double totalRevenue;
 	private long totalImpressions;
@@ -109,25 +108,13 @@ public class Participant {
 	public double getUCSCost() {
 		return totalUCSCost;
 	}
-	
-	public double getCampaignCost() {
-		return totalCampaignCost;
-	}
 
 	public void setUCSCost(double Cost) {
 		this.totalUCSCost = Cost;
 	}
-	
-	public void setCampaignCost(double Cost) {
-		this.totalCampaignCost = Cost;
-	}
 
 	public void addUCSCost(double Cost) {
 		this.totalUCSCost += Cost;
-	}
-	
-	public void addCampaignCost(double Cost) {
-		this.totalCampaignCost += Cost;
 	}
 	
 	public double getADXCost() {
@@ -216,7 +203,7 @@ public class Participant {
 	@Override
 	public String toString() {
 		return "Participant [info=" + info + ", totalResult=" + totalResult
-				+ ", totalUCSCost=" + totalUCSCost +", totalCampaignCost=" + totalCampaignCost + ", totalADXCost="
+				+ ", totalUCSCost=" + totalUCSCost + ", totalADXCost="
 				+ totalADXCost + ", totalRevenue=" + totalRevenue
 				+ ", totalImpressions=" + totalImpressions + ", totalClicks="
 				+ totalClicks + ", totalConversions=" + totalConversions
