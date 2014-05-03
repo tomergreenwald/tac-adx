@@ -141,6 +141,12 @@ public class GeneralParser extends Parser {
 					BankStatus dailyBank = (BankStatus) content;
 					AdvertiserData receiverData = advData.get(participantNames[receiver]); 
 					receiverData.daysData[day-1].reportedBalance = dailyBank.getAccountBalance();
+
+					System.out.println(getBasicInfoString(receiver)
+							+ StringUtils.rightPad("BankStatus: ", 20)
+							+ "Balance for day " + (day-1) + "  Reported : " +  dailyBank.getAccountBalance()
+							);
+
 					
 					if (day > 2) { /* verify reposted balance for day-2 */
 						int verifiedDay = day - 2;
@@ -179,7 +185,14 @@ public class GeneralParser extends Parser {
 				}
 				receiverData.daysData[day].qualityRating = dailyNotification.getQualityScore();
 				
+				System.out.println(getBasicInfoString(receiver)
+						+ StringUtils.rightPad("AdNetNotification: UCS costs accumulated ", 20)
+						+ " on day "+ day + ": "+ dailyNotification.getPrice() + " (was "+ receiverData.daysData[day].ucsAccumulatedCosts + 
+						"  Now "+ (receiverData.daysData[day].ucsAccumulatedCosts + dailyNotification.getPrice() + ")") 
+						);
+
 				receiverData.daysData[day].ucsAccumulatedCosts += dailyNotification.getPrice();
+				
 				receiverData.daysData[day+1].ucsLevel = dailyNotification.getServiceLevel();
 				
 				receiverData.daysData[day+1].cmpWon = dailyNotification.getCostMillis() != 0;
@@ -233,6 +246,10 @@ public class GeneralParser extends Parser {
 								rEntry.getCampaignStats().getCost()));
 							
 							receiverData.daysData[cmpStartDay].cmpAdxCost = rEntry.getCampaignStats().getCost();
+
+							System.out.println(getBasicInfoString(receiver)
+									+ StringUtils.rightPad("CmpReport: AdX Costs", 20)
+									+ " on day "+ (day - 1) + " totaled "+ rEntry.getCampaignStats().getCost());							
 							
 						} else {
 							/* ERROR: reported campaign day out of range */
@@ -250,15 +267,20 @@ public class GeneralParser extends Parser {
 							receiverData.daysData[cmpStartDay].cmpERR = eRR(rEntry.getCampaignStats().getTargetedImps(), 
 									receiverData.daysData[cmpStartDay].cmpReach);
 							
-							receiverData.daysData[day].accumulatedRevenue += receiverData.daysData[cmpStartDay].cmpERR * receiverData.daysData[cmpStartDay].cmpBudget;
 							
-							/*
+							double cmpRev = receiverData.daysData[cmpStartDay].cmpERR * receiverData.daysData[cmpStartDay].cmpBudget;
+									
 							System.out.println(getBasicInfoString(receiver)
 									+ StringUtils.rightPad("CmpReport - Ended. ", 20)
 									+ "Reach: " +  receiverData.daysData[cmpStartDay].cmpReach + " Achieved: " 
 									+ rEntry.getCampaignStats().getTargetedImps()
-									+ " ERR: " + receiverData.daysData[cmpStartDay].cmpERR);
-									*/							
+									+ " ERR: " + receiverData.daysData[cmpStartDay].cmpERR +
+									" Revenue added on day " + day + ": " + cmpRev +
+									" (was "+ receiverData.daysData[day].accumulatedRevenue + "now " + (receiverData.daysData[day].accumulatedRevenue + cmpRev) + ")"
+									);
+
+							receiverData.daysData[day].accumulatedRevenue += cmpRev;
+
 						}
 						
 					} else { /* ERROR: reported on non-won campaign */
@@ -276,6 +298,11 @@ public class GeneralParser extends Parser {
 					}
 				}
 
+				System.out.println(getBasicInfoString(receiver)
+						+ StringUtils.rightPad("CmpReport: Accumulated AdX Costs", 20)
+						+ " on day "+ (day - 1) + " totaled "+ receiverData.daysData[day-1].adxAccumulatedCosts);							
+
+				
 			}
 			
 			
@@ -353,6 +380,8 @@ public class GeneralParser extends Parser {
 	@Override
 	protected void nextDay(int date, long serverTime) {
 		day = date;
+		System.out.println(StringUtils.rightPad("Next day : ", 20) + date + " srarting");
+		
 		/* advance advertisers data */
 		if (day > 1) {
 			for (String advName : advData.keySet()) {
@@ -360,6 +389,11 @@ public class GeneralParser extends Parser {
 				aData.daysData[day].qualityRating = aData.daysData[day-1].qualityRating; 
 				aData.daysData[day].ucsAccumulatedCosts = aData.daysData[day-1].ucsAccumulatedCosts;
 				aData.daysData[day].accumulatedRevenue = aData.daysData[day-1].accumulatedRevenue;
+				
+				System.out.println(" Advancing from day " + (day-1) + " to day " + day + " for " + advName + ": " + 
+						"  ucsAccumulatedCosts: " + aData.daysData[day].ucsAccumulatedCosts +
+						"  accumulatedRevenue: " + aData.daysData[day].accumulatedRevenue);													
+
 			}
 		}
 	}
