@@ -54,16 +54,14 @@ public class AdNetworkDailyNotification extends SimpleContent {
 
 	public AdNetworkDailyNotification(
 			UserClassificationServiceAdNetData ucsData, Campaign campaign,
-			double qualityScore) {
+			double qualityScore, int date) {
 
 		this.qualityScore = qualityScore;
 
+		this.effectiveDay = date;
 		if (ucsData != null) {
-			this.effectiveDay = ucsData.getEffectiveDay();
 			this.serviceLevel = ucsData.getServiceLevel();
 			this.price = ucsData.getPrice();
-		} else {
-			this.effectiveDay = 0;
 		}
 
 		if (campaign != null) {

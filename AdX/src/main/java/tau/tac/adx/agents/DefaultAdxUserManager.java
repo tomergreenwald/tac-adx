@@ -65,8 +65,6 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final AdxUserQueryManager queryManager;
 	
-	static private final ExecutorService executor = Executors.newFixedThreadPool(4);
-
 	/**
 	 * Global {@link EventBus}.
 	 */
@@ -118,62 +116,28 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			Collections.shuffle(users, random);
 
 			for(AdxPublisher publisher : AdxManager.getInstance().getPublishers()) {
+				log.fine("Updating reserve prices for " + publisher.getName());
 				publisher.getReservePriceManager().updateDailyBaselineAverage();
 			}
 			
-			
-			Collection<HandleUserActivityCallable> tasks = new LinkedList<DefaultAdxUserManager.HandleUserActivityCallable>();
 			
 			long pre;
 			long post;
 			
 			
-			log.fine("##################################### S-Adding users as tasks");
+			log.fine("##################################### S-Invoking users activity");
 			pre = System.currentTimeMillis();
 			for (AdxUser user : users) {
-				tasks.add(new HandleUserActivityCallable(user,auctioneer));
+                handleUserActivity(user, auctioneer);
 			}
 			post = System.currentTimeMillis();
-			log.fine("##################################### E-Adding users as tasks - total time in millis: " +(post - pre));
-			try {
-				log.fine("##################################### S-Invoking users activity");
-				pre =  System.currentTimeMillis();
-				executor.invokeAll(tasks);
-				post =  System.currentTimeMillis();
-				log.fine("##################################### E-Invoking users activity - total time in millis: " +(post - pre));
-			} catch (InterruptedException e) {
-				log.severe(e.toString());
-			}
+			log.fine("##################################### E-Invoking users activity - total time in millis: " +(post - pre));
 			// update publishers' reserve price
 			log.finest("FINISH OF USER TRIGGER");
 		}
 
 	}
 	
-	private class HandleUserActivityCallable implements Callable<Object> {
-		
-		private AdxUser user;
-		
-		private AdxAuctioneer auctioneer;
-
-		/**
-		 * @param user
-		 * @param auctioneer
-		 */
-		public HandleUserActivityCallable(AdxUser user, AdxAuctioneer auctioneer) {
-			super();
-			this.user = user;
-			this.auctioneer = auctioneer;
-		}
-
-		@Override
-		public Object call() throws Exception {
-			handleUserActivity(user, auctioneer);
-			return null;
-		}
-		
-	}
-
 	/**
 	 * Activates a user for at least one time, with a probability of
 	 * {@link AdxUser#getpContinue()} for continuing browsing websites (

@@ -196,7 +196,7 @@ public class DemandAgent extends Builtin {
 
 			AdNetworkDailyNotification adNetworkNotification = new AdNetworkDailyNotification(
 					ucs.getTomorrowsAdNetData(advertiser), pendingCampaign,
-					qualityManager.getQualityScore(advertiser));
+					qualityManager.getQualityScore(advertiser),date);
 
 			/* remove campaign cost for non-winning advertisers */
 			if ((pendingCampaign != null)

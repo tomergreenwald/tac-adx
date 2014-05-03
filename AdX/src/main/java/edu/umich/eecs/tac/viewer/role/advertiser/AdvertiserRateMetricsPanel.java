@@ -102,10 +102,12 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 				&& (adNetworkDailyNotification.getCostMillis() != 0)) {
 
 			String message = "Day "
-					+ adNetworkDailyNotification.getEffectiveDay() + ":\t"
-					+ "Range [" + pendingCampaign.getDayStart() + ", "
+					+ adNetworkDailyNotification.getEffectiveDay()
+					+ ": Campaign ID: " + pendingCampaign.getId() + "\tRange ["
+					+ pendingCampaign.getDayStart() + ", "
 					+ pendingCampaign.getDayEnd() + "]\t"
-					+ pendingCampaign.getTargetSegment() + "\twon at cost (Millis)"
+					+ pendingCampaign.getTargetSegment() + "\tReach: "
+					+ pendingCampaign.getReachImps() + "\twon at cost (Millis)"
 					+ adNetworkDailyNotification.getCostMillis();
 
 			area.append(message);
@@ -114,9 +116,11 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 	}
 
 	protected void updateCampaigns(InitialCampaignMessage campaignMessage) {
-		String message = "Day 0:\tRange [" + campaignMessage.getDayStart()
-				+ ", " + campaignMessage.getDayEnd() + "]\t"
-				+ campaignMessage.getTargetSegment() + "\trecieved";
+		String message = "Day 0: Campaign ID: " + campaignMessage.getId()
+				+ "\tRange [" + campaignMessage.getDayStart() + ", "
+				+ campaignMessage.getDayEnd() + "]\t"
+				+ campaignMessage.getTargetSegment() + "\tReach: "
+				+ campaignMessage.getReachImps() + "\ttrecieved";
 		area.append(message);
 		area.append("\r\n");
 	}
