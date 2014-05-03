@@ -106,8 +106,8 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 					+ ": Campaign ID: " + pendingCampaign.getId() + "\tRange ["
 					+ pendingCampaign.getDayStart() + ", "
 					+ pendingCampaign.getDayEnd() + "]\t"
-					+ pendingCampaign.getTargetSegment()
-					+ "\twon at cost (Millis)"
+					+ pendingCampaign.getTargetSegment() + "\tReach: "
+					+ pendingCampaign.getReachImps() + "\twon at cost (Millis)"
 					+ adNetworkDailyNotification.getCostMillis();
 
 			area.append(message);
@@ -119,7 +119,8 @@ public class AdvertiserRateMetricsPanel extends JPanel {
 		String message = "Day 0: Campaign ID: " + campaignMessage.getId()
 				+ "\tRange [" + campaignMessage.getDayStart() + ", "
 				+ campaignMessage.getDayEnd() + "]\t"
-				+ campaignMessage.getTargetSegment() + "\trecieved";
+				+ campaignMessage.getTargetSegment() + "\tReach: "
+				+ campaignMessage.getReachImps() + "\ttrecieved";
 		area.append(message);
 		area.append("\r\n");
 	}
