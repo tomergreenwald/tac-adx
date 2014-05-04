@@ -57,10 +57,10 @@ public class DefaultAdxUsers extends AdxUsers {
 
 	@Override
 	public void nextTimeUnit(int date) {
-		usersBehavior.nextTimeUnit(date);
 		if (date > 0) {
 			sendReportsToAll();
 		}
+		usersBehavior.nextTimeUnit(date);
 	}
 
 	public void preNextTimeUnit(int date) {
