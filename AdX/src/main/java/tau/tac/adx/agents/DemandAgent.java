@@ -74,6 +74,8 @@ public class DemandAgent extends Builtin {
 	private static Double[] cmp_reachlevels;
 	private static int   cmp_reachlevels_count;
 
+	private static boolean registeredToEventBus = false;
+	
 	private Logger log;
 
 	private QualityManager qualityManager;
@@ -297,7 +299,10 @@ public class DemandAgent extends Builtin {
 
 		log.info("setting up...");
 
-		getSimulation().getEventBus().register(this);
+		if(!registeredToEventBus){
+			getSimulation().getEventBus().register(this);
+			registeredToEventBus = true;
+		}
 
 		adNetCampaigns = ArrayListMultimap.create();
 
