@@ -75,6 +75,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private int totalImpressionLimit;
 	
 	private int overLimitsWarnings = 0; 
+	
+	private boolean defaultLimitNotification = false;
 
 	/**
 	 * @return the log
@@ -191,6 +193,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private int tomorrowsImpressionLimit;
 
 	private final SortedMap<Integer, CampaignStats> dayStats;
+	
+	//arbitrary unique value
+	private static double INITIAL_BUDGET_LIMIT = 1.0101010100101;
 
 	public CampaignImpl(QualityManager qualityManager, int reachImps,
 			int dayStart, int dayEnd, Set<MarketSegment> targetSegments,
@@ -205,9 +210,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		advertisersBids = new HashMap<String, Long>();
 		budgetMillis = 0;
 		advertiser = null;
-		budgetlimit = Double.POSITIVE_INFINITY;
+		budgetlimit = INITIAL_BUDGET_LIMIT;
 		totalBudgetlimit = Double.POSITIVE_INFINITY;
-		tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+		tomorrowsBudgetLimit = INITIAL_BUDGET_LIMIT;
 		impressionLimit = Integer.MAX_VALUE;
 		totalImpressionLimit = Integer.MAX_VALUE;
 		tomorrowsImpressionLimit = Integer.MAX_VALUE;
@@ -303,8 +308,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public boolean impress(AdxUser adxUser, AdType adType, Device device,
 			double costPerMille) {
-		if(budgetlimit == Double.POSITIVE_INFINITY){
-			log.log(Level.SEVERE, "Campaign #"+id+" impressed while budget limit is set to infinity.");
+		if(budgetlimit == INITIAL_BUDGET_LIMIT && !defaultLimitNotification){
+			log.log(Level.SEVERE, "Campaign #"+id+" impressed while budget limit was not initialized.");
+			defaultLimitNotification = true;
 		}
 		if (isAllocated() && (!isOverTodaysLimit()) && (!isOverTotalLimits())) {
 			todays.cost += costPerMille / 1000.0;
@@ -344,7 +350,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 		 * RuntimeException(" campaign id: " + this.id + " " + todays.toString()
 		 * + " impresssion limit: " + this.impressionLimit + s); }
 		 */
-
+		defaultLimitNotification = false;
 		if (timeUnit >= dayStart) {
 			dayStats.put(day, todays);
 			totals = totals.add(todays);
@@ -352,9 +358,9 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			day = timeUnit;
 
 			budgetlimit = tomorrowsBudgetLimit;
-			tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
+//			tomorrowsBudgetLimit = Double.POSITIVE_INFINITY;
 			impressionLimit = tomorrowsImpressionLimit;
-			tomorrowsImpressionLimit = Integer.MAX_VALUE;
+//			tomorrowsImpressionLimit = Integer.MAX_VALUE;
 		}
 
 		if (day == dayEnd + 1) { /* was last day - update quality score */
