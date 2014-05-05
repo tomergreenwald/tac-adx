@@ -305,9 +305,6 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			double costPerMille) {
 		if (isAllocated() && (!isOverTodaysLimit()) || (!isOverTotalLimits())) {
 			todays.cost += costPerMille / 1000.0;
-			if (todays.cost > budgetlimit) {
-				int i = 0;
-			}
 
 			double imps = (device == Device.mobile ? mobileCoef : 1.0)
 					* (adType == AdType.video ? videoCoef : 1.0);
