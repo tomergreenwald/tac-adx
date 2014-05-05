@@ -261,7 +261,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	public void setTomorowsLimit(CampaignLimitSet message) {
 		this.tomorrowsBudgetLimit = message.getBudgetLimit();
 		this.tomorrowsImpressionLimit = message.getImpressionLimit();
-
+		log.info("Applied daily limit for campaign #"+message.getCampaignId() + " at price "+message.getBudgetLimit());
 		log.log(Level.FINER, "Campaign " + id + " Tomorrows limits: "
 				+ tomorrowsBudgetLimit + ", " + tomorrowsImpressionLimit);
 	}
@@ -317,6 +317,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 				todays.otherImps += imps;
 			}
 		}
+		log.log(Level.SEVERE, "Campaign #"+id+" impressed while over limit. Current cost: "+todays.cost + " Budget limit: "+budgetlimit);
 	}
 
 	double effectiveReachRatio(double imps) {
@@ -522,6 +523,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			if (message.getIsTotal()) {
 				totalBudgetlimit = message.getBudgetLimit();
 				totalImpressionLimit = message.getImpressionLimit();
+				log.info("Applied total limit for campaign #"+message.getCampaignId() + " at price "+message.getBudgetLimit());
 			} else {
 				setTomorowsLimit(message);
 			}
@@ -580,10 +582,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	
 	public boolean shouldWarnLimits() {
 		if (isOverTodaysLimit() || isOverTotalLimits()) {
-			if (overLimitsWarnings % 10 == 0) {
 				return true;
-			}
-			overLimitsWarnings++;		
 		}
 		return false;
 	}

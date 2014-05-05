@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.jfree.util.Log;
+
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.bids.Bidder;
@@ -60,7 +62,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 	private final static double DEFAULT_BID = 0.0;
 	private final static Ad DEFAULT_AD = new Ad();
 
-	private final Logger logger = Logger.getLogger(AdxBidTrackerImpl.class
+	private final static Logger logger = Logger.getLogger(AdxBidTrackerImpl.class
 			.getName());
 
 	private String[] advertisers;
@@ -243,6 +245,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			if (message.getAdNetwork().equals(advertiser)) {
 				excludedCampaigns.add(message.getCampaignId());
 				queryMap.clear();
+				logger.info("Accepted request to stop bidding for campaign #"+message.getCampaignId()+" due to limit");
 			}
 		}
 
@@ -296,6 +299,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 		private synchronized void doAddQuery(BidEntry entry) {
 			if (entry.getKey().getPublisher().startsWith(AdxBidBundle.CMP_DSL)) {
+				logger.info("Requested daily limit for campaign #"+entry.getCampaignId() + " at price "+entry.getDailyLimit());
 				/* it is a piggybacked set campaig limit command: notify */
 				AdxManager
 						.getInstance()
@@ -307,6 +311,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 			} else if (entry.getKey().getPublisher().startsWith(AdxBidBundle.CMP_TSL)) {
 				/* it is a piggybacked set campain total limit command: notify */
+				logger.info("Requested daily limit for campaign #"+entry.getCampaignId() + " at price "+entry.getDailyLimit());
 				AdxManager
 						.getInstance()
 						.getSimulation()

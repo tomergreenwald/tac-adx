@@ -428,7 +428,7 @@ public class DemandAgent extends Builtin {
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn
 								.getAdvertiser()));
-				log.log(Level.WARNING,
+				log.log(Level.INFO,
 						"Day "
 								+ day
 								+ " :Campaign limit expired Impressed while over limit: "
