@@ -303,7 +303,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	@Override
 	public void impress(AdxUser adxUser, AdType adType, Device device,
 			double costPerMille) {
-		if (isAllocated() && (!isOverTodaysLimit()) || (!isOverTotalLimits())) {
+		if (isAllocated() && (!isOverTodaysLimit()) && (!isOverTotalLimits())) {
 			todays.cost += costPerMille / 1000.0;
 
 			double imps = (device == Device.mobile ? mobileCoef : 1.0)
