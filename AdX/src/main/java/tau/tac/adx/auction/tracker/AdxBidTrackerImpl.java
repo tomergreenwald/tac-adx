@@ -227,6 +227,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 		public AdxQueryBid(final String advertiser, int queryCount) {
 			this.advertiser = advertiser;
+			logger.info("Initialized AdxQueryBid for advertiser: "+advertiser);
 			spendLimits = new double[queryCount];
 			this.queryCount = queryCount;
 			campaignSpendLimit = DEFAULT_SPEND_LIMIT;

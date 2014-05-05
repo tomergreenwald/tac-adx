@@ -425,7 +425,7 @@ public class DemandAgent extends Builtin {
 			// warn/post to adx only once in a while
 			if (!impressedWithoutLimit) {	
 				/* notify on transition campaign limit expiration */
-				log.info("Posting CampaignLimitReached to the event bus for campaign #"+cmpn.getId());
+				log.info("Posting CampaignLimitReached to the event bus for campaign #"+cmpn.getId()+" advertiser name: "+cmpn.getAdvertiser());
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn
 								.getAdvertiser()));
