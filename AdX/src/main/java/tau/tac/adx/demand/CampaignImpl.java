@@ -301,8 +301,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void impress(AdxUser adxUser, AdType adType, Device device,
+	public boolean impress(AdxUser adxUser, AdType adType, Device device,
 			double costPerMille) {
+		if(budgetlimit == Double.POSITIVE_INFINITY){
+			log.log(Level.SEVERE, "Campaign #"+id+" impressed while budget limit is set to infinity.");
+		}
 		if (isAllocated() && (!isOverTodaysLimit()) && (!isOverTotalLimits())) {
 			todays.cost += costPerMille / 1000.0;
 
@@ -316,8 +319,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			} else {
 				todays.otherImps += imps;
 			}
+			return true;
+		}else{
+			log.log(Level.SEVERE, "Campaign #"+id+" impressed while over limit. Current cost: "+todays.cost + " Budget limit: "+budgetlimit);
+			return false;
 		}
-		log.log(Level.SEVERE, "Campaign #"+id+" impressed while over limit. Current cost: "+todays.cost + " Budget limit: "+budgetlimit);
 	}
 
 	double effectiveReachRatio(double imps) {

@@ -418,29 +418,30 @@ public class DemandAgent extends Builtin {
 				.getAuctionState();
 		if (auctionState == AuctionState.AUCTION_COPMLETED) {
 
-			cmpn.impress(message.getUser(), message.getQuery().getAdType(),
+			boolean impressedWithoutLimit = cmpn.impress(message.getUser(), message.getQuery().getAdType(),
 					message.getQuery().getDevice(), message.getAuctionResult()
 							.getWinningPrice());
 
 			// warn/post to adx only once in a while
-			if (cmpn.shouldWarnLimits()) {	
+			if (!impressedWithoutLimit) {	
 				/* notify on transition campaign limit expiration */
+				log.info("Posting CampaignLimitReached to the event bus for campaign #"+cmpn.getId());
 				getSimulation().getEventBus().post(
 						new CampaignLimitReached(cmpn.getId(), cmpn
 								.getAdvertiser()));
-				log.log(Level.SEVERE,
-						"Day "
-								+ day
-								+ " :Campaign limit expired Impressed while over limit: "
-								+ cmpn.getId() + ", daily limit was: "
-								+ cmpn.getImpressionLimit() + ", "
-								+ cmpn.getBudgetlimit() +  " values are: "
-								+ cmpn.getTodayStats().getTargetedImps() + ", "
-								+ cmpn.getTodayStats().getCost() + ", total limit was: "
-								+ cmpn.getTotalImpressionLimit() + ", "
-								+ cmpn.getTotalBudgetlimit() + " total values are: "
-								+ cmpn.getTotals().getTargetedImps() + cmpn.getTodayStats().getTargetedImps() + ", "
-								+ cmpn.getTotals().getCost() + cmpn.getTodayStats().getCost());
+//				log.log(Level.SEVERE,
+//						"Day "
+//								+ day
+//								+ " :Campaign limit expired Impressed while over limit: "
+//								+ cmpn.getId() + ", daily limit was: "
+//								+ cmpn.getImpressionLimit() + ", "
+//								+ cmpn.getBudgetlimit() +  " values are: "
+//								+ cmpn.getTodayStats().getTargetedImps() + ", "
+//								+ cmpn.getTodayStats().getCost() + ", total limit was: "
+//								+ cmpn.getTotalImpressionLimit() + ", "
+//								+ cmpn.getTotalBudgetlimit() + " total values are: "
+//								+ cmpn.getTotals().getTargetedImps() + cmpn.getTodayStats().getTargetedImps() + ", "
+//								+ cmpn.getTotals().getCost() + cmpn.getTodayStats().getCost());
 			}
 		}
 	}
