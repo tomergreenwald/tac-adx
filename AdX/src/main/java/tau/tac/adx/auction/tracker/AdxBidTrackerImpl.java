@@ -214,7 +214,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		return advertisersCount;
 	}
 
-	private static class AdxQueryBid {
+	public static class AdxQueryBid {
 		private final String advertiser;
 		private final double[] spendLimits;
 		private final Set<BidEntry> querySet = new HashSet<AdxBidBundle.BidEntry>();
@@ -224,6 +224,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		private final Bidder bidder;
 
 		private final Set<Integer> excludedCampaigns = new HashSet<Integer>();
+		private boolean registeredToEventBus = false;
 
 		public AdxQueryBid(final String advertiser, int queryCount) {
 			this.advertiser = advertiser;
@@ -238,19 +239,20 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 					return advertiser;
 				}
 			};
-			TACAdxSimulation.eventBus.register(this);
+			
 		}
 
 		@Subscribe
 		public void limitReached(CampaignLimitReached message) {
-			if (message.getAdNetwork().equals(advertiser)) {
+			// FIXME: uncomment me
+			//if (message.getAdNetwork().equals(advertiser)) {
 				if(excludedCampaigns.contains(message.getCampaignId())) {
 					logger.severe("Limit request was already sent today to stop bidding for campaign #"+message.getCampaignId()+" due to limit");
 				}
 				excludedCampaigns.add(message.getCampaignId());
 				queryMap.clear();
-				logger.info("Accepted request to stop bidding for campaign #"+message.getCampaignId()+" due to limit");
-			}
+				logger.info("Accepted request to stop bidding for campaign #"+message.getCampaignId()+" due to limit. My name is "+advertiser);
+			//}
 		}
 
 		public void clearQueries() {
@@ -260,6 +262,13 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		}
 
 		public BidInfo generateBid(AdxQuery query) {
+			if(!registeredToEventBus){
+				logger.info("Registering AdxQueryBid for advertiser: "+advertiser +" to the event bus");
+				AdxManager.getInstance().getSimulation().getEventBus().register(this);
+				TACAdxSimulation.bidTrackers.add(this);
+				logger.info("Registered AdxQueryBid for advertiser: "+advertiser +" to the event bus");
+				registeredToEventBus = true;
+			}
 			WheelSampler<BidEntry> sampler = queryMap.get(query);
 			if (sampler == null) {
 				sampler = new WheelSampler<AdxBidBundle.BidEntry>();

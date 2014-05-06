@@ -11,6 +11,7 @@ import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.data.AuctionState;
+import tau.tac.adx.auction.tracker.AdxBidTrackerImpl.AdxQueryBid;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignImpl;
 import tau.tac.adx.demand.QualityManager;
@@ -30,9 +31,11 @@ import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
 import tau.tac.adx.sim.Builtin;
 import tau.tac.adx.sim.TACAdxConstants;
+import tau.tac.adx.sim.TACAdxSimulation;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 
 /**
@@ -425,10 +428,15 @@ public class DemandAgent extends Builtin {
 			// warn/post to adx only once in a while
 			if (!impressedWithoutLimit) {	
 				/* notify on transition campaign limit expiration */
+				CampaignLimitReached event = new CampaignLimitReached(cmpn.getId(), cmpn
+						.getAdvertiser());
+				log.info("Posting DIRECTLY to CampaignLimitReached to the event bus for campaign #"+cmpn.getId()+" advertiser name: "+cmpn.getAdvertiser());
+				for (AdxQueryBid adxQueryBid : TACAdxSimulation.bidTrackers) {
+					adxQueryBid.limitReached(event);
+				}
 				log.info("Posting CampaignLimitReached to the event bus for campaign #"+cmpn.getId()+" advertiser name: "+cmpn.getAdvertiser());
 				getSimulation().getEventBus().post(
-						new CampaignLimitReached(cmpn.getId(), cmpn
-								.getAdvertiser()));
+						event);
 //				log.log(Level.SEVERE,
 //						"Day "
 //								+ day
@@ -444,6 +452,11 @@ public class DemandAgent extends Builtin {
 //								+ cmpn.getTotals().getCost() + cmpn.getTodayStats().getCost());
 			}
 		}
+	}
+	
+	@Subscribe
+	public void deadEventHandler(DeadEvent deadEvent) {
+		log.severe("DeadEvent - source: "+deadEvent.getSource() +" event: "+deadEvent.getEvent());
 	}
 
 	@Override
