@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.agents.DefaultAdxUserManager;
 import tau.tac.adx.devices.Device;
@@ -44,6 +45,7 @@ import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.sim.TACAdxConstants;
+import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.generators.AdxUserGenerator;
 import tau.tac.adx.util.Utils;
 
@@ -134,6 +136,8 @@ public class DefaultAdxUserManagerTest {
 	public void testTriggerBehavior() {
 		userManager.nextTimeUnit(0);
 		AdxAuctioneer auctioneer = mock(AdxAuctioneer.class);
+		TACAdxSimulation simulation = mock(TACAdxSimulation.class, Mockito.RETURNS_DEEP_STUBS);
+		AdxManager.getInstance().setSimulation(simulation );
 		userManager.triggerBehavior(auctioneer);
 		Mockito.verify(auctioneer, Mockito.atLeast(populationSize)).runAuction(
 				(AdxQuery) Mockito.any());
