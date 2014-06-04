@@ -42,6 +42,8 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.AdxAuctioneer;
+import tau.tac.adx.sim.TACAdxConstants;
+import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUserQueryManager;
@@ -169,7 +171,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 		if (query != null) {
 			AdxAuctionResult auctionResult = auctioneer.runAuction(query);
-			eventBus.post(new AuctionMessage(auctionResult, query, user));
+			AdxManager.getInstance().getSimulation().getEventBus().post(new AuctionMessage(auctionResult, query, user));
 		}
 	}
 

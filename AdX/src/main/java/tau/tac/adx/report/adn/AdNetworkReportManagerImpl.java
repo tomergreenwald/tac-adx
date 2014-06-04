@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.messages.AuctionMessage;
 
@@ -68,7 +69,7 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	public AdNetworkReportManagerImpl(
 			AdNetworkReportSender adNetworkReportSender, EventBus eventBus) {
 		this.adNetworkReportSender = adNetworkReportSender;
-		eventBus.register(this);
+		AdxManager.getInstance().getSimulation().getEventBus().register(this);
 		log.info("AdxQueryReportManager created.");
 	}
 

@@ -77,8 +77,6 @@ public class DemandAgent extends Builtin {
 	private static Double[] cmp_reachlevels;
 	private static int   cmp_reachlevels_count;
 
-	private static boolean registeredToEventBus = false;
-	
 	private Logger log;
 
 	private QualityManager qualityManager;
@@ -302,10 +300,7 @@ public class DemandAgent extends Builtin {
 
 		log.info("setting up...");
 
-		if(!registeredToEventBus){
-			getSimulation().getEventBus().register(this);
-			registeredToEventBus = true;
-		}
+		getSimulation().getEventBus().register(this);
 
 		adNetCampaigns = ArrayListMultimap.create();
 
@@ -367,6 +362,7 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	protected void shutdown() {
+		getSimulation().getEventBus().unregister(this);
 	}
 
 	/**
@@ -415,6 +411,9 @@ public class DemandAgent extends Builtin {
 
 	@Subscribe
 	public synchronized void impressed(AuctionMessage message) {
+		if(getSimulation() == null){
+			int i = 0;
+		}
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		AuctionState auctionState = message.getAuctionResult()
@@ -430,11 +429,6 @@ public class DemandAgent extends Builtin {
 				/* notify on transition campaign limit expiration */
 				CampaignLimitReached event = new CampaignLimitReached(cmpn.getId(), cmpn
 						.getAdvertiser());
-				log.info("Posting DIRECTLY to CampaignLimitReached to the event bus for campaign #"+cmpn.getId()+" advertiser name: "+cmpn.getAdvertiser());
-				for (AdxQueryBid adxQueryBid : TACAdxSimulation.bidTrackers) {
-					adxQueryBid.limitReached(event);
-				}
-				log.info("Posting CampaignLimitReached to the event bus for campaign #"+cmpn.getId()+" advertiser name: "+cmpn.getAdvertiser());
 				getSimulation().getEventBus().post(
 						event);
 //				log.log(Level.SEVERE,

@@ -26,6 +26,7 @@ package tau.tac.adx.report.publisher;
 
 import java.util.logging.Logger;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.messages.AuctionMessage;
 
 import com.google.common.eventbus.EventBus;
@@ -63,7 +64,7 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	public AdxPublisherReportManagerImpl(
 			AdxPublisherReportSender publisherReportSender, EventBus eventBus) {
 		this.publisherReportSender = publisherReportSender;
-		eventBus.register(this);
+		AdxManager.getInstance().getSimulation().getEventBus().register(this);
 		log.info("AdxQueryReportManager created.");
 	}
 

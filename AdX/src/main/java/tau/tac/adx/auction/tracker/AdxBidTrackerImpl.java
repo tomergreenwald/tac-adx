@@ -239,6 +239,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 					return advertiser;
 				}
 			};
+			AdxManager.getInstance().getSimulation().getEventBus().register(this);
 			
 		}
 
@@ -262,13 +263,6 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		}
 
 		public BidInfo generateBid(AdxQuery query) {
-			if(!registeredToEventBus){
-				logger.info("Registering AdxQueryBid for advertiser: "+advertiser +" to the event bus");
-				AdxManager.getInstance().getSimulation().getEventBus().register(this);
-				TACAdxSimulation.bidTrackers.add(this);
-				logger.info("Registered AdxQueryBid for advertiser: "+advertiser +" to the event bus");
-				registeredToEventBus = true;
-			}
 			WheelSampler<BidEntry> sampler = queryMap.get(query);
 			if (sampler == null) {
 				sampler = new WheelSampler<AdxBidBundle.BidEntry>();
