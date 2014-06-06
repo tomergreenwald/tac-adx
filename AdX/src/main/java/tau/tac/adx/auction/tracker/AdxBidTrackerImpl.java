@@ -245,15 +245,14 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 
 		@Subscribe
 		public void limitReached(CampaignLimitReached message) {
-			// FIXME: uncomment me
-			//if (message.getAdNetwork().equals(advertiser)) {
+			if (message.getAdNetwork().equals(advertiser)) {
 				if(excludedCampaigns.contains(message.getCampaignId())) {
 					logger.severe("Limit request was already sent today to stop bidding for campaign #"+message.getCampaignId()+" due to limit");
 				}
 				excludedCampaigns.add(message.getCampaignId());
 				queryMap.clear();
-				logger.info("Accepted request to stop bidding for campaign #"+message.getCampaignId()+" due to limit. My name is "+advertiser);
-			//}
+				logger.info("Accepted request to stop bidding for "+message +" due to limit. My name is "+advertiser);
+			}
 		}
 
 		public void clearQueries() {
