@@ -164,7 +164,7 @@ public class SystemTestCodePersistency {
 	public void testCampaignReportOutOfRange() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		CampaignReport campaignReport = advertiserData.daysData[day].campaignReport;
-		Assume.assumeTrue(campaignReport != null);
+		Assume.assumeTrue("No campaign report was avaialable", campaignReport != null);
 		for (CampaignReportKey campaignReportKey : campaignReport) {
 			Integer campaignId = campaignReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
@@ -181,7 +181,7 @@ public class SystemTestCodePersistency {
 	public void testCampaignReportForWrongAdvertiser() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		CampaignReport campaignReport = advertiserData.daysData[day].campaignReport;
-		Assume.assumeTrue(campaignReport != null);
+		Assume.assumeTrue("No campaign report was avaialable", campaignReport != null);
 		for (CampaignReportKey campaignReportKey : campaignReport) {
 			Integer campaignId = campaignReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
@@ -195,7 +195,7 @@ public class SystemTestCodePersistency {
 	public void testAdnetRportOutOfRange() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		AdNetworkReport adnetRoport = advertiserData.daysData[day].adnetReport;
-		Assume.assumeTrue(adnetRoport != null);
+		Assume.assumeTrue("No adnet report was avaialable", adnetRoport != null);
 		for (AdNetworkKey adnetReportKey : adnetRoport) {
 			Integer campaignId = adnetReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
@@ -212,7 +212,7 @@ public class SystemTestCodePersistency {
 	public void testAdnetReportForWrongAdvertiser() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		AdNetworkReport adnetRoport = advertiserData.daysData[day].adnetReport;
-		Assume.assumeTrue(adnetRoport != null);
+		Assume.assumeTrue("No adnet report was avaialable", adnetRoport != null);
 		for (AdNetworkKey adnetReportKey : adnetRoport) {
 			Integer campaignId = adnetReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
