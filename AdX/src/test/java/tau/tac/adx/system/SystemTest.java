@@ -36,6 +36,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import se.sics.tasim.logtool.LogReader;
+import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.parser.LogVerifierParser;
 import tau.tac.adx.parser.LogVerifierParser.AdvertiserData;
 
@@ -49,9 +50,8 @@ public class SystemTest {
 	@BeforeClass
 	public static void runVerifier() throws FileNotFoundException, IOException,
 			ParseException {
-		LogReader logReader = new LogReader(
-				new FileInputStream(
-						"src\\test\\resources\\localhost_sim399.slg"));
+		LogReader logReader = new LogReader(new FileInputStream(
+				"src\\test\\resources\\localhost_sim399.slg"));
 		parser = new LogVerifierParser(logReader, null);
 		parser.start();
 		parser.stop();
@@ -104,6 +104,55 @@ public class SystemTest {
 						+ ")";
 				Assert.assertEquals(message, expectedBalance, reportedBalance,
 						0.1);
+			}
+		}
+	}
+
+	@Test
+	public void testDailyLimitCost() {
+		HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
+		for (String advertiser : advDataMap.keySet()) {
+			AdvertiserData advertiserData = advDataMap.get(advertiser);
+			for (int verifiedDay = 0; verifiedDay < 60; verifiedDay++) {
+
+				for (Integer campaignId : advertiserData.daysData[verifiedDay].cmpBudgetDailyLimits
+						.keySet()) {
+					HashMap<Integer, CampaignStats> cmpDailyStats = advertiserData.daysData[parser.cmpStartDayById
+							.get(campaignId)].cmpDailyStats;
+					int campaignStartDay = parser.cmpStartDayById
+							.get(campaignId);
+					if (!cmpDailyStats.isEmpty()
+							&& verifiedDay >= campaignStartDay) {
+						Double dailyLimit = advertiserData.daysData[verifiedDay].cmpBudgetDailyLimits
+								.get(campaignId);
+
+						double cost;
+						// since the daily stats aggregate results we need to
+						// subtract two consecutive days to get the result for a
+						// single day.
+						if (verifiedDay > campaignStartDay) {
+							cost = cmpDailyStats.get(verifiedDay).getCost()
+									- cmpDailyStats.get(verifiedDay - 1)
+											.getCost();
+						} else {
+							cost = cmpDailyStats.get(verifiedDay).getCost();
+						}
+
+						if (cost > dailyLimit) {
+							String message = getBasicInfoString(advertiser,
+									verifiedDay)
+									+ StringUtils.rightPad("CampaignLimit: ",
+											20)
+									+ "ERROR: impressions cost over the daily limit. Cmapaign #"
+									+ campaignId
+									+ " cost: "
+									+ cost
+									+ " limit: " + dailyLimit;
+							/* ERROR: Cost Computation AdnetReport vs CmpReport */
+							Assert.assertEquals(message, dailyLimit, cost, 0.1);
+						}
+					}
+				}
 			}
 		}
 	}
