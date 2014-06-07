@@ -167,12 +167,25 @@ public class SystemTestCodePersistency {
 			Integer campaignId = campaignReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
 			long campaignLastDay = advertiserData.daysData[campaignFirstDay].cmpDayEnd;
-			Assert.assertTrue("Received campaign report while campaign #"
+			String message = "Received campaign report while campaign #"
 					+ campaignId + " was not active (active range ["
-					+ campaignFirstDay + ", " + campaignLastDay + "])",
-					(day - 1 <= campaignLastDay)
-							&& (day - 1 >= campaignFirstDay));
+					+ campaignFirstDay + ", " + campaignLastDay + "])";
+			Assert.assertTrue(message, (day - 1 <= campaignLastDay)
+					&& (day - 1 >= campaignFirstDay));
 		}
 	}
-	// TODO: handle non won campaign
+
+	@Test
+	public void testCampaignReportForWrongAdvertiser() {
+		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
+		CampaignReport campaignReport = advertiserData.daysData[day].campaignReport;
+		Assume.assumeTrue(campaignReport != null);
+		for (CampaignReportKey campaignReportKey : campaignReport) {
+			Integer campaignId = campaignReportKey.getCampaignId();
+			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
+			Assert.assertTrue(
+					"Received a report for a campaign that the advertiser did not own",
+					advertiserData.daysData[campaignFirstDay].cmpWon);
+		}
+	}
 }
