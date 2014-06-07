@@ -29,11 +29,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import se.sics.tasim.logtool.LogReader;
 import tau.tac.adx.demand.CampaignStats;
@@ -42,119 +46,122 @@ import tau.tac.adx.parser.LogVerifierParser.AdvertiserData;
 
 /**
  * @author Tomer Greenwald
+ * @author Mariano Schain
  */
+@RunWith(Parameterized.class)
 public class SystemTest {
 
+	/**
+	 * {@link LogVerifierParser} instance to be used for verification.
+	 */
 	private static LogVerifierParser parser;
 
-	@BeforeClass
-	public static void runVerifier() throws FileNotFoundException, IOException,
-			ParseException {
+	/**
+	 * Day number for the parameterized tests.
+	 */
+	private int day;
+	/**
+	 * Advertiser name for the parameterized tests.
+	 */
+	private String advertiser;
+
+	public SystemTest(int day, String advertiser) {
+		this.day = day;
+		this.advertiser = advertiser;
+	}
+
+	@Parameters(name = "day #{0}, advertiser - {1}")
+	public static Iterable<Object[]> data() throws FileNotFoundException,
+			IOException, ParseException {
 		LogReader logReader = new LogReader(new FileInputStream(
 				"src\\test\\resources\\localhost_sim399.slg"));
 		parser = new LogVerifierParser(logReader, null);
 		parser.start();
 		parser.stop();
+		List<Object[]> data = new LinkedList<Object[]>();
+		HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
+		for (int verifiedDay = 0; verifiedDay <= 60; verifiedDay++) {
+			for (String advertiser : advDataMap.keySet()) {
+				data.add(new Object[] { verifiedDay, advertiser });
+			}
+		}
+		return data;
 	}
-
-	// @Test
-	// public void testEmptyReportEntry() throws FileNotFoundException,
-	// IOException, ParseException {
-	// HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
-	// for(String advertiser : advDataMap.keySet()) {
-	// AdvertiserData advertiserData = advDataMap.get(advertiser);
-	// DayData[] daysData = advertiserData.daysData;
-	// for (DayData dayData : daysData) {
-	// if(dayData != null){
-	// System.out.println(advertiser + " | " + dayData);
-	// } else {
-	// int i =0;
-	// }
-	// }
-	// }
-	// }
 
 	@Test
 	public void testQualityRating() {
-		HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
-		for (String advertiser : advDataMap.keySet()) {
-			AdvertiserData advertiserData = advDataMap.get(advertiser);
-			for (int verifiedDay = 1; verifiedDay < 60; verifiedDay++) {
-
-				double expectedBalance = advertiserData.daysData[verifiedDay + 1].accumulatedRevenue
-						- (advertiserData.daysData[verifiedDay - 1].adxAccumulatedCosts + advertiserData.daysData[verifiedDay + 1].ucsAccumulatedCosts);
-
-				double reportedBalance = advertiserData.daysData[verifiedDay].reportedBalance;
-				String message = getBasicInfoString(advertiser, verifiedDay)
-						+ StringUtils.rightPad("BankStatus: ", 20)
-						+ "ERROR: Balance Computation of day "
-						+ verifiedDay
-						+ " Diff: "
-						+ (reportedBalance - expectedBalance)
-						+ "  Reported : "
-						+ reportedBalance
-						+ " Expected: "
-						+ expectedBalance
-						+ "("
-						+ advertiserData.daysData[verifiedDay].accumulatedRevenue
-						+ " - "
-						+ advertiserData.daysData[verifiedDay].adxAccumulatedCosts
-						+ " - "
-						+ advertiserData.daysData[verifiedDay].ucsAccumulatedCosts
-						+ ")";
-				Assert.assertEquals(message, expectedBalance, reportedBalance,
-						0.1);
-			}
+		if (day == 0 || day == 60) {
+			// This test should not run for the first day, but since it is
+			// parameterized we can only check at runtime
+			return;
 		}
+		HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
+		AdvertiserData advertiserData = advDataMap.get(advertiser);
+		double expectedBalance = advertiserData.daysData[day + 1].accumulatedRevenue
+				- (advertiserData.daysData[day - 1].adxAccumulatedCosts + advertiserData.daysData[day + 1].ucsAccumulatedCosts);
+
+		double reportedBalance = advertiserData.daysData[day].reportedBalance;
+		String message = qualityRatingErrorMessage(advertiser, advertiserData,
+				day, expectedBalance, reportedBalance);
+		Assert.assertEquals(message, expectedBalance, reportedBalance, 0.1);
+	}
+
+	private String qualityRatingErrorMessage(String advertiser,
+			AdvertiserData advertiserData, int verifiedDay,
+			double expectedBalance, double reportedBalance) {
+		return getBasicInfoString(advertiser, verifiedDay)
+				+ StringUtils.rightPad("BankStatus: ", 20)
+				+ "ERROR: Balance Computation of day " + verifiedDay
+				+ " Diff: " + (reportedBalance - expectedBalance)
+				+ "  Reported : " + reportedBalance + " Expected: "
+				+ expectedBalance + "("
+				+ advertiserData.daysData[verifiedDay].accumulatedRevenue
+				+ " - "
+				+ advertiserData.daysData[verifiedDay].adxAccumulatedCosts
+				+ " - "
+				+ advertiserData.daysData[verifiedDay].ucsAccumulatedCosts
+				+ ")";
 	}
 
 	@Test
 	public void testDailyLimitCost() {
 		HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
-		for (String advertiser : advDataMap.keySet()) {
-			AdvertiserData advertiserData = advDataMap.get(advertiser);
-			for (int verifiedDay = 0; verifiedDay < 60; verifiedDay++) {
+		AdvertiserData advertiserData = advDataMap.get(advertiser);
+		for (Integer campaignId : advertiserData.daysData[day].cmpBudgetDailyLimits
+				.keySet()) {
+			HashMap<Integer, CampaignStats> cmpDailyStats = advertiserData.daysData[parser.cmpStartDayById
+					.get(campaignId)].cmpDailyStats;
+			int campaignStartDay = parser.cmpStartDayById.get(campaignId);
+			if (!cmpDailyStats.isEmpty() && day >= campaignStartDay) {
+				Double dailyLimit = advertiserData.daysData[day].cmpBudgetDailyLimits
+						.get(campaignId);
 
-				for (Integer campaignId : advertiserData.daysData[verifiedDay].cmpBudgetDailyLimits
-						.keySet()) {
-					HashMap<Integer, CampaignStats> cmpDailyStats = advertiserData.daysData[parser.cmpStartDayById
-							.get(campaignId)].cmpDailyStats;
-					int campaignStartDay = parser.cmpStartDayById
-							.get(campaignId);
-					if (!cmpDailyStats.isEmpty()
-							&& verifiedDay >= campaignStartDay) {
-						Double dailyLimit = advertiserData.daysData[verifiedDay].cmpBudgetDailyLimits
-								.get(campaignId);
+				double cost;
+				// since the daily stats aggregate results we need to
+				// subtract two consecutive days to get the result for a
+				// single day.
+				if (day > campaignStartDay) {
+					cost = cmpDailyStats.get(day).getCost()
+							- cmpDailyStats.get(day - 1).getCost();
+				} else {
+					cost = cmpDailyStats.get(day).getCost();
+				}
 
-						double cost;
-						// since the daily stats aggregate results we need to
-						// subtract two consecutive days to get the result for a
-						// single day.
-						if (verifiedDay > campaignStartDay) {
-							cost = cmpDailyStats.get(verifiedDay).getCost()
-									- cmpDailyStats.get(verifiedDay - 1)
-											.getCost();
-						} else {
-							cost = cmpDailyStats.get(verifiedDay).getCost();
-						}
-
-						if (cost > dailyLimit) {
-							String message = getBasicInfoString(advertiser,
-									verifiedDay)
-									+ StringUtils.rightPad("CampaignLimit: ",
-											20)
-									+ "ERROR: impressions cost over the daily limit. Cmapaign #"
-									+ campaignId
-									+ " cost: "
-									+ cost
-									+ " limit: " + dailyLimit;
-							/* ERROR: Cost Computation AdnetReport vs CmpReport */
-							Assert.assertEquals(message, dailyLimit, cost, 0.1);
-						}
-					}
+				if (cost > dailyLimit) {
+					String message = dailyLimitErrorMessage(advertiser, day,
+							campaignId, dailyLimit, cost);
+					Assert.assertEquals(message, dailyLimit, cost, 0.1);
 				}
 			}
 		}
+	}
+
+	private String dailyLimitErrorMessage(String advertiser, int verifiedDay,
+			Integer campaignId, Double dailyLimit, double cost) {
+		return getBasicInfoString(advertiser, verifiedDay)
+				+ StringUtils.rightPad("CampaignLimit: ", 20)
+				+ "ERROR: impressions cost over the daily limit. Cmapaign #"
+				+ campaignId + " cost: " + cost + " limit: " + dailyLimit;
 	}
 
 	private String getBasicInfoString(String advertiser, int day) {
