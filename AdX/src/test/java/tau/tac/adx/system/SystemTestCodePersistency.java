@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -90,11 +91,7 @@ public class SystemTestCodePersistency {
 
 	@Test
 	public void testQualityRating() {
-		if (day == 0 || day == 60) {
-			// This test should not run for the first day, but since it is
-			// parameterized we can only check at runtime
-			return;
-		}
+		Assume.assumeTrue("Only days 1-59 are validated", day > 0 && day < 59);
 		HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
 		AdvertiserData advertiserData = advDataMap.get(advertiser);
 		double expectedBalance = advertiserData.daysData[day + 1].accumulatedRevenue
@@ -109,8 +106,7 @@ public class SystemTestCodePersistency {
 	private String qualityRatingErrorMessage(String advertiser,
 			AdvertiserData advertiserData, int verifiedDay,
 			double expectedBalance, double reportedBalance) {
-		return getBasicInfoString()
-				+ StringUtils.rightPad("BankStatus: ", 20)
+		return getBasicInfoString() + StringUtils.rightPad("BankStatus: ", 20)
 				+ "ERROR: Balance Computation of day " + verifiedDay
 				+ " Diff: " + (reportedBalance - expectedBalance)
 				+ "  Reported : " + reportedBalance + " Expected: "
@@ -167,14 +163,13 @@ public class SystemTestCodePersistency {
 	@Test
 	public void testAdNetVsCampaignReportCosts() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
-		if ((advertiserData.daysData[day].cmpWon)
-				&& (day <= advertiserData.daysData[day].cmpDayEnd)) {
-			// for each active won campaign
-			double adxCost = advertiserData.daysData[day].cmpAdxCost;
-			double adnetCost = advertiserData.daysData[day].adxAdnetReportedCosts;
-			String message = reportCostComparisonMessage(advertiserData);
-			Assert.assertEquals(message, adxCost, adnetCost, 0.03);
-		}
+		Assume.assumeTrue("Only days with active campaigns are validated",
+				(advertiserData.daysData[day].cmpWon)
+						&& (day <= advertiserData.daysData[day].cmpDayEnd));
+		double adxCost = advertiserData.daysData[day].cmpAdxCost;
+		double adnetCost = advertiserData.daysData[day].adxAdnetReportedCosts;
+		String message = reportCostComparisonMessage(advertiserData);
+		Assert.assertEquals(message, adxCost, adnetCost, 0.03);
 	}
 
 	private String reportCostComparisonMessage(AdvertiserData advertiserData) {
