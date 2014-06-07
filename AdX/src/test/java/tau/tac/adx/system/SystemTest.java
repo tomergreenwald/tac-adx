@@ -165,19 +165,19 @@ public class SystemTest {
 	}
 
 	@Test
-	public void testAdNetVsCampaignReport() {
+	public void testAdNetVsCampaignReportCosts() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		if ((advertiserData.daysData[day].cmpWon)
 				&& (day <= advertiserData.daysData[day].cmpDayEnd)) {
 			// for each active won campaign
 			double adxCost = advertiserData.daysData[day].cmpAdxCost;
 			double adnetCost = advertiserData.daysData[day].adxAdnetReportedCosts;
-			String message = reportComarisonMessage(advertiserData);
+			String message = reportCostComparisonMessage(advertiserData);
 			Assert.assertEquals(message, adxCost, adnetCost, 0.03);
 		}
 	}
 
-	private String reportComarisonMessage(AdvertiserData advertiserData) {
+	private String reportCostComparisonMessage(AdvertiserData advertiserData) {
 		return getBasicInfoString(advertiser, day)
 				+ StringUtils.rightPad("AdNetworkReport: ", 20)
 				+ "ERROR: Cost Computation AdnetReport vs CmpReport - "
