@@ -43,6 +43,8 @@ import se.sics.tasim.logtool.LogReader;
 import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.parser.LogVerifierParser;
 import tau.tac.adx.parser.LogVerifierParser.AdvertiserData;
+import tau.tac.adx.report.adn.AdNetworkKey;
+import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.demand.CampaignReport;
 import tau.tac.adx.report.demand.CampaignReportKey;
 
@@ -188,4 +190,22 @@ public class SystemTestCodePersistency {
 					advertiserData.daysData[campaignFirstDay].cmpWon);
 		}
 	}
+
+	@Test
+	public void testAdnetRportOutOfRange() {
+		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
+		AdNetworkReport adnetRoport = advertiserData.daysData[day].adnetReport;
+		Assume.assumeTrue(adnetRoport != null);
+		for (AdNetworkKey adnetReportKey : adnetRoport) {
+			Integer campaignId = adnetReportKey.getCampaignId();
+			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
+			long campaignLastDay = advertiserData.daysData[campaignFirstDay].cmpDayEnd;
+			String message = "Received adnet report while campaign #"
+					+ campaignId + " was not active (active range ["
+					+ campaignFirstDay + ", " + campaignLastDay + "])";
+			Assert.assertTrue(message, (day - 1 > campaignFirstDay)
+					|| (day - 1 < campaignLastDay));
+		}
+	}
+
 }
