@@ -109,7 +109,7 @@ public class SystemTest {
 	private String qualityRatingErrorMessage(String advertiser,
 			AdvertiserData advertiserData, int verifiedDay,
 			double expectedBalance, double reportedBalance) {
-		return getBasicInfoString(advertiser, verifiedDay)
+		return getBasicInfoString()
 				+ StringUtils.rightPad("BankStatus: ", 20)
 				+ "ERROR: Balance Computation of day " + verifiedDay
 				+ " Diff: " + (reportedBalance - expectedBalance)
@@ -158,7 +158,7 @@ public class SystemTest {
 
 	private String dailyLimitErrorMessage(String advertiser, int verifiedDay,
 			Integer campaignId, Double dailyLimit, double cost) {
-		return getBasicInfoString(advertiser, verifiedDay)
+		return getBasicInfoString()
 				+ StringUtils.rightPad("CampaignLimit: ", 20)
 				+ "ERROR: impressions cost over the daily limit. Cmapaign #"
 				+ campaignId + " cost: " + cost + " limit: " + dailyLimit;
@@ -178,7 +178,7 @@ public class SystemTest {
 	}
 
 	private String reportCostComparisonMessage(AdvertiserData advertiserData) {
-		return getBasicInfoString(advertiser, day)
+		return getBasicInfoString()
 				+ StringUtils.rightPad("AdNetworkReport: ", 20)
 				+ "ERROR: Cost Computation AdnetReport vs CmpReport - "
 				+ advertiserData.daysData[day].cmpId + " Reported cmp: "
@@ -186,7 +186,7 @@ public class SystemTest {
 				+ advertiserData.daysData[day].adxAdnetReportedCosts;
 	}
 
-	private String getBasicInfoString(String advertiser, int day) {
+	private String getBasicInfoString() {
 		return StringUtils.rightPad("" + day, 5) + "\t"
 				+ StringUtils.rightPad(advertiser, 20) + "\t";
 	}
