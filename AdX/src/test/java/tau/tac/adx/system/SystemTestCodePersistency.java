@@ -49,7 +49,7 @@ import tau.tac.adx.parser.LogVerifierParser.AdvertiserData;
  * @author Mariano Schain
  */
 @RunWith(Parameterized.class)
-public class SystemTest {
+public class SystemTestCodePersistency {
 
 	/**
 	 * {@link LogVerifierParser} instance to be used for verification.
@@ -65,7 +65,7 @@ public class SystemTest {
 	 */
 	private String advertiser;
 
-	public SystemTest(int day, String advertiser) {
+	public SystemTestCodePersistency(int day, String advertiser) {
 		this.day = day;
 		this.advertiser = advertiser;
 	}
