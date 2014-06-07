@@ -11,7 +11,6 @@ import se.sics.isl.transport.Transportable;
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.data.AuctionState;
-import tau.tac.adx.auction.tracker.AdxBidTrackerImpl.AdxQueryBid;
 import tau.tac.adx.demand.Campaign;
 import tau.tac.adx.demand.CampaignImpl;
 import tau.tac.adx.demand.QualityManager;
@@ -31,7 +30,6 @@ import tau.tac.adx.report.demand.InitialCampaignMessage;
 import tau.tac.adx.report.demand.campaign.auction.CampaignAuctionReport;
 import tau.tac.adx.sim.Builtin;
 import tau.tac.adx.sim.TACAdxConstants;
-import tau.tac.adx.sim.TACAdxSimulation;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -411,9 +409,6 @@ public class DemandAgent extends Builtin {
 
 	@Subscribe
 	public synchronized void impressed(AuctionMessage message) {
-		if(getSimulation() == null){
-			int i = 0;
-		}
 		/* fetch campaign */
 		Campaign cmpn = message.getAuctionResult().getCampaign();
 		AuctionState auctionState = message.getAuctionResult()
@@ -431,19 +426,19 @@ public class DemandAgent extends Builtin {
 						.getAdvertiser());
 				getSimulation().getEventBus().post(
 						event);
-//				log.log(Level.SEVERE,
-//						"Day "
-//								+ day
-//								+ " :Campaign limit expired Impressed while over limit: "
-//								+ cmpn.getId() + ", daily limit was: "
-//								+ cmpn.getImpressionLimit() + ", "
-//								+ cmpn.getBudgetlimit() +  " values are: "
-//								+ cmpn.getTodayStats().getTargetedImps() + ", "
-//								+ cmpn.getTodayStats().getCost() + ", total limit was: "
-//								+ cmpn.getTotalImpressionLimit() + ", "
-//								+ cmpn.getTotalBudgetlimit() + " total values are: "
-//								+ cmpn.getTotals().getTargetedImps() + cmpn.getTodayStats().getTargetedImps() + ", "
-//								+ cmpn.getTotals().getCost() + cmpn.getTodayStats().getCost());
+				log.log(Level.SEVERE,
+						"Day "
+								+ day
+								+ " :Campaign limit expired Impressed while over limit: "
+								+ cmpn.getId() + ", daily limit was: "
+								+ cmpn.getImpressionLimit() + ", "
+								+ cmpn.getBudgetlimit() +  " values are: "
+								+ cmpn.getTodayStats().getTargetedImps() + ", "
+								+ cmpn.getTodayStats().getCost() + ", total limit was: "
+								+ cmpn.getTotalImpressionLimit() + ", "
+								+ cmpn.getTotalBudgetlimit() + " total values are: "
+								+ cmpn.getTotals().getTargetedImps() + cmpn.getTodayStats().getTargetedImps() + ", "
+								+ cmpn.getTotals().getCost() + cmpn.getTodayStats().getCost());
 			}
 		}
 	}
