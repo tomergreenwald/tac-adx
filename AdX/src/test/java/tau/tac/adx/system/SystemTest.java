@@ -70,7 +70,7 @@ public class SystemTest {
 		this.advertiser = advertiser;
 	}
 
-	@Parameters(name = "day #{0}, advertiser - {1}")
+	@Parameters(name = "day #{0}, {1}")
 	public static Iterable<Object[]> data() throws FileNotFoundException,
 			IOException, ParseException {
 		LogReader logReader = new LogReader(new FileInputStream(
