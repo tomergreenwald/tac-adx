@@ -90,7 +90,7 @@ public class SystemTestCodePersistency {
 	}
 
 	@Test
-	public void testQualityRating() {
+	public void testBankBalance() {
 		Assume.assumeTrue("Only days 1-59 are validated", day > 0 && day < 59);
 		HashMap<String, AdvertiserData> advDataMap = parser.getAdvData();
 		AdvertiserData advertiserData = advDataMap.get(advertiser);
@@ -98,12 +98,12 @@ public class SystemTestCodePersistency {
 				- (advertiserData.daysData[day - 1].adxAccumulatedCosts + advertiserData.daysData[day + 1].ucsAccumulatedCosts);
 
 		double reportedBalance = advertiserData.daysData[day].reportedBalance;
-		String message = qualityRatingErrorMessage(advertiser, advertiserData,
+		String message = bankBalanceErrorMessage(advertiser, advertiserData,
 				day, expectedBalance, reportedBalance);
 		Assert.assertEquals(message, expectedBalance, reportedBalance, 0.1);
 	}
 
-	private String qualityRatingErrorMessage(String advertiser,
+	private String bankBalanceErrorMessage(String advertiser,
 			AdvertiserData advertiserData, int verifiedDay,
 			double expectedBalance, double reportedBalance) {
 		return getBasicInfoString() + StringUtils.rightPad("BankStatus: ", 20)
