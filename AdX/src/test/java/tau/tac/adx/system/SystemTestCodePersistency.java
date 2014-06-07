@@ -181,6 +181,24 @@ public class SystemTestCodePersistency {
 				+ advertiserData.daysData[day].adxAdnetReportedCosts;
 	}
 
+	@Test
+	public void testQualityRatingVsExpected() {
+		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
+		double actualQualityRating = advertiserData.daysData[day].qualityRating;
+		double expectedQualityRating = advertiserData.daysData[day].expectedQualityRating;
+		String message = qualityRatingErrorMessage(actualQualityRating,
+				expectedQualityRating);
+		Assert.assertEquals(message, expectedQualityRating, actualQualityRating, 0.01);
+	}
+
+	private String qualityRatingErrorMessage(double actualQualityRating,
+			double expectedQualityRating) {
+		return getBasicInfoString()
+				+ StringUtils.rightPad("AdNetNotification: ", 20)
+				+ "ERROR: Quality Rating Computation - " + "Reported Rating: "
+				+ actualQualityRating + " Expected: " + expectedQualityRating;
+	}
+
 	private String getBasicInfoString() {
 		return StringUtils.rightPad("" + day, 5) + "\t"
 				+ StringUtils.rightPad(advertiser, 20) + "\t";
