@@ -125,12 +125,12 @@ public class SystemTestCodePersistency {
 				}
 
 				if (cost > dailyLimit) {
-					Assert.assertEquals(getCampaignString(advertiserData), dailyLimit, cost, 0.1);
+					Assert.assertEquals(getCampaignString(advertiserData),
+							dailyLimit, cost, 0.1);
 				}
 			}
 		}
 	}
-
 
 	@Test
 	public void testAdNetVsCampaignReportCosts() {
