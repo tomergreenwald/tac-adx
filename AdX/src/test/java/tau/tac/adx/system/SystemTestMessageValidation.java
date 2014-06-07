@@ -83,19 +83,14 @@ public class SystemTestMessageValidation {
 		CampaignOpportunityMessage campaignOpportunityMessage = parser.campaignOpportunityMessages
 				.get(day);
 		Assume.assumeTrue("No campaign was allocated today", campaignOpportunityMessage != null);
-		String message = campaignOpportunityStartDayMessage(campaignOpportunityMessage);
-		Assert.assertEquals(message, day + 2,
-				campaignOpportunityMessage.getDayStart());
-	}
-
-	private String campaignOpportunityStartDayMessage(
-			CampaignOpportunityMessage campaignOpportunityMessage) {
-		return "Expected campaign #"
+		String message = "Expected campaign #"
 				+ campaignOpportunityMessage.getId()
 				+ " to begin at day #"
 				+ (day + 2)
 				+ " (two days after the campaign oppotunity message arrived) but it actually starts at day #"
 				+ campaignOpportunityMessage.getDayStart();
+		Assert.assertEquals(message, day + 2,
+				campaignOpportunityMessage.getDayStart());
 	}
 
 }

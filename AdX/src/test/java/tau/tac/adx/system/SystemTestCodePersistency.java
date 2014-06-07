@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
@@ -98,25 +97,7 @@ public class SystemTestCodePersistency {
 				- (advertiserData.daysData[day - 1].adxAccumulatedCosts + advertiserData.daysData[day + 1].ucsAccumulatedCosts);
 
 		double reportedBalance = advertiserData.daysData[day].reportedBalance;
-		String message = bankBalanceErrorMessage(advertiser, advertiserData,
-				day, expectedBalance, reportedBalance);
-		Assert.assertEquals(message, expectedBalance, reportedBalance, 0.1);
-	}
-
-	private String bankBalanceErrorMessage(String advertiser,
-			AdvertiserData advertiserData, int verifiedDay,
-			double expectedBalance, double reportedBalance) {
-		return getBasicInfoString() + StringUtils.rightPad("BankStatus: ", 20)
-				+ "ERROR: Balance Computation of day " + verifiedDay
-				+ " Diff: " + (reportedBalance - expectedBalance)
-				+ "  Reported : " + reportedBalance + " Expected: "
-				+ expectedBalance + "("
-				+ advertiserData.daysData[verifiedDay].accumulatedRevenue
-				+ " - "
-				+ advertiserData.daysData[verifiedDay].adxAccumulatedCosts
-				+ " - "
-				+ advertiserData.daysData[verifiedDay].ucsAccumulatedCosts
-				+ ")";
+		Assert.assertEquals(expectedBalance, reportedBalance, 0.1);
 	}
 
 	@Test
@@ -144,21 +125,12 @@ public class SystemTestCodePersistency {
 				}
 
 				if (cost > dailyLimit) {
-					String message = dailyLimitErrorMessage(advertiser, day,
-							campaignId, dailyLimit, cost);
-					Assert.assertEquals(message, dailyLimit, cost, 0.1);
+					Assert.assertEquals(getCampaignString(advertiserData), dailyLimit, cost, 0.1);
 				}
 			}
 		}
 	}
 
-	private String dailyLimitErrorMessage(String advertiser, int verifiedDay,
-			Integer campaignId, Double dailyLimit, double cost) {
-		return getBasicInfoString()
-				+ StringUtils.rightPad("CampaignLimit: ", 20)
-				+ "ERROR: impressions cost over the daily limit. Cmapaign #"
-				+ campaignId + " cost: " + cost + " limit: " + dailyLimit;
-	}
 
 	@Test
 	public void testAdNetVsCampaignReportCosts() {
@@ -168,17 +140,12 @@ public class SystemTestCodePersistency {
 						&& (day <= advertiserData.daysData[day].cmpDayEnd));
 		double adxCost = advertiserData.daysData[day].cmpAdxCost;
 		double adnetCost = advertiserData.daysData[day].adxAdnetReportedCosts;
-		String message = reportCostComparisonMessage(advertiserData);
-		Assert.assertEquals(message, adxCost, adnetCost, 0.03);
+		Assert.assertEquals(getCampaignString(advertiserData), adxCost,
+				adnetCost, 0.03);
 	}
 
-	private String reportCostComparisonMessage(AdvertiserData advertiserData) {
-		return getBasicInfoString()
-				+ StringUtils.rightPad("AdNetworkReport: ", 20)
-				+ "ERROR: Cost Computation AdnetReport vs CmpReport - "
-				+ advertiserData.daysData[day].cmpId + " Reported cmp: "
-				+ advertiserData.daysData[day].cmpAdxCost + " AdNet: "
-				+ advertiserData.daysData[day].adxAdnetReportedCosts;
+	private String getCampaignString(AdvertiserData advertiserData) {
+		return "Campaign #" + advertiserData.daysData[day].cmpId;
 	}
 
 	@Test
@@ -186,22 +153,7 @@ public class SystemTestCodePersistency {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		double actualQualityRating = advertiserData.daysData[day].qualityRating;
 		double expectedQualityRating = advertiserData.daysData[day].expectedQualityRating;
-		String message = qualityRatingErrorMessage(actualQualityRating,
-				expectedQualityRating);
-		Assert.assertEquals(message, expectedQualityRating, actualQualityRating, 0.01);
-	}
-
-	private String qualityRatingErrorMessage(double actualQualityRating,
-			double expectedQualityRating) {
-		return getBasicInfoString()
-				+ StringUtils.rightPad("AdNetNotification: ", 20)
-				+ "ERROR: Quality Rating Computation - " + "Reported Rating: "
-				+ actualQualityRating + " Expected: " + expectedQualityRating;
-	}
-
-	private String getBasicInfoString() {
-		return StringUtils.rightPad("" + day, 5) + "\t"
-				+ StringUtils.rightPad(advertiser, 20) + "\t";
+		Assert.assertEquals(expectedQualityRating, actualQualityRating, 0.01);
 	}
 
 }
