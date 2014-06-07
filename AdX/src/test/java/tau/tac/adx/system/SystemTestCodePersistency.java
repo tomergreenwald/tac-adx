@@ -207,5 +207,19 @@ public class SystemTestCodePersistency {
 					|| (day - 1 < campaignLastDay));
 		}
 	}
+	
+	@Test
+	public void testAdnetReportForWrongAdvertiser() {
+		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
+		AdNetworkReport adnetRoport = advertiserData.daysData[day].adnetReport;
+		Assume.assumeTrue(adnetRoport != null);
+		for (AdNetworkKey adnetReportKey : adnetRoport) {
+			Integer campaignId = adnetReportKey.getCampaignId();
+			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
+			Assert.assertTrue(
+					"Received a report for a campaign that the advertiser did not own",
+					advertiserData.daysData[campaignFirstDay].cmpWon);
+		}
+	}
 
 }
