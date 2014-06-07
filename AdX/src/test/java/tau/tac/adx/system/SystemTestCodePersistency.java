@@ -43,6 +43,7 @@ import se.sics.tasim.logtool.LogReader;
 import tau.tac.adx.demand.CampaignStats;
 import tau.tac.adx.parser.LogVerifierParser;
 import tau.tac.adx.parser.LogVerifierParser.AdvertiserData;
+import tau.tac.adx.parser.LogVerifierParser.DayData;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.demand.CampaignReport;
@@ -164,7 +165,8 @@ public class SystemTestCodePersistency {
 	public void testCampaignReportOutOfRange() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		CampaignReport campaignReport = advertiserData.daysData[day].campaignReport;
-		Assume.assumeTrue("No campaign report was avaialable", campaignReport != null);
+		Assume.assumeTrue("No campaign report was avaialable",
+				campaignReport != null);
 		for (CampaignReportKey campaignReportKey : campaignReport) {
 			Integer campaignId = campaignReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
@@ -181,7 +183,8 @@ public class SystemTestCodePersistency {
 	public void testCampaignReportForWrongAdvertiser() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		CampaignReport campaignReport = advertiserData.daysData[day].campaignReport;
-		Assume.assumeTrue("No campaign report was avaialable", campaignReport != null);
+		Assume.assumeTrue("No campaign report was avaialable",
+				campaignReport != null);
 		for (CampaignReportKey campaignReportKey : campaignReport) {
 			Integer campaignId = campaignReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
@@ -194,9 +197,9 @@ public class SystemTestCodePersistency {
 	@Test
 	public void testAdnetRportOutOfRange() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
-		AdNetworkReport adnetRoport = advertiserData.daysData[day].adnetReport;
-		Assume.assumeTrue("No adnet report was avaialable", adnetRoport != null);
-		for (AdNetworkKey adnetReportKey : adnetRoport) {
+		AdNetworkReport adnetReport = advertiserData.daysData[day].adnetReport;
+		Assume.assumeTrue("No adnet report was avaialable", adnetReport != null);
+		for (AdNetworkKey adnetReportKey : adnetReport) {
 			Integer campaignId = adnetReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
 			long campaignLastDay = advertiserData.daysData[campaignFirstDay].cmpDayEnd;
@@ -207,13 +210,13 @@ public class SystemTestCodePersistency {
 					|| (day - 1 < campaignLastDay));
 		}
 	}
-	
+
 	@Test
 	public void testAdnetReportForWrongAdvertiser() {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
-		AdNetworkReport adnetRoport = advertiserData.daysData[day].adnetReport;
-		Assume.assumeTrue("No adnet report was avaialable", adnetRoport != null);
-		for (AdNetworkKey adnetReportKey : adnetRoport) {
+		AdNetworkReport adnetReport = advertiserData.daysData[day].adnetReport;
+		Assume.assumeTrue("No adnet report was avaialable", adnetReport != null);
+		for (AdNetworkKey adnetReportKey : adnetReport) {
 			Integer campaignId = adnetReportKey.getCampaignId();
 			int campaignFirstDay = parser.cmpStartDayById.get(campaignId);
 			Assert.assertTrue(
@@ -222,4 +225,48 @@ public class SystemTestCodePersistency {
 		}
 	}
 
+	@Test
+	public void testReceivedMessages() {
+		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
+		DayData dayData = advertiserData.daysData[day];
+		if (day == 0) {
+			Assert.assertNotNull(
+					"InitialCampaignMessage should be sent on the first day",
+					dayData.initialCampaignMessage);
+		} else {
+			Assert.assertNull(
+					"InitialCampaignMessage should only be sent on the first day",
+					dayData.initialCampaignMessage);
+		}
+		if (day < 2) {
+			Assert.assertNull("CampaignReport should only be sent from day 2+",
+					dayData.campaignReport);
+		} else {
+			Assert.assertNotNull("CampaignReport should be sent from day 2+",
+					dayData.campaignReport);
+		}
+		if (day == 0) {
+			Assert.assertNull(
+					"AdNetworkDailyNotification should only be sent from day 1+",
+					dayData.dailyNotification);
+		} else {
+			Assert.assertNotNull(
+					"AdNetworkDailyNotification should be sent from day 1+",
+					dayData.dailyNotification);
+		}
+		Assert.assertNotNull("SimulationStatus should be sent every day",
+				dayData.simulationStatus);
+		if (day < 2) {
+			Assert.assertNull(
+					"AdNetworkDailyNotification should only be sent from day 1+",
+					dayData.adnetReport);
+		} else {
+			if (dayData.adnetReport == null) {
+				Assert.assertNotNull(
+						"AdNetworkDailyNotification should be sent from day 1+ when at least one campaign is active.",
+						dayData.campaignReport);
+			}
+		}
+		Assert.assertNotNull(dayData.bankStatus);
+	}
 }
