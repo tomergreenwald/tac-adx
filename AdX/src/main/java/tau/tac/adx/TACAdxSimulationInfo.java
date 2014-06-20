@@ -25,7 +25,6 @@
 package tau.tac.adx;
 
 import static tau.tac.adx.sim.TACAdxConstants.ADVERTISER;
-import static tau.tac.adx.sim.TACAdxConstants.DU_BANK_ACCOUNT;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -66,19 +65,14 @@ public class TACAdxSimulationInfo extends Parser {
 
 	private ServerConfig serverConfig;
 
-	private SlotInfo slotInfo;
-	private RetailCatalog retailCatalog;
-
 	private Participant[] participants;
-	private Hashtable participantTable;
+	private Hashtable<String, Participant> participantTable;
 
 	private int[] agentRoles;
 	private Participant[][] agentsPerRole;
 	private int agentRoleNumber;
 
 	private int currentDate = 0;
-
-	private boolean isParsingExtended = false;
 
 	// Note: the context must have been set in the log reader before
 	// this object is created!
@@ -88,7 +82,7 @@ public class TACAdxSimulationInfo extends Parser {
 
 		ParticipantInfo[] infos = logReader.getParticipants();
 		participants = new Participant[infos == null ? 0 : infos.length];
-		participantTable = new Hashtable();
+		participantTable = new Hashtable<String, Participant>();
 		for (int i = 0, n = participants.length; i < n; i++) {
 			ParticipantInfo info = infos[i];
 			if (info != null) {
@@ -99,7 +93,7 @@ public class TACAdxSimulationInfo extends Parser {
 		simID = logReader.getSimulationID();
 		uniqueID = logReader.getUniqueID();
 		simType = logReader.getSimulationType();
-		simParams = logReader.getSimulationParams();
+		setSimParams(logReader.getSimulationParams());
 		startTime = logReader.getStartTime();
 		simLength = logReader.getSimulationLength();
 		serverName = logReader.getServerName();
@@ -107,12 +101,7 @@ public class TACAdxSimulationInfo extends Parser {
 
 		start();
 
-		// Extract the rest of the information
-		Participant[] advertisers = getParticipantsByRole(ADVERTISER);
-		/*
-		 * if (advertisers != null) { Participant m = advertisers[0]; StartInfo
-		 * si = m.getStartInfo(); }
-		 */
+		getParticipantsByRole(ADVERTISER);
 	}
 
 	public String getServerName() {
@@ -185,7 +174,7 @@ public class TACAdxSimulationInfo extends Parser {
 						agentsPerRole, agentRoleNumber + 5);
 			}
 
-			ArrayList list = new ArrayList();
+			ArrayList<Participant> list = new ArrayList<Participant>();
 			for (int i = 0, n = participants.length; i < n; i++) {
 				Participant a = participants[i];
 				if ((a != null) && (a.getInfo().getRole() == role)) {
@@ -281,9 +270,7 @@ public class TACAdxSimulationInfo extends Parser {
 
 	protected void dataUpdated(int type, Transportable object) {
 		if (object instanceof SlotInfo) {
-			this.slotInfo = (SlotInfo) object;
 		} else if (object instanceof RetailCatalog) {
-			this.retailCatalog = (RetailCatalog) object;
 		}
 	}
 	
@@ -319,5 +306,19 @@ public class TACAdxSimulationInfo extends Parser {
 	protected void unhandledNode(String nodeName) {
 		// Ignore anything else for now
 		log.warning("ignoring unhandled node '" + nodeName + '\'');
+	}
+
+	/**
+	 * @return the simParams
+	 */
+	public String getSimParams() {
+		return simParams;
+	}
+
+	/**
+	 * @param simParams the simParams to set
+	 */
+	public void setSimParams(String simParams) {
+		this.simParams = simParams;
 	}
 } // TACSCMSimulationInfo
