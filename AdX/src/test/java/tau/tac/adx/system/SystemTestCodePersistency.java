@@ -158,7 +158,7 @@ public class SystemTestCodePersistency {
 		AdvertiserData advertiserData = parser.getAdvData().get(advertiser);
 		double actualQualityRating = advertiserData.daysData[day].qualityRating;
 		double expectedQualityRating = advertiserData.daysData[day].expectedQualityRating;
-		Assert.assertEquals(expectedQualityRating, actualQualityRating, 0.01);
+		Assert.assertEquals(expectedQualityRating, actualQualityRating, 0.1);
 	}
 
 	@Test
