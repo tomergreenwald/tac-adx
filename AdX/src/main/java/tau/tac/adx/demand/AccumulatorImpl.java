@@ -9,6 +9,11 @@ import java.util.Iterator;
  * @param <A>
  */
 public class AccumulatorImpl {
+	
+	private AccumulatorImpl() {
+		//not called
+	}
+	
 	public static <A> A accumulate(final Accumulator<A> accumulator,
 			final Iterable<? extends A> i, final A init) {
 		A result = init;

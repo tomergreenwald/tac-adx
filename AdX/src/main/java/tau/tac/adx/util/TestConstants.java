@@ -12,6 +12,10 @@ import tau.tac.adx.users.AdxUser;
  * 
  */
 public class TestConstants {
+	
+	private TestConstants() {
+		//not called
+	}
 
 	/**
 	 * Amount of {@link AdNetwork ad networks} to generate.
