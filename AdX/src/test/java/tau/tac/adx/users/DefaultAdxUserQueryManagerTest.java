@@ -123,6 +123,7 @@ public class DefaultAdxUserQueryManagerTest {
 				random);
 		AdxUser nsUser = userGenerator.generate(1).iterator().next();
 		AdxQuery isQuery = manager.generateQuery(nsUser);
+		//FIXME: sometimes this test fails
 		assertNotNull(isQuery);
 	}
 }
