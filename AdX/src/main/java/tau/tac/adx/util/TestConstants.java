@@ -3,6 +3,8 @@
  */
 package tau.tac.adx.util;
 
+import tau.tac.adx.props.AdxBidBundle;
+import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.users.AdxUser;
 
 /**
