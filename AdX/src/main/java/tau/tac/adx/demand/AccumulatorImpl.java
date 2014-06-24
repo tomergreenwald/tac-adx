@@ -8,7 +8,7 @@ import java.util.Iterator;
  * 
  * @param <A>
  */
-public class AccumulatorImpl {
+public final class AccumulatorImpl {
 	
 	private AccumulatorImpl() {
 		//not called

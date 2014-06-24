@@ -11,7 +11,7 @@ import tau.tac.adx.users.AdxUser;
  * @author greenwald
  * 
  */
-public class TestConstants {
+public final class TestConstants {
 	
 	private TestConstants() {
 		//not called
