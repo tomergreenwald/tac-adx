@@ -33,7 +33,7 @@ import se.sics.isl.util.ArgumentManager;
  * @author Mariano Schain
  * 
  */
-public class Main {
+public final class Main {
 
 	private static String DEFAULT_HOST = "localhost";
 	private static int DEFAULT_PORT = 6502;

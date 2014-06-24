@@ -32,7 +32,7 @@ import edu.umich.eecs.tac.user.User;
 /**
  * @author Patrick Jordan
  */
-public class UserUtils {
+public final class UserUtils {
 	private UserUtils() {
 	}
 

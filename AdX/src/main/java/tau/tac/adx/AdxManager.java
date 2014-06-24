@@ -21,7 +21,7 @@ import com.google.common.eventbus.Subscribe;
  * @author greenwald
  * 
  */
-public class AdxManager {
+public final class AdxManager {
 
 	/**
 	 * {@link Map} between publisher names and the coresponding
