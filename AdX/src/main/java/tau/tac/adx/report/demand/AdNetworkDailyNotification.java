@@ -28,17 +28,17 @@ public class AdNetworkDailyNotification extends SimpleContent {
 	private static final long serialVersionUID = -2893212570481112391L;
 
 	/* user classification service data */
-	int effectiveDay;
-	double serviceLevel;
-	double price;
+	private int effectiveDay;
+	private double serviceLevel;
+	private double price;
 
 	/* quality score data */
-	double qualityScore;
+	private double qualityScore;
 
 	/* campaign allocation data */
-	int campaignId;
-	String winner;
-	long costMillis;
+	private int campaignId;
+	private String winner;
+	private long costMillis;
 
 	public AdNetworkDailyNotification(int effectiveDay, double serviceLevel,
 			double price, double qualityScore, int campaignId, String winner,

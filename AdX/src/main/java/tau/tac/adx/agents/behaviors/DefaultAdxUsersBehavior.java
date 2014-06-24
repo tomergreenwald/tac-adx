@@ -92,22 +92,22 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	/**
 	 * {@link AdxPublisherReportManager}.
 	 */
-	AdxPublisherReportManager publisherReportManager;
+	private AdxPublisherReportManager publisherReportManager;
 
 	/**
 	 * {@link AdxPublisherReportSender}.
 	 */
-	AdxPublisherReportSender publisherReportSender;
+	private AdxPublisherReportSender publisherReportSender;
 
 	/**
 	 * {@link AdNetworkReportManager}.
 	 */
-	AdNetworkReportManager adNetworkReportManager;
+	private AdNetworkReportManager adNetworkReportManager;
 
 	/**
 	 * {@link AdNetworkReportSender}.
 	 */
-	AdNetworkReportSender adNetworkReportSender;
+	private AdNetworkReportSender adNetworkReportSender;
 
 	/**
 	 * {@link BidManager}.

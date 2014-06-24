@@ -43,6 +43,9 @@ import edu.umich.eecs.tac.util.config.ConfigProxy;
  * @author Lee Callender, Patrick Jordan
  */
 public class DefaultUsers extends Users {
+	
+	private Logger log = Logger.getLogger(DefaultUsers.class.getName());
+	
 	private final UsersBehavior usersBehavior;
 
 	public DefaultUsers() {
@@ -58,8 +61,6 @@ public class DefaultUsers extends Users {
 	@Override
 	protected void setup() {
 		super.setup();
-
-		this.log = Logger.getLogger(DefaultUsers.class.getName());
 
 		usersBehavior.setup();
 	}

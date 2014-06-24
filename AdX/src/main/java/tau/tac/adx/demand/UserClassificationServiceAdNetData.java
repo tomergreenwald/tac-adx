@@ -6,12 +6,12 @@ package tau.tac.adx.demand;
  * 
  */
 public class UserClassificationServiceAdNetData {
-	int effectiveDay;
-	double serviceLevel;
-	double price;
+	private int effectiveDay;
+	private double serviceLevel;
+	private double price;
 
-	double bid;
-	int daySubmitted;
+	private double bid;
+	private int daySubmitted;
 
 	/**
 	 * @param effectiveDay
@@ -51,6 +51,20 @@ public class UserClassificationServiceAdNetData {
 
 	public double getPrice() {
 		return price;
+	}
+
+	/**
+	 * @return the bid
+	 */
+	public double getBid() {
+		return bid;
+	}
+
+	/**
+	 * @param bid the bid to set
+	 */
+	public void setBid(double bid) {
+		this.bid = bid;
 	}
 
 	public void setBid(double bid, int day) {

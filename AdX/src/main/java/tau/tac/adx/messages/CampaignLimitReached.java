@@ -6,8 +6,8 @@ package tau.tac.adx.messages;
  * 
  */
 public class CampaignLimitReached implements AdxMessage {
-	int campaignId;
-	String AdNetwork;
+	private int campaignId;
+	private String AdNetwork;
 
 	public CampaignLimitReached(int campaignId, String adNet) {
 		super();

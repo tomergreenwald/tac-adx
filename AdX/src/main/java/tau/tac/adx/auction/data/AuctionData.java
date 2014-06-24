@@ -19,19 +19,19 @@ public class AuctionData {
 	/**
 	 * {@link AuctionOrder}.
 	 */
-	AuctionOrder auctionOrder;
+	private AuctionOrder auctionOrder;
 	/**
 	 * {@link AuctionPriceType}
 	 */
-	AuctionPriceType auctionPriceType;
+	private AuctionPriceType auctionPriceType;
 	/**
 	 * {@link Collection} of {@link BidInfo}s.
 	 */
-	List<BidInfo> bidInfos;
+	private List<BidInfo> bidInfos;
 	/**
 	 * Reserve price value. {@link Double#NaN} if not existing.
 	 */
-	Double reservePrice;
+	private Double reservePrice;
 
 	/**
 	 * @param auctionOrder

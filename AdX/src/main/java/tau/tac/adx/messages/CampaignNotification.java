@@ -8,7 +8,7 @@ import tau.tac.adx.demand.Campaign;
  * 
  */
 public class CampaignNotification implements AdxMessage {
-	Campaign campaign;
+	private Campaign campaign;
 
 	public CampaignNotification(Campaign campaign) {
 		super();

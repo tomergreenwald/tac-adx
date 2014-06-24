@@ -18,15 +18,15 @@ public class AuctionMessage implements AdxMessage {
 	/**
 	 * {@link AdxAuctionResult}.
 	 */
-	AdxAuctionResult auctionResult;
+	private AdxAuctionResult auctionResult;
 	/**
 	 * Issuing {@link AdxQuery}.
 	 */
-	AdxQuery query;
+	private AdxQuery query;
 	/**
 	 * Participating {@link AdxUser}.
 	 */
-	AdxUser user;
+	private AdxUser user;
 
 	/**
 	 * @param auctionResult

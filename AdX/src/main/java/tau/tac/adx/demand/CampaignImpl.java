@@ -42,16 +42,16 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private static Random random = new Random();
 
 	/* maintains quality score - notified upon campaign end */
-	protected QualityManager qualityManager;
+	private QualityManager qualityManager;
 
-	int id;
+	private int id;
 	/* contract attributes */
-	Long reachImps;
-	int dayStart;
-	int dayEnd;
-	Set<MarketSegment> targetSegments;
-	double videoCoef;
-	double mobileCoef;
+	private Long reachImps;
+	private int dayStart;
+	private int dayEnd;
+	private Set<MarketSegment> targetSegments;
+	private double videoCoef;
+	private double mobileCoef;
 
 	/* auction info */
 	private Double randomAllocPr;

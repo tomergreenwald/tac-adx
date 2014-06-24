@@ -9,7 +9,7 @@ import tau.tac.adx.demand.UserClassificationService;
  */
 public class UserClassificationServiceNotification implements AdxMessage {
 
-	UserClassificationService ucs;
+	private UserClassificationService ucs;
 
 	public UserClassificationServiceNotification(UserClassificationService ucs) {
 		super();

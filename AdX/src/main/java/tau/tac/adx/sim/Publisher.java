@@ -38,7 +38,7 @@ public abstract class Publisher extends Builtin implements QueryReportSender,
 		Auctioneer, PublisherInfoSender {
 	private static final String CONF = "publisher.";
 
-	protected Logger log = Logger.getLogger(Publisher.class.getName());
+	private Logger log = Logger.getLogger(Publisher.class.getName());
 
 	public Publisher() {
 		super(CONF);

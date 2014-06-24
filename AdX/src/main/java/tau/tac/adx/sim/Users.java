@@ -36,9 +36,9 @@ import edu.umich.eecs.tac.user.UserEventListener;
 public abstract class Users extends Builtin {
 	private static final String CONF = "users.";
 
-	protected Logger log = Logger.getLogger(Users.class.getName());
+	private Logger log = Logger.getLogger(Users.class.getName());
 
-	PublisherInfoSender[] publishers;
+	private PublisherInfoSender[] publishers;
 
 	public Users() {
 		super(CONF);

@@ -18,7 +18,7 @@ public class MapGenerator<T> {
 	/**
 	 * Instance of the random class.
 	 */
-	Random random = new Random();
+	private Random random = new Random();
 
 	/**
 	 * Generate a distribution {@link Map} according to a given <b>key set</b>.

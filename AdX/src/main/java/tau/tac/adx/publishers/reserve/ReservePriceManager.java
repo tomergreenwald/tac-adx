@@ -65,7 +65,7 @@ public class ReservePriceManager {
 	/**
 	 * {@link ConfigProxy} to use.
 	 */
-	ConfigProxy config;
+	private ConfigProxy config;
 
 	/**
 	 * @param config

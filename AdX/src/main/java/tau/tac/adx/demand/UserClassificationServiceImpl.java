@@ -65,7 +65,7 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 			
 			for (String advName : advNamesList) {
 				advNames[i] = new String(advName);
-				bids[i] = tomorrowsAdvertisersData.get(advName).bid;
+				bids[i] = tomorrowsAdvertisersData.get(advName).getBid();
 				indices[i] = i;
 				i++;
 			}

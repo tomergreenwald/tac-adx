@@ -37,9 +37,9 @@ import edu.umich.eecs.tac.sim.PublisherInfoSender;
  */
 public abstract class AdxUsers extends Builtin implements
 		AdxPublisherReportSender, AdNetworkReportSender {
-	protected Logger log = Logger.getLogger(AdxUsers.class.getName());
+	private Logger log = Logger.getLogger(AdxUsers.class.getName());
 
-	PublisherInfoSender[] publishers;
+	private PublisherInfoSender[] publishers;
 
 	public AdxUsers() {
 		super(TACAdxConstants.ADX_AGENT_NAME);

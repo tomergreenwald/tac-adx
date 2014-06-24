@@ -45,7 +45,7 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	/**
 	 * {@link Logger}.
 	 */
-	protected Logger log = Logger.getLogger(AdNetworkReportManagerImpl.class
+	private Logger log = Logger.getLogger(AdNetworkReportManagerImpl.class
 			.getName());
 
 	/**

@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
 import se.sics.tasim.sim.SimulationAgent;
+import tau.tac.adx.agents.DefaultAdxUsers;
 import tau.tac.adx.sim.Publisher;
 import tau.tac.adx.sim.TACAdxConstants;
 import edu.umich.eecs.tac.auction.BidBundleWriter;
@@ -48,6 +49,8 @@ import edu.umich.eecs.tac.util.config.ConfigProxy;
  * @author Lee Callender, Patrick Jordan
  */
 public class DefaultPublisher extends Publisher {
+	
+	private Logger log = Logger.getLogger(DefaultPublisher.class.getName());
 
 	/**
 	 * The publisher behavior
@@ -67,8 +70,6 @@ public class DefaultPublisher extends Publisher {
 
 	@Override
 	protected void setup() {
-		this.log = Logger.getLogger(DefaultPublisher.class.getName());
-
 		publisherBehavior.setup();
 
 		addTimeListener(this);

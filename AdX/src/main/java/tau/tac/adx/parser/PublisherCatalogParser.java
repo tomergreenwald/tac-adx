@@ -23,7 +23,7 @@ import edu.umich.eecs.tac.Parser;
  */
 public class PublisherCatalogParser extends Parser {
 
-	boolean first = true;
+	private boolean first = true;
 
 	public PublisherCatalogParser(LogReader reader) {
 		super(reader);

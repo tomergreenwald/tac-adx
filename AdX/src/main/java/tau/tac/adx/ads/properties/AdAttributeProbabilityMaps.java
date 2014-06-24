@@ -16,7 +16,7 @@ public class AdAttributeProbabilityMaps {
 	/**
 	 * A probability {@link Map} for each {@link AdType}.
 	 */
-	Map<AdType, Double> adTypeDistribution;
+	private Map<AdType, Double> adTypeDistribution;
 
 	/**
 	 * @param adTypeDistribution

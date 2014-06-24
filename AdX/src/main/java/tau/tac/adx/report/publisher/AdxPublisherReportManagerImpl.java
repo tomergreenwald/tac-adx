@@ -40,7 +40,7 @@ public class AdxPublisherReportManagerImpl implements AdxPublisherReportManager 
 	/**
 	 * {@link Logger}.
 	 */
-	protected Logger log = Logger.getLogger(AdxPublisherReportManagerImpl.class
+	private Logger log = Logger.getLogger(AdxPublisherReportManagerImpl.class
 			.getName());
 
 	/**

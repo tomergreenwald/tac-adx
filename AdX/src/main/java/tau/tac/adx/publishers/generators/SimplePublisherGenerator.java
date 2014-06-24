@@ -38,23 +38,23 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 	/**
 	 * {@link MapGenerator} for {@link AdType}.
 	 */
-	MapGenerator<AdType> adTypeMapGenerator = new MapGenerator<AdType>();
+	private MapGenerator<AdType> adTypeMapGenerator = new MapGenerator<AdType>();
 	/**
 	 * {@link MapGenerator} for {@link Age}.
 	 */
-	MapGenerator<Age> ageMapGenerator = new MapGenerator<Age>();
+	private MapGenerator<Age> ageMapGenerator = new MapGenerator<Age>();
 	/**
 	 * {@link MapGenerator} for {@link Device}.
 	 */
-	MapGenerator<Device> deviceMapGenerator = new MapGenerator<Device>();
+	private MapGenerator<Device> deviceMapGenerator = new MapGenerator<Device>();
 	/**
 	 * {@link MapGenerator} for {@link Gender}.
 	 */
-	MapGenerator<Gender> genderMapGenerator = new MapGenerator<Gender>();
+	private MapGenerator<Gender> genderMapGenerator = new MapGenerator<Gender>();
 	/**
 	 * {@link MapGenerator} for {@link Income}.
 	 */
-	MapGenerator<Income> incomeMapGenerator = new MapGenerator<Income>();
+	private MapGenerator<Income> incomeMapGenerator = new MapGenerator<Income>();
 	/**
 	 * {@link Logger} instance.
 	 */
@@ -64,7 +64,7 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 	/**
 	 * {@link MapGenerator} for {@link AdxPublisher}.
 	 */
-	MapGenerator<AdxPublisher> publisherMapGenerator = new MapGenerator<AdxPublisher>();
+	private MapGenerator<AdxPublisher> publisherMapGenerator = new MapGenerator<AdxPublisher>();
 
 	/**
 	 * @see GenericGenerator#generate(int)

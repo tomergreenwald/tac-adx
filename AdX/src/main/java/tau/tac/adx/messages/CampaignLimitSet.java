@@ -6,10 +6,10 @@ package tau.tac.adx.messages;
  * 
  */
 public class CampaignLimitSet implements AdxMessage {
-	boolean isTotal;
-	int campaignId;
-	String AdNetwork;
-	double budgetLimit;
+	private boolean isTotal;
+	private int campaignId;
+	private String AdNetwork;
+	private double budgetLimit;
 	private final int impressionLimit;
 
 	public CampaignLimitSet(boolean isTotal, int campaignId, String adNet, int impressionLimit,

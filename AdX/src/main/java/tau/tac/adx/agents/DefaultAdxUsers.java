@@ -41,6 +41,9 @@ import edu.umich.eecs.tac.util.config.ConfigProxy;
  * @author greenwald
  */
 public class DefaultAdxUsers extends AdxUsers {
+	
+	private Logger log = Logger.getLogger(DefaultAdxUsers.class.getName());
+	
 	/**
 	 * enclosed {@link UsersBehavior}.
 	 */
@@ -73,7 +76,6 @@ public class DefaultAdxUsers extends AdxUsers {
 	protected void setup() {
 		super.setup();
 
-		this.log = Logger.getLogger(DefaultAdxUsers.class.getName());
 		AdxManager.getInstance().setAdxAgentAddress(getAddress());
 		usersBehavior.setup();
 	}
