@@ -26,6 +26,7 @@ package tau.tac.adx.auction.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -33,11 +34,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.tracker.AdxBidTrackerImpl;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.generators.AdxQueryGenerator;
+import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.util.Utils;
 import edu.umich.eecs.tac.props.Ad;
 
@@ -164,7 +168,9 @@ public class AdxBidTrackerImplTest {
 
 		String advertiser1 = "alice";
 		AdxBidBundle bundle1 = new AdxBidBundle();
-
+		
+		TACAdxSimulation simulation = mock(TACAdxSimulation.class, Mockito.RETURNS_DEEP_STUBS);
+		AdxManager.getInstance().setSimulation(simulation );
 		AdxBidTracker.updateBids(advertiser1, bundle1);
 		AdxBidTracker.updateBids(advertiser1, bundle1);
 

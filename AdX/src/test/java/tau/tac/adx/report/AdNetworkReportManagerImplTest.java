@@ -4,6 +4,7 @@
 package tau.tac.adx.report;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +20,7 @@ import org.mockito.Mockito;
 
 import com.google.common.eventbus.EventBus;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
@@ -30,6 +32,7 @@ import tau.tac.adx.props.generators.AdxQueryGenerator;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.AdNetworkReportManagerImpl;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.generators.SimpleUserGenerator;
 import tau.tac.adx.util.Utils;
@@ -47,6 +50,8 @@ public class AdNetworkReportManagerImplTest {
 	 */
 	@Test
 	public void testAuctionPerformed() {
+		TACAdxSimulation simulation = mock(TACAdxSimulation.class, Mockito.RETURNS_DEEP_STUBS);
+		AdxManager.getInstance().setSimulation(simulation );
 		AdNetworkReportManagerImpl managerImpl = new AdNetworkReportManagerImpl(
 				null, new EventBus());
 		Random random = new Random();
