@@ -47,7 +47,7 @@ import tau.tac.adx.report.demand.CampaignOpportunityMessage;
  * @author Mariano Schain
  */
 @RunWith(Parameterized.class)
-public class SystemTestMessageValidation {
+public class SystemMessageValidationTest {
 
 	/**
 	 * {@link LogVerifierParser} instance to be used for verification.
@@ -59,7 +59,7 @@ public class SystemTestMessageValidation {
 	 */
 	private int day;
 
-	public SystemTestMessageValidation(int day) {
+	public SystemMessageValidationTest(int day) {
 		this.day = day;
 	}
 

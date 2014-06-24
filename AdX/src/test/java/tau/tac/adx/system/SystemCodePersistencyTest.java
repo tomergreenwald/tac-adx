@@ -54,7 +54,7 @@ import tau.tac.adx.report.demand.CampaignReportKey;
  * @author Mariano Schain
  */
 @RunWith(Parameterized.class)
-public class SystemTestCodePersistency {
+public class SystemCodePersistencyTest {
 
 	/**
 	 * {@link LogVerifierParser} instance to be used for verification.
@@ -70,7 +70,7 @@ public class SystemTestCodePersistency {
 	 */
 	private String advertiser;
 
-	public SystemTestCodePersistency(int day, String advertiser) {
+	public SystemCodePersistencyTest(int day, String advertiser) {
 		this.day = day;
 		this.advertiser = advertiser;
 	}
