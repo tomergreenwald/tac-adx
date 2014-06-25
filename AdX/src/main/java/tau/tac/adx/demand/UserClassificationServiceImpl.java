@@ -28,7 +28,7 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 				.get(advertiser);
 		if (advData == null) {
 			advData = new UserClassificationServiceAdNetData();
-			advData.setAuctionResult(0,1.0,1);
+			advData.setAuctionResult(0, 1.0, 1);
 			tomorrowsAdvertisersData.put(advertiser, advData);
 		}
 		advData.setBid(ucsBid, day);
@@ -40,15 +40,17 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 	}
 
 	@Override
-	public UserClassificationServiceAdNetData getTomorrowsAdNetData(String advertiser) {
+	public UserClassificationServiceAdNetData getTomorrowsAdNetData(
+			String advertiser) {
 		return tomorrowsAdvertisersData.get(advertiser);
 	}
 
 	@Override
 	public void auction(int day, boolean broadcast) {
 		advertisersData.clear();
-		for (String advertiser : tomorrowsAdvertisersData.keySet()){
-			advertisersData.put(advertiser, tomorrowsAdvertisersData.get(advertiser).clone());
+		for (String advertiser : tomorrowsAdvertisersData.keySet()) {
+			advertisersData.put(advertiser,
+					tomorrowsAdvertisersData.get(advertiser).clone());
 		}
 
 		int advCount = tomorrowsAdvertisersData.size();
@@ -60,9 +62,10 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 
 			int i = 0;
 
-			List<String> advNamesList = new ArrayList<String>(tomorrowsAdvertisersData.keySet());
+			List<String> advNamesList = new ArrayList<String>(
+					tomorrowsAdvertisersData.keySet());
 			Collections.shuffle(advNamesList);
-			
+
 			for (String advName : advNamesList) {
 				advNames[i] = new String(advName);
 				bids[i] = tomorrowsAdvertisersData.get(advName).getBid();
@@ -82,9 +85,9 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 				String advertiser = advNames[indices[j]];
 				UserClassificationServiceAdNetData advData = tomorrowsAdvertisersData
 						.get(advertiser);
-				levelPrice = ucsProb * bids[indices[j+1]];
+				levelPrice = ucsProb * bids[indices[j + 1]];
 				advData.setAuctionResult(levelPrice, ucsProb, day + 1);
-				if (broadcast){
+				if (broadcast) {
 					AdxManager.getInstance().getSimulation()
 							.broadcastUCSWin(advertiser, levelPrice);
 				}
@@ -92,12 +95,12 @@ public class UserClassificationServiceImpl implements UserClassificationService 
 			}
 		}
 	}
-	
+
 	@Override
 	public String logToString() {
 		String ret = new String("");
 		for (String adv : advertisersData.keySet()) {
-			ret = ret + adv + advertisersData.get(adv).logToString();			
+			ret = ret + adv + advertisersData.get(adv).logToString();
 		}
 		return ret;
 	}

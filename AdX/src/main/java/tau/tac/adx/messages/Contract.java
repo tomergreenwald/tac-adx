@@ -9,8 +9,9 @@ package tau.tac.adx.messages;
  */
 public class Contract {
 
-	private final String adNetowrk;// Maybe we should create an AdNetwork
-									// class/interface.
+	private final String adNetowrk;
+	// FIXME: Maybe we should create an AdNetwork
+	// class/interface.
 
 	private final int contractId;
 
