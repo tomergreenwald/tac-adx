@@ -121,8 +121,7 @@ public class AdLink extends AbstractTransportable implements BidProduct {
 	 * @throws IllegalStateException
 	 *             if the ad link is locked.
 	 */
-	public final void setAdvertiser(final String advertiser)
-			throws IllegalStateException {
+	public final void setAdvertiser(final String advertiser) {
 		lockCheck();
 		this.advertiser = advertiser;
 	}
