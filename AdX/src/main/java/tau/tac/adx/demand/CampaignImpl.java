@@ -74,8 +74,6 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private Double totalBudgetlimit;
 	private int totalImpressionLimit;
 	
-	private int overLimitsWarnings = 0; 
-	
 	private boolean defaultLimitNotification = false;
 
 	/**
