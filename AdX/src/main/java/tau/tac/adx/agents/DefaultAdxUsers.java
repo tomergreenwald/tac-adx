@@ -62,7 +62,8 @@ public class DefaultAdxUsers extends AdxUsers {
 		usersBehavior.nextTimeUnit(date);
 	}
 
-	public void preNextTimeUnit(int date) {
+	public void preNextTimeUnit(@SuppressWarnings("unused") int date) {
+		// Left blank intentionally
 	}
 
 	/**
