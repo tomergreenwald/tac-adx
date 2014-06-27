@@ -184,12 +184,14 @@ public class ServerConnection implements Runnable {
 	// Client thread - handles communication with the TAC server
 	// -------------------------------------------------------------------
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		if (delayInMillis > 0) {
 			try {
 				Thread.sleep(delayInMillis);
-			} catch (Exception e) {
+			} catch (InterruptedException e) {
+				log.severe(e.toString());
 			}
 		}
 
@@ -200,7 +202,8 @@ public class ServerConnection implements Runnable {
 								+ " (will retry in 30 seconds)");
 				try {
 					Thread.sleep(30000);
-				} catch (Exception e) {
+				} catch (InterruptedException e) {
+					log.severe(e.toString());
 				}
 			}
 		} while (messageSender == null);
@@ -209,7 +212,9 @@ public class ServerConnection implements Runnable {
 
 		try {
 			byte[] buffer = new byte[8192];
+			@SuppressWarnings("unused")
 			int len;
+			@SuppressWarnings("unused")
 			int lastPos;
 
 			while (socket != null) {
