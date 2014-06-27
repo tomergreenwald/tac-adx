@@ -73,12 +73,9 @@ public class MessageSender extends Thread {
 		return true;
 	}
 
-	private synchronized Message nextMessage() {
+	private synchronized Message nextMessage() throws InterruptedException {
 		while (messageQueue.size() == 0) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-			}
+			wait();
 		}
 		return (Message) messageQueue.remove(0);
 	}
