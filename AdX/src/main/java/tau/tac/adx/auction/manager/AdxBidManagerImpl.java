@@ -46,8 +46,6 @@ public class AdxBidManagerImpl implements AdxBidManager {
 
 	private final Set<String> advertisers;
 
-	private final Set<String> advertisersView;
-
 	private final List<Message> bidBundleList;
 
 	private final AdxBidTracker bidTracker;
@@ -69,7 +67,6 @@ public class AdxBidManagerImpl implements AdxBidManager {
 		this.spendTracker = spendTracker;
 
 		advertisers = new HashSet<String>();
-		advertisersView = Collections.unmodifiableSet(advertisers);
 		bidBundleList = new ArrayList<Message>();
 	}
 
