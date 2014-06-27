@@ -63,6 +63,10 @@ public final class Main {
 		String configFile = config.getArgument("config", DEFAULT_CONFIG);
 		try {
 			boolean loadConfiguration = config.loadConfiguration(configFile);
+			if (!loadConfiguration) {
+				System.out.println("Could not load configuration");
+				return;
+			}
 			config.removeArgument("config");
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
