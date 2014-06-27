@@ -106,7 +106,7 @@ public class AgentServiceImpl extends AgentService {
 
 	@Override
 	protected void deliverToServer(int role, Transportable message) {
-		log.severe("Agent can not deliver to role " + role);
+		log.severe("Agent can not deliver message" + message+ " to role " + role);
 	}
 
 	@Override
