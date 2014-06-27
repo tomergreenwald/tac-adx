@@ -55,13 +55,6 @@ public abstract class Users extends Builtin {
 
 	public abstract void broadcastUserDistribution();
 
-	// DEBUG FINALIZE REMOVE THIS!!! REMOVE THIS!!!
-	@Override
-	protected void finalize() throws Throwable {
-		Logger.global.info("USER " + getName() + " IS BEING GARBAGED");
-		super.finalize();
-	}
-
 	public abstract boolean addUserEventListener(UserEventListener listener);
 
 	public abstract boolean containsUserEventListener(UserEventListener listener);
