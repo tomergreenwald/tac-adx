@@ -220,7 +220,7 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 
 	private AdNetworkReportManager createAdNetworkReportManager() {
 		AdNetworkReportManager adNetworkReportManager = new AdNetworkReportManagerImpl(
-				adNetworkReportSender, agentRepository.getEventBus());
+				adNetworkReportSender);
 
 		return adNetworkReportManager;
 	}

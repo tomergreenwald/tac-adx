@@ -34,7 +34,6 @@ import tau.tac.adx.AdxManager;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.messages.AuctionMessage;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
 /**
@@ -63,11 +62,9 @@ public class AdNetworkReportManagerImpl implements AdNetworkReportManager {
 	 * 
 	 * @param adNetworkReportSender
 	 *            The {@link AdNetworkReportSender}.
-	 * @param eventBus
-	 *            {@link EventBus}.
 	 */
 	public AdNetworkReportManagerImpl(
-			AdNetworkReportSender adNetworkReportSender, EventBus eventBus) {
+			AdNetworkReportSender adNetworkReportSender) {
 		this.adNetworkReportSender = adNetworkReportSender;
 		AdxManager.getInstance().getSimulation().getEventBus().register(this);
 		log.info("AdxQueryReportManager created.");
