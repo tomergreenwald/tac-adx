@@ -105,8 +105,6 @@ public class AdNetworkReportTest {
 		reader.setContext(new AdxInfoContextFactory().createContext());
 		Random random = new Random();
 		String publisherName = "publisher #" + random.nextInt();
-		MarketSegment segment = MarketSegment.values()[random
-				.nextInt(MarketSegment.values().length - 1)];
 		Device device = Device.values()[random.nextInt(1)];
 		AdType adType = AdType.values()[random.nextInt(1)];
 		AdxUser adxUser = new SimpleUserGenerator(random.nextDouble()).generate(1).get(0);
