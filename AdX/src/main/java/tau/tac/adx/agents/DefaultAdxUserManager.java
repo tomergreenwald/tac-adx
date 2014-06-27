@@ -93,7 +93,8 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	}
 
 	@Override
-	public void initialize(int virtualDays) {
+	public void initialize(@SuppressWarnings("unused") int virtualDays) {
+		// Left blank intentionally
 	}
 
 	@Override
@@ -170,7 +171,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	}
 
 	@Override
-	public void messageReceived(Message message) {
+	public void messageReceived(@SuppressWarnings("unused") Message message) {
 		// Transportable content = message.getContent();
 	}
 
