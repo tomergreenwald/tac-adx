@@ -74,8 +74,6 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private Double totalBudgetlimit;
 	private int totalImpressionLimit;
 	
-	private int overLimitsWarnings = 0; 
-	
 	private boolean defaultLimitNotification = false;
 
 	/**
@@ -579,16 +577,13 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void nextTimeUnit(int timeUnit) {
-		// TODO Auto-generated method stub
+	public void nextTimeUnit(@SuppressWarnings("unused") int timeUnit) {
+		// Left blank intentionally
 
 	}
 
 	@Override
 	public CampaignStats getTotals() {
-		if (totals.getTargetedImps() > 1300) {
-			int i = 0;
-		}
 		return totals;
 	}
 	
