@@ -24,8 +24,6 @@
  */
 package tau.tac.adx.agents;
 
-import java.util.logging.Logger;
-
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.agents.behaviors.DefaultAdxUsersBehavior;
@@ -41,8 +39,6 @@ import edu.umich.eecs.tac.util.config.ConfigProxy;
  * @author greenwald
  */
 public class DefaultAdxUsers extends AdxUsers {
-	
-	private Logger log = Logger.getLogger(DefaultAdxUsers.class.getName());
 	
 	/**
 	 * enclosed {@link UsersBehavior}.
