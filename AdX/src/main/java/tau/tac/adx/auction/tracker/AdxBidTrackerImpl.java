@@ -31,8 +31,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.jfree.util.Log;
-
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.bids.Bidder;
@@ -41,16 +39,13 @@ import tau.tac.adx.messages.CampaignLimitSet;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxBidBundle.BidEntry;
 import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.sim.TACAdxSimulation;
 
 import com.botbox.util.ArrayUtils;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
-import edu.umich.eecs.tac.props.Ad;
 import edu.umich.eecs.tac.util.sampling.WheelSampler;
 
 /**
@@ -59,9 +54,6 @@ import edu.umich.eecs.tac.util.sampling.WheelSampler;
  */
 public class AdxBidTrackerImpl implements AdxBidTracker {
 	private final static double DEFAULT_SPEND_LIMIT = Double.POSITIVE_INFINITY;
-	private final static double DEFAULT_BID = 0.0;
-	private final static Ad DEFAULT_AD = new Ad();
-
 	private final static Logger logger = Logger.getLogger(AdxBidTrackerImpl.class
 			.getName());
 
@@ -127,7 +119,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		return queryBid[index].getCampaignSpendLimit();
 	}
 
-	// TODO:uncomment me
+	// FIXME: uncomment me
 	// @Override
 	// public double getDailySpendLimit(String advertiser, AdxQuery query) {
 	// int index = ArrayUtils.indexOf(advertisers, 0, advertisersCount,
@@ -200,7 +192,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 				queryBid[index].doAddQuery(entry);
 			}
 
-			// TODO: uncomment me
+			// FIXME: uncomment me
 			// if (dailyLimit >= 0.0) {
 			// queryBid[index].setSpendLimit(query, dailyLimit);
 			// }
@@ -224,8 +216,6 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 		private final Bidder bidder;
 
 		private final Set<Integer> excludedCampaigns = new HashSet<Integer>();
-		private boolean registeredToEventBus = false;
-
 		public AdxQueryBid(final String advertiser, int queryCount) {
 			this.advertiser = advertiser;
 			logger.info("Initialized AdxQueryBid for advertiser: "+advertiser);
@@ -331,7 +321,7 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 			}
 		}
 
-		// TODO: uncomment me
+		// FIXME: uncomment me
 		// protected void setSpendLimit(AdxQuery query, double spendLimit) {
 		// int index = ArrayUtils.indexOf(queries, 0, queryCount, query);
 		//
