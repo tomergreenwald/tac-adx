@@ -49,7 +49,6 @@ import edu.umich.eecs.tac.props.Query;
 import edu.umich.eecs.tac.props.Ranking;
 import edu.umich.eecs.tac.sim.AgentRepository;
 import edu.umich.eecs.tac.sim.Auctioneer;
-import edu.umich.eecs.tac.user.DistributionBroadcaster;
 import edu.umich.eecs.tac.user.UserBehaviorBuilder;
 import edu.umich.eecs.tac.user.UserManager;
 import edu.umich.eecs.tac.user.UsersBehavior;
@@ -67,11 +66,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	 * {@link UserManager}.
 	 */
 	private AdxUserManager userManager;
-
-	/**
-	 * {@link DistributionBroadcaster}.
-	 */
-	private DistributionBroadcaster distributionBroadcaster;
 
 	/**
 	 * Amount of virtual days.
@@ -118,8 +112,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 	 * {@link Logger}.
 	 */
 	private Logger log;
-
-	private final AdxBidBundleWriter bidBundleWriter;
 
 	/**
 	 * @param config
@@ -171,8 +163,6 @@ public class DefaultAdxUsersBehavior implements AdxUsersBehavior {
 		if (bidBundleWriter == null) {
 			throw new NullPointerException("Bid Bundle Writer cannot be null");
 		}
-
-		this.bidBundleWriter = bidBundleWriter;
 
 		this.bidManager = agentRepository.getAdxBidManager();
 	}
