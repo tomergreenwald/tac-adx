@@ -85,7 +85,7 @@ public final class Main {
 		// Make sure the class for the agent can be found before
 		// connecting to the server (and joining simulations).
 		try {
-			Class c = Class.forName(agentImpl);
+			Class.forName(agentImpl);
 		} catch (Exception e) {
 			System.err.println("Could not find the agent implementation '"
 					+ agentImpl + '\'');
