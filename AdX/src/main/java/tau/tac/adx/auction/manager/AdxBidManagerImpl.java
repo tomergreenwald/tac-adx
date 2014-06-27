@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
 import tau.tac.adx.auction.tracker.AdxBidTracker;
@@ -44,9 +43,6 @@ import com.google.inject.Inject;
  * @author Patrick Jordan, Lee Callender
  */
 public class AdxBidManagerImpl implements AdxBidManager {
-
-	private final Logger log = Logger.getLogger(AdxBidManagerImpl.class
-			.getName());
 
 	private final Set<String> advertisers;
 
