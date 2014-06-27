@@ -577,8 +577,8 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void nextTimeUnit(int timeUnit) {
-		// TODO Auto-generated method stub
+	public void nextTimeUnit(@SuppressWarnings("unused") int timeUnit) {
+		// Left blank intentionally
 
 	}
 
