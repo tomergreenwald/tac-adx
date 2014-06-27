@@ -46,8 +46,6 @@ public class DemandAgent extends Builtin {
 	private int day;
 
 	private static final int TOTAL_POPULATION_DEFAULT = 10000;
-	private static int total_population;
-
 	private static final double CMP_VC_DEFAULT = 2.0;
 	private static double   cmp_vc;
 
@@ -255,7 +253,7 @@ public class DemandAgent extends Builtin {
 		
 		random = new Random();
 		
-		total_population = getSimulation().getConfig().getPropertyAsInt(
+		getSimulation().getConfig().getPropertyAsInt(
 				"adxusers.population_size", TOTAL_POPULATION_DEFAULT);
 		
 		cmp_vc =  getSimulation().getConfig().getPropertyAsDouble(
