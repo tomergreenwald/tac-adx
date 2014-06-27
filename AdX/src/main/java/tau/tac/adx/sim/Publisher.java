@@ -46,13 +46,6 @@ public abstract class Publisher extends Builtin implements QueryReportSender,
 
 	public abstract void sendQueryReportsToAll();
 
-	// DEBUG FINALIZE REMOVE THIS!!! REMOVE THIS!!!
-	@Override
-	protected void finalize() throws Throwable {
-		Logger.global.info("PUBLISHER " + getName() + " IS BEING GARBAGED");
-		super.finalize();
-	}
-
 	protected void charge(String advertiser, double amount) {
 		getSimulation().transaction(advertiser, getAddress(), amount);
 	}
