@@ -100,7 +100,8 @@ public class AdxBidManagerImpl implements AdxBidManager {
 	}
 
 	@Override
-	public void nextTimeUnit(int timeUnit) {
+	public void nextTimeUnit(@SuppressWarnings("unused") int timeUnit) {
+		// Left blank intentionally
 	}
 
 	@Override
@@ -119,9 +120,10 @@ public class AdxBidManagerImpl implements AdxBidManager {
 		spendTracker.addAdvertiser(advertiser);
 	}
 
+	@SuppressWarnings({ "static-method", "unused" })
 	private boolean isOverspent(double bid, String advertiser, AdxQuery query) {
 		return false;
-		// TODO: uncomment me
+		// FIXME: why is this commented out?
 		// return (bid >= bidTracker.getDailySpendLimit(advertiser, query)
 		// - spendTracker.getDailyCost(advertiser, query))
 		// || (bid >= bidTracker.getDailySpendLimit(advertiser)
