@@ -98,7 +98,7 @@ public class DemandAgent extends Builtin {
 		if (day == 0) {
 			zeroDayInitialization();
 		} else {
-			auctionTomorrowsCampaign(day);
+			auctionTomorrowsCampaign();
 			ucs.auction(day, true);
 
 			for (Campaign campaign : adNetCampaigns.values()) {
@@ -210,7 +210,7 @@ public class DemandAgent extends Builtin {
 		}
 	}
 
-	private void auctionTomorrowsCampaign(int date) {
+	private void auctionTomorrowsCampaign() {
 		/*
 		 * Auction campaign and add to repository
 		 * 
