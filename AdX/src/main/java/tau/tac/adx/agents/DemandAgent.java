@@ -249,8 +249,6 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	protected void setup() {
-		int numOfCompetitors = getSimulation().getNumberOfAdvertisers();
-		
 		random = new Random();
 		
 		getSimulation().getConfig().getPropertyAsInt(
@@ -351,6 +349,7 @@ public class DemandAgent extends Builtin {
 	 */
 	@Override
 	protected void stopped() {
+		// Left blank intentionally
 	}
 
 	/**
@@ -447,8 +446,8 @@ public class DemandAgent extends Builtin {
 	}
 
 	@Override
-	public void nextTimeUnit(int timeUnit) {
-		// TODO Auto-generated method stub
+	public void nextTimeUnit(@SuppressWarnings("unused") int timeUnit) {
+		// Left blank intentionally
 	}
 
 }
