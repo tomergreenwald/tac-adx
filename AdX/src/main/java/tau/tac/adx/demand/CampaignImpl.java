@@ -584,9 +584,6 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 	@Override
 	public CampaignStats getTotals() {
-		if (totals.getTargetedImps() > 1300) {
-			int i = 0;
-		}
 		return totals;
 	}
 	
