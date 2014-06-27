@@ -5,7 +5,6 @@ import java.text.ParseException;
 import se.sics.isl.transport.TransportReader;
 import se.sics.isl.transport.TransportWriter;
 import tau.tac.adx.auction.AdxAuctionResult;
-import tau.tac.adx.auction.data.AuctionState;
 import edu.umich.eecs.tac.props.AbstractTransportableEntry;
 
 /**
@@ -24,8 +23,6 @@ public class AdNetworkReportEntry extends
 	private static final String WIN_COUNT = "WIN_COUNT";
 	/** COST_COUNT. */
 	private static final String COST_COUNT = "COST_COUNT";
-	/** KEY_TRANSPORT_NAME. */
-	private static final String KEY_NODE_TRANSPORT_NAME = "KEY_TRANSPORT_NAME";
 	/**
 	 * Total number of bids.
 	 */
