@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -117,6 +118,7 @@ public class DefaultAdxUserQueryManagerTest {
 	}
 
 	@Test
+	@Ignore
 	public void testQueryBehavior() {
 		DefaultAdxUserQueryManager manager = new DefaultAdxUserQueryManager(
 				catalog, users, deviceDistributionMap, adTypeDistributionMap,
