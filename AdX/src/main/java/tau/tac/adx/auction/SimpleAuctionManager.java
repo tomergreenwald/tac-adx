@@ -16,7 +16,6 @@ import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.report.adn.MarketSegment;
 
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
@@ -77,7 +76,7 @@ public class SimpleAuctionManager implements AuctionManager {
 	 *         bid</b>, according to given {@link AuctionOrder},
 	 *         <code>false</code> otherwise.
 	 */
-	protected boolean betterBid(BidInfo newBid, BidInfo oldBid,
+	protected static boolean betterBid(BidInfo newBid, BidInfo oldBid,
 			AuctionOrder auctionOrder) {
 		return betterThan(newBid.getBid(), oldBid.getBid(), auctionOrder);
 	}
@@ -96,7 +95,7 @@ public class SimpleAuctionManager implements AuctionManager {
 	 *         according to the given {@link AuctionOrder} , <code>false</code>
 	 *         otherwise.
 	 */
-	protected boolean betterThan(double first, double second,
+	protected static boolean betterThan(double first, double second,
 			AuctionOrder auctionOrder) {
 		switch (auctionOrder) {
 		case HIGHEST_WINS:
@@ -121,7 +120,7 @@ public class SimpleAuctionManager implements AuctionManager {
 	 *            {@link AuctionData} for the auction.
 	 * @return The {@link AuctionResult}.
 	 */
-	protected AdxAuctionResult calculateAuctionResult(BidInfo winningBid,
+	protected static AdxAuctionResult calculateAuctionResult(BidInfo winningBid,
 			BidInfo secondBid, AuctionData auctionData) {
 		if (winningBid.equals(initializeByAuctionOrder(auctionData
 				.getAuctionOrder()))) {
@@ -160,7 +159,7 @@ public class SimpleAuctionManager implements AuctionManager {
 	 *            {@link AuctionOrder} to sort bids by.
 	 * @return An initial {@link BidInfo} to be used when performing an auction.
 	 */
-	protected BidInfo initializeByAuctionOrder(AuctionOrder auctionOrder) {
+	protected static BidInfo initializeByAuctionOrder(AuctionOrder auctionOrder) {
 		switch (auctionOrder) {
 		case HIGHEST_WINS:
 			return new BidInfo(Double.MIN_VALUE, null, null,
@@ -185,7 +184,7 @@ public class SimpleAuctionManager implements AuctionManager {
 	 * @return <code>true</code> if {@link BidInfo bid} passes the reserve
 	 *         price, <code>false</code> otherwise.
 	 */
-	protected boolean passedReservePrice(BidInfo bid, AuctionData auctionData) {
+	protected static boolean passedReservePrice(BidInfo bid, AuctionData auctionData) {
 		if (auctionData.getReservePrice().equals(Double.NaN)) {
 			return true;
 		}
@@ -202,7 +201,7 @@ public class SimpleAuctionManager implements AuctionManager {
 	 * @return A new {@link UnsupportedOperationException} with details about
 	 *         the causing object.
 	 */
-	protected UnsupportedOperationException switchCaseException(Object object) {
+	protected static UnsupportedOperationException switchCaseException(Object object) {
 		return new UnsupportedOperationException(object.getClass().getName()
 				+ " given type is not supporterd: " + object);
 	}
