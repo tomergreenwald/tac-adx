@@ -24,14 +24,9 @@
  */
 package tau.tac.adx.agents;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import se.sics.tasim.aw.Message;
@@ -42,8 +37,6 @@ import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.AdxAuctioneer;
-import tau.tac.adx.sim.TACAdxConstants;
-import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.AdxUserManager;
 import tau.tac.adx.users.AdxUserQueryManager;
@@ -67,11 +60,6 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 	private final AdxUserQueryManager queryManager;
 	
-	/**
-	 * Global {@link EventBus}.
-	 */
-	private final EventBus eventBus;
-
 	public DefaultAdxUserManager(PublisherCatalog publisherCatalog,
 			List<AdxUser> users, AdxUserQueryManager queryManager,
 			int populationSize, EventBus eventBus) {
@@ -102,7 +90,6 @@ public class DefaultAdxUserManager implements AdxUserManager {
 		this.random = new Random();
 		this.queryManager = queryManager;
 		this.users = users;
-		this.eventBus = eventBus;
 	}
 
 	@Override
@@ -164,8 +151,6 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	 * @param auctioneer
 	 */
 	private void handleSearch(AdxUser user, AdxAuctioneer auctioneer) {
-
-		boolean transacted = false;
 
 		AdxQuery query = generateQuery(user);
 
