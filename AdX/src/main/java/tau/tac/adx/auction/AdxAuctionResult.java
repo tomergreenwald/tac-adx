@@ -105,7 +105,7 @@ public class AdxAuctionResult implements AuctionResult<Adx> {
 		return bidInfos;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
