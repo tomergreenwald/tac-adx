@@ -113,6 +113,7 @@ public final class Main {
 		// No more need for argument handling. Lets free the memory
 		config.finishArguments();
 
+		@SuppressWarnings("unused")
 		SimClient client = new SimClient(config, host, port, name, password,
 				agentImpl);
 	}
