@@ -11,6 +11,7 @@ package tau.tac.adx.auction.data;
  *            Auction result type.
  * 
  */
+@SuppressWarnings("unused")
 public interface AuctionResult<T> {
 	// no implementation.
 }
