@@ -100,7 +100,7 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 	 *            {@link Collection} of {@link AdxPublisher publishers} to
 	 *            normalize their <b>relative popularity</b>.
 	 */
-	private void normalizePublisherPopularity(
+	private static void normalizePublisherPopularity(
 			Collection<AdxPublisher> publishers) {
 		double sum = 0;
 		for (AdxPublisher publisher : publishers) {
@@ -150,7 +150,7 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 	/**
 	 * @return A random generated {@link AdxPublisher publisher} name.
 	 */
-	private String randomName() {
+	private static String randomName() {
 		Random random = new Random();
 		return "Publisher-" + Math.abs(random.nextInt());
 	}
@@ -158,7 +158,7 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 	/**
 	 * @return A random generated {@link ReservePriceManager}.
 	 */
-	private UserAdTypeReservePriceManager randomReservePriceManager() {
+	private static UserAdTypeReservePriceManager randomReservePriceManager() {
 		double dailyBaselineAverage = Math.random()
 				* TACAdxConstants.MAX_SIMPLE_PUBLISHER_AD_PRICE;
 		double baselineRange = Math.random() * MAX_BASELINE_RANGE;
