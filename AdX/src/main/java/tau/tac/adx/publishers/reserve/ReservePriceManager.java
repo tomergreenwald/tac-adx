@@ -63,11 +63,6 @@ public class ReservePriceManager {
 	private int dailyRequests;
 
 	/**
-	 * {@link ConfigProxy} to use.
-	 */
-	private ConfigProxy config;
-
-	/**
 	 * @param config
 	 *            {@link ConfigProxy} to cpnfigure various variables in the
 	 *            class.
@@ -83,7 +78,6 @@ public class ReservePriceManager {
 	 */
 	public ReservePriceManager(ConfigProxy config, double baselineRange,
 			double updateCoefficient) {
-		this.config = config;
 		this.dailyBaselineAverage = config.getPropertyAsDouble(
 				INITIAL_DAILY_BASELINE_AVERAGE, 0);
 		this.baselineRange = baselineRange;
