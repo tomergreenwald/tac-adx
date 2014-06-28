@@ -70,7 +70,7 @@ public class CampaignReport extends
 	 * @param id
 	 * @return Corresponding {@link CampaignReportKey}.
 	 */
-	private CampaignReportKey getKey(Integer id) {
+	private static CampaignReportKey getKey(Integer id) {
 		return new CampaignReportKey(id);
 	}
 
