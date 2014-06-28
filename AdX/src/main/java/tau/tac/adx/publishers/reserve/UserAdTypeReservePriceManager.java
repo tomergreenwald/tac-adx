@@ -127,7 +127,7 @@ public class UserAdTypeReservePriceManager implements
 	 *            {@link AdxQuery}.
 	 * @return The matching {@link ReservePriceType}.
 	 */
-	private ReservePriceType getType(AdxQuery adxQuery) {
+	private static ReservePriceType getType(AdxQuery adxQuery) {
 		return new ReservePriceType(adxQuery);
 	}
 
