@@ -112,7 +112,6 @@ public class UserAdTypeReservePriceManager implements
 		if (!reservePriceManagers.containsKey(type)) {
 			ReservePriceManager reservePriceManager = new ReservePriceManager(
 					dailyBaselineAverage, baselineRange, updateCoefficient);
-			;
 			reservePriceManagers.put(type, reservePriceManager);
 		}
 		ReservePriceManager reservePriceManager = reservePriceManagers
