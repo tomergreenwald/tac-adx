@@ -3,10 +3,6 @@
  */
 package tau.tac.adx.publishers.reserve;
 
-import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicLong;
-
-import tau.tac.adx.util.AdxUtils;
 
 /**
  * An extended {@link ReservePriceManager} which generates different reserve
