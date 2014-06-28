@@ -13,6 +13,7 @@ import se.sics.isl.transport.Transportable;
  *            Query type.
  * 
  */
+@SuppressWarnings("unused")
 public interface TacQuery<T> extends Transportable {
 	// Tagging interface.
 }
