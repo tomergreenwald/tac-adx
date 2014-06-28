@@ -62,11 +62,6 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 			.getCanonicalName());
 
 	/**
-	 * {@link MapGenerator} for {@link AdxPublisher}.
-	 */
-	private MapGenerator<AdxPublisher> publisherMapGenerator = new MapGenerator<AdxPublisher>();
-
-	/**
 	 * @see GenericGenerator#generate(int)
 	 */
 	@Override
