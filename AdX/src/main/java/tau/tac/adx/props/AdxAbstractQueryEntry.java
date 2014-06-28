@@ -39,6 +39,11 @@ public abstract class AdxAbstractQueryEntry extends
 		AbstractTransportableEntry<AdxQuery> implements AdxQueryEntry {
 
 	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 5689202011941791254L;
+
+	/**
 	 * Returns the query key.
 	 * 
 	 * @return the query key.
