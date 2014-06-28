@@ -117,7 +117,7 @@ public class AdNetworkReport extends
 	 * @param auctionResult
 	 * @return Corresponding {@link AdNetworkKey}.
 	 */
-	private AdNetworkKey getAdNetworkKey(AuctionMessage message, int campaignId) {
+	private static AdNetworkKey getAdNetworkKey(AuctionMessage message, int campaignId) {
 		AdxQuery query = message.getQuery();
 		return new AdNetworkKey(message.getUser(), query.getPublisher(),
 				query.getDevice(), query.getAdType(), campaignId);
