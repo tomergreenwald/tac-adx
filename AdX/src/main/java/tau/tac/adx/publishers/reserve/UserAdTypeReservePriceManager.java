@@ -19,8 +19,8 @@ import tau.tac.adx.props.AdxQuery;
 public class UserAdTypeReservePriceManager implements
 		MultiReservePriceManager<AdxQuery> {
 
-	private Logger log = Logger.getLogger(DefaultAdxUserManager.class
-			.getName());
+	private Logger log = Logger
+			.getLogger(DefaultAdxUserManager.class.getName());
 
 	private Map<ReservePriceType, ReservePriceManager> reservePriceManagers = new HashMap<ReservePriceType, ReservePriceManager>();
 
