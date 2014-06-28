@@ -42,6 +42,11 @@ public abstract class AdxAbstractQueryKeyedReportTransportable<T extends AdxQuer
 		extends AbstractKeyedEntryList<AdxQuery, T> {
 
 	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1663001583920259091L;
+
+	/**
 	 * Sole constructor. (For invocation by subclass constructors, typically
 	 * implicit.)
 	 */
