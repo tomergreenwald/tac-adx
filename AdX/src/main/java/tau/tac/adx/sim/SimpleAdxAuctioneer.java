@@ -107,13 +107,12 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 				.getInstance().getUserClassificationService();
 		UserClassificationServiceAdNetData adNetData = userClassificationService
 				.getAdNetData(advertiser);
-		if (adNetData.getServiceLevel() <= random.nextDouble()) {
+		if (adNetData.getServiceLevel() >= random.nextDouble()) {
 			return query;
 		}
 		AdxQuery clone = query.clone();
 		clone.setMarketSegments(new HashSet<MarketSegment>());
-		// return clone;
-		return query;
+		return clone;
 	}
 
 	@Override
