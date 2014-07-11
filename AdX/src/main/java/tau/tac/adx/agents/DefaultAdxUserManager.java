@@ -114,7 +114,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 			long pre;
 			long post;
 			
-			
+			//FIXME: remove debugging code
 			log.fine("##################################### S-Invoking users activity");
 			pre = System.currentTimeMillis();
 			for (AdxUser user : users) {
