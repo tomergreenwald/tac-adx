@@ -22,7 +22,7 @@
   RESPECT TO ANY CLAIM ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE,
   EVEN IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package tau.tac.adx.users;
+package tau.tac.adx.agents;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -46,6 +46,9 @@ import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.sim.AdxAuctioneer;
 import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.sim.TACAdxSimulation;
+import tau.tac.adx.users.AdxUser;
+import tau.tac.adx.users.AdxUserQueryManager;
+import tau.tac.adx.users.DefaultAdxUserQueryManager;
 import tau.tac.adx.users.generators.AdxUserGenerator;
 import tau.tac.adx.util.Utils;
 
