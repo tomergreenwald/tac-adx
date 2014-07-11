@@ -26,8 +26,12 @@ package tau.tac.adx.agents;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Matchers.notNull;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -39,6 +43,7 @@ import org.mockito.Mockito;
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.agents.DefaultAdxUserManager;
+import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
@@ -83,7 +88,7 @@ public class DefaultAdxUserManagerTest {
 		random = new Random();
 		AdxUserGenerator userGenerator = Utils.getInjector().getInstance(
 				AdxUserGenerator.class);
-		populationSize = 10;
+		populationSize = 10000;
 		users = (List<AdxUser>) userGenerator.generate(populationSize);
 
 		publisherCatalog = new PublisherCatalog();
@@ -144,6 +149,15 @@ public class DefaultAdxUserManagerTest {
 		userManager.triggerBehavior(auctioneer);
 		Mockito.verify(auctioneer, Mockito.atLeast(populationSize)).runAuction(
 				(AdxQuery) Mockito.any());
+	}
+	
+	@Test
+	public void testHandleSearch() {
+		for(AdxUser user : users){
+			AdxAuctioneer auctioneer2 = mock(AdxAuctioneer.class);
+			userManager.handleSearch(user, auctioneer2);
+			verify(auctioneer2, times(1)).runAuction((AdxQuery) notNull());
+		}
 	}
 
 }

@@ -151,13 +151,15 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	 *            An {@link AdxUser} to generate a query for.
 	 * @param auctioneer
 	 */
-	private void handleSearch(AdxUser user, AdxAuctioneer auctioneer) {
+	protected void handleSearch(AdxUser user, AdxAuctioneer auctioneer) {
 
 		AdxQuery query = generateQuery(user);
 
 		if (query != null) {
 			AdxAuctionResult auctionResult = auctioneer.runAuction(query);
 			AdxManager.getInstance().getSimulation().getEventBus().post(new AuctionMessage(auctionResult, query, user));
+		} else {
+			log.severe("Could not generate query for user - " + user);
 		}
 	}
 
