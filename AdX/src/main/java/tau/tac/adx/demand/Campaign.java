@@ -46,7 +46,7 @@ public interface Campaign extends TimeListener {
 	 * @param advertiser
 	 *            - advertiser id
 	 */
-	void allocateToAdvertiser(String advertiser);
+	boolean allocateToAdvertiser(String advertiser);
 
 	/**
 	 * Conduct auction among bidding advertisers. Auction results in allocating

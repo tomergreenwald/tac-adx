@@ -383,11 +383,14 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	}
 
 	@Override
-	public void addAdvertiserBid(String advertiser, Long budgetBidMillis) {
+	public boolean addAdvertiserBid(String advertiser, Long budgetBidMillis) {
 		/* bids above the reserve budget or below the min (adjusted by quality rating) are not considered */
 		if ((budgetBidMillis >= ((RESERVE_MIN_BUDGET_FACTOR * reachImps) / qualityManager.getQualityScore(advertiser)))
-				&& (budgetBidMillis <= (RESERVE_MAX_BUDGET_FACTOR * reachImps * qualityManager.getQualityScore(advertiser))))
+				&& (budgetBidMillis <= (RESERVE_MAX_BUDGET_FACTOR * reachImps * qualityManager.getQualityScore(advertiser)))){
 			advertisersBids.put(advertiser, budgetBidMillis);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
