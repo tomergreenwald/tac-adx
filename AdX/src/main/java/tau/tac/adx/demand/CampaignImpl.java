@@ -481,7 +481,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(advNames[indices[i]]);
 			CampaignAuctionReportEntry addReportEntry = campaignAuctionReport.addReportEntry(campaignReportKey);
 			addReportEntry.setActualBid(bids[indices[i]]);
-			addReportEntry.setEffctiveBid(bids[indices[i]] * qualityScores[indices[i]]);
+			addReportEntry.setEffctiveBid(qualityScores[indices[i]] / bids[indices[i]]);
 		}
 		campaignAuctionReport.setWinner(winner);
 		campaignAuctionReport.setRandomAllocation(randomAllocation);
