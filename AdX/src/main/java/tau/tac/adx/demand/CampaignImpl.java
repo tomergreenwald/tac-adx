@@ -430,12 +430,12 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			}
 
 			hardSort(scores, indices);
-			
+			boolean randomAllocation;
 			if (random.nextDouble() < randomAllocPr) { /* allocate campaign to a random bidder */
 				int ri = random.nextInt(advCount);
 				advertiser = advNames[ri]; 
 				budgetMillis = bids[ri];
-				
+				randomAllocation = true;
 			} else {
 			
 
@@ -453,9 +453,10 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 
 					budgetMillis = (long) (qualityScores[indices[0]] / bsecond);
 				}
+				randomAllocation = false;
 			}
 			
-			auctionReport = generateAuctionReport(advNames, bids, qualityScores, indices, advertiser);
+			auctionReport = generateAuctionReport(advNames, bids, qualityScores, indices, advertiser, randomAllocation);
 		}
 		return auctionReport;
 	}
@@ -467,10 +468,11 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	 * @param qualityScores Ad networks' quality scores.
 	 * @param indices 
 	 * @param winner 
+	 * @param randomAllocation Was this winner picked at random
 	 * @return {@link CampaignAuctionReport} according to given parameters.
 	 */
 	private CampaignAuctionReport generateAuctionReport(String[] advNames, long[] bids,
-			double[] qualityScores, int[] indices, String winner) {
+			double[] qualityScores, int[] indices, String winner, boolean randomAllocation) {
 		CampaignAuctionReport campaignAuctionReport = new CampaignAuctionReport(id);
 		for (int i = 0; i < advNames.length; i++) {
 			CampaignAuctionReportKey campaignReportKey = new CampaignAuctionReportKey(advNames[indices[i]]);
@@ -479,6 +481,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 			addReportEntry.setEffctiveBid(bids[indices[i]] * qualityScores[indices[i]]);
 		}
 		campaignAuctionReport.setWinner(winner);
+		campaignAuctionReport.setRandomAllocation(randomAllocation);
 		return campaignAuctionReport;
 	}
 
