@@ -31,6 +31,9 @@ public class CampaignAuctionReport extends
 	/** Campaign winner*/
 	private String winner;
 
+	/** Was this campaign allocated at random. */
+	private boolean randomAllocation;
+
 	/**
 	 * Default constructor.
 	 */
@@ -133,6 +136,17 @@ public class CampaignAuctionReport extends
 	protected void writeBeforeEntries(TransportWriter writer) {
 		writer.attr(CAMPAIGN_ID_KEY, campaignID);
 		writer.attr(WINNER_KEY, winner);
+	}
+
+	public void setRandomAllocation(boolean randomAllocation) {
+		this.randomAllocation = randomAllocation;
+	}
+
+	/**
+	 * @return the randomAllocation
+	 */
+	public boolean isRandomAllocation() {
+		return randomAllocation;
 	}
 
 }
