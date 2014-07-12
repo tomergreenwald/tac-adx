@@ -31,7 +31,7 @@ public interface Campaign extends TimeListener {
 	 * @param budgetBid
 	 *            - the related bid for the campaigns total budget
 	 */
-	void addAdvertiserBid(String advertiser, Long budgetBid);
+	boolean addAdvertiserBid(String advertiser, Long budgetBid);
 
 	/**
 	 * 
@@ -46,7 +46,7 @@ public interface Campaign extends TimeListener {
 	 * @param advertiser
 	 *            - advertiser id
 	 */
-	boolean allocateToAdvertiser(String advertiser);
+	void allocateToAdvertiser(String advertiser);
 
 	/**
 	 * Conduct auction among bidding advertisers. Auction results in allocating
