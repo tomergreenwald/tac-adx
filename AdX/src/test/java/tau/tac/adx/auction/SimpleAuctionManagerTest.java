@@ -59,8 +59,6 @@ public class SimpleAuctionManagerTest {
 			Double low = reservePrice / 2 * 1000;
 			Double high = reservePrice * 2 * 1000;
 
-			AuctionData auctionData = mock(AuctionData.class);
-			when(auctionData.getReservePrice()).thenReturn(reservePrice);
 			BidInfo lowBid = mock(BidInfo.class);
 			BidInfo highBid = mock(BidInfo.class);
 			when(highBid.getBid()).thenReturn(high);
