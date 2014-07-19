@@ -101,7 +101,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 		return bidInfos;
 	}
 
-	private AdxQuery getClassifiedQuery(String advertiser, AdxQuery query) {
+	protected AdxQuery getClassifiedQuery(String advertiser, AdxQuery query) {
 		UserClassificationService userClassificationService = AdxManager
 				.getInstance().getUserClassificationService();
 		UserClassificationServiceAdNetData adNetData = userClassificationService
