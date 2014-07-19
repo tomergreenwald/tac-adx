@@ -97,7 +97,10 @@ public class SimpleAuctionManagerTest {
 	 */
 	@Test
 	public void testInitializeByAuctionOrder() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(Double.MIN_VALUE, SimpleAuctionManager
+				.initializeByAuctionOrder(AuctionOrder.HIGHEST_WINS).getBid(), 0);
+		assertEquals(Double.MAX_VALUE, SimpleAuctionManager
+				.initializeByAuctionOrder(AuctionOrder.LOWEST_WINS).getBid(), 0);
 	}
 
 	/**
