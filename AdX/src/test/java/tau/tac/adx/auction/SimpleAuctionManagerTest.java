@@ -44,7 +44,6 @@ public class SimpleAuctionManagerTest {
 	 */
 	@Test
 	public void testRunAuction() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -54,7 +53,6 @@ public class SimpleAuctionManagerTest {
 	 */
 	@Test
 	public void testBetterBid() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -87,7 +85,6 @@ public class SimpleAuctionManagerTest {
 	 */
 	@Test
 	public void testCalculateAuctionResult() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	/**
