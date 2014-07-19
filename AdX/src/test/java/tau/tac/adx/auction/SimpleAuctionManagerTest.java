@@ -15,6 +15,8 @@ import org.junit.Test;
 
 import tau.tac.adx.auction.data.AuctionData;
 import tau.tac.adx.auction.data.AuctionOrder;
+import tau.tac.adx.auction.data.AuctionPriceType;
+import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 
 /**
@@ -105,6 +107,75 @@ public class SimpleAuctionManagerTest {
 	 */
 	@Test
 	public void testCalculateAuctionResult() {
+		for (int i = 0; i < 1000; i++) {
+			Double reservePrice = Math.random() * 100;
+			// Bids are in millis
+			Double low = reservePrice / 2 * 1000;
+			Double low2 = reservePrice / 3 * 1000;
+			Double high = reservePrice * 2 * 1000;
+			Double high2 = reservePrice * 3 * 1000;
+
+			AuctionData auctionData = mock(AuctionData.class);
+			when(auctionData.getReservePrice()).thenReturn(reservePrice);
+			BidInfo lowBid = mock(BidInfo.class);
+			BidInfo highBid = mock(BidInfo.class);
+			when(highBid.getBid()).thenReturn(high);
+			when(lowBid.getBid()).thenReturn(low);
+			BidInfo lowBid2 = mock(BidInfo.class);
+			BidInfo highBid2 = mock(BidInfo.class);
+			when(highBid2.getBid()).thenReturn(high2);
+			when(lowBid2.getBid()).thenReturn(low2);
+
+			when(auctionData.getAuctionOrder()).thenReturn(AuctionOrder.HIGHEST_WINS);
+			when(auctionData.getAuctionPriceType()).thenReturn(AuctionPriceType.GENERALIZED_SECOND_PRICE);
+			AdxAuctionResult auctionResult = SimpleAuctionManager.calculateAuctionResult(highBid, lowBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(reservePrice, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(highBid2, highBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(high, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(lowBid, lowBid, auctionData);
+			assertEquals(AuctionState.LOW_BIDS, auctionResult.getAuctionState());
+			
+			when(auctionData.getAuctionPriceType()).thenReturn(AuctionPriceType.GENERALIZED_FIRST_PRICE);
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(highBid, lowBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(high, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(highBid2, highBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(high2, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(lowBid, lowBid, auctionData);
+			assertEquals(AuctionState.LOW_BIDS, auctionResult.getAuctionState());
+			
+			when(auctionData.getAuctionOrder()).thenReturn(AuctionOrder.LOWEST_WINS);
+			when(auctionData.getAuctionPriceType()).thenReturn(AuctionPriceType.GENERALIZED_SECOND_PRICE);
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(lowBid, highBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(reservePrice, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(lowBid2, lowBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(low, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(highBid, highBid2, auctionData);
+			assertEquals(AuctionState.LOW_BIDS, auctionResult.getAuctionState());
+			
+			when(auctionData.getAuctionPriceType()).thenReturn(AuctionPriceType.GENERALIZED_FIRST_PRICE);
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(lowBid, highBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(low, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(lowBid2, lowBid, auctionData);
+			assertEquals(AuctionState.AUCTION_COPMLETED, auctionResult.getAuctionState());
+			assertEquals(low2, auctionResult.getWinningPrice());
+			
+			auctionResult = SimpleAuctionManager.calculateAuctionResult(highBid, highBid2, auctionData);
+			assertEquals(AuctionState.LOW_BIDS, auctionResult.getAuctionState());
+		}
 	}
 
 	/**
