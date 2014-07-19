@@ -70,7 +70,7 @@ public class CampaignImplTest {
 					CampaignAuctionReportEntry entry = auctionReport
 							.getEntry(new CampaignAuctionReportKey(
 									auctionReport.getWinner()));
-					// verify auction winner had the best offet (if two had the
+					// verify auction winner had the best offer (if two or more had the
 					// same offer it doesn't matter who wins)
 					assertEquals(bestEffectiveBid, entry.getEffctiveBid(), 0.0);
 				} else {
