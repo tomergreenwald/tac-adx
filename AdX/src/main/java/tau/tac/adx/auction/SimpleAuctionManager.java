@@ -173,10 +173,10 @@ public class SimpleAuctionManager implements AuctionManager {
 	}
 
 	/**
-	 * Determines whether a bid passes a reserve price.
+	 * Determines whether a bid (in millis) passes a reserve price.
 	 * 
 	 * @param bid
-	 *            {@link BidInfo} to check.
+	 *            {@link BidInfo} to check (in millis).
 	 * @param auctionData
 	 *            {@link AuctionData} to retrieve information from, such as:
 	 *            {@link AuctionData#reservePrice} and
