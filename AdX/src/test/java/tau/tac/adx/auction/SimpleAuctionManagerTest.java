@@ -53,6 +53,28 @@ public class SimpleAuctionManagerTest {
 	 */
 	@Test
 	public void testBetterBid() {
+		for (int i = 0; i < 1000; i++) {
+			Double reservePrice = Math.random() * 100;
+			// Bids are in millis
+			Double low = reservePrice / 2 * 1000;
+			Double high = reservePrice * 2 * 1000;
+
+			AuctionData auctionData = mock(AuctionData.class);
+			when(auctionData.getReservePrice()).thenReturn(reservePrice);
+			BidInfo lowBid = mock(BidInfo.class);
+			BidInfo highBid = mock(BidInfo.class);
+			when(highBid.getBid()).thenReturn(high);
+			when(lowBid.getBid()).thenReturn(low);
+
+			assertTrue(SimpleAuctionManager.betterBid(highBid, lowBid,
+					AuctionOrder.HIGHEST_WINS));
+			assertFalse(SimpleAuctionManager.betterBid(lowBid, highBid,
+					AuctionOrder.HIGHEST_WINS));
+			assertFalse(SimpleAuctionManager.betterBid(highBid, lowBid,
+					AuctionOrder.LOWEST_WINS));
+			assertTrue(SimpleAuctionManager.betterBid(lowBid, highBid,
+					AuctionOrder.LOWEST_WINS));
+		}
 	}
 
 	/**
@@ -95,7 +117,8 @@ public class SimpleAuctionManagerTest {
 	@Test
 	public void testInitializeByAuctionOrder() {
 		assertEquals(Double.MIN_VALUE, SimpleAuctionManager
-				.initializeByAuctionOrder(AuctionOrder.HIGHEST_WINS).getBid(), 0);
+				.initializeByAuctionOrder(AuctionOrder.HIGHEST_WINS).getBid(),
+				0);
 		assertEquals(Double.MAX_VALUE, SimpleAuctionManager
 				.initializeByAuctionOrder(AuctionOrder.LOWEST_WINS).getBid(), 0);
 	}
