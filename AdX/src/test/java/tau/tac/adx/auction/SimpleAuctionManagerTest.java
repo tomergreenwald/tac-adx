@@ -13,8 +13,6 @@ import static org.mockito.Mockito.when;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import tau.tac.adx.auction.data.AuctionData;
@@ -30,20 +28,6 @@ import tau.tac.adx.report.adn.MarketSegment;
  * 
  */
 public class SimpleAuctionManagerTest {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
 
 	/**
 	 * Test method for
