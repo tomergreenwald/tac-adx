@@ -78,7 +78,7 @@ public class SimpleAdxAuctioneerTest {
 					Assert.fail("reuslt query has to be fully classified or not at all.");
 				}
 			}
-			assertEquals(ucsLevel, 1.0 * fullyClassified / rounds, 0.05);
+			assertEquals(ucsLevel, 1.0 * fullyClassified / rounds, 0.06);
 			assertEquals(1 - ucsLevel, 1.0 * notClassified / rounds, 0.05);
 		}
 	}
