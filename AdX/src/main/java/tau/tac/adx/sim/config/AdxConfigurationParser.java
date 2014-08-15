@@ -89,12 +89,11 @@ public class AdxConfigurationParser {
 	private double[] deviceMobile = { 0.26, 0.24, 0.23, 0.22, 0.25, 0.24, 0.21,
 			0.22, 0.18, 0.19, 0.2, 0.19, 0.24, 0.28, 0.28, 0.30, 0.27, 0.31 };
 
-	private double[] reservePriceDailyBaselineAverage = { 0.1, 0.1, 0.1,
-			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
-			0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
-	private double[] reservePriceBaselineRange = { 0.1, 0.1, 0.1, 0.1,
-			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
-			0.1, 0.1, 0.1, 0.1, 0.1 };
+	private double[] reservePriceDailyBaselineAverage = { 0.1, 0.1, 0.1, 0.1,
+			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+			0.1 };
+	private double[] reservePriceBaselineRange = { 0.1, 0.1, 0.1, 0.1, 0.1,
+			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
 	private double[] reservePriceUpdateCoeffecient = { 0.6, 0.6, 0.6, 0.6, 0.6,
 			0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6 };
 
@@ -149,19 +148,24 @@ public class AdxConfigurationParser {
 		Map<AdxUser, Integer> weights = new HashMap<AdxUser, Integer>();
 		int populationSize = config.getPropertyAsInt(
 				"adxusers.population_size", 0);
-		
+
 		int populationTypesSize = config.getPropertyAsInt(
 				"population.types.size", 0);
-				for (int i = 1; i <= populationTypesSize; i++) {
-			Age age = Age.valueOf(config.getProperty(String.format("population.%s.age",	i)));
-			Gender gender = Gender.valueOf(config.getProperty(String.format("population.%s.gender",	i)));
-			Income income = Income.valueOf(config.getProperty(String.format("population.%s.income",	i)));
-			int probability = config.getPropertyAsInt(String.format("population.%s.probability",	i), 0);
-			double pContinue = config.getPropertyAsDouble(String.format("adxusers.pcontinue",	i), 0);
+		for (int i = 1; i <= populationTypesSize; i++) {
+			Age age = Age.valueOf(config.getProperty(String.format(
+					"population.%s.age", i)));
+			Gender gender = Gender.valueOf(config.getProperty(String.format(
+					"population.%s.gender", i)));
+			Income income = Income.valueOf(config.getProperty(String.format(
+					"population.%s.income", i)));
+			int probability = config.getPropertyAsInt(
+					String.format("population.%s.probability", i), 0);
+			double pContinue = config.getPropertyAsDouble(
+					String.format("adxusers.pcontinue", i), 0);
 			AdxUser adxUser = new AdxUser(age, gender, income, pContinue, 0);
 			weights.put(adxUser, probability);
 		}
-		
+
 		PopulationUserGenerator generator = new PopulationUserGenerator(weights);
 		return generator.generate(populationSize);
 	}
