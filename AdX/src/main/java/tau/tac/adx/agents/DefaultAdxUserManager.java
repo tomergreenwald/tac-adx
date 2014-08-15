@@ -49,6 +49,9 @@ import com.google.common.eventbus.EventBus;
 public class DefaultAdxUserManager implements AdxUserManager {
 	private Logger log = Logger.getLogger(DefaultAdxUserManager.class
 			.getName());
+	
+	//nContimueMax
+	private static int MAX_USER_DAILY_IMPRESSION = 6;
 
 	private final Object lock;
 
@@ -136,10 +139,12 @@ public class DefaultAdxUserManager implements AdxUserManager {
 	 * @param user
 	 * @param auctioneer
 	 */
-	private void handleUserActivity(AdxUser user, AdxAuctioneer auctioneer) {
+	protected void handleUserActivity(AdxUser user, AdxAuctioneer auctioneer) {
+		int times = 0;
 		do {
+			times++;
 			handleSearch(user, auctioneer);
-		} while (user.getpContinue() > random.nextDouble());
+		} while (user.getpContinue() > random.nextDouble() && times < MAX_USER_DAILY_IMPRESSION);
 	}
 
 	/**

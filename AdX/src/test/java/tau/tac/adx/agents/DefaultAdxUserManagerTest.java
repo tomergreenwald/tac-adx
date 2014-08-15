@@ -24,14 +24,15 @@
  */
 package tau.tac.adx.agents;
 
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
 import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -42,7 +43,6 @@ import org.mockito.Mockito;
 
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.ads.properties.AdType;
-import tau.tac.adx.agents.DefaultAdxUserManager;
 import tau.tac.adx.auction.AdxAuctionResult;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxQuery;
@@ -66,6 +66,19 @@ import edu.umich.eecs.tac.props.Product;
  * @author greenwald
  */
 public class DefaultAdxUserManagerTest {
+	private final class AdxAuctioneerSpy implements AdxAuctioneer {
+		public int count = 0;
+
+		@Override
+		public AdxAuctionResult runAuction(AdxQuery query) {
+			count++;
+			return null;
+		}
+
+		@Override
+		public void applyBidUpdates() {}
+	}
+
 	private DefaultAdxUserManager userManager;
 
 	private AdxUserQueryManager queryManager;
@@ -92,7 +105,8 @@ public class DefaultAdxUserManagerTest {
 		users = (List<AdxUser>) userGenerator.generate(populationSize);
 
 		publisherCatalog = new PublisherCatalog();
-		publisherCatalog.addPublisher(mock(AdxPublisher.class, Mockito.RETURNS_DEEP_STUBS));
+		publisherCatalog.addPublisher(mock(AdxPublisher.class,
+				Mockito.RETURNS_DEEP_STUBS));
 		Map<Device, Integer> deviceDistributionMap = new HashMap<Device, Integer>();
 		deviceDistributionMap.put(Device.pc, random.nextInt(10) + 1);
 		deviceDistributionMap.put(Device.mobile, random.nextInt(10) + 1);
@@ -144,19 +158,56 @@ public class DefaultAdxUserManagerTest {
 	public void testTriggerBehavior() {
 		userManager.nextTimeUnit(0);
 		AdxAuctioneer auctioneer = mock(AdxAuctioneer.class);
-		TACAdxSimulation simulation = mock(TACAdxSimulation.class, Mockito.RETURNS_DEEP_STUBS);
-		AdxManager.getInstance().setSimulation(simulation );
+		TACAdxSimulation simulation = mock(TACAdxSimulation.class,
+				Mockito.RETURNS_DEEP_STUBS);
+		AdxManager.getInstance().setSimulation(simulation);
 		userManager.triggerBehavior(auctioneer);
 		Mockito.verify(auctioneer, Mockito.atLeast(populationSize)).runAuction(
 				(AdxQuery) Mockito.any());
 	}
-	
+
 	@Test
 	public void testHandleSearch() {
-		for(AdxUser user : users){
+		for (AdxUser user : users) {
 			AdxAuctioneer auctioneer2 = mock(AdxAuctioneer.class);
 			userManager.handleSearch(user, auctioneer2);
 			verify(auctioneer2, times(1)).runAuction((AdxQuery) notNull());
+		}
+	}
+
+	@Test
+	public void testHandleUserActivity() {
+		double pContinue = 0.3;
+		int contimueMax = 6;
+		int times = 10000;
+		int counts[] = new int[contimueMax + 1];
+		for (int i = 0; i < times; i++) {
+			//setup
+			TACAdxSimulation simulation = mock(TACAdxSimulation.class, Mockito.RETURNS_DEEP_STUBS);
+			AdxManager.getInstance().setSimulation(simulation );
+			AdxUser adxUser = mock(AdxUser.class);
+			when(adxUser.getpContinue()).thenReturn(pContinue);
+			AdxUserQueryManager queryManager = mock(AdxUserQueryManager.class);
+			when(queryManager.generateQuery(adxUser)).thenReturn(mock(AdxQuery.class));
+			DefaultAdxUserManager manager = new DefaultAdxUserManager(
+					mock(PublisherCatalog.class), mock(List.class),
+					queryManager, 100000, mock(EventBus.class));
+			AdxAuctioneerSpy adxAuctioneerSpy = new AdxAuctioneerSpy();
+			//test
+			manager.handleUserActivity(adxUser, adxAuctioneerSpy);
+			//validate MAX_USER_DAILY_IMPRESSION (6)
+			org.junit.Assert.assertThat(adxAuctioneerSpy.count, lessThanOrEqualTo(contimueMax));
+			if (adxAuctioneerSpy.count <= counts.length) {
+				counts[adxAuctioneerSpy.count]++;
+			}
+		}
+		//validate User Continuation Probability (0.3)
+		for (int i = 1; i < counts.length - 1; i++) {
+			double probability = Math.pow((pContinue), i - 1) * (1-pContinue);
+			if(i == counts.length) {
+				probability /= (1-pContinue); //The last slot gets every option
+			}
+			org.junit.Assert.assertEquals("Cycle " + i, probability * times, counts[i], times * 0.05);
 		}
 	}
 
