@@ -88,14 +88,10 @@ public class AdxConfigurationParser {
 			0.78, 0.82, 0.81, 0.8, 0.81, 0.76, 0.72, 0.72, 0.70, 0.73, 0.69 };
 	private double[] deviceMobile = { 0.26, 0.24, 0.23, 0.22, 0.25, 0.24, 0.21,
 			0.22, 0.18, 0.19, 0.2, 0.19, 0.24, 0.28, 0.28, 0.30, 0.27, 0.31 };
-
-	private double[] reservePriceDailyBaselineAverage = { 0.1, 0.1, 0.1, 0.1,
-			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
-			0.1 };
-	private double[] reservePriceBaselineRange = { 0.1, 0.1, 0.1, 0.1, 0.1,
-			0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
-	private double[] reservePriceUpdateCoeffecient = { 0.6, 0.6, 0.6, 0.6, 0.6,
-			0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6 };
+	
+	private static double RESERVE_PRICE_INIT = 0.005;
+	private static double RESERVE_PRICE_VARIANCE = 0.02;
+	private static double RESERVE_PRICE_LEARN_RATE = 0.2;
 
 	/**
 	 * @param config
@@ -207,7 +203,8 @@ public class AdxConfigurationParser {
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps = extractAdTypeAffiliation(sku);
 			AdxUserAttributeProbabilityMaps adxUserAttributeProbabilityMaps = extractUserAffiliation(sku);
 			Map<Device, Double> deviceAffiliation = extractDeviceAffiliation(sku);
-			UserAdTypeReservePriceManager reservePriceManager = extractReservePriceInfo(sku);
+			UserAdTypeReservePriceManager reservePriceManager = new UserAdTypeReservePriceManager(
+					RESERVE_PRICE_INIT, RESERVE_PRICE_VARIANCE, RESERVE_PRICE_LEARN_RATE);
 			AdxPublisher publisher = new AdxPublisher(
 					adxUserAttributeProbabilityMaps,
 					adAttributeProbabilityMaps, deviceAffiliation, rating, 0,
@@ -218,24 +215,6 @@ public class AdxConfigurationParser {
 		catalog.lock();
 
 		return catalog;
-	}
-
-	/**
-	 * Extracts {@link UserAdTypeReservePriceManager} from configuration file.
-	 * 
-	 * @param config
-	 *            {@link ConfigManager} to read properties from.
-	 * @param sku
-	 *            Current <b>sku</b> id.
-	 * @return Extracted {@link ReservePriceManager}.
-	 */
-	private UserAdTypeReservePriceManager extractReservePriceInfo(Integer sku) {
-		double dailyBaselineAverage = reservePriceDailyBaselineAverage[sku];
-		double baselineRange = reservePriceBaselineRange[sku];
-		double updateCoefficient = reservePriceUpdateCoeffecient[sku];
-		UserAdTypeReservePriceManager reservePriceManager = new UserAdTypeReservePriceManager(
-				dailyBaselineAverage, baselineRange, updateCoefficient);
-		return reservePriceManager;
 	}
 
 	/**
