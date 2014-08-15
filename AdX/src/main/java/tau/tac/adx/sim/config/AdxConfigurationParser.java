@@ -285,7 +285,7 @@ public class AdxConfigurationParser {
 		ageDistribution.put(Income.low, income1[sku]);
 		ageDistribution.put(Income.medium, income2[sku]);
 		ageDistribution.put(Income.high, income3[sku]);
-		ageDistribution.put(Income.very_high, income3[sku]);
+		ageDistribution.put(Income.very_high, income4[sku]);
 		return ageDistribution;
 
 	}
