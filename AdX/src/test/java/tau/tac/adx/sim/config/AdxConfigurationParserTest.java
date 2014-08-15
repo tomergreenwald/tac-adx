@@ -29,13 +29,9 @@ public class AdxConfigurationParserTest {
 	 */
 	@Test
 	public void testCreatePublisherCatalog() {
-		ConfigManager config = mock(ConfigManager.class);
-		when(config.getPropertyAsArray("publishers.list.1")).thenReturn(new String[]{"0","1","2","3","4","5"});
-		when(config.getPropertyAsArray("publishers.list.2")).thenReturn(new String[]{"6","7","8","9","10","11"});
-		when(config.getPropertyAsArray("publishers.list.3")).thenReturn(new String[]{"12","13","14","15","16","17"});
-		when(config.getPropertyAsInt("publishers.subset.size", 2)).thenReturn(2);
-		
-		AdxConfigurationParser parser = new AdxConfigurationParser(config);
+		ConfigManager configManager = new ConfigManager();
+		configManager.loadConfiguration("adx-server/config/tac13adx_sim.conf");		
+		AdxConfigurationParser parser = new AdxConfigurationParser(configManager);
 		PublisherCatalog publisherCatalog = parser.createPublisherCatalog();
 		List<PublisherCatalogEntry> publishers = publisherCatalog.getPublishers();
 		Assert.assertEquals(6, publishers.size());
