@@ -46,20 +46,6 @@ public class CampaignOpportunityMessage extends SimpleContent {
 		this.day = day;
 	}
 
-	public CampaignOpportunityMessage(int id, Long reachImps, int dayStart,
-			int dayEnd, Set<MarketSegment> targetSegment, double videoCoef,
-			double mobileCoef, int day) {
-
-		this.id = id;
-		this.reachImps = reachImps;
-		this.dayStart = dayStart;
-		this.dayEnd = dayEnd;
-		this.targetSegment = targetSegment;
-		this.videoCoef = videoCoef;
-		this.mobileCoef = mobileCoef;
-		this.day = day;
-	}
-
 	public int getId() {
 		return id;
 	}
