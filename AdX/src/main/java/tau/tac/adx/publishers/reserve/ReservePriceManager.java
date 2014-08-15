@@ -88,10 +88,10 @@ public class ReservePriceManager {
 	/**
 	 * @param dailyBaselineAverage
 	 *            A daily baseline to calculate <b>reserve price</b> according
-	 *            to. The initial average reserve price is given, and reserve
-	 *            prices in subsequent days (for ads with the similar
-	 *            attributes) are adaptively set to maximize the publisher�s
-	 *            profit.
+	 *            to. The initial average reserve price is randomly chosen
+	 *            uniformly between 0 and the given value, and reserve prices in
+	 *            subsequent days (for ads with the similar attributes) are
+	 *            adaptively set to maximize the publisher's profit.
 	 * @param baselineRange
 	 *            Allowed variance range for generated <b>reserve prices</b> by
 	 *            {@link #generateReservePrice()} from the
@@ -104,7 +104,7 @@ public class ReservePriceManager {
 	 */
 	public ReservePriceManager(double dailyBaselineAverage,
 			double baselineRange, double updateCoefficient) {
-		this.dailyBaselineAverage = dailyBaselineAverage;
+		this.dailyBaselineAverage = Math.random() * dailyBaselineAverage;
 		this.baselineRange = baselineRange;
 		this.updateCoefficient = updateCoefficient;
 		this.dailyRequests = 0;
