@@ -158,7 +158,8 @@ public class AdxConfigurationParser {
 			Gender gender = Gender.valueOf(config.getProperty(String.format("population.%s.gender",	i)));
 			Income income = Income.valueOf(config.getProperty(String.format("population.%s.income",	i)));
 			int probability = config.getPropertyAsInt(String.format("population.%s.probability",	i), 0);
-			AdxUser adxUser = new AdxUser(age, gender, income, 0, 0);
+			double pContinue = config.getPropertyAsDouble(String.format("adxusers.pcontinue",	i), 0);
+			AdxUser adxUser = new AdxUser(age, gender, income, pContinue, 0);
 			weights.put(adxUser, probability);
 		}
 		
