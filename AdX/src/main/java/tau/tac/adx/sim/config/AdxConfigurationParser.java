@@ -21,7 +21,6 @@ import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
 import tau.tac.adx.users.generators.PopulationUserGenerator;
-import tau.tac.adx.users.generators.SimpleUserGenerator;
 import tau.tac.adx.users.properties.AdxUserAttributeProbabilityMaps;
 import tau.tac.adx.users.properties.Age;
 import tau.tac.adx.users.properties.Gender;
@@ -349,8 +348,6 @@ public class AdxConfigurationParser {
 	}
 
 	public void initializeAdvertisers(TACAdxSimulation tacAdxSimulation) {
-		Random r = new Random();
-
 		// Initialize advertisers..
 		SimulationAgent[] adnetowrkAgents = tacAdxSimulation
 				.getAgents(AD_NETOWRK_ROLE_ID);
