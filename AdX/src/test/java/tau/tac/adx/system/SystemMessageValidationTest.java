@@ -66,11 +66,12 @@ public class SystemMessageValidationTest {
 	@Parameters(name = "day #{0}")
 	public static Iterable<Object[]> data() throws FileNotFoundException,
 			IOException, ParseException {
-		LogReader logReader = new LogReader(new FileInputStream(
-				"src/test/resources/localhost_sim399.slg"));
-		parser = new LogVerifierParser(logReader, null);
-		parser.start();
-		parser.stop();
+		try (LogReader logReader = new LogReader(new FileInputStream(
+				"src/test/resources/sim9.slg"))) {
+			parser = new LogVerifierParser(logReader, null);
+			parser.start();
+			parser.stop();
+		}
 		List<Object[]> data = new LinkedList<Object[]>();
 		for (int verifiedDay = 0; verifiedDay <= 60; verifiedDay++) {
 			data.add(new Object[] { verifiedDay });
