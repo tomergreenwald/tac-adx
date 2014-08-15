@@ -3,6 +3,7 @@ package tau.tac.adx.publishers.reserve;
 import java.util.Set;
 
 import tau.tac.adx.ads.properties.AdType;
+import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.report.adn.MarketSegment;
 
@@ -19,6 +20,8 @@ class ReservePriceType {
 	private Set<MarketSegment> marketSegment;
 	/** {@link AdType}. */
 	private AdType adType;
+	/** {@link Device}}. */
+	private Device device;
 
 	/**
 	 * Constructor from {@link AdxQuery}.
@@ -28,6 +31,7 @@ class ReservePriceType {
 	public ReservePriceType(AdxQuery adxQuery) {
 		this.marketSegment = adxQuery.getMarketSegments();
 		this.adType = adxQuery.getAdType();
+		this.device = adxQuery.getDevice();
 	}
 
 	/**
@@ -36,7 +40,7 @@ class ReservePriceType {
 	@Override
 	public String toString() {
 		return "ReservePriceType [marketSegment=" + marketSegment + ", adType="
-				+ adType + "]";
+				+ adType + ", device=" + device + "]";
 	}
 
 	/**
@@ -47,6 +51,7 @@ class ReservePriceType {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((adType == null) ? 0 : adType.hashCode());
+		result = prime * result + ((device == null) ? 0 : device.hashCode());
 		result = prime * result
 				+ ((marketSegment == null) ? 0 : marketSegment.hashCode());
 		return result;
@@ -65,6 +70,8 @@ class ReservePriceType {
 			return false;
 		ReservePriceType other = (ReservePriceType) obj;
 		if (adType != other.adType)
+			return false;
+		if (device != other.device)
 			return false;
 		if (marketSegment == null) {
 			if (other.marketSegment != null)
