@@ -26,6 +26,7 @@
  */
 package se.sics.tasim.logtool;
 
+import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -42,7 +43,7 @@ import se.sics.isl.transport.TransportReader;
 /**
  * Utility for parsing server logs (not used by the AgentWare).
  */
-public class LogReader {
+public class LogReader implements Closeable{
 
 	/** The address to the simulation coordinator */
 	private static final String COORDINATOR = "coordinator";
