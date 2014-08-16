@@ -83,10 +83,10 @@ public class SystemMessageValidationTest {
 	public void testCampaignOpportunityStartDay() {
 		CampaignOpportunityMessage campaignOpportunityMessage = parser.campaignOpportunityMessages
 				.get(day);
-		// During days 0-50 a campaign should be allocated every day
-		Assert.assertFalse("No campaign was allocated today", day < 50
+		// During days 0-49 a campaign should be allocated every day
+		Assert.assertFalse("No campaign was allocated today", day < 49
 				&& campaignOpportunityMessage == null);
-		// After the 50th day it is possible that a campaign won't be allocated
+		// Starting from the 49th day it is possible that a campaign won't be allocated
 		// since its length is larger than the remaining game days
 		Assume.assumeTrue("No campaign was allocated today",
 				campaignOpportunityMessage != null);
