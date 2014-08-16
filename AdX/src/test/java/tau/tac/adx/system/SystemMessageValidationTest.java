@@ -66,12 +66,12 @@ public class SystemMessageValidationTest {
 	@Parameters(name = "day #{0}")
 	public static Iterable<Object[]> data() throws FileNotFoundException,
 			IOException, ParseException {
-		try (LogReader logReader = new LogReader(new FileInputStream(
-				"src/test/resources/sim9.slg"))) {
-			parser = new LogVerifierParser(logReader, null);
-			parser.start();
-			parser.stop();
-		}
+		LogReader logReader = new LogReader(new FileInputStream(
+				"src/test/resources/sim9.slg"));
+		parser = new LogVerifierParser(logReader, null);
+		parser.start();
+		parser.stop();
+		logReader.close();
 		List<Object[]> data = new LinkedList<Object[]>();
 		for (int verifiedDay = 0; verifiedDay <= 60; verifiedDay++) {
 			data.add(new Object[] { verifiedDay });
@@ -86,7 +86,8 @@ public class SystemMessageValidationTest {
 		// During days 0-49 a campaign should be allocated every day
 		Assert.assertFalse("No campaign was allocated today", day < 49
 				&& campaignOpportunityMessage == null);
-		// Starting from the 49th day it is possible that a campaign won't be allocated
+		// Starting from the 49th day it is possible that a campaign won't be
+		// allocated
 		// since its length is larger than the remaining game days
 		Assume.assumeTrue("No campaign was allocated today",
 				campaignOpportunityMessage != null);
@@ -98,6 +99,7 @@ public class SystemMessageValidationTest {
 				+ campaignOpportunityMessage.getDayStart();
 		Assert.assertEquals(message, day + 2,
 				campaignOpportunityMessage.getDayStart());
+		Assert.assertTrue(campaignOpportunityMessage.getDayEnd() < 60);
 	}
 
 }
