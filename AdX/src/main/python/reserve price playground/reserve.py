@@ -81,14 +81,17 @@ def get_sorted_boundary_points(functions):
 
 
 class C(object):
-    def __init__(self, c1, c2, c3, c4):
+    def __init__(self, c1, c2, c3, c4, point):
         self.c1 = c1
         self.c2 = c2
         self.c3 = c3
         self.c4 = c4
+        self.point = point
 
     def __repr__(self):
-        return "[{c1}, {c2}, {c3}, {c4}]".format(c1=self.c1, c2=self.c2, c3=self.c3, c4=self.c4)
+        return "[{c1}, {c2}, {c3}, {c4} p={p}, s={s}]".format(c1=self.c1, c2=self.c2, c3=self.c3, c4=self.c4,
+                                                              p=self.point, s=(
+            self.c1 + self.c2 * self.point + self.c3 * self.point + self.c4))
 
 
 def minimize_f_fast(functions):
@@ -103,9 +106,10 @@ def minimize_f_fast(functions):
     c = {}
     for j in xrange(len(points)):
         if j is 0:
-            c[j] = C(-sum(function.points.a1 for function in functions), 0, 0, 0)
+            c[j] = C(-sum(function.points.a1 for function in functions), 0, 0, 0, points[j])
         else:
             c[j] = copy(c[j - 1])
+            c[j].point = points[j]
             while low_functions[low_index].boundary.low < points[j - 1]:
                 if low_index + 1 < len(low_functions):
                     low_index += 1

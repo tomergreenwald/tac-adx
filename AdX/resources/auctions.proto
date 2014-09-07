@@ -1,0 +1,38 @@
+enum MarketSegment {
+    MALE = 0;
+    FEMALE = 1;
+    YOUNG = 2;
+    OLD = 3;
+    LOW_INCOME = 4;
+    HIGH_INCOME = 5;
+}
+
+enum Device {
+    MOBILE = 0;
+    PC = 1;
+}
+
+enum AdType {
+    TEXT = 0;
+    VIDEO = 1;
+}
+
+message AdxQuery {
+	required string publisher = 1;
+	repeated MarketSegment marketSegments = 2;
+	required Device device = 3;
+	required AdType adtype = 4;
+}
+
+message AuctionReport {
+    required double firstBid = 1;
+    required double secondsBid = 2;
+    required double reservedPrice = 3;
+    required AdxQuery adxQuery = 4;
+}
+
+
+
+message DataBundle {
+    repeated AuctionReport reports = 1;
+}
