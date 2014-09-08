@@ -55,6 +55,12 @@ public class ReservePriceManager {
 	 * it generated..
 	 */
 	private final TreeMap<Double, AtomicLong> profitMap = new TreeMap<Double, AtomicLong>();
+	
+	/**
+	 * Sorted map between a <b>reserve price</b> and the number of bids it was involved in 
+	 * (even if there was no impression).
+	 */
+	private final TreeMap<Double, AtomicLong> profitQueries = new TreeMap<Double, AtomicLong>();
 
 	/**
 	 * Number of times this service was requested per day. Re-initialized to 0
@@ -116,9 +122,14 @@ public class ReservePriceManager {
 	 */
 	public synchronized double generateReservePrice() {
 		dailyRequests++;
-		return AdxUtils.cutDouble(Math.random() * baselineRange * 2
+		double reserve = AdxUtils.cutDouble(Math.random() * baselineRange * 2
 				+ dailyBaselineAverage - baselineRange,
 				DIGITS_AFTER_DECIMAL_POINT);
+		if (!profitQueries.containsKey(reserve)) {
+			profitQueries.put(reserve, new AtomicLong());
+		}
+		profitQueries.get(reserve).incrementAndGet();
+		return reserve;
 	}
 
 	/**
@@ -156,6 +167,7 @@ public class ReservePriceManager {
 				highestProfitsPrice = getMostProfitableReservePrice();
 			}
 			profitMap.clear();
+			profitQueries.clear();
 			dailyBaselineAverage = updateCoefficient * dailyBaselineAverage
 					+ (1 - updateCoefficient) * highestProfitsPrice;
 		}
@@ -188,4 +200,18 @@ public class ReservePriceManager {
 		return dailyBaselineAverage;
 	}
 
+	/**
+	 * @return the profitMap
+	 */
+	public TreeMap<Double, AtomicLong> getProfitMap() {
+		return profitMap;
+	}
+
+	/**
+	 * @return the profitQueries
+	 */
+	public TreeMap<Double, AtomicLong> getProfitQueries() {
+		return profitQueries;
+	}
+	
 }
