@@ -70,13 +70,28 @@ def minimize_f(functions):
     return best_reserve
 
 
+LOW_P = 0
+HIGH_P = 1
+MICRO_P = 2
+
+
+class EndPoint(object):
+    def __init__(self, val, point_type, function):
+        self.val = val
+        self.point_type = point_type
+        self.function = function
+
+    def __repr__(self):
+        return "[{val}, {type}]".format(val=self.val, type=self.point_type)
+
+
 def get_sorted_boundary_points(functions):
     points = []
     for function in functions:
-        points.append(function.boundary.high)
-        points.append(function.boundary.low)
-        points.append(function.boundary.high * (1 + MICRO))
-    points.sort()
+        points.append(EndPoint(function.boundary.high, HIGH_P, function))
+        points.append(EndPoint(function.boundary.low, LOW_P, function))
+        points.append(EndPoint(function.boundary.high * (1 + MICRO), MICRO_P, function))
+    points = sorted(points, key=lambda o: o.val)
     return points
 
 
@@ -91,67 +106,42 @@ class C(object):
     def __repr__(self):
         return "[{c1}, {c2}, {c3}, {c4} p={p}, s={s}]".format(c1=self.c1, c2=self.c2, c3=self.c3, c4=self.c4,
                                                               p=self.point, s=(
-            self.c1 + self.c2 * self.point + self.c3 * self.point + self.c4))
+                self.c1 + self.c2 * self.point + self.c3 * self.point + self.c4))
 
 
 def minimize_f_fast(functions):
     points = get_sorted_boundary_points(functions)
-    low_functions = sorted(functions, key=lambda x: x.boundary.low)
-    high_functions = sorted(functions, key=lambda x: x.boundary.high)
-
-    low_index = 0
-    high_index = 0
-    micro_index = 0
-
     c = {}
     for j in xrange(len(points)):
         if j is 0:
-            c[j] = C(-sum(function.points.a1 for function in functions), 0, 0, 0, points[j])
+            c[j] = C(-sum(function.points.a1 for function in functions), 0, 0, 0, points[j].val)
         else:
             c[j] = copy(c[j - 1])
-            c[j].point = points[j]
-            while low_functions[low_index].boundary.low < points[j - 1]:
-                if low_index + 1 < len(low_functions):
-                    low_index += 1
-                else:
-                    break
-            if low_functions[low_index].boundary.low == points[j - 1]:
-                c[j].c1 = c[j].c1 + low_functions[low_index].points.a1
-                c[j].c2 = c[j].c2 - low_functions[low_index].points.a2
-                print points[j - 1], "low"
-                continue
-
-            while high_functions[high_index].boundary.high < points[j - 1]:
-                if high_index + 1 < len(high_functions):
-                    high_index += 1
-                else:
-                    break
-            if high_functions[high_index].boundary.high == points[j - 1]:
-                c[j].c2 = c[j].c1 + high_functions[high_index].points.a2
-                c[j].c3 = c[j].c3 + high_functions[high_index].points.a3
-                c[j].c4 = c[j].c1 - high_functions[high_index].points.a4
-                print points[j - 1], "high"
-                continue
-
-            while high_functions[micro_index].boundary.high * (1 + MICRO) < points[j - 1]:
-                if micro_index + 1 < len(high_functions):
-                    micro_index += 1
-                else:
-                    break
-            if high_functions[micro_index].boundary.high * (1 + MICRO) == points[j - 1]:
-                c[j].c3 = c[j].c3 - high_functions[micro_index].points.a3
-                c[j].c4 = c[j].c1 + high_functions[micro_index].points.a4
-                print points[j - 1], "micro"
-                continue
-            raise Exception("Should not get here")
+            print "pre", c[j]
+            c[j].point = points[j].val
+            last_point_type = points[j - 1].point_type
+            last_function_points = points[j - 1].function.points
+            if last_point_type is LOW_P:
+                c[j].c1 = c[j].c1 + last_function_points.a1
+                c[j].c2 = c[j].c2 - last_function_points.a2
+            elif last_point_type is HIGH_P:
+                c[j].c2 = c[j].c1 + last_function_points.a2
+                c[j].c3 = c[j].c3 + last_function_points.a3
+                c[j].c4 = c[j].c1 - last_function_points.a4
+            elif last_point_type is MICRO_P:
+                c[j].c3 = c[j].c3 - last_function_points.a3
+                c[j].c4 = c[j].c1 + last_function_points.a4
+            else:
+                raise Exception("Should not get here")
+        print j, c[j]
 
     print "---------"
     best_score = 100000
     best_reserve = 0
     for j in xrange(len(points)):
-        s = c[j].c1 + c[j].c2 * points[j] + c[j].c3 * points[j] + c[j].c4
+        s = c[j].c1 + c[j].c2 * points[j].val + c[j].c3 * points[j].val + c[j].c4
         print points[j], s
         if s < best_score:
             best_score = s
-            best_reserve = points[j]
+            best_reserve = points[j].val
     return best_reserve
