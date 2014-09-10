@@ -42,7 +42,7 @@ public class UserAdTypeReservePriceManager implements
 	 * {@link #dailyBaselineAverage} according to the most profitable <b>reserve
 	 * price</b> generated in a single day.
 	 * 
-	 * @see #updateDailyBaselineAverage()
+	 * @see #updateData()
 	 */
 	private final double updateCoefficient;
 
@@ -73,20 +73,21 @@ public class UserAdTypeReservePriceManager implements
 	@Override
 	public double generateReservePrice(AdxQuery adxQuery) {
 		BasicReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
-		return reservePriceManager.generateReservePrice();
+		return reservePriceManager.generateReservePrice(adxQuery);
 	}
 
 	@Override
 	public void addImpressionForPrice(double reservePrice, AdxQuery adxQuery) {
 		BasicReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
-		reservePriceManager.addImpressionForPrice(reservePrice);
+		reservePriceManager.addImpressionForPrice(reservePrice, adxQuery);
 	}
 
 	@Override
-	public void updateDailyBaselineAverage() {
+	public void updateData() {
 		for (ReservePriceType priceType : reservePriceManagers.keySet()) {
+			reservePriceManagers.get(priceType).updateData();
 			double updateDailyBaselineAverage = reservePriceManagers.get(
-					priceType).updateData();
+					priceType).getDailyBaselineAverage();
 			log.fine("Updated reserve price for " + priceType + " to "
 					+ updateDailyBaselineAverage);
 		}

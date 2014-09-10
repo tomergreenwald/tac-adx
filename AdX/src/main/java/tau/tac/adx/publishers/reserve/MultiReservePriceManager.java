@@ -11,7 +11,7 @@ package tau.tac.adx.publishers.reserve;
  * @author Tomer
  * 
  */
-public interface MultiReservePriceManager<T> {
+public interface MultiReservePriceManager<T> extends ReservePriceManager {
 	
 	/**
 	 * @return A random reserve price according to the <b>daily baseline
@@ -36,7 +36,7 @@ public interface MultiReservePriceManager<T> {
 	 * dailyBaselineAverage + (1 - updateCoefficient) *
 	 * highestProfitsReservePrice;
 	 */
-	public void updateDailyBaselineAverage();
+	public void updateData();
 
 	/**
 	 * @return the dailyBaselineAverage

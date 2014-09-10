@@ -110,7 +110,7 @@ public class DefaultAdxUserManager implements AdxUserManager {
 
 			for(AdxPublisher publisher : AdxManager.getInstance().getPublishers()) {
 				log.fine("Updating reserve prices for " + publisher.getName());
-				publisher.getReservePriceManager().updateDailyBaselineAverage();
+				publisher.getReservePriceManager().updateData();
 			}
 			
 			
