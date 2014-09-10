@@ -22,7 +22,7 @@ import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.demand.UserClassificationService;
 import tau.tac.adx.demand.UserClassificationServiceAdNetData;
 import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
+import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.report.adn.MarketSegment;
 
 import com.google.common.eventbus.EventBus;
@@ -73,7 +73,7 @@ public class SimpleAdxAuctioneer implements AdxAuctioneer, TimeListener {
 	public AdxAuctionResult runAuction(AdxQuery query) {
 		List<BidInfo> bidInfos = generateBidInfos(query);
 
-		UserAdTypeReservePriceManager reservePriceManager = AdxManager.getInstance()
+		ReservePriceManager reservePriceManager = AdxManager.getInstance()
 				.getPublisher(query.getPublisher()).getReservePriceManager();
 		double reservePrice = reservePriceManager.generateReservePrice(query);
 		AuctionData auctionData = new AuctionData(AuctionOrder.HIGHEST_WINS,

@@ -12,6 +12,7 @@ import tau.tac.adx.devices.Device;
 import tau.tac.adx.generators.GenericGenerator;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.publishers.reserve.BasicReservePriceManager;
+import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.users.AdxUser;
@@ -84,7 +85,7 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 		Map<Device, Double> deviceProbabilityMap = randomDeviceProbabilityMaps();
 		double relativePopularity = Math.random();
 		double pImpressions = Math.random();
-		UserAdTypeReservePriceManager reservePriceManager = randomReservePriceManager();
+		ReservePriceManager reservePriceManager = randomReservePriceManager();
 		String name = randomName();
 		AdxPublisher publisher = new AdxPublisher(probabilityMaps,
 				adAttributeProbabilityMaps, deviceProbabilityMap,

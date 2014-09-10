@@ -31,6 +31,7 @@ import tau.tac.adx.AdxManager;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalogEntry;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReportEntry;
 import edu.umich.eecs.tac.props.AbstractKeyedEntryList;
@@ -51,9 +52,10 @@ public class AdxPublisherReport extends
 	 * The serial version id.
 	 */
 	private static final long serialVersionUID = -7957495904471250085L;
-	
+
 	/**
-	 * Caching map. Used instead of the AbstractKeyedEntryList data structure for fast querying.
+	 * Caching map. Used instead of the AbstractKeyedEntryList data structure
+	 * for fast querying.
 	 */
 	private Map<PublisherCatalogEntry, AdxPublisherReportEntry> entryMap = new HashMap<PublisherCatalogEntry, AdxPublisherReportEntry>();
 
@@ -93,7 +95,8 @@ public class AdxPublisherReport extends
 		AdxPublisherReportEntry entry = getEntry(index);
 		entry.setPopularity(publisherReportEntry.getPopularity());
 		entry.setAdTypeOrientation(publisherReportEntry.getAdTypeOrientation());
-		entry.setReservePriceBaseline(publisherReportEntry.getReservePriceBaseline());
+		entry.setReservePriceBaseline(publisherReportEntry
+				.getReservePriceBaseline());
 		entryMap.put(publisher, entry);
 	}
 
@@ -110,7 +113,7 @@ public class AdxPublisherReport extends
 			PublisherCatalogEntry publisher) {
 		return getEntry(publisher);
 	}
-	
+
 	/**
 	 * Retrieves an {@link AdNetworkReportEntry} keyed with a
 	 * {@link AdNetworkKey} from the cached map.
@@ -156,9 +159,13 @@ public class AdxPublisherReport extends
 		if (publisherReportEntry == null) {
 			publisherReportEntry = new AdxPublisherReportEntry(
 					publisherCatalogEntry);
-			// FIXME: this line doesn't take into account that there is a different reserve price per query type
-			publisherReportEntry.setReservePriceBaseline(AdxManager.getInstance()
-					.getPublisher(query.getPublisher()).getReservePriceManager().getDailyBaselineAverage(query));
+			// FIXME: this line doesn't take into account that there is a
+			// different reserve price per query type
+			publisherReportEntry
+					.setReservePriceBaseline(((UserAdTypeReservePriceManager) (AdxManager
+							.getInstance().getPublisher(query.getPublisher())
+							.getReservePriceManager()))
+							.getDailyBaselineAverage(query));
 			addPublisherReportEntry(publisherCatalogEntry, publisherReportEntry);
 		}
 		publisherReportEntry.addQuery(query);
