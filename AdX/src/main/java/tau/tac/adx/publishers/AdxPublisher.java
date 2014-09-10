@@ -11,7 +11,7 @@ import se.sics.isl.transport.TransportWriter;
 import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
-import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.publishers.reserve.BasicReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.Publisher;
 import tau.tac.adx.users.AdxUser;
@@ -29,7 +29,7 @@ import edu.umich.eecs.tac.props.KeyedEntry;
  * user visiting the web site.</li> <li>{@link Double pImpressions} Every user
  * visit to a web site results in one or more impression (i.e., ad opportunities
  * ) according to a predefined probability distribution.</li> <li>
- * The {@link AdxPublisher}'s {@link ReservePriceManager}.</li>
+ * The {@link AdxPublisher}'s {@link BasicReservePriceManager}.</li>
  * 
  * @author greenwald
  * 

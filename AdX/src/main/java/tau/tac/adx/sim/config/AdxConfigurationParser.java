@@ -16,7 +16,7 @@ import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
-import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.publishers.reserve.BasicReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;

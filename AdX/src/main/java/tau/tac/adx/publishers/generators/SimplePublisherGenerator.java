@@ -11,7 +11,7 @@ import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.generators.GenericGenerator;
 import tau.tac.adx.publishers.AdxPublisher;
-import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.publishers.reserve.BasicReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxConstants;
 import tau.tac.adx.users.AdxUser;
@@ -31,7 +31,7 @@ import tau.tac.adx.util.MapGenerator;
 public class SimplePublisherGenerator implements AdxPublisherGenerator {
 
 	/**
-	 * The maximum {@link ReservePriceManager}'s baseline range.
+	 * The maximum {@link BasicReservePriceManager}'s baseline range.
 	 */
 	private static final double MAX_BASELINE_RANGE = 0;
 
@@ -156,7 +156,7 @@ public class SimplePublisherGenerator implements AdxPublisherGenerator {
 	}
 
 	/**
-	 * @return A random generated {@link ReservePriceManager}.
+	 * @return A random generated {@link BasicReservePriceManager}.
 	 */
 	private static UserAdTypeReservePriceManager randomReservePriceManager() {
 		double dailyBaselineAverage = Math.random()

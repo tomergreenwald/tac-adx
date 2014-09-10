@@ -22,7 +22,7 @@ public class UserAdTypeReservePriceManager implements
 	private Logger log = Logger
 			.getLogger(DefaultAdxUserManager.class.getName());
 
-	private Map<ReservePriceType, ReservePriceManager> reservePriceManagers = new HashMap<ReservePriceType, ReservePriceManager>();
+	private Map<ReservePriceType, BasicReservePriceManager> reservePriceManagers = new HashMap<ReservePriceType, BasicReservePriceManager>();
 
 	/**
 	 * A daily baseline to calculate <b>reserve price</b> according to. The
@@ -72,13 +72,13 @@ public class UserAdTypeReservePriceManager implements
 
 	@Override
 	public double generateReservePrice(AdxQuery adxQuery) {
-		ReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
+		BasicReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
 		return reservePriceManager.generateReservePrice();
 	}
 
 	@Override
 	public void addImpressionForPrice(double reservePrice, AdxQuery adxQuery) {
-		ReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
+		BasicReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
 		reservePriceManager.addImpressionForPrice(reservePrice);
 	}
 
@@ -94,27 +94,27 @@ public class UserAdTypeReservePriceManager implements
 
 	@Override
 	public double getDailyBaselineAverage(AdxQuery adxQuery) {
-		ReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
+		BasicReservePriceManager reservePriceManager = getReservePriceManager(adxQuery);
 		return reservePriceManager.getDailyBaselineAverage();
 	}
 
 	/**
-	 * Returns the matching {@link ReservePriceManager} for the given
+	 * Returns the matching {@link BasicReservePriceManager} for the given
 	 * {@link AdxQuery} according to its properties.
 	 * 
 	 * @param adxQuery
 	 *            {@link AdxQuery} used for its properties.
-	 * @return The matching {@link ReservePriceManager}.
+	 * @return The matching {@link BasicReservePriceManager}.
 	 */
-	private synchronized ReservePriceManager getReservePriceManager(
+	private synchronized BasicReservePriceManager getReservePriceManager(
 			AdxQuery adxQuery) {
 		ReservePriceType type = getType(adxQuery);
 		if (!reservePriceManagers.containsKey(type)) {
-			ReservePriceManager reservePriceManager = new ReservePriceManager(
+			BasicReservePriceManager reservePriceManager = new BasicReservePriceManager(
 					dailyBaselineAverage, baselineRange, updateCoefficient);
 			reservePriceManagers.put(type, reservePriceManager);
 		}
-		ReservePriceManager reservePriceManager = reservePriceManagers
+		BasicReservePriceManager reservePriceManager = reservePriceManagers
 				.get(type);
 		return reservePriceManager;
 	}
