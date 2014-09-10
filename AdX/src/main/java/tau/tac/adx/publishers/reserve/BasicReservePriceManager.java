@@ -12,7 +12,7 @@ import edu.umich.eecs.tac.util.config.ConfigProxy;
  * according to initialization parameters and generated ones: <li>
  * {@link #dailyBaselineAverage}</li> <li>{@link #baselineRange}</li> <li>
  * {@link #updateCoefficient}</li> At the end of each day
- * {@link #updateDailyBaselineAverage()} should be called to calculate the
+ * {@link #updateData()} should be called to calculate the
  * {@link #dailyBaselineAverage} for the next day.
  * 
  * @author greenwald
@@ -47,7 +47,7 @@ public class BasicReservePriceManager {
 	 * {@link #dailyBaselineAverage} according to the most profitable <b>reserve
 	 * price</b> generated in a single day.
 	 * 
-	 * @see #updateDailyBaselineAverage()
+	 * @see #updateData()
 	 */
 	private final double updateCoefficient;
 	/**
@@ -58,7 +58,7 @@ public class BasicReservePriceManager {
 
 	/**
 	 * Number of times this service was requested per day. Re-initialized to 0
-	 * upon every call to {@link #updateDailyBaselineAverage()}
+	 * upon every call to {@link #updateData()}
 	 */
 	private int dailyRequests;
 
@@ -145,7 +145,7 @@ public class BasicReservePriceManager {
 	 * 
 	 * @return Updated {@link #dailyBaselineAverage}.
 	 */
-	public double updateDailyBaselineAverage() {
+	public double updateData() {
 		if (dailyRequests == 0) {
 			// do nothing
 		} else {

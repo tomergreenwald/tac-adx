@@ -86,7 +86,7 @@ public class UserAdTypeReservePriceManager implements
 	public void updateDailyBaselineAverage() {
 		for (ReservePriceType priceType : reservePriceManagers.keySet()) {
 			double updateDailyBaselineAverage = reservePriceManagers.get(
-					priceType).updateDailyBaselineAverage();
+					priceType).updateData();
 			log.fine("Updated reserve price for " + priceType + " to "
 					+ updateDailyBaselineAverage);
 		}
