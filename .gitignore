@@ -11,3 +11,4 @@ AdX/adx-agnet/logs/
 AdX/adx-server/logs/
 AdX/adx-server/*.slg
 AdX/src/main/python/reserve price playground/.idea/
+*.pyc
