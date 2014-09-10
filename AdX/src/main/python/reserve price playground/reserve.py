@@ -102,11 +102,11 @@ class C(object):
         self.c3 = c3
         self.c4 = c4
         self.point = point
+        self.s = self.c1 + self.c2 * self.point + self.c3 * self.point + self.c4
 
     def __repr__(self):
-        return "[{c1}, {c2}, {c3}, {c4} p={p}, s={s}]".format(c1=self.c1, c2=self.c2, c3=self.c3, c4=self.c4,
-                                                              p=self.point, s=(
-                self.c1 + self.c2 * self.point + self.c3 * self.point + self.c4))
+        return "[p={p}, s={s} : {c1}, {c2}, {c3}, {c4}]".format(c1=self.c1, c2=self.c2, c3=self.c3, c4=self.c4,
+                                                              p=self.point, s=self.s)
 
 
 def minimize_f_fast(functions):
@@ -116,8 +116,7 @@ def minimize_f_fast(functions):
         if j is 0:
             c[j] = C(-sum(function.points.a1 for function in functions), 0, 0, 0, points[j].val)
         else:
-            c[j] = copy(c[j - 1])
-            print "pre", c[j]
+            c[j] = C(c[j - 1].c1, c[j - 1].c2, c[j - 1].c3, c[j - 1].c4, points[j].val)
             c[j].point = points[j].val
             last_point_type = points[j - 1].point_type
             last_function_points = points[j - 1].function.points
@@ -133,15 +132,13 @@ def minimize_f_fast(functions):
                 c[j].c4 = c[j].c1 + last_function_points.a4
             else:
                 raise Exception("Should not get here")
-        print j, c[j]
 
     print "---------"
     best_score = 100000
     best_reserve = 0
     for j in xrange(len(points)):
-        s = c[j].c1 + c[j].c2 * points[j].val + c[j].c3 * points[j].val + c[j].c4
-        print points[j], s
-        if s < best_score:
-            best_score = s
+        print c[j]
+        if c[j].s < best_score:
+            best_score = c[j].s
             best_reserve = points[j].val
     return best_reserve
