@@ -61,12 +61,12 @@ def minimize_f(functions):
     best_reserve = None
     best_score = 1000000
     for function in functions:
-        reserve = function.boundary.high
-        score = f(reserve, functions)
-        print reserve, score
-        if score < best_score:
-            best_score = score
-            best_reserve = reserve
+        for reserve in (function.boundary.low, function.boundary.high, function.boundary.high * (1 + MICRO)):
+            score = f(reserve, functions)
+            print reserve, score
+            if score < best_score:
+                best_score = score
+                best_reserve = reserve
     return best_reserve
 
 
@@ -106,7 +106,10 @@ class C(object):
 
     def __repr__(self):
         return "[p={p}, s={s} : {c1}, {c2}, {c3}, {c4}]".format(c1=self.c1, c2=self.c2, c3=self.c3, c4=self.c4,
-                                                              p=self.point, s=self.s)
+                                                                p=self.point, s=self.s)
+
+    def update(self):
+        self.s = self.c1 + self.c2 * self.point + self.c3 * self.point + self.c4
 
 
 def minimize_f_fast(functions):
@@ -132,6 +135,7 @@ def minimize_f_fast(functions):
                 c[j].c4 = c[j].c1 + last_function_points.a4
             else:
                 raise Exception("Should not get here")
+            c[j].update()
 
     print "---------"
     best_score = 100000
