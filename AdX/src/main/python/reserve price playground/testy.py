@@ -1,8 +1,11 @@
 __author__ = 'Tomer'
 
-from reserve import *
 from random import randint
 from datetime import datetime
+
+from reserve import *
+from classes import *
+
 
 func1 = VFunction(Boundary(1, 2), Points(1, 2, 3, 4))
 func2 = VFunction(Boundary(2, 3), Points(11, 12, 13, 14))
