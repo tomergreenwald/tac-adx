@@ -60,12 +60,12 @@ def minimize_f_fast(functions):
                 c[j].c1 = c[j].c1 + last_function_points.a1
                 c[j].c2 = c[j].c2 - last_function_points.a2
             elif last_point_type is HIGH_P:
-                c[j].c2 = c[j].c1 + last_function_points.a2
+                c[j].c2 = c[j].c2 + last_function_points.a2
                 c[j].c3 = c[j].c3 + last_function_points.a3
-                c[j].c4 = c[j].c1 - last_function_points.a4
+                c[j].c4 = c[j].c4 - last_function_points.a4
             elif last_point_type is MICRO_P:
                 c[j].c3 = c[j].c3 - last_function_points.a3
-                c[j].c4 = c[j].c1 + last_function_points.a4
+                c[j].c4 = c[j].c4 + last_function_points.a4
             else:
                 raise Exception("Should not get here")
             c[j].update()
