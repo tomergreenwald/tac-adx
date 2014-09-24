@@ -25,10 +25,12 @@ def f(reserve, functions):
 def minimize_f(functions):
     best_reserve = None
     best_score = 1000000
-    for function in functions:
+    for i in xrange(len(functions)):
+        if i % 100 == 0:
+            print i, len(functions)
+        function = functions[i]
         for reserve in (function.boundary.low, function.boundary.high, function.boundary.high * (1 + MICRO)):
             score = f(reserve, functions)
-            print reserve, score
             if score < best_score:
                 best_score = score
                 best_reserve = reserve
@@ -70,11 +72,9 @@ def minimize_f_fast(functions):
                 raise Exception("Should not get here")
             c[j].update()
 
-    print "---------"
     best_score = 100000
     best_reserve = 0
     for j in xrange(len(points)):
-        print c[j]
         if c[j].s < best_score:
             best_score = c[j].s
             best_reserve = points[j].val
