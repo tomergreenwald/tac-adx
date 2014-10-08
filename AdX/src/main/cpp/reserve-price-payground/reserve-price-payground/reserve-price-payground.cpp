@@ -45,7 +45,7 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 	EndPoint* points = new EndPoint[length * 3];
 	double sum = 0;
 	for (int j = 0; j < length * 3; j += 3) {
-		//sum += functions[j / 3].points.a1;
+		sum += functions[j / 3].points.a1;
 
 		points[j].val = functions[j / 3].boundary.high;
 		points[j].point_type = FunctionType::HIGH;
