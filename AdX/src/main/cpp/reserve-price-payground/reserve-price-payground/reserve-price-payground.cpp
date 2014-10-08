@@ -103,17 +103,17 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 
 			switch (previous_type) {
 			case FunctionType::LOW:
-				currentC.c1 = currentC.c1 + previous_points.a1;
-				currentC.c2 = currentC.c2 - previous_points.a2;
+				currentC.c1 += previous_points.a1;
+				currentC.c2 -= previous_points.a2;
 				break;
 			case FunctionType::HIGH:
-				currentC.c2 = currentC.c2 + previous_points.a2;
-				currentC.c3 = currentC.c3 + previous_points.a3;
-				currentC.c4 = currentC.c4 - previous_points.a4;
+				currentC.c2 += previous_points.a2;
+				currentC.c3 += previous_points.a3;
+				currentC.c4 -= previous_points.a4;
 				break;
 			case FunctionType::MICRO:
-				currentC.c3 = currentC.c3 - previous_points.a3;
-				currentC.c4 = currentC.c4 + previous_points.a4;
+				currentC.c3 -= previous_points.a3;
+				currentC.c4 += previous_points.a4;
 				break;
 			default:
 				assert(false); //Should not get here
