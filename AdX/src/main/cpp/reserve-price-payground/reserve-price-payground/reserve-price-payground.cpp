@@ -81,8 +81,8 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 double calculate_stuff(PointData pointData, uint64_t length) {
 	C				currentC;
 	C				previousC;
-	FunctionType	last_point_type;
-	Points			last_function_points;
+	FunctionType	previous_type;
+	Points			previous_points;
 	double			best_score = 100000;
 	double			best_reserve = 0;
 
@@ -98,22 +98,22 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 			memcpy(&currentC, &previousC, sizeof(currentC));
 			currentC.point = pointData.points[j].val;
 
-			last_point_type = pointData.points[j - 1].point_type;
-			last_function_points = pointData.points[j - 1].function.points;
+			previous_type = pointData.points[j - 1].point_type;
+			previous_points = pointData.points[j - 1].function.points;
 
-			switch (last_point_type) {
+			switch (previous_type) {
 			case FunctionType::LOW:
-				currentC.c1 = currentC.c1 + last_function_points.a1;
-				currentC.c2 = currentC.c2 - last_function_points.a2;
+				currentC.c1 = currentC.c1 + previous_points.a1;
+				currentC.c2 = currentC.c2 - previous_points.a2;
 				break;
 			case FunctionType::HIGH:
-				currentC.c2 = currentC.c2 + last_function_points.a2;
-				currentC.c3 = currentC.c3 + last_function_points.a3;
-				currentC.c4 = currentC.c4 - last_function_points.a4;
+				currentC.c2 = currentC.c2 + previous_points.a2;
+				currentC.c3 = currentC.c3 + previous_points.a3;
+				currentC.c4 = currentC.c4 - previous_points.a4;
 				break;
 			case FunctionType::MICRO:
-				currentC.c3 = currentC.c3 - last_function_points.a3;
-				currentC.c4 = currentC.c4 + last_function_points.a4;
+				currentC.c3 = currentC.c3 - previous_points.a3;
+				currentC.c4 = currentC.c4 + previous_points.a4;
 				break;
 			default:
 				assert(false); //Should not get here
