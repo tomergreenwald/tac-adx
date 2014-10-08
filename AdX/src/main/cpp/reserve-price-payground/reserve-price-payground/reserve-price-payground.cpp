@@ -12,10 +12,6 @@ struct Boundary {
 struct C {
 	double c1, c2, c3, c4, s, point;
 };
-void update(C* c) {
-	c->s = c->c1 + c->c2 * c->point + c->c3 * c->point
-		+ c->c4;
-}
 
 enum FunctionType {
 	LOW, HIGH, MICRO
@@ -118,7 +114,8 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 			default:
 				assert(false); //Should not get here
 			}
-			update(&currentC);
+			currentC.s = currentC.c1 + currentC.c2 * currentC.point + currentC.c3 * currentC.point + currentC.c4;
+
 			if (currentC.s < best_score) {
 				best_score = currentC.s;
 				best_reserve = pointData.points[j].val;
