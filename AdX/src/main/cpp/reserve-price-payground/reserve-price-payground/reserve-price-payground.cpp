@@ -46,20 +46,20 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 	EndPoint*	points = new EndPoint[length * 3];
 	double		sum = 0;
 
-	for (int j = 0; j < length * 3; j += 3) {
-		sum += functions[j / 3].points.a1;
+	for (int j = 0; j < length; j++) {
+		sum += functions[j].points.a1;
 
-		points[j].val = functions[j / 3].boundary.high;
-		points[j].point_type = FunctionType::HIGH;
-		points[j].function = functions[j / 3];
+		points[j * 3].val = functions[j].boundary.high;
+		points[j * 3].point_type = FunctionType::HIGH;
+		points[j * 3].function = functions[j];
 
-		points[j + 1].val = functions[j / 3].boundary.low;
-		points[j + 1].point_type = FunctionType::LOW;
-		points[j + 1].function = functions[j / 3];
+		points[j * 3 + 1].val = functions[j].boundary.low;
+		points[j * 3 + 1].point_type = FunctionType::LOW;
+		points[j * 3 + 1].function = functions[j];
 
-		points[j + 2].val = functions[j / 3].boundary.high * (1 + MICRO);
-		points[j + 2].point_type = FunctionType::MICRO;
-		points[j + 2].function = functions[j / 3];
+		points[j * 3 + 2].val = functions[j].boundary.high * (1 + MICRO);
+		points[j * 3 + 2].point_type = FunctionType::MICRO;
+		points[j * 3 + 2].function = functions[j];
 	}
 	res.points = points;
 	res.sum = sum;
@@ -95,10 +95,7 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 			lastC.point = pointData.points[j].val;
 		}
 		else {
-			currentC.c1 = lastC.c1;
-			currentC.c2 = lastC.c2;
-			currentC.c3 = lastC.c3;
-			currentC.c4 = lastC.c4;
+			memcpy(&currentC, &lastC, sizeof(currentC));
 			currentC.point = pointData.points[j].val;
 
 			last_point_type = pointData.points[j - 1].point_type;
