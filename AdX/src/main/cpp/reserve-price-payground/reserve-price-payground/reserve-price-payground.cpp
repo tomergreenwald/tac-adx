@@ -71,6 +71,7 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 		points[j * 3 + 2].point_type = FunctionType::MICRO;
 		points[j * 3 + 2].function = functions[j];
 	}
+	// FIXME: sort data
 	res.points = points;
 	res.sum = sum;
 	return res;
