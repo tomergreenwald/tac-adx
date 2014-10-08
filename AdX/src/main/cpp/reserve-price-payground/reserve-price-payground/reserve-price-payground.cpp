@@ -62,15 +62,19 @@ PointData get_sorted_boundary_points(VFunction* functions, int length) {
 	res.points = points;
 	res.sum = sum;
 	return res;
-	delete functions;
 }
 
 #define MEASURE_TIME(description, function)	\
+	std::cout << description;	\
+	start = std::clock();	\
+	function;	\
+	std::cout << " in " << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
+
+#define MEASURE_TIME_S(description, function, summary)	\
 	std::cout << description << std::endl;	\
 	start = std::clock();	\
 	function;	\
-	std::cout << "CPU time used: " << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms\n";	\
-	std::cout << "--------------------------" << std::endl;
+	std::cout << summary << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
 
 double calculate_stuff(PointData pointData, int length) {
 	C* c = new C[length];
@@ -81,7 +85,6 @@ double calculate_stuff(PointData pointData, int length) {
 
 	for (int j = 0; j < length; j++) {
 		if (j == 0) {
-
 			c[j].c1 = -pointData.sum;
 			c[j].c2 = 0;
 			c[j].c3 = 0;
@@ -121,7 +124,6 @@ double calculate_stuff(PointData pointData, int length) {
 			}
 		}
 	}
-	delete pointData.points;
 	delete c;
 	return best_reserve;
 }
@@ -131,19 +133,18 @@ double minimize_f_fast(VFunction* functions, int length) {
 	PointData pointData;
 	clock_t start;
 
-	MEASURE_TIME("Sorting boundary points", pointData = get_sorted_boundary_points(functions, length));
-	MEASURE_TIME("Calculating stuff", best_reserve = calculate_stuff(pointData, length));
+
+	MEASURE_TIME("Sorted boundary points", pointData = get_sorted_boundary_points(functions, length));
+	MEASURE_TIME("\tDeleted functions", delete functions);
+	MEASURE_TIME("Calculated stuff", best_reserve = calculate_stuff(pointData, length));
+
+	MEASURE_TIME("\tDeleted points", delete pointData.points);
+
 	return best_reserve;
 }
 
-int main() {
-	std::srand(static_cast<int>(std::time(0)));
-	int size = 10000000;
-	std::cout << "generating " << size << " functions" << std::endl;
-	std::clock_t    start;
+VFunction* generate_random_functions(int size) {
 	VFunction* functions = new VFunction[size];
-
-	start = std::clock();
 	for (int i = 0; i < size; i++) {
 		functions[i].boundary.low = std::rand() % 80 + 1;
 		functions[i].boundary.high = std::rand() % 100 + functions[i].boundary.low + 1;
@@ -152,13 +153,24 @@ int main() {
 		functions[i].points.a1 = MICRO * functions[i].points.a3 * functions[i].boundary.low;
 		functions[i].points.a4 = functions[i].points.a3 * (1 + MICRO) * functions[i].boundary.high;
 	}
-	std::cout << "CPU time used: " << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms\n";
-	std::cout << "--------------------------" << std::endl;
+	return functions;
+}
 
-	//start = std::clock();
-	double best_reserve = minimize_f_fast(functions, size);
-	//end = std::clock();
-	//std::cout << "CPU time used: " << 1000.0 * (end - start) / CLOCKS_PER_SEC << " ms" << std::endl;
+void run_random() {
+	std::srand(static_cast<int>(std::time(0)));
+	int size = 10000000;
+	std::clock_t    start;
+	double best_reserve;
+	VFunction* functions;
+	std::cout << "Expected memory footprint - " << (static_cast<long long>(size) * (64 * 3 + 48) / (1024 * 1024)) << " MB" << std::endl;
+	MEASURE_TIME("Generated random functions", functions = generate_random_functions(size));
+
+	best_reserve = minimize_f_fast(functions, size);
 	std::cout << "best reserve = " << best_reserve << std::endl;
+}
+
+int main() {
+	std::clock_t    start;
+	MEASURE_TIME_S("Running randomly", run_random(), "Total run time is ");
 }
 
