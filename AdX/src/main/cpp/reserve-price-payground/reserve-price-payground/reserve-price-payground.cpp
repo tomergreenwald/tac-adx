@@ -5,6 +5,8 @@
 #include <iostream>
 #include <stdint.h>
 
+static const double MICRO_S = 0.01;
+
 #define MEASURE_TIME(description, function)	\
 	std::cout << description;	\
 	start = std::clock();	\
@@ -65,7 +67,7 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 		points[j * 3 + 1].point_type = FunctionType::LOW;
 		points[j * 3 + 1].function = functions[j];
 
-		points[j * 3 + 2].val = functions[j].boundary.high * (1 + MICRO);
+		points[j * 3 + 2].val = functions[j].boundary.high * (1 + MICRO_S);
 		points[j * 3 + 2].point_type = FunctionType::MICRO;
 		points[j * 3 + 2].function = functions[j];
 	}
@@ -144,9 +146,9 @@ VFunction* generate_random_functions(uint64_t size) {
 		functions[i].boundary.low = std::rand() % 80 + 1;
 		functions[i].boundary.high = std::rand() % 100 + functions[i].boundary.low + 1;
 		functions[i].points.a3 = std::rand() % 100 + 1;
-		functions[i].points.a2 = MICRO * functions[i].points.a3;
-		functions[i].points.a1 = MICRO * functions[i].points.a3 * functions[i].boundary.low;
-		functions[i].points.a4 = functions[i].points.a3 * (1 + MICRO) * functions[i].boundary.high;
+		functions[i].points.a2 = MICRO_S * functions[i].points.a3;
+		functions[i].points.a1 = MICRO_S * functions[i].points.a3 * functions[i].boundary.low;
+		functions[i].points.a4 = functions[i].points.a3 * (1 + MICRO_S) * functions[i].boundary.high;
 	}
 	return functions;
 }
