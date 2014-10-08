@@ -42,8 +42,9 @@ struct PointData {
 };
 
 PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
-	EndPoint* points = new EndPoint[length * 3];
-	double sum = 0;
+	EndPoint*	points = new EndPoint[length * 3];
+	double		sum = 0;
+
 	for (int j = 0; j < length * 3; j += 3) {
 		sum += functions[j / 3].points.a1;
 
@@ -78,11 +79,12 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 	std::cout << summary << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
 
 double calculate_stuff(PointData pointData, uint64_t length) {
-	C currentC, lastC;
-	FunctionType last_point_type;
-	Points last_function_points;
-	double best_score = 100000;
-	double best_reserve = 0;
+	C				currentC;
+	C				lastC;
+	FunctionType	last_point_type;
+	Points			last_function_points;
+	double			best_score = 100000;
+	double			best_reserve = 0;
 
 	for (int j = 0; j < length; j++) {
 		if (j == 0) {
@@ -129,10 +131,9 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 }
 
 double minimize_f_fast(VFunction* functions, uint64_t length) {
-	double best_reserve;
-	PointData pointData;
-	clock_t start;
-
+	double		best_reserve;
+	PointData	pointData;
+	clock_t		start;
 
 	MEASURE_TIME("Sorted boundary points", pointData = get_sorted_boundary_points(functions, length));
 	MEASURE_TIME("\tDeleted functions", delete functions);
@@ -156,20 +157,20 @@ VFunction* generate_random_functions(uint64_t size) {
 }
 
 void run_random() {
-	std::srand(static_cast<int>(std::time(0)));
+	std::clock_t	start;
+	double			best_reserve;
+	VFunction*		functions;
 	uint64_t size = 10000000;
-	std::clock_t    start;
-	double best_reserve;
-	VFunction* functions;
-	std::cout << "Expected memory footprint - " << (static_cast<long long>(size) * (48 + 64 * 3) / (1024 * 1024)) << " MB" << std::endl;
-	MEASURE_TIME("Generated random functions", functions = generate_random_functions(size));
 
+	std::srand(static_cast<int>(std::time(0)));
+	std::cout << "Expected memory footprint - " << (static_cast<long long>(size)* (48 + 64 * 3) / (1024 * 1024)) << " MB" << std::endl;
+	MEASURE_TIME("Generated random functions", functions = generate_random_functions(size));
 	best_reserve = minimize_f_fast(functions, size);
 	std::cout << "best reserve = " << best_reserve << std::endl;
 }
 
 int main() {
 	std::clock_t    start;
-	MEASURE_TIME_S("Running randomly", run_random(), "Total run time is ");
+	MEASURE_TIME_S("Running randomly", run_random(), "\nTotal run time is ");
 }
 
