@@ -5,6 +5,18 @@
 #include <iostream>
 #include <stdint.h>
 
+#define MEASURE_TIME(description, function)	\
+	std::cout << description;	\
+	start = std::clock();	\
+	function;	\
+	std::cout << " in " << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
+
+#define MEASURE_TIME_S(description, function, summary)	\
+	std::cout << description << std::endl;	\
+	start = std::clock();	\
+	function;	\
+	std::cout << summary << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
+
 struct Boundary {
 	double low, high;
 };
@@ -61,18 +73,6 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 	res.sum = sum;
 	return res;
 }
-
-#define MEASURE_TIME(description, function)	\
-	std::cout << description;	\
-	start = std::clock();	\
-	function;	\
-	std::cout << " in " << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
-
-#define MEASURE_TIME_S(description, function, summary)	\
-	std::cout << description << std::endl;	\
-	start = std::clock();	\
-	function;	\
-	std::cout << summary << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
 
 double calculate_stuff(PointData pointData, uint64_t length) {
 	C				currentC;
