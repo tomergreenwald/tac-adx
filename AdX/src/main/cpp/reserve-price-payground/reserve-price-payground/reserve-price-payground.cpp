@@ -80,7 +80,7 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 
 double calculate_stuff(PointData pointData, uint64_t length) {
 	C				currentC;
-	C				lastC;
+	C				previousC;
 	FunctionType	last_point_type;
 	Points			last_function_points;
 	double			best_score = 100000;
@@ -88,14 +88,14 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 
 	for (int j = 0; j < length; j++) {
 		if (j == 0) {
-			lastC.c1 = -pointData.sum;
-			lastC.c2 = 0;
-			lastC.c3 = 0;
-			lastC.c4 = 0;
-			lastC.point = pointData.points[j].val;
+			previousC.c1 = -pointData.sum;
+			previousC.c2 = 0;
+			previousC.c3 = 0;
+			previousC.c4 = 0;
+			previousC.point = pointData.points[j].val;
 		}
 		else {
-			memcpy(&currentC, &lastC, sizeof(currentC));
+			memcpy(&currentC, &previousC, sizeof(currentC));
 			currentC.point = pointData.points[j].val;
 
 			last_point_type = pointData.points[j - 1].point_type;
