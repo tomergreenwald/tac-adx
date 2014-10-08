@@ -42,6 +42,7 @@ struct PointData {
 };
 
 PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
+	PointData	res;
 	EndPoint*	points = new EndPoint[length * 3];
 	double		sum = 0;
 
@@ -60,7 +61,6 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 		points[j + 2].point_type = FunctionType::MICRO;
 		points[j + 2].function = functions[j / 3];
 	}
-	PointData res;
 	res.points = points;
 	res.sum = sum;
 	return res;
