@@ -84,7 +84,7 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 	double			best_score = 100000;
 	double			best_reserve = 0;
 
-	for (int j = 0; j < length; j++) {
+	for (int j = 0; j < length * 3; j++) {
 		if (j == 0) {
 			previousC.c1 = -pointData.sum;
 			previousC.c2 = 0;
