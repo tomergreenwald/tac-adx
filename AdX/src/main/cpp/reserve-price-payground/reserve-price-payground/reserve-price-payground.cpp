@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <stdint.h>
 
 struct Boundary {
 	double low, high;
@@ -40,7 +41,7 @@ struct PointData {
 	double sum;
 };
 
-PointData get_sorted_boundary_points(VFunction* functions, int length) {
+PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 	EndPoint* points = new EndPoint[length * 3];
 	double sum = 0;
 	for (int j = 0; j < length * 3; j += 3) {
@@ -76,8 +77,8 @@ PointData get_sorted_boundary_points(VFunction* functions, int length) {
 	function;	\
 	std::cout << summary << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
 
-double calculate_stuff(PointData pointData, int length) {
-	C* c = new C[length];
+double calculate_stuff(PointData pointData, uint64_t length) {
+	C currentC, lastC;
 	FunctionType last_point_type;
 	Points last_function_points;
 	double best_score = 100000;
@@ -85,50 +86,49 @@ double calculate_stuff(PointData pointData, int length) {
 
 	for (int j = 0; j < length; j++) {
 		if (j == 0) {
-			c[j].c1 = -pointData.sum;
-			c[j].c2 = 0;
-			c[j].c3 = 0;
-			c[j].c4 = 0;
-			c[j].point = pointData.points[j].val;
+			lastC.c1 = -pointData.sum;
+			lastC.c2 = 0;
+			lastC.c3 = 0;
+			lastC.c4 = 0;
+			lastC.point = pointData.points[j].val;
 		}
 		else {
-			c[j].c1 = c[j - 1].c1;
-			c[j].c2 = c[j - 1].c2;
-			c[j].c3 = c[j - 1].c3;
-			c[j].c4 = c[j - 1].c4;
-			c[j].point = pointData.points[j].val;
+			currentC.c1 = lastC.c1;
+			currentC.c2 = lastC.c2;
+			currentC.c3 = lastC.c3;
+			currentC.c4 = lastC.c4;
+			currentC.point = pointData.points[j].val;
 
 			last_point_type = pointData.points[j - 1].point_type;
 			last_function_points = pointData.points[j - 1].function.points;
 
 			if (last_point_type == FunctionType::LOW) {
-				c[j].c1 = c[j].c1 + last_function_points.a1;
-				c[j].c2 = c[j].c2 - last_function_points.a2;
+				currentC.c1 = currentC.c1 + last_function_points.a1;
+				currentC.c2 = currentC.c2 - last_function_points.a2;
 			}
 			else if (last_point_type == FunctionType::HIGH) {
-				c[j].c2 = c[j].c2 + last_function_points.a2;
-				c[j].c3 = c[j].c3 + last_function_points.a3;
-				c[j].c4 = c[j].c4 - last_function_points.a4;
+				currentC.c2 = currentC.c2 + last_function_points.a2;
+				currentC.c3 = currentC.c3 + last_function_points.a3;
+				currentC.c4 = currentC.c4 - last_function_points.a4;
 			}
 			else if (last_point_type == FunctionType::MICRO) {
-				c[j].c3 = c[j].c3 - last_function_points.a3;
-				c[j].c4 = c[j].c4 + last_function_points.a4;
+				currentC.c3 = currentC.c3 - last_function_points.a3;
+				currentC.c4 = currentC.c4 + last_function_points.a4;
 			}
 			else {
 				assert(false); //Should not get here
 			}
-			update(&c[j]);
-			if (c[j].s < best_score) {
-				best_score = c[j].s;
+			update(&currentC);
+			if (currentC.s < best_score) {
+				best_score = currentC.s;
 				best_reserve = pointData.points[j].val;
 			}
 		}
 	}
-	delete c;
 	return best_reserve;
 }
 
-double minimize_f_fast(VFunction* functions, int length) {
+double minimize_f_fast(VFunction* functions, uint64_t length) {
 	double best_reserve;
 	PointData pointData;
 	clock_t start;
@@ -137,13 +137,12 @@ double minimize_f_fast(VFunction* functions, int length) {
 	MEASURE_TIME("Sorted boundary points", pointData = get_sorted_boundary_points(functions, length));
 	MEASURE_TIME("\tDeleted functions", delete functions);
 	MEASURE_TIME("Calculated stuff", best_reserve = calculate_stuff(pointData, length));
-
 	MEASURE_TIME("\tDeleted points", delete pointData.points);
 
 	return best_reserve;
 }
 
-VFunction* generate_random_functions(int size) {
+VFunction* generate_random_functions(uint64_t size) {
 	VFunction* functions = new VFunction[size];
 	for (int i = 0; i < size; i++) {
 		functions[i].boundary.low = std::rand() % 80 + 1;
@@ -158,11 +157,11 @@ VFunction* generate_random_functions(int size) {
 
 void run_random() {
 	std::srand(static_cast<int>(std::time(0)));
-	int size = 10000000;
+	uint64_t size = 10000000;
 	std::clock_t    start;
 	double best_reserve;
 	VFunction* functions;
-	std::cout << "Expected memory footprint - " << (static_cast<long long>(size) * (64 * 3 + 48) / (1024 * 1024)) << " MB" << std::endl;
+	std::cout << "Expected memory footprint - " << (static_cast<long long>(size) * (48 + 64 * 3) / (1024 * 1024)) << " MB" << std::endl;
 	MEASURE_TIME("Generated random functions", functions = generate_random_functions(size));
 
 	best_reserve = minimize_f_fast(functions, size);
