@@ -101,20 +101,21 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 			last_point_type = pointData.points[j - 1].point_type;
 			last_function_points = pointData.points[j - 1].function.points;
 
-			if (last_point_type == FunctionType::LOW) {
+			switch (last_point_type) {
+			case FunctionType::LOW:
 				currentC.c1 = currentC.c1 + last_function_points.a1;
 				currentC.c2 = currentC.c2 - last_function_points.a2;
-			}
-			else if (last_point_type == FunctionType::HIGH) {
+				break;
+			case FunctionType::HIGH:
 				currentC.c2 = currentC.c2 + last_function_points.a2;
 				currentC.c3 = currentC.c3 + last_function_points.a3;
 				currentC.c4 = currentC.c4 - last_function_points.a4;
-			}
-			else if (last_point_type == FunctionType::MICRO) {
+				break;
+			case FunctionType::MICRO:
 				currentC.c3 = currentC.c3 - last_function_points.a3;
 				currentC.c4 = currentC.c4 + last_function_points.a4;
-			}
-			else {
+				break;
+			default:
 				assert(false); //Should not get here
 			}
 			update(&currentC);
