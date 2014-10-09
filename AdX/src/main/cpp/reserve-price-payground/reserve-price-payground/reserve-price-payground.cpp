@@ -93,6 +93,19 @@ double calculate_stuff(PointData pointData, uint64_t length) {
 	return best_reserve;
 }
 
+double calc(VFunction& function, double reserve) {
+	if (reserve <= function.boundary.low) {
+		return -function.points.a1;
+	}
+	if (function.boundary.low < reserve && reserve <= function.boundary.high) {
+		return -function.points.a2 * reserve;
+	}
+	if (function.boundary.high < reserve && reserve < (1 + MICRO_S) * function.boundary.high) {
+		return function.points.a3 * reserve - function.points.a4;
+	}
+	return 0;
+}
+
 double minimize_f_fast(VFunction* functions, uint64_t length) {
 	double		best_reserve;
 	PointData	pointData;
@@ -100,9 +113,37 @@ double minimize_f_fast(VFunction* functions, uint64_t length) {
 
 	MEASURE_TIME("Generating boundary points", pointData = get_boundary_points(functions, length));
 	MEASURE_TIME("Sorting boundary points", sort_end_points(pointData.points));
-	MEASURE_TIME("\tDeleted functions", delete functions);
 	MEASURE_TIME("Calculated stuff", best_reserve = calculate_stuff(pointData, length));
 
+	return best_reserve;
+}
+
+double f(double reserve, VFunction* functions, uint64_t length) {
+	double sum = 0;
+	for (size_t i = 0; i < length; i++)	{
+		sum += calc(functions[i], reserve);
+	}
+	return sum;
+}
+
+double minimize_f(VFunction* functions, uint64_t length) {
+	double			best_reserve;
+	double			best_score = 1000000;
+	double			current_score;
+	double			current_reserve;
+	PointData		pointData;
+	std::clock_t	start;
+
+	MEASURE_TIME("Generating boundary points", pointData = get_boundary_points(functions, length));
+	for (size_t i = 0; i < pointData.points.size(); i++) {
+		current_reserve = pointData.points[i].val;
+		current_score = f(current_reserve, functions, length);
+		if (current_score < best_score) {
+			best_score = current_score;
+			best_reserve = current_reserve;
+		}
+	}
+	//std::cout << "best score = " << best_score << std::endl;
 	return best_reserve;
 }
 
@@ -123,13 +164,19 @@ void run_random() {
 	std::clock_t	start;
 	double			best_reserve;
 	VFunction*		functions;
-	uint64_t size = 1000000;
+	uint64_t size = 10000;
 
 	std::srand(static_cast<int>(std::time(0)));
 	std::cout << "Expected memory footprint - " << (static_cast<long long>(size)* (48 + 64 * 3) / (1024 * 1024)) << " MB" << std::endl;
 	MEASURE_TIME("Generated random functions", functions = generate_random_functions(size));
+
 	best_reserve = minimize_f_fast(functions, size);
 	std::cout << "best reserve = " << best_reserve << std::endl;
+
+	best_reserve = minimize_f(functions, size);
+	std::cout << "best reserve = " << best_reserve << std::endl;
+
+	MEASURE_TIME("\tDeleted functions", delete functions);
 }
 
 int main() {
