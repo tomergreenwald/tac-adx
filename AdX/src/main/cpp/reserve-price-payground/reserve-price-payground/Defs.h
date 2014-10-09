@@ -1,3 +1,6 @@
+#include <ctime>
+#include <iostream>
+
 #define MEASURE_TIME(description, function)	\
 	std::cout << description;	\
 	start = std::clock();	\

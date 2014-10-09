@@ -18,12 +18,18 @@
     <ClInclude Include="Defs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ReservePricePlayGround.h">
+    <ClInclude Include="ReservePriceMinimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ReservePricePlayGround.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReservePriceMinimizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

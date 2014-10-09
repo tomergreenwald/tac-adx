@@ -139,11 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ReservePriceMinimizer.cpp" />
     <ClCompile Include="ReservePricePlayGround.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataStructs.h" />
     <ClInclude Include="Defs.h" />
-    <ClInclude Include="ReservePricePlayGround.h" />
+    <ClInclude Include="ReservePriceMinimizer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
