@@ -143,7 +143,7 @@ double minimize_f(VFunction* functions, uint64_t length) {
 			best_reserve = current_reserve;
 		}
 	}
-	//std::cout << "best score = " << best_score << std::endl;
+
 	return best_reserve;
 }
 
@@ -164,16 +164,13 @@ void run_random() {
 	std::clock_t	start;
 	double			best_reserve;
 	VFunction*		functions;
-	uint64_t size = 10000;
+	uint64_t size = 1000000;
 
 	std::srand(static_cast<int>(std::time(0)));
 	std::cout << "Expected memory footprint - " << (static_cast<long long>(size)* (48 + 64 * 3) / (1024 * 1024)) << " MB" << std::endl;
 	MEASURE_TIME("Generated random functions", functions = generate_random_functions(size));
 
 	best_reserve = minimize_f_fast(functions, size);
-	std::cout << "best reserve = " << best_reserve << std::endl;
-
-	best_reserve = minimize_f(functions, size);
 	std::cout << "best reserve = " << best_reserve << std::endl;
 
 	MEASURE_TIME("\tDeleted functions", delete functions);
