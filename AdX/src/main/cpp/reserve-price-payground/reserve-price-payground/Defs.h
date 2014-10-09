@@ -1,5 +1,6 @@
 #include <ctime>
 #include <iostream>
+#include <stdint.h>
 
 #define MEASURE_TIME(description, function)	\
 	std::cout << description;	\

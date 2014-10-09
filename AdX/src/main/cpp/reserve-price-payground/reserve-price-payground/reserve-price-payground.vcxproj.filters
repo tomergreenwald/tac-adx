@@ -24,12 +24,30 @@
     <ClInclude Include="DataStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FastReservePriceMinimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StandardReservePriceMinimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ReservePricePlayGround.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReservePriceMinimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FastReservePriceMinimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StandardReservePriceMinimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
