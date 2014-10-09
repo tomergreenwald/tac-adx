@@ -139,11 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="reserve-price-payground.cpp" />
+    <ClCompile Include="ReservePricePlayGround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defs.h" />
-    <ClInclude Include="reserve-price-payground.h" />
+    <ClInclude Include="ReservePricePlayGround.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

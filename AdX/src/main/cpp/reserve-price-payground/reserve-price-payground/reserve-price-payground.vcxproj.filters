@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="reserve-price-payground.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="reserve-price-payground.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Defs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReservePricePlayGround.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ReservePricePlayGround.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
