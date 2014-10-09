@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="reserve-price-payground.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="reserve-price-payground.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

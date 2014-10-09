@@ -1,3 +1,5 @@
+#include "reserve-price-payground.h"
+
 #include <stdio.h>
 #include "assert.h"
 #include <cstdlib>
@@ -5,7 +7,8 @@
 #include <iostream>
 #include <stdint.h>
 #include <algorithm>
-#include <vector>
+
+
 
 static const double MICRO_S = 0.01;
 
@@ -20,38 +23,6 @@ static const double MICRO_S = 0.01;
 	start = std::clock();	\
 	function;	\
 	std::cout << summary << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
-
-struct Boundary {
-	double low, high;
-};
-
-struct C {
-	double c1, c2, c3, c4, s, point;
-};
-
-enum FunctionType {
-	LOW, HIGH, MICRO
-};
-
-struct Points {
-	double a1, a2, a3, a4;
-};
-
-struct VFunction {
-	Boundary boundary;
-	Points points;
-};
-
-struct EndPoint {
-	double val;
-	FunctionType point_type;
-	VFunction function;
-};
-
-struct PointData {
-	std::vector<EndPoint> points;
-	double sum;
-};
 
 bool end_point_sorter(EndPoint const& lhs, EndPoint const& rhs) {
 	return lhs.val < rhs.val;
