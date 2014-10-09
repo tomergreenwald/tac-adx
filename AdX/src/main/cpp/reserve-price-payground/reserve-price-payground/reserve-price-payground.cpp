@@ -4,6 +4,8 @@
 #include <ctime>
 #include <iostream>
 #include <stdint.h>
+#include <algorithm>
+#include <vector>
 
 static const double MICRO_S = 0.01;
 
@@ -47,13 +49,17 @@ struct EndPoint {
 };
 
 struct PointData {
-	EndPoint* points;
+	std::vector<EndPoint> points;
 	double sum;
 };
 
-PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
+bool end_point_sorter(EndPoint const& lhs, EndPoint const& rhs) {
+	return lhs.val < rhs.val;
+}
+
+PointData get_boundary_points(VFunction* functions, uint64_t length) {
 	PointData	res;
-	EndPoint*	points = new EndPoint[length * 3];
+	std::vector<EndPoint> points(length * 3);
 	double		sum = 0;
 
 	for (int j = 0; j < length; j++) {
@@ -71,10 +77,13 @@ PointData get_sorted_boundary_points(VFunction* functions, uint64_t length) {
 		points[j * 3 + 2].point_type = FunctionType::MICRO;
 		points[j * 3 + 2].function = functions[j];
 	}
-	// FIXME: sort data
 	res.points = points;
 	res.sum = sum;
 	return res;
+}
+
+void sort_end_points(std::vector<EndPoint> &points) {
+	std::sort(points.begin(), points.end(), &end_point_sorter);
 }
 
 double calculate_stuff(PointData pointData, uint64_t length) {
@@ -133,10 +142,10 @@ double minimize_f_fast(VFunction* functions, uint64_t length) {
 	PointData	pointData;
 	clock_t		start;
 
-	MEASURE_TIME("Sorted boundary points", pointData = get_sorted_boundary_points(functions, length));
+	MEASURE_TIME("Generating boundary points", pointData = get_boundary_points(functions, length));
+	MEASURE_TIME("Sorting boundary points", sort_end_points(pointData.points));
 	MEASURE_TIME("\tDeleted functions", delete functions);
 	MEASURE_TIME("Calculated stuff", best_reserve = calculate_stuff(pointData, length));
-	MEASURE_TIME("\tDeleted points", delete pointData.points);
 
 	return best_reserve;
 }
