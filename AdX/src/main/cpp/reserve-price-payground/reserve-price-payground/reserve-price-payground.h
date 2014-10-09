@@ -1,5 +1,7 @@
 #include <vector>
 
+static const double MICRO_S = 0.01;
+
 struct Boundary {
 	double low, high;
 };

@@ -1,5 +1,4 @@
 #include "reserve-price-payground.h"
-
 #include <stdio.h>
 #include "assert.h"
 #include <cstdlib>
@@ -8,21 +7,7 @@
 #include <stdint.h>
 #include <algorithm>
 
-
-
-static const double MICRO_S = 0.01;
-
-#define MEASURE_TIME(description, function)	\
-	std::cout << description;	\
-	start = std::clock();	\
-	function;	\
-	std::cout << " in " << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
-
-#define MEASURE_TIME_S(description, function, summary)	\
-	std::cout << description << std::endl;	\
-	start = std::clock();	\
-	function;	\
-	std::cout << summary << 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC << " ms" << std::endl;
+#include "Defs.h"
 
 bool end_point_sorter(EndPoint const& lhs, EndPoint const& rhs) {
 	return lhs.val < rhs.val;
@@ -136,7 +121,7 @@ void run_random() {
 	std::clock_t	start;
 	double			best_reserve;
 	VFunction*		functions;
-	uint64_t size = 10000000;
+	uint64_t size = 1000000;
 
 	std::srand(static_cast<int>(std::time(0)));
 	std::cout << "Expected memory footprint - " << (static_cast<long long>(size)* (48 + 64 * 3) / (1024 * 1024)) << " MB" << std::endl;
