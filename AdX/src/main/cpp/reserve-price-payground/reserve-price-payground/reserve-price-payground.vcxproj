@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="auctions.pb.cc" />
+    <ClCompile Include="dirent.c" />
     <ClCompile Include="FastReservePriceMinimizer.cpp" />
     <ClCompile Include="ReservePriceMinimizer.cpp" />
     <ClCompile Include="ReservePricePlayGround.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="auctions.pb.h" />
     <ClInclude Include="DataStructs.h" />
     <ClInclude Include="Defs.h" />
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="FastReservePriceMinimizer.h" />
     <ClInclude Include="ReservePriceMinimizer.h" />
     <ClInclude Include="StandardReservePriceMinimizer.h" />
