@@ -20,3 +20,11 @@ AdX/src/main/cpp/reserve-price-payground/Debug/
 *.sdf
 *.opensdf
 *.suo
+*.tlog
+*.obj
+*.lib
+*.pdb
+*.idb
+*.cache
+*.htm
+AdX/src/main/cpp/reserve-price-payground/Release/
