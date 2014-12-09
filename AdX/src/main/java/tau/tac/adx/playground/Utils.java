@@ -2,20 +2,19 @@ package tau.tac.adx.playground;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import static tau.tac.adx.playground.VFunction.MICRO;
 
 public class Utils {
 
-	public static double MICRO = 0.01;
-
 	public static EndPoint[] get_sorted_boundary_points(VFunction[] functions) {
-		EndPoint[] points = new EndPoint[functions.length*3];
-		for (int j = 0; j < functions.length*3; j+=3) {
-			points[j] = (new EndPoint(functions[j%3].boundary.high,
-					FunctionType.HIGH, functions[j%3]));
-			points[j+1] = (new EndPoint(functions[j%3].boundary.low,
-					FunctionType.LOW, functions[j%3]));
-			points[j+2] = (new EndPoint(functions[j%3].boundary.high * (1 + MICRO),
-					FunctionType.MICRO, functions[j%3]));
+		EndPoint[] points = new EndPoint[functions.length * 3];
+		for (int j = 0; j < functions.length * 3; j += 3) {
+			points[j] = (new EndPoint(functions[j / 3].boundary.high,
+					FunctionType.HIGH, functions[j / 3]));
+			points[j + 1] = (new EndPoint(functions[j / 3].boundary.low,
+					FunctionType.LOW, functions[j / 3]));
+			points[j + 2] = (new EndPoint(functions[j / 3].boundary.high
+					* (1 + MICRO), FunctionType.MICRO, functions[j / 3]));
 		}
 		Arrays.sort(points, new Comparator<EndPoint>() {
 
@@ -26,6 +25,33 @@ public class Utils {
 
 		});
 		return points;
+	}
+
+	public static double f(double reserve, VFunction[] functions) {
+		double function_sum = 0;
+		for (VFunction function : functions) {
+			function_sum += function.calc(reserve);
+		}
+		return function_sum;
+	}
+
+	public static double minimize_f(VFunction[] functions) {
+		double best_reserve = Double.NaN;
+		double best_score = Double.MAX_VALUE;
+		for (VFunction function : functions) {
+			double[] reserves = new double[3];
+			reserves[0] = function.boundary.low;
+			reserves[1] = function.boundary.high;
+			reserves[2] = function.boundary.high * MICRO;
+			for (double reserve : reserves) {
+				double score = f(reserve, functions);
+				if (score < best_score) {
+					best_score = score;
+					best_reserve = reserve;
+				}
+			}
+		}
+		return best_reserve;
 	}
 
 	public static double minimize_f_fast(VFunction[] functions)
