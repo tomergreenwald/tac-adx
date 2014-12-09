@@ -4,7 +4,7 @@ import static tau.tac.adx.playground.VFunction.MICRO;
 
 import java.util.Random;
 
-public class testy {
+public class test_playground {
 	public static void main(String[] args) throws Exception {
 		Random random = new Random();
 		int size = 10000;
