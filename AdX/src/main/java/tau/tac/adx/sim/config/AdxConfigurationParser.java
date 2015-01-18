@@ -14,8 +14,10 @@ import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
+import tau.tac.adx.publishers.reserve.MultiReservePriceManager;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
@@ -35,6 +37,7 @@ import edu.umich.eecs.tac.props.AdvertiserInfo;
 public class AdxConfigurationParser {
 
 	private final ConfigManager config;
+	private Random random;
 
 	private String[] names = { "yahoo", "cnn", "nyt", "hfn", "msn", "fox",
 			"amazon", "ebay", "wallmart", "target", "bestbuy", "sears",
@@ -98,6 +101,7 @@ public class AdxConfigurationParser {
 	 */
 	public AdxConfigurationParser(ConfigManager config) {
 		this.config = config;
+		random = new Random();
 	}
 
 	/**
@@ -195,6 +199,11 @@ public class AdxConfigurationParser {
 		while (subsetskus.size() < 3 * subsetsize) {
 			subsetskus.add(Integer.parseInt(skus3[r.nextInt(skus3.length)]));
 		}
+		
+		int reservePriceManagerType = config.getPropertyAsInt("publishers.reserve_price_manager", 0);
+		if (reservePriceManagerType == 0) {
+			reservePriceManagerType = random.nextInt(2) + 1;
+		}
 
 		for (Integer sku : subsetskus) {
 			String name = names[sku];
@@ -203,8 +212,7 @@ public class AdxConfigurationParser {
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps = extractAdTypeAffiliation(sku);
 			AdxUserAttributeProbabilityMaps adxUserAttributeProbabilityMaps = extractUserAffiliation(sku);
 			Map<Device, Double> deviceAffiliation = extractDeviceAffiliation(sku);
-			UserAdTypeReservePriceManager reservePriceManager = new UserAdTypeReservePriceManager(
-					RESERVE_PRICE_INIT, RESERVE_PRICE_VARIANCE, RESERVE_PRICE_LEARN_RATE);
+			MultiReservePriceManager<AdxQuery> reservePriceManager = generateReservePriceManager(reservePriceManagerType);
 			AdxPublisher publisher = new AdxPublisher(
 					adxUserAttributeProbabilityMaps,
 					adAttributeProbabilityMaps, deviceAffiliation, rating, 0,
@@ -215,6 +223,22 @@ public class AdxConfigurationParser {
 		catalog.lock();
 
 		return catalog;
+	}
+
+	private MultiReservePriceManager<AdxQuery> generateReservePriceManager(int reservePriceManagerType) {
+		switch (reservePriceManagerType) {
+		case 1:
+			return new UserAdTypeReservePriceManager(
+					RESERVE_PRICE_INIT, RESERVE_PRICE_VARIANCE, RESERVE_PRICE_LEARN_RATE);
+		case 2:
+			break;
+		case 3:
+			throw new RuntimeException("Reserve price manager type not supported yet - "+reservePriceManagerType);
+			default:
+				throw new RuntimeException("Reserve price manager type is not in range - "+reservePriceManagerType);
+		}
+		return null;
+		
 	}
 
 	/**
