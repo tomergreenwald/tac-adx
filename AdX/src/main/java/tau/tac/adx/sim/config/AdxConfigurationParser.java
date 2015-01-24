@@ -2,6 +2,8 @@ package tau.tac.adx.sim.config;
 
 import static tau.tac.adx.sim.TACAdxConstants.AD_NETOWRK_ROLE_ID;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,10 +16,12 @@ import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.parser.Auctions.ReservePriceManagerBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.publishers.AdxPublisher;
 import tau.tac.adx.publishers.reserve.MultiReservePriceManager;
+import tau.tac.adx.publishers.reserve.PredeterminedReservePriceManager;
 import tau.tac.adx.publishers.reserve.ReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
@@ -91,7 +95,7 @@ public class AdxConfigurationParser {
 			0.78, 0.82, 0.81, 0.8, 0.81, 0.76, 0.72, 0.72, 0.70, 0.73, 0.69 };
 	private double[] deviceMobile = { 0.26, 0.24, 0.23, 0.22, 0.25, 0.24, 0.21,
 			0.22, 0.18, 0.19, 0.2, 0.19, 0.24, 0.28, 0.28, 0.30, 0.27, 0.31 };
-	
+
 	private static double RESERVE_PRICE_INIT = 0.005;
 	private static double RESERVE_PRICE_VARIANCE = 0.02;
 	private static double RESERVE_PRICE_LEARN_RATE = 0.2;
@@ -199,8 +203,11 @@ public class AdxConfigurationParser {
 		while (subsetskus.size() < 3 * subsetsize) {
 			subsetskus.add(Integer.parseInt(skus3[r.nextInt(skus3.length)]));
 		}
-		
-		int reservePriceManagerType = config.getPropertyAsInt("publishers.reserve_price_manager", 0);
+
+		int reservePriceManagerType = config.getPropertyAsInt(
+				"publishers.reserve_price_manager", 0);
+		String reservePriceManagerConfigFile = config.getProperty(
+				"publishers.reserve_price_manager_config_file", "");
 		if (reservePriceManagerType == 0) {
 			reservePriceManagerType = random.nextInt(2) + 1;
 		}
@@ -212,7 +219,8 @@ public class AdxConfigurationParser {
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps = extractAdTypeAffiliation(sku);
 			AdxUserAttributeProbabilityMaps adxUserAttributeProbabilityMaps = extractUserAffiliation(sku);
 			Map<Device, Double> deviceAffiliation = extractDeviceAffiliation(sku);
-			MultiReservePriceManager<AdxQuery> reservePriceManager = generateReservePriceManager(reservePriceManagerType);
+			MultiReservePriceManager<AdxQuery> reservePriceManager = generateReservePriceManager(
+					reservePriceManagerType, reservePriceManagerConfigFile);
 			AdxPublisher publisher = new AdxPublisher(
 					adxUserAttributeProbabilityMaps,
 					adAttributeProbabilityMaps, deviceAffiliation, rating, 0,
@@ -225,20 +233,31 @@ public class AdxConfigurationParser {
 		return catalog;
 	}
 
-	private MultiReservePriceManager<AdxQuery> generateReservePriceManager(int reservePriceManagerType) {
+	private MultiReservePriceManager<AdxQuery> generateReservePriceManager(
+			int reservePriceManagerType, String reservePriceManagerConfigFile) {
 		switch (reservePriceManagerType) {
 		case 1:
-			return new UserAdTypeReservePriceManager(
-					RESERVE_PRICE_INIT, RESERVE_PRICE_VARIANCE, RESERVE_PRICE_LEARN_RATE);
+			return new UserAdTypeReservePriceManager(RESERVE_PRICE_INIT,
+					RESERVE_PRICE_VARIANCE, RESERVE_PRICE_LEARN_RATE);
 		case 2:
-			break;
+			ReservePriceManagerBundle priceBundle;
+			try {
+				priceBundle = ReservePriceManagerBundle
+						.parseFrom(new FileInputStream(
+								reservePriceManagerConfigFile));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			return new PredeterminedReservePriceManager(priceBundle);
 		case 3:
-			throw new RuntimeException("Reserve price manager type not supported yet - "+reservePriceManagerType);
-			default:
-				throw new RuntimeException("Reserve price manager type is not in range - "+reservePriceManagerType);
+			throw new RuntimeException(
+					"Reserve price manager type not supported yet - "
+							+ reservePriceManagerType);
+		default:
+			throw new RuntimeException(
+					"Reserve price manager type is not in range - "
+							+ reservePriceManagerType);
 		}
-		return null;
-		
 	}
 
 	/**
