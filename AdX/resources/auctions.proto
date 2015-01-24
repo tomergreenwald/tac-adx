@@ -1,3 +1,4 @@
+option java_package = "tau.tac.adx.parser";
 enum MarketSegment {
     MALE = 0;
     FEMALE = 1;
@@ -31,8 +32,15 @@ message AuctionReport {
     required AdxQuery adxQuery = 4;
 }
 
-
-
 message DataBundle {
     repeated AuctionReport reports = 1;
+}
+
+message AdxQueryPricing {
+	required AdxQuery adxQuery = 1;
+	required float reservePrice = 2;
+}
+
+message ReservePriceManagerBundle {
+	repeated AdxQueryPricing adxQueryPricings = 1;
 }
