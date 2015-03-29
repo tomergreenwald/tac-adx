@@ -43,7 +43,7 @@ public class AdxConfigurationParser {
 	private final ConfigManager config;
 	private Random random;
 
-	private String[] names = { "yahoo", "cnn", "nyt", "hfn", "msn", "fox",
+	public static String[] publisherNames = { "yahoo", "cnn", "nyt", "hfn", "msn", "fox",
 			"amazon", "ebay", "wallmart", "target", "bestbuy", "sears",
 			"webmd", "ehow", "ask", "tripadvisor", "cnet", "weather" };
 
@@ -213,7 +213,7 @@ public class AdxConfigurationParser {
 		}
 
 		for (Integer sku : subsetskus) {
-			String name = names[sku];
+			String name = publisherNames[sku];
 			double rating = ratings[sku];
 
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps = extractAdTypeAffiliation(sku);
