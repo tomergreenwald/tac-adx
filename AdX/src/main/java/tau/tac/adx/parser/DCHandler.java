@@ -27,7 +27,7 @@ public class DCHandler extends LogHandler {
 	@Override
 	protected void start(LogReader reader)
 			throws IllegalConfigurationException, IOException, ParseException {
-		GeneralParser parser = new GeneralParser(reader, getConfig());
+		DCParser parser = new DCParser(reader, getConfig());
 		parser.start();
 		parser.stop();
 	}
