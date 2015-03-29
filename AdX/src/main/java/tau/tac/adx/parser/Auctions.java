@@ -290,6 +290,2921 @@ public final class Auctions {
     // @@protoc_insertion_point(enum_scope:AdType)
   }
 
+  /**
+   * Protobuf enum {@code Age}
+   */
+  public enum Age
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>Age_18_24 = 0;</code>
+     */
+    Age_18_24(0, 0),
+    /**
+     * <code>Age_25_34 = 1;</code>
+     */
+    Age_25_34(1, 1),
+    /**
+     * <code>Age_35_44 = 2;</code>
+     */
+    Age_35_44(2, 2),
+    /**
+     * <code>Age_45_54 = 3;</code>
+     */
+    Age_45_54(3, 3),
+    /**
+     * <code>Age_55_64 = 4;</code>
+     */
+    Age_55_64(4, 4),
+    /**
+     * <code>Age_65_PLUS = 5;</code>
+     */
+    Age_65_PLUS(5, 5),
+    ;
+
+    /**
+     * <code>Age_18_24 = 0;</code>
+     */
+    public static final int Age_18_24_VALUE = 0;
+    /**
+     * <code>Age_25_34 = 1;</code>
+     */
+    public static final int Age_25_34_VALUE = 1;
+    /**
+     * <code>Age_35_44 = 2;</code>
+     */
+    public static final int Age_35_44_VALUE = 2;
+    /**
+     * <code>Age_45_54 = 3;</code>
+     */
+    public static final int Age_45_54_VALUE = 3;
+    /**
+     * <code>Age_55_64 = 4;</code>
+     */
+    public static final int Age_55_64_VALUE = 4;
+    /**
+     * <code>Age_65_PLUS = 5;</code>
+     */
+    public static final int Age_65_PLUS_VALUE = 5;
+
+
+    public final int getNumber() { return value; }
+
+    public static Age valueOf(int value) {
+      switch (value) {
+        case 0: return Age_18_24;
+        case 1: return Age_25_34;
+        case 2: return Age_35_44;
+        case 3: return Age_45_54;
+        case 4: return Age_55_64;
+        case 5: return Age_65_PLUS;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Age>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<Age>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Age>() {
+            public Age findValueByNumber(int number) {
+              return Age.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return tau.tac.adx.parser.Auctions.getDescriptor().getEnumTypes().get(3);
+    }
+
+    private static final Age[] VALUES = values();
+
+    public static Age valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private Age(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:Age)
+  }
+
+  /**
+   * Protobuf enum {@code Gender}
+   */
+  public enum Gender
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>Gender_MALE = 0;</code>
+     */
+    Gender_MALE(0, 0),
+    /**
+     * <code>Gender_FEMALE = 1;</code>
+     */
+    Gender_FEMALE(1, 1),
+    ;
+
+    /**
+     * <code>Gender_MALE = 0;</code>
+     */
+    public static final int Gender_MALE_VALUE = 0;
+    /**
+     * <code>Gender_FEMALE = 1;</code>
+     */
+    public static final int Gender_FEMALE_VALUE = 1;
+
+
+    public final int getNumber() { return value; }
+
+    public static Gender valueOf(int value) {
+      switch (value) {
+        case 0: return Gender_MALE;
+        case 1: return Gender_FEMALE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Gender>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<Gender>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Gender>() {
+            public Gender findValueByNumber(int number) {
+              return Gender.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return tau.tac.adx.parser.Auctions.getDescriptor().getEnumTypes().get(4);
+    }
+
+    private static final Gender[] VALUES = values();
+
+    public static Gender valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private Gender(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:Gender)
+  }
+
+  /**
+   * Protobuf enum {@code Income}
+   */
+  public enum Income
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>LOW = 0;</code>
+     */
+    LOW(0, 0),
+    /**
+     * <code>MEDIUM = 1;</code>
+     */
+    MEDIUM(1, 1),
+    /**
+     * <code>HIGH = 2;</code>
+     */
+    HIGH(2, 2),
+    /**
+     * <code>VERY_HIGH = 3;</code>
+     */
+    VERY_HIGH(3, 3),
+    ;
+
+    /**
+     * <code>LOW = 0;</code>
+     */
+    public static final int LOW_VALUE = 0;
+    /**
+     * <code>MEDIUM = 1;</code>
+     */
+    public static final int MEDIUM_VALUE = 1;
+    /**
+     * <code>HIGH = 2;</code>
+     */
+    public static final int HIGH_VALUE = 2;
+    /**
+     * <code>VERY_HIGH = 3;</code>
+     */
+    public static final int VERY_HIGH_VALUE = 3;
+
+
+    public final int getNumber() { return value; }
+
+    public static Income valueOf(int value) {
+      switch (value) {
+        case 0: return LOW;
+        case 1: return MEDIUM;
+        case 2: return HIGH;
+        case 3: return VERY_HIGH;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Income>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<Income>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Income>() {
+            public Income findValueByNumber(int number) {
+              return Income.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return tau.tac.adx.parser.Auctions.getDescriptor().getEnumTypes().get(5);
+    }
+
+    private static final Income[] VALUES = values();
+
+    public static Income valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private Income(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:Income)
+  }
+
+  public interface AMessageOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional .AdType adType = 1;
+    /**
+     * <code>optional .AdType adType = 1;</code>
+     */
+    boolean hasAdType();
+    /**
+     * <code>optional .AdType adType = 1;</code>
+     */
+    tau.tac.adx.parser.Auctions.AdType getAdType();
+
+    // optional .Device device = 2;
+    /**
+     * <code>optional .Device device = 2;</code>
+     */
+    boolean hasDevice();
+    /**
+     * <code>optional .Device device = 2;</code>
+     */
+    tau.tac.adx.parser.Auctions.Device getDevice();
+
+    // optional .Age age = 3;
+    /**
+     * <code>optional .Age age = 3;</code>
+     */
+    boolean hasAge();
+    /**
+     * <code>optional .Age age = 3;</code>
+     */
+    tau.tac.adx.parser.Auctions.Age getAge();
+
+    // optional .Gender gender = 4;
+    /**
+     * <code>optional .Gender gender = 4;</code>
+     */
+    boolean hasGender();
+    /**
+     * <code>optional .Gender gender = 4;</code>
+     */
+    tau.tac.adx.parser.Auctions.Gender getGender();
+
+    // optional .Income income = 5;
+    /**
+     * <code>optional .Income income = 5;</code>
+     */
+    boolean hasIncome();
+    /**
+     * <code>optional .Income income = 5;</code>
+     */
+    tau.tac.adx.parser.Auctions.Income getIncome();
+  }
+  /**
+   * Protobuf type {@code AMessage}
+   */
+  public static final class AMessage extends
+      com.google.protobuf.GeneratedMessage
+      implements AMessageOrBuilder {
+    // Use AMessage.newBuilder() to construct.
+    private AMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private AMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final AMessage defaultInstance;
+    public static AMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public AMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              tau.tac.adx.parser.Auctions.AdType value = tau.tac.adx.parser.Auctions.AdType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                adType_ = value;
+              }
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+              tau.tac.adx.parser.Auctions.Device value = tau.tac.adx.parser.Auctions.Device.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(2, rawValue);
+              } else {
+                bitField0_ |= 0x00000002;
+                device_ = value;
+              }
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+              tau.tac.adx.parser.Auctions.Age value = tau.tac.adx.parser.Auctions.Age.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(3, rawValue);
+              } else {
+                bitField0_ |= 0x00000004;
+                age_ = value;
+              }
+              break;
+            }
+            case 32: {
+              int rawValue = input.readEnum();
+              tau.tac.adx.parser.Auctions.Gender value = tau.tac.adx.parser.Auctions.Gender.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(4, rawValue);
+              } else {
+                bitField0_ |= 0x00000008;
+                gender_ = value;
+              }
+              break;
+            }
+            case 40: {
+              int rawValue = input.readEnum();
+              tau.tac.adx.parser.Auctions.Income value = tau.tac.adx.parser.Auctions.Income.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(5, rawValue);
+              } else {
+                bitField0_ |= 0x00000010;
+                income_ = value;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return tau.tac.adx.parser.Auctions.internal_static_AMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return tau.tac.adx.parser.Auctions.internal_static_AMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              tau.tac.adx.parser.Auctions.AMessage.class, tau.tac.adx.parser.Auctions.AMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<AMessage> PARSER =
+        new com.google.protobuf.AbstractParser<AMessage>() {
+      public AMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional .AdType adType = 1;
+    public static final int ADTYPE_FIELD_NUMBER = 1;
+    private tau.tac.adx.parser.Auctions.AdType adType_;
+    /**
+     * <code>optional .AdType adType = 1;</code>
+     */
+    public boolean hasAdType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .AdType adType = 1;</code>
+     */
+    public tau.tac.adx.parser.Auctions.AdType getAdType() {
+      return adType_;
+    }
+
+    // optional .Device device = 2;
+    public static final int DEVICE_FIELD_NUMBER = 2;
+    private tau.tac.adx.parser.Auctions.Device device_;
+    /**
+     * <code>optional .Device device = 2;</code>
+     */
+    public boolean hasDevice() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .Device device = 2;</code>
+     */
+    public tau.tac.adx.parser.Auctions.Device getDevice() {
+      return device_;
+    }
+
+    // optional .Age age = 3;
+    public static final int AGE_FIELD_NUMBER = 3;
+    private tau.tac.adx.parser.Auctions.Age age_;
+    /**
+     * <code>optional .Age age = 3;</code>
+     */
+    public boolean hasAge() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .Age age = 3;</code>
+     */
+    public tau.tac.adx.parser.Auctions.Age getAge() {
+      return age_;
+    }
+
+    // optional .Gender gender = 4;
+    public static final int GENDER_FIELD_NUMBER = 4;
+    private tau.tac.adx.parser.Auctions.Gender gender_;
+    /**
+     * <code>optional .Gender gender = 4;</code>
+     */
+    public boolean hasGender() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .Gender gender = 4;</code>
+     */
+    public tau.tac.adx.parser.Auctions.Gender getGender() {
+      return gender_;
+    }
+
+    // optional .Income income = 5;
+    public static final int INCOME_FIELD_NUMBER = 5;
+    private tau.tac.adx.parser.Auctions.Income income_;
+    /**
+     * <code>optional .Income income = 5;</code>
+     */
+    public boolean hasIncome() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional .Income income = 5;</code>
+     */
+    public tau.tac.adx.parser.Auctions.Income getIncome() {
+      return income_;
+    }
+
+    private void initFields() {
+      adType_ = tau.tac.adx.parser.Auctions.AdType.TEXT;
+      device_ = tau.tac.adx.parser.Auctions.Device.MOBILE;
+      age_ = tau.tac.adx.parser.Auctions.Age.Age_18_24;
+      gender_ = tau.tac.adx.parser.Auctions.Gender.Gender_MALE;
+      income_ = tau.tac.adx.parser.Auctions.Income.LOW;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, adType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeEnum(2, device_.getNumber());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeEnum(3, age_.getNumber());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeEnum(4, gender_.getNumber());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeEnum(5, income_.getNumber());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, adType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, device_.getNumber());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, age_.getNumber());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(4, gender_.getNumber());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(5, income_.getNumber());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.AMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(tau.tac.adx.parser.Auctions.AMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code AMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements tau.tac.adx.parser.Auctions.AMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return tau.tac.adx.parser.Auctions.internal_static_AMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return tau.tac.adx.parser.Auctions.internal_static_AMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                tau.tac.adx.parser.Auctions.AMessage.class, tau.tac.adx.parser.Auctions.AMessage.Builder.class);
+      }
+
+      // Construct using tau.tac.adx.parser.Auctions.AMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        adType_ = tau.tac.adx.parser.Auctions.AdType.TEXT;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        device_ = tau.tac.adx.parser.Auctions.Device.MOBILE;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        age_ = tau.tac.adx.parser.Auctions.Age.Age_18_24;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        gender_ = tau.tac.adx.parser.Auctions.Gender.Gender_MALE;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        income_ = tau.tac.adx.parser.Auctions.Income.LOW;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return tau.tac.adx.parser.Auctions.internal_static_AMessage_descriptor;
+      }
+
+      public tau.tac.adx.parser.Auctions.AMessage getDefaultInstanceForType() {
+        return tau.tac.adx.parser.Auctions.AMessage.getDefaultInstance();
+      }
+
+      public tau.tac.adx.parser.Auctions.AMessage build() {
+        tau.tac.adx.parser.Auctions.AMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public tau.tac.adx.parser.Auctions.AMessage buildPartial() {
+        tau.tac.adx.parser.Auctions.AMessage result = new tau.tac.adx.parser.Auctions.AMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.adType_ = adType_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.device_ = device_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.age_ = age_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.gender_ = gender_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.income_ = income_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof tau.tac.adx.parser.Auctions.AMessage) {
+          return mergeFrom((tau.tac.adx.parser.Auctions.AMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(tau.tac.adx.parser.Auctions.AMessage other) {
+        if (other == tau.tac.adx.parser.Auctions.AMessage.getDefaultInstance()) return this;
+        if (other.hasAdType()) {
+          setAdType(other.getAdType());
+        }
+        if (other.hasDevice()) {
+          setDevice(other.getDevice());
+        }
+        if (other.hasAge()) {
+          setAge(other.getAge());
+        }
+        if (other.hasGender()) {
+          setGender(other.getGender());
+        }
+        if (other.hasIncome()) {
+          setIncome(other.getIncome());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        tau.tac.adx.parser.Auctions.AMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (tau.tac.adx.parser.Auctions.AMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional .AdType adType = 1;
+      private tau.tac.adx.parser.Auctions.AdType adType_ = tau.tac.adx.parser.Auctions.AdType.TEXT;
+      /**
+       * <code>optional .AdType adType = 1;</code>
+       */
+      public boolean hasAdType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .AdType adType = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.AdType getAdType() {
+        return adType_;
+      }
+      /**
+       * <code>optional .AdType adType = 1;</code>
+       */
+      public Builder setAdType(tau.tac.adx.parser.Auctions.AdType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        adType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .AdType adType = 1;</code>
+       */
+      public Builder clearAdType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        adType_ = tau.tac.adx.parser.Auctions.AdType.TEXT;
+        onChanged();
+        return this;
+      }
+
+      // optional .Device device = 2;
+      private tau.tac.adx.parser.Auctions.Device device_ = tau.tac.adx.parser.Auctions.Device.MOBILE;
+      /**
+       * <code>optional .Device device = 2;</code>
+       */
+      public boolean hasDevice() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .Device device = 2;</code>
+       */
+      public tau.tac.adx.parser.Auctions.Device getDevice() {
+        return device_;
+      }
+      /**
+       * <code>optional .Device device = 2;</code>
+       */
+      public Builder setDevice(tau.tac.adx.parser.Auctions.Device value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        device_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .Device device = 2;</code>
+       */
+      public Builder clearDevice() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        device_ = tau.tac.adx.parser.Auctions.Device.MOBILE;
+        onChanged();
+        return this;
+      }
+
+      // optional .Age age = 3;
+      private tau.tac.adx.parser.Auctions.Age age_ = tau.tac.adx.parser.Auctions.Age.Age_18_24;
+      /**
+       * <code>optional .Age age = 3;</code>
+       */
+      public boolean hasAge() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .Age age = 3;</code>
+       */
+      public tau.tac.adx.parser.Auctions.Age getAge() {
+        return age_;
+      }
+      /**
+       * <code>optional .Age age = 3;</code>
+       */
+      public Builder setAge(tau.tac.adx.parser.Auctions.Age value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        age_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .Age age = 3;</code>
+       */
+      public Builder clearAge() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        age_ = tau.tac.adx.parser.Auctions.Age.Age_18_24;
+        onChanged();
+        return this;
+      }
+
+      // optional .Gender gender = 4;
+      private tau.tac.adx.parser.Auctions.Gender gender_ = tau.tac.adx.parser.Auctions.Gender.Gender_MALE;
+      /**
+       * <code>optional .Gender gender = 4;</code>
+       */
+      public boolean hasGender() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .Gender gender = 4;</code>
+       */
+      public tau.tac.adx.parser.Auctions.Gender getGender() {
+        return gender_;
+      }
+      /**
+       * <code>optional .Gender gender = 4;</code>
+       */
+      public Builder setGender(tau.tac.adx.parser.Auctions.Gender value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000008;
+        gender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .Gender gender = 4;</code>
+       */
+      public Builder clearGender() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        gender_ = tau.tac.adx.parser.Auctions.Gender.Gender_MALE;
+        onChanged();
+        return this;
+      }
+
+      // optional .Income income = 5;
+      private tau.tac.adx.parser.Auctions.Income income_ = tau.tac.adx.parser.Auctions.Income.LOW;
+      /**
+       * <code>optional .Income income = 5;</code>
+       */
+      public boolean hasIncome() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .Income income = 5;</code>
+       */
+      public tau.tac.adx.parser.Auctions.Income getIncome() {
+        return income_;
+      }
+      /**
+       * <code>optional .Income income = 5;</code>
+       */
+      public Builder setIncome(tau.tac.adx.parser.Auctions.Income value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000010;
+        income_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .Income income = 5;</code>
+       */
+      public Builder clearIncome() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        income_ = tau.tac.adx.parser.Auctions.Income.LOW;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:AMessage)
+    }
+
+    static {
+      defaultInstance = new AMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:AMessage)
+  }
+
+  public interface BMessageOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional int32 impressions = 1;
+    /**
+     * <code>optional int32 impressions = 1;</code>
+     */
+    boolean hasImpressions();
+    /**
+     * <code>optional int32 impressions = 1;</code>
+     */
+    int getImpressions();
+
+    // optional float cost = 2;
+    /**
+     * <code>optional float cost = 2;</code>
+     */
+    boolean hasCost();
+    /**
+     * <code>optional float cost = 2;</code>
+     */
+    float getCost();
+  }
+  /**
+   * Protobuf type {@code BMessage}
+   */
+  public static final class BMessage extends
+      com.google.protobuf.GeneratedMessage
+      implements BMessageOrBuilder {
+    // Use BMessage.newBuilder() to construct.
+    private BMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private BMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final BMessage defaultInstance;
+    public static BMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public BMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              impressions_ = input.readInt32();
+              break;
+            }
+            case 21: {
+              bitField0_ |= 0x00000002;
+              cost_ = input.readFloat();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return tau.tac.adx.parser.Auctions.internal_static_BMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return tau.tac.adx.parser.Auctions.internal_static_BMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              tau.tac.adx.parser.Auctions.BMessage.class, tau.tac.adx.parser.Auctions.BMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<BMessage> PARSER =
+        new com.google.protobuf.AbstractParser<BMessage>() {
+      public BMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional int32 impressions = 1;
+    public static final int IMPRESSIONS_FIELD_NUMBER = 1;
+    private int impressions_;
+    /**
+     * <code>optional int32 impressions = 1;</code>
+     */
+    public boolean hasImpressions() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 impressions = 1;</code>
+     */
+    public int getImpressions() {
+      return impressions_;
+    }
+
+    // optional float cost = 2;
+    public static final int COST_FIELD_NUMBER = 2;
+    private float cost_;
+    /**
+     * <code>optional float cost = 2;</code>
+     */
+    public boolean hasCost() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional float cost = 2;</code>
+     */
+    public float getCost() {
+      return cost_;
+    }
+
+    private void initFields() {
+      impressions_ = 0;
+      cost_ = 0F;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, impressions_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeFloat(2, cost_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, impressions_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, cost_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.BMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(tau.tac.adx.parser.Auctions.BMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements tau.tac.adx.parser.Auctions.BMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return tau.tac.adx.parser.Auctions.internal_static_BMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return tau.tac.adx.parser.Auctions.internal_static_BMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                tau.tac.adx.parser.Auctions.BMessage.class, tau.tac.adx.parser.Auctions.BMessage.Builder.class);
+      }
+
+      // Construct using tau.tac.adx.parser.Auctions.BMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        impressions_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        cost_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return tau.tac.adx.parser.Auctions.internal_static_BMessage_descriptor;
+      }
+
+      public tau.tac.adx.parser.Auctions.BMessage getDefaultInstanceForType() {
+        return tau.tac.adx.parser.Auctions.BMessage.getDefaultInstance();
+      }
+
+      public tau.tac.adx.parser.Auctions.BMessage build() {
+        tau.tac.adx.parser.Auctions.BMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public tau.tac.adx.parser.Auctions.BMessage buildPartial() {
+        tau.tac.adx.parser.Auctions.BMessage result = new tau.tac.adx.parser.Auctions.BMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.impressions_ = impressions_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.cost_ = cost_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof tau.tac.adx.parser.Auctions.BMessage) {
+          return mergeFrom((tau.tac.adx.parser.Auctions.BMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(tau.tac.adx.parser.Auctions.BMessage other) {
+        if (other == tau.tac.adx.parser.Auctions.BMessage.getDefaultInstance()) return this;
+        if (other.hasImpressions()) {
+          setImpressions(other.getImpressions());
+        }
+        if (other.hasCost()) {
+          setCost(other.getCost());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        tau.tac.adx.parser.Auctions.BMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (tau.tac.adx.parser.Auctions.BMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional int32 impressions = 1;
+      private int impressions_ ;
+      /**
+       * <code>optional int32 impressions = 1;</code>
+       */
+      public boolean hasImpressions() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional int32 impressions = 1;</code>
+       */
+      public int getImpressions() {
+        return impressions_;
+      }
+      /**
+       * <code>optional int32 impressions = 1;</code>
+       */
+      public Builder setImpressions(int value) {
+        bitField0_ |= 0x00000001;
+        impressions_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 impressions = 1;</code>
+       */
+      public Builder clearImpressions() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        impressions_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional float cost = 2;
+      private float cost_ ;
+      /**
+       * <code>optional float cost = 2;</code>
+       */
+      public boolean hasCost() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional float cost = 2;</code>
+       */
+      public float getCost() {
+        return cost_;
+      }
+      /**
+       * <code>optional float cost = 2;</code>
+       */
+      public Builder setCost(float value) {
+        bitField0_ |= 0x00000002;
+        cost_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional float cost = 2;</code>
+       */
+      public Builder clearCost() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        cost_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BMessage)
+    }
+
+    static {
+      defaultInstance = new BMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BMessage)
+  }
+
+  public interface ABMessageOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional .AMessage aMessage = 1;
+    /**
+     * <code>optional .AMessage aMessage = 1;</code>
+     */
+    boolean hasAMessage();
+    /**
+     * <code>optional .AMessage aMessage = 1;</code>
+     */
+    tau.tac.adx.parser.Auctions.AMessage getAMessage();
+    /**
+     * <code>optional .AMessage aMessage = 1;</code>
+     */
+    tau.tac.adx.parser.Auctions.AMessageOrBuilder getAMessageOrBuilder();
+
+    // optional .BMessage bMessage = 2;
+    /**
+     * <code>optional .BMessage bMessage = 2;</code>
+     */
+    boolean hasBMessage();
+    /**
+     * <code>optional .BMessage bMessage = 2;</code>
+     */
+    tau.tac.adx.parser.Auctions.BMessage getBMessage();
+    /**
+     * <code>optional .BMessage bMessage = 2;</code>
+     */
+    tau.tac.adx.parser.Auctions.BMessageOrBuilder getBMessageOrBuilder();
+  }
+  /**
+   * Protobuf type {@code ABMessage}
+   */
+  public static final class ABMessage extends
+      com.google.protobuf.GeneratedMessage
+      implements ABMessageOrBuilder {
+    // Use ABMessage.newBuilder() to construct.
+    private ABMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ABMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ABMessage defaultInstance;
+    public static ABMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ABMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ABMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              tau.tac.adx.parser.Auctions.AMessage.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = aMessage_.toBuilder();
+              }
+              aMessage_ = input.readMessage(tau.tac.adx.parser.Auctions.AMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(aMessage_);
+                aMessage_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              tau.tac.adx.parser.Auctions.BMessage.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = bMessage_.toBuilder();
+              }
+              bMessage_ = input.readMessage(tau.tac.adx.parser.Auctions.BMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(bMessage_);
+                bMessage_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return tau.tac.adx.parser.Auctions.internal_static_ABMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return tau.tac.adx.parser.Auctions.internal_static_ABMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              tau.tac.adx.parser.Auctions.ABMessage.class, tau.tac.adx.parser.Auctions.ABMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ABMessage> PARSER =
+        new com.google.protobuf.AbstractParser<ABMessage>() {
+      public ABMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ABMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ABMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional .AMessage aMessage = 1;
+    public static final int AMESSAGE_FIELD_NUMBER = 1;
+    private tau.tac.adx.parser.Auctions.AMessage aMessage_;
+    /**
+     * <code>optional .AMessage aMessage = 1;</code>
+     */
+    public boolean hasAMessage() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .AMessage aMessage = 1;</code>
+     */
+    public tau.tac.adx.parser.Auctions.AMessage getAMessage() {
+      return aMessage_;
+    }
+    /**
+     * <code>optional .AMessage aMessage = 1;</code>
+     */
+    public tau.tac.adx.parser.Auctions.AMessageOrBuilder getAMessageOrBuilder() {
+      return aMessage_;
+    }
+
+    // optional .BMessage bMessage = 2;
+    public static final int BMESSAGE_FIELD_NUMBER = 2;
+    private tau.tac.adx.parser.Auctions.BMessage bMessage_;
+    /**
+     * <code>optional .BMessage bMessage = 2;</code>
+     */
+    public boolean hasBMessage() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .BMessage bMessage = 2;</code>
+     */
+    public tau.tac.adx.parser.Auctions.BMessage getBMessage() {
+      return bMessage_;
+    }
+    /**
+     * <code>optional .BMessage bMessage = 2;</code>
+     */
+    public tau.tac.adx.parser.Auctions.BMessageOrBuilder getBMessageOrBuilder() {
+      return bMessage_;
+    }
+
+    private void initFields() {
+      aMessage_ = tau.tac.adx.parser.Auctions.AMessage.getDefaultInstance();
+      bMessage_ = tau.tac.adx.parser.Auctions.BMessage.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, aMessage_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, bMessage_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, aMessage_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, bMessage_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.ABMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(tau.tac.adx.parser.Auctions.ABMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ABMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements tau.tac.adx.parser.Auctions.ABMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return tau.tac.adx.parser.Auctions.internal_static_ABMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return tau.tac.adx.parser.Auctions.internal_static_ABMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                tau.tac.adx.parser.Auctions.ABMessage.class, tau.tac.adx.parser.Auctions.ABMessage.Builder.class);
+      }
+
+      // Construct using tau.tac.adx.parser.Auctions.ABMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAMessageFieldBuilder();
+          getBMessageFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (aMessageBuilder_ == null) {
+          aMessage_ = tau.tac.adx.parser.Auctions.AMessage.getDefaultInstance();
+        } else {
+          aMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (bMessageBuilder_ == null) {
+          bMessage_ = tau.tac.adx.parser.Auctions.BMessage.getDefaultInstance();
+        } else {
+          bMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return tau.tac.adx.parser.Auctions.internal_static_ABMessage_descriptor;
+      }
+
+      public tau.tac.adx.parser.Auctions.ABMessage getDefaultInstanceForType() {
+        return tau.tac.adx.parser.Auctions.ABMessage.getDefaultInstance();
+      }
+
+      public tau.tac.adx.parser.Auctions.ABMessage build() {
+        tau.tac.adx.parser.Auctions.ABMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public tau.tac.adx.parser.Auctions.ABMessage buildPartial() {
+        tau.tac.adx.parser.Auctions.ABMessage result = new tau.tac.adx.parser.Auctions.ABMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (aMessageBuilder_ == null) {
+          result.aMessage_ = aMessage_;
+        } else {
+          result.aMessage_ = aMessageBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (bMessageBuilder_ == null) {
+          result.bMessage_ = bMessage_;
+        } else {
+          result.bMessage_ = bMessageBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof tau.tac.adx.parser.Auctions.ABMessage) {
+          return mergeFrom((tau.tac.adx.parser.Auctions.ABMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(tau.tac.adx.parser.Auctions.ABMessage other) {
+        if (other == tau.tac.adx.parser.Auctions.ABMessage.getDefaultInstance()) return this;
+        if (other.hasAMessage()) {
+          mergeAMessage(other.getAMessage());
+        }
+        if (other.hasBMessage()) {
+          mergeBMessage(other.getBMessage());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        tau.tac.adx.parser.Auctions.ABMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (tau.tac.adx.parser.Auctions.ABMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional .AMessage aMessage = 1;
+      private tau.tac.adx.parser.Auctions.AMessage aMessage_ = tau.tac.adx.parser.Auctions.AMessage.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          tau.tac.adx.parser.Auctions.AMessage, tau.tac.adx.parser.Auctions.AMessage.Builder, tau.tac.adx.parser.Auctions.AMessageOrBuilder> aMessageBuilder_;
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public boolean hasAMessage() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.AMessage getAMessage() {
+        if (aMessageBuilder_ == null) {
+          return aMessage_;
+        } else {
+          return aMessageBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public Builder setAMessage(tau.tac.adx.parser.Auctions.AMessage value) {
+        if (aMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          aMessage_ = value;
+          onChanged();
+        } else {
+          aMessageBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public Builder setAMessage(
+          tau.tac.adx.parser.Auctions.AMessage.Builder builderForValue) {
+        if (aMessageBuilder_ == null) {
+          aMessage_ = builderForValue.build();
+          onChanged();
+        } else {
+          aMessageBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public Builder mergeAMessage(tau.tac.adx.parser.Auctions.AMessage value) {
+        if (aMessageBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              aMessage_ != tau.tac.adx.parser.Auctions.AMessage.getDefaultInstance()) {
+            aMessage_ =
+              tau.tac.adx.parser.Auctions.AMessage.newBuilder(aMessage_).mergeFrom(value).buildPartial();
+          } else {
+            aMessage_ = value;
+          }
+          onChanged();
+        } else {
+          aMessageBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public Builder clearAMessage() {
+        if (aMessageBuilder_ == null) {
+          aMessage_ = tau.tac.adx.parser.Auctions.AMessage.getDefaultInstance();
+          onChanged();
+        } else {
+          aMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.AMessage.Builder getAMessageBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAMessageFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.AMessageOrBuilder getAMessageOrBuilder() {
+        if (aMessageBuilder_ != null) {
+          return aMessageBuilder_.getMessageOrBuilder();
+        } else {
+          return aMessage_;
+        }
+      }
+      /**
+       * <code>optional .AMessage aMessage = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          tau.tac.adx.parser.Auctions.AMessage, tau.tac.adx.parser.Auctions.AMessage.Builder, tau.tac.adx.parser.Auctions.AMessageOrBuilder> 
+          getAMessageFieldBuilder() {
+        if (aMessageBuilder_ == null) {
+          aMessageBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              tau.tac.adx.parser.Auctions.AMessage, tau.tac.adx.parser.Auctions.AMessage.Builder, tau.tac.adx.parser.Auctions.AMessageOrBuilder>(
+                  aMessage_,
+                  getParentForChildren(),
+                  isClean());
+          aMessage_ = null;
+        }
+        return aMessageBuilder_;
+      }
+
+      // optional .BMessage bMessage = 2;
+      private tau.tac.adx.parser.Auctions.BMessage bMessage_ = tau.tac.adx.parser.Auctions.BMessage.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          tau.tac.adx.parser.Auctions.BMessage, tau.tac.adx.parser.Auctions.BMessage.Builder, tau.tac.adx.parser.Auctions.BMessageOrBuilder> bMessageBuilder_;
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public boolean hasBMessage() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public tau.tac.adx.parser.Auctions.BMessage getBMessage() {
+        if (bMessageBuilder_ == null) {
+          return bMessage_;
+        } else {
+          return bMessageBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public Builder setBMessage(tau.tac.adx.parser.Auctions.BMessage value) {
+        if (bMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          bMessage_ = value;
+          onChanged();
+        } else {
+          bMessageBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public Builder setBMessage(
+          tau.tac.adx.parser.Auctions.BMessage.Builder builderForValue) {
+        if (bMessageBuilder_ == null) {
+          bMessage_ = builderForValue.build();
+          onChanged();
+        } else {
+          bMessageBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public Builder mergeBMessage(tau.tac.adx.parser.Auctions.BMessage value) {
+        if (bMessageBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              bMessage_ != tau.tac.adx.parser.Auctions.BMessage.getDefaultInstance()) {
+            bMessage_ =
+              tau.tac.adx.parser.Auctions.BMessage.newBuilder(bMessage_).mergeFrom(value).buildPartial();
+          } else {
+            bMessage_ = value;
+          }
+          onChanged();
+        } else {
+          bMessageBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public Builder clearBMessage() {
+        if (bMessageBuilder_ == null) {
+          bMessage_ = tau.tac.adx.parser.Auctions.BMessage.getDefaultInstance();
+          onChanged();
+        } else {
+          bMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public tau.tac.adx.parser.Auctions.BMessage.Builder getBMessageBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getBMessageFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      public tau.tac.adx.parser.Auctions.BMessageOrBuilder getBMessageOrBuilder() {
+        if (bMessageBuilder_ != null) {
+          return bMessageBuilder_.getMessageOrBuilder();
+        } else {
+          return bMessage_;
+        }
+      }
+      /**
+       * <code>optional .BMessage bMessage = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          tau.tac.adx.parser.Auctions.BMessage, tau.tac.adx.parser.Auctions.BMessage.Builder, tau.tac.adx.parser.Auctions.BMessageOrBuilder> 
+          getBMessageFieldBuilder() {
+        if (bMessageBuilder_ == null) {
+          bMessageBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              tau.tac.adx.parser.Auctions.BMessage, tau.tac.adx.parser.Auctions.BMessage.Builder, tau.tac.adx.parser.Auctions.BMessageOrBuilder>(
+                  bMessage_,
+                  getParentForChildren(),
+                  isClean());
+          bMessage_ = null;
+        }
+        return bMessageBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ABMessage)
+    }
+
+    static {
+      defaultInstance = new ABMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ABMessage)
+  }
+
+  public interface RABMessageOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // repeated .ABMessage abMessages = 1;
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    java.util.List<tau.tac.adx.parser.Auctions.ABMessage> 
+        getAbMessagesList();
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    tau.tac.adx.parser.Auctions.ABMessage getAbMessages(int index);
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    int getAbMessagesCount();
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    java.util.List<? extends tau.tac.adx.parser.Auctions.ABMessageOrBuilder> 
+        getAbMessagesOrBuilderList();
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    tau.tac.adx.parser.Auctions.ABMessageOrBuilder getAbMessagesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code RABMessage}
+   */
+  public static final class RABMessage extends
+      com.google.protobuf.GeneratedMessage
+      implements RABMessageOrBuilder {
+    // Use RABMessage.newBuilder() to construct.
+    private RABMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RABMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RABMessage defaultInstance;
+    public static RABMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RABMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RABMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                abMessages_ = new java.util.ArrayList<tau.tac.adx.parser.Auctions.ABMessage>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              abMessages_.add(input.readMessage(tau.tac.adx.parser.Auctions.ABMessage.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          abMessages_ = java.util.Collections.unmodifiableList(abMessages_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return tau.tac.adx.parser.Auctions.internal_static_RABMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return tau.tac.adx.parser.Auctions.internal_static_RABMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              tau.tac.adx.parser.Auctions.RABMessage.class, tau.tac.adx.parser.Auctions.RABMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RABMessage> PARSER =
+        new com.google.protobuf.AbstractParser<RABMessage>() {
+      public RABMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RABMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RABMessage> getParserForType() {
+      return PARSER;
+    }
+
+    // repeated .ABMessage abMessages = 1;
+    public static final int ABMESSAGES_FIELD_NUMBER = 1;
+    private java.util.List<tau.tac.adx.parser.Auctions.ABMessage> abMessages_;
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    public java.util.List<tau.tac.adx.parser.Auctions.ABMessage> getAbMessagesList() {
+      return abMessages_;
+    }
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    public java.util.List<? extends tau.tac.adx.parser.Auctions.ABMessageOrBuilder> 
+        getAbMessagesOrBuilderList() {
+      return abMessages_;
+    }
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    public int getAbMessagesCount() {
+      return abMessages_.size();
+    }
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    public tau.tac.adx.parser.Auctions.ABMessage getAbMessages(int index) {
+      return abMessages_.get(index);
+    }
+    /**
+     * <code>repeated .ABMessage abMessages = 1;</code>
+     */
+    public tau.tac.adx.parser.Auctions.ABMessageOrBuilder getAbMessagesOrBuilder(
+        int index) {
+      return abMessages_.get(index);
+    }
+
+    private void initFields() {
+      abMessages_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < abMessages_.size(); i++) {
+        output.writeMessage(1, abMessages_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < abMessages_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, abMessages_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static tau.tac.adx.parser.Auctions.RABMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(tau.tac.adx.parser.Auctions.RABMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RABMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements tau.tac.adx.parser.Auctions.RABMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return tau.tac.adx.parser.Auctions.internal_static_RABMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return tau.tac.adx.parser.Auctions.internal_static_RABMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                tau.tac.adx.parser.Auctions.RABMessage.class, tau.tac.adx.parser.Auctions.RABMessage.Builder.class);
+      }
+
+      // Construct using tau.tac.adx.parser.Auctions.RABMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAbMessagesFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (abMessagesBuilder_ == null) {
+          abMessages_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          abMessagesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return tau.tac.adx.parser.Auctions.internal_static_RABMessage_descriptor;
+      }
+
+      public tau.tac.adx.parser.Auctions.RABMessage getDefaultInstanceForType() {
+        return tau.tac.adx.parser.Auctions.RABMessage.getDefaultInstance();
+      }
+
+      public tau.tac.adx.parser.Auctions.RABMessage build() {
+        tau.tac.adx.parser.Auctions.RABMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public tau.tac.adx.parser.Auctions.RABMessage buildPartial() {
+        tau.tac.adx.parser.Auctions.RABMessage result = new tau.tac.adx.parser.Auctions.RABMessage(this);
+        int from_bitField0_ = bitField0_;
+        if (abMessagesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            abMessages_ = java.util.Collections.unmodifiableList(abMessages_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.abMessages_ = abMessages_;
+        } else {
+          result.abMessages_ = abMessagesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof tau.tac.adx.parser.Auctions.RABMessage) {
+          return mergeFrom((tau.tac.adx.parser.Auctions.RABMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(tau.tac.adx.parser.Auctions.RABMessage other) {
+        if (other == tau.tac.adx.parser.Auctions.RABMessage.getDefaultInstance()) return this;
+        if (abMessagesBuilder_ == null) {
+          if (!other.abMessages_.isEmpty()) {
+            if (abMessages_.isEmpty()) {
+              abMessages_ = other.abMessages_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureAbMessagesIsMutable();
+              abMessages_.addAll(other.abMessages_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.abMessages_.isEmpty()) {
+            if (abMessagesBuilder_.isEmpty()) {
+              abMessagesBuilder_.dispose();
+              abMessagesBuilder_ = null;
+              abMessages_ = other.abMessages_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              abMessagesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getAbMessagesFieldBuilder() : null;
+            } else {
+              abMessagesBuilder_.addAllMessages(other.abMessages_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        tau.tac.adx.parser.Auctions.RABMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (tau.tac.adx.parser.Auctions.RABMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // repeated .ABMessage abMessages = 1;
+      private java.util.List<tau.tac.adx.parser.Auctions.ABMessage> abMessages_ =
+        java.util.Collections.emptyList();
+      private void ensureAbMessagesIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          abMessages_ = new java.util.ArrayList<tau.tac.adx.parser.Auctions.ABMessage>(abMessages_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          tau.tac.adx.parser.Auctions.ABMessage, tau.tac.adx.parser.Auctions.ABMessage.Builder, tau.tac.adx.parser.Auctions.ABMessageOrBuilder> abMessagesBuilder_;
+
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public java.util.List<tau.tac.adx.parser.Auctions.ABMessage> getAbMessagesList() {
+        if (abMessagesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(abMessages_);
+        } else {
+          return abMessagesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public int getAbMessagesCount() {
+        if (abMessagesBuilder_ == null) {
+          return abMessages_.size();
+        } else {
+          return abMessagesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.ABMessage getAbMessages(int index) {
+        if (abMessagesBuilder_ == null) {
+          return abMessages_.get(index);
+        } else {
+          return abMessagesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder setAbMessages(
+          int index, tau.tac.adx.parser.Auctions.ABMessage value) {
+        if (abMessagesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAbMessagesIsMutable();
+          abMessages_.set(index, value);
+          onChanged();
+        } else {
+          abMessagesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder setAbMessages(
+          int index, tau.tac.adx.parser.Auctions.ABMessage.Builder builderForValue) {
+        if (abMessagesBuilder_ == null) {
+          ensureAbMessagesIsMutable();
+          abMessages_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          abMessagesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder addAbMessages(tau.tac.adx.parser.Auctions.ABMessage value) {
+        if (abMessagesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAbMessagesIsMutable();
+          abMessages_.add(value);
+          onChanged();
+        } else {
+          abMessagesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder addAbMessages(
+          int index, tau.tac.adx.parser.Auctions.ABMessage value) {
+        if (abMessagesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAbMessagesIsMutable();
+          abMessages_.add(index, value);
+          onChanged();
+        } else {
+          abMessagesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder addAbMessages(
+          tau.tac.adx.parser.Auctions.ABMessage.Builder builderForValue) {
+        if (abMessagesBuilder_ == null) {
+          ensureAbMessagesIsMutable();
+          abMessages_.add(builderForValue.build());
+          onChanged();
+        } else {
+          abMessagesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder addAbMessages(
+          int index, tau.tac.adx.parser.Auctions.ABMessage.Builder builderForValue) {
+        if (abMessagesBuilder_ == null) {
+          ensureAbMessagesIsMutable();
+          abMessages_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          abMessagesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder addAllAbMessages(
+          java.lang.Iterable<? extends tau.tac.adx.parser.Auctions.ABMessage> values) {
+        if (abMessagesBuilder_ == null) {
+          ensureAbMessagesIsMutable();
+          super.addAll(values, abMessages_);
+          onChanged();
+        } else {
+          abMessagesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder clearAbMessages() {
+        if (abMessagesBuilder_ == null) {
+          abMessages_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          abMessagesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public Builder removeAbMessages(int index) {
+        if (abMessagesBuilder_ == null) {
+          ensureAbMessagesIsMutable();
+          abMessages_.remove(index);
+          onChanged();
+        } else {
+          abMessagesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.ABMessage.Builder getAbMessagesBuilder(
+          int index) {
+        return getAbMessagesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.ABMessageOrBuilder getAbMessagesOrBuilder(
+          int index) {
+        if (abMessagesBuilder_ == null) {
+          return abMessages_.get(index);  } else {
+          return abMessagesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public java.util.List<? extends tau.tac.adx.parser.Auctions.ABMessageOrBuilder> 
+           getAbMessagesOrBuilderList() {
+        if (abMessagesBuilder_ != null) {
+          return abMessagesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(abMessages_);
+        }
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.ABMessage.Builder addAbMessagesBuilder() {
+        return getAbMessagesFieldBuilder().addBuilder(
+            tau.tac.adx.parser.Auctions.ABMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public tau.tac.adx.parser.Auctions.ABMessage.Builder addAbMessagesBuilder(
+          int index) {
+        return getAbMessagesFieldBuilder().addBuilder(
+            index, tau.tac.adx.parser.Auctions.ABMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ABMessage abMessages = 1;</code>
+       */
+      public java.util.List<tau.tac.adx.parser.Auctions.ABMessage.Builder> 
+           getAbMessagesBuilderList() {
+        return getAbMessagesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          tau.tac.adx.parser.Auctions.ABMessage, tau.tac.adx.parser.Auctions.ABMessage.Builder, tau.tac.adx.parser.Auctions.ABMessageOrBuilder> 
+          getAbMessagesFieldBuilder() {
+        if (abMessagesBuilder_ == null) {
+          abMessagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              tau.tac.adx.parser.Auctions.ABMessage, tau.tac.adx.parser.Auctions.ABMessage.Builder, tau.tac.adx.parser.Auctions.ABMessageOrBuilder>(
+                  abMessages_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          abMessages_ = null;
+        }
+        return abMessagesBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RABMessage)
+    }
+
+    static {
+      defaultInstance = new RABMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RABMessage)
+  }
+
   public interface AdxQueryOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -3914,6 +6829,26 @@ public final class Auctions {
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_AMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_AMessage_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_BMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BMessage_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ABMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ABMessage_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RABMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RABMessage_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_AdxQuery_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3947,54 +6882,90 @@ public final class Auctions {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016auctions.proto\"w\n\010AdxQuery\022\021\n\tpublishe" +
-      "r\030\001 \002(\t\022&\n\016marketSegments\030\002 \003(\0162\016.Market" +
-      "Segment\022\027\n\006device\030\003 \002(\0162\007.Device\022\027\n\006adty" +
-      "pe\030\004 \002(\0162\007.AdType\"i\n\rAuctionReport\022\020\n\010fi" +
-      "rstBid\030\001 \002(\001\022\022\n\nsecondsBid\030\002 \002(\001\022\025\n\rrese" +
-      "rvedPrice\030\003 \002(\001\022\033\n\010adxQuery\030\004 \002(\0132\t.AdxQ" +
-      "uery\"-\n\nDataBundle\022\037\n\007reports\030\001 \003(\0132\016.Au" +
-      "ctionReport\"D\n\017AdxQueryPricing\022\033\n\010adxQue" +
-      "ry\030\001 \002(\0132\t.AdxQuery\022\024\n\014reservePrice\030\002 \002(" +
-      "\002\"G\n\031ReservePriceManagerBundle\022*\n\020adxQue",
-      "ryPricings\030\001 \003(\0132\020.AdxQueryPricing*Z\n\rMa" +
-      "rketSegment\022\010\n\004MALE\020\000\022\n\n\006FEMALE\020\001\022\t\n\005YOU" +
-      "NG\020\002\022\007\n\003OLD\020\003\022\016\n\nLOW_INCOME\020\004\022\017\n\013HIGH_IN" +
-      "COME\020\005*\034\n\006Device\022\n\n\006MOBILE\020\000\022\006\n\002PC\020\001*\035\n\006" +
-      "AdType\022\010\n\004TEXT\020\000\022\t\n\005VIDEO\020\001B\024\n\022tau.tac.a" +
-      "dx.parser"
+      "\n\016auctions.proto\"\201\001\n\010AMessage\022\027\n\006adType\030" +
+      "\001 \001(\0162\007.AdType\022\027\n\006device\030\002 \001(\0162\007.Device\022" +
+      "\021\n\003age\030\003 \001(\0162\004.Age\022\027\n\006gender\030\004 \001(\0162\007.Gen" +
+      "der\022\027\n\006income\030\005 \001(\0162\007.Income\"-\n\010BMessage" +
+      "\022\023\n\013impressions\030\001 \001(\005\022\014\n\004cost\030\002 \001(\002\"E\n\tA" +
+      "BMessage\022\033\n\010aMessage\030\001 \001(\0132\t.AMessage\022\033\n" +
+      "\010bMessage\030\002 \001(\0132\t.BMessage\",\n\nRABMessage" +
+      "\022\036\n\nabMessages\030\001 \003(\0132\n.ABMessage\"w\n\010AdxQ" +
+      "uery\022\021\n\tpublisher\030\001 \002(\t\022&\n\016marketSegment" +
+      "s\030\002 \003(\0162\016.MarketSegment\022\027\n\006device\030\003 \002(\0162",
+      "\007.Device\022\027\n\006adtype\030\004 \002(\0162\007.AdType\"i\n\rAuc" +
+      "tionReport\022\020\n\010firstBid\030\001 \002(\001\022\022\n\nsecondsB" +
+      "id\030\002 \002(\001\022\025\n\rreservedPrice\030\003 \002(\001\022\033\n\010adxQu" +
+      "ery\030\004 \002(\0132\t.AdxQuery\"-\n\nDataBundle\022\037\n\007re" +
+      "ports\030\001 \003(\0132\016.AuctionReport\"D\n\017AdxQueryP" +
+      "ricing\022\033\n\010adxQuery\030\001 \002(\0132\t.AdxQuery\022\024\n\014r" +
+      "eservePrice\030\002 \002(\002\"G\n\031ReservePriceManager" +
+      "Bundle\022*\n\020adxQueryPricings\030\001 \003(\0132\020.AdxQu" +
+      "eryPricing*Z\n\rMarketSegment\022\010\n\004MALE\020\000\022\n\n" +
+      "\006FEMALE\020\001\022\t\n\005YOUNG\020\002\022\007\n\003OLD\020\003\022\016\n\nLOW_INC",
+      "OME\020\004\022\017\n\013HIGH_INCOME\020\005*\034\n\006Device\022\n\n\006MOBI" +
+      "LE\020\000\022\006\n\002PC\020\001*\035\n\006AdType\022\010\n\004TEXT\020\000\022\t\n\005VIDE" +
+      "O\020\001*a\n\003Age\022\r\n\tAge_18_24\020\000\022\r\n\tAge_25_34\020\001" +
+      "\022\r\n\tAge_35_44\020\002\022\r\n\tAge_45_54\020\003\022\r\n\tAge_55" +
+      "_64\020\004\022\017\n\013Age_65_PLUS\020\005*,\n\006Gender\022\017\n\013Gend" +
+      "er_MALE\020\000\022\021\n\rGender_FEMALE\020\001*6\n\006Income\022\007" +
+      "\n\003LOW\020\000\022\n\n\006MEDIUM\020\001\022\010\n\004HIGH\020\002\022\r\n\tVERY_HI" +
+      "GH\020\003B\024\n\022tau.tac.adx.parser"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_AdxQuery_descriptor =
+          internal_static_AMessage_descriptor =
             getDescriptor().getMessageTypes().get(0);
+          internal_static_AMessage_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_AMessage_descriptor,
+              new java.lang.String[] { "AdType", "Device", "Age", "Gender", "Income", });
+          internal_static_BMessage_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_BMessage_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_BMessage_descriptor,
+              new java.lang.String[] { "Impressions", "Cost", });
+          internal_static_ABMessage_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_ABMessage_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ABMessage_descriptor,
+              new java.lang.String[] { "AMessage", "BMessage", });
+          internal_static_RABMessage_descriptor =
+            getDescriptor().getMessageTypes().get(3);
+          internal_static_RABMessage_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RABMessage_descriptor,
+              new java.lang.String[] { "AbMessages", });
+          internal_static_AdxQuery_descriptor =
+            getDescriptor().getMessageTypes().get(4);
           internal_static_AdxQuery_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_AdxQuery_descriptor,
               new java.lang.String[] { "Publisher", "MarketSegments", "Device", "Adtype", });
           internal_static_AuctionReport_descriptor =
-            getDescriptor().getMessageTypes().get(1);
+            getDescriptor().getMessageTypes().get(5);
           internal_static_AuctionReport_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_AuctionReport_descriptor,
               new java.lang.String[] { "FirstBid", "SecondsBid", "ReservedPrice", "AdxQuery", });
           internal_static_DataBundle_descriptor =
-            getDescriptor().getMessageTypes().get(2);
+            getDescriptor().getMessageTypes().get(6);
           internal_static_DataBundle_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_DataBundle_descriptor,
               new java.lang.String[] { "Reports", });
           internal_static_AdxQueryPricing_descriptor =
-            getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(7);
           internal_static_AdxQueryPricing_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_AdxQueryPricing_descriptor,
               new java.lang.String[] { "AdxQuery", "ReservePrice", });
           internal_static_ReservePriceManagerBundle_descriptor =
-            getDescriptor().getMessageTypes().get(4);
+            getDescriptor().getMessageTypes().get(8);
           internal_static_ReservePriceManagerBundle_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_ReservePriceManagerBundle_descriptor,
