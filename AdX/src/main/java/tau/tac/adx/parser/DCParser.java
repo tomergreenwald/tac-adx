@@ -83,7 +83,7 @@ public class DCParser extends Parser {
 	}
 
 	protected double[] getFeatures(AdxQuery adxQuery) {
-		double features[] = new double[5 + 18];
+		double features[] = new double[5 + 3];
 		features[0] = adxQuery.getMarketSegmentsList().contains(
 				MarketSegment.MALE) ? 1 : -1;
 		features[1] = adxQuery.getMarketSegmentsList().contains(
@@ -92,8 +92,10 @@ public class DCParser extends Parser {
 				MarketSegment.LOW_INCOME) ? 1 : -1;
 		features[3] = adxQuery.getDevice() == Device.MOBILE ? 1 : -1;
 		features[4] = adxQuery.getAdtype() == AdType.TEXT ? 1 : -1;
-		for (int i = 0; i < publisherNameToId.size(); i++) {
-			if (i == publisherNameToId.get(adxQuery.getPublisher()))
+		int publisherGroup = publisherNameToId.get(adxQuery.getPublisher())
+				/ (publisherNameToId.size() / 3);
+		for (int i = 0; i < 3; i++) {
+			if (i == publisherGroup)
 				features[5 + i] = 1;
 			else
 				features[5 + i] = -1;
@@ -118,8 +120,11 @@ public class DCParser extends Parser {
 			if (reportsCount <= 0) {
 				return;
 			}
-			double[][] featureVector = new double[reportsCount][23];
-			double[] initial_w = new double[23];
+				double[][] featureVector = new double[reportsCount][8];
+				double[] initial_w = { 57.49234810035743, -57.49238391234895,
+						57.49232353552666, -6.531233873881703E-8,
+						57.49230814349496, 172.4770780079259,
+						172.47707787106208, 114.98477706925033 };
 			double[] b1 = new double[reportsCount];
 			double[] b2 = new double[reportsCount];
 			double gamma = .001;
