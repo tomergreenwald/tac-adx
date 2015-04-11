@@ -28,7 +28,7 @@ public class Utils {
 
 			@Override
 			public int compare(EndPoint o1, EndPoint o2) {
-				return (int) (100 * (o1.val - o2.val));
+				return (int) (10000 * (o1.val - o2.val));
 			}
 
 		});
