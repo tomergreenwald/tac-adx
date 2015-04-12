@@ -87,16 +87,6 @@ public class UserAdTypeReservePriceManager implements
 		for (ReservePriceType priceType : reservePriceManagers.keySet()) {
 			ReservePriceManager reservePriceManager = reservePriceManagers
 					.get(priceType);
-			for (Double reserve : reservePriceManager.getProfitMap().keySet()) {
-				int hits = reservePriceManager.getProfitMap().get(reserve)
-						.intValue();
-				int misses = reservePriceManager.getProfitQueries()
-						.get(reserve).intValue()
-						- reservePriceManager.getProfitMap().get(reserve)
-								.intValue();
-				System.out.println("Hits " + hits + ", misses " + misses + ", reserve "
-						+ reserve);
-			}
 			double updateDailyBaselineAverage = reservePriceManager
 					.updateDailyBaselineAverage();
 			System.out.println("Updated reserve price for " + priceType + " to "
