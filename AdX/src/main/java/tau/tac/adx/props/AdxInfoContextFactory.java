@@ -170,6 +170,7 @@ public class AdxInfoContextFactory implements ContextFactory {
 		con.addTransportable(new CampaignAuctionReportEntry());
 		con.addTransportable(new CampaignAuctionReportKey());
 		con.addTransportable(new AuctionReport());
+		con.addTransportable(new ReservePriceInfo());
 
 		// Cache the last context
 		lastContext = con;
