@@ -4,16 +4,14 @@
 package tau.tac.adx.publishers.reserve;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import tau.tac.adx.ads.properties.AdType;
-import tau.tac.adx.devices.Device;
-import tau.tac.adx.parser.Auctions.AdxQueryPricing;
-import tau.tac.adx.parser.Auctions.ReservePriceManagerBundle;
+import tau.tac.adx.parser.Auctions;
+import tau.tac.adx.playground.Utils;
 import tau.tac.adx.props.AdxQuery;
-import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.sim.config.AdxConfigurationParser;
 
 /**
  * @author Tomer Greenwald
@@ -22,39 +20,47 @@ import tau.tac.adx.report.adn.MarketSegment;
 public class PredeterminedReservePriceManager implements
 		MultiReservePriceManager<AdxQuery> {
 
-	private Map<AdxQuery, Double> pricing = new HashMap<>();
+	private double[] coefficients;
+	Map<String, Integer> publisherNameToId = new HashMap<>();
 
 	/**
 	 * @param priceBundle
 	 */
 	public PredeterminedReservePriceManager(
-			ReservePriceManagerBundle priceBundle) {
-		for (AdxQueryPricing queryPricing : priceBundle
-				.getAdxQueryPricingsList()) {
-			String publisher = queryPricing.getAdxQuery().getPublisher();
-			Set<MarketSegment> user = new HashSet<>();
-			for (tau.tac.adx.parser.Auctions.MarketSegment marketSegment : queryPricing
-					.getAdxQuery().getMarketSegmentsList()) {
-				user.add(MarketSegment.values()[marketSegment.getNumber()]);
-			}
-			Device device = Device.values()[queryPricing.getAdxQuery()
-					.getDevice().getNumber()];
-			AdType adType = AdType.values()[queryPricing.getAdxQuery()
-					.getAdtype().getNumber()];
-			AdxQuery adxQuery = new AdxQuery(publisher, user, device, adType);
-			pricing.put(adxQuery, (double) queryPricing.getReservePrice());
+			double[] coefficients) {
+		this.coefficients = coefficients;
+		for (int i = 0; i < AdxConfigurationParser.publisherNames.length; i++) {
+			publisherNameToId.put(AdxConfigurationParser.publisherNames[i], i);
 		}
 	}
-
+	
+	private Auctions.AdxQuery convertQuery(AdxQuery adxQuery) {
+		List<Auctions.MarketSegment> marketSegments = new LinkedList<Auctions.MarketSegment>();
+		for (tau.tac.adx.report.adn.MarketSegment marketSegment : adxQuery
+				.getMarketSegments()) {
+			marketSegments.add(Auctions.MarketSegment.valueOf(marketSegment
+					.ordinal()));
+		}
+		Auctions.AdxQuery protoAdxQuery = Auctions.AdxQuery.newBuilder()
+				.setPublisher(adxQuery.getPublisher())
+				.addAllMarketSegments(marketSegments)
+				.setDevice(Auctions.Device.valueOf(adxQuery.getDevice().ordinal()))
+				.setAdtype(Auctions.AdType.valueOf(adxQuery.getAdType().ordinal()))
+				.build();
+		return protoAdxQuery;
+	}
+	
 	/**
 	 * @see tau.tac.adx.publishers.reserve.MultiReservePriceManager#generateReservePrice(java.lang.Object)
 	 */
 	@Override
 	public double generateReservePrice(AdxQuery adxQuery) {
-		if (!pricing.containsKey(adxQuery)) {
-			return pricing.put(adxQuery, 0.0);
+		double[] features = Utils.getFeatures(convertQuery(adxQuery), publisherNameToId);
+		double sum = 0;
+		for (int i = 0; i < features.length; i++) {
+			sum += features[i] * coefficients[i];
 		}
-		return pricing.get(adxQuery);
+		return sum;
 	}
 
 	/**
