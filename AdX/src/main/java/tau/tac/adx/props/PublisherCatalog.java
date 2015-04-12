@@ -44,6 +44,7 @@ public class PublisherCatalog extends
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = -5999861205883888430L;
+	public ReservePriceType reservePriceType;
 
 	/**
 	 * Adds an {@link AdxPublisher} to the {@link PublisherCatalog}.

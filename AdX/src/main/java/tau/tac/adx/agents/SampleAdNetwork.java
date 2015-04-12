@@ -24,6 +24,7 @@ import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
+import tau.tac.adx.props.ReservePriceInfo;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.AdNetBidMessage;
@@ -149,8 +150,9 @@ public class SampleAdNetwork extends Agent {
 				handleBankStatus((BankStatus) content);
 			} else if(content instanceof CampaignAuctionReport) {
 				hadnleCampaignAuctionReport((CampaignAuctionReport) content);
-			}
-			else {
+			} else if (content instanceof ReservePriceInfo) {
+				// ((ReservePriceInfo)content).getReservePriceType();
+			} else {
 				System.out.println("UNKNOWN Message Received: " + content);
 			}
 

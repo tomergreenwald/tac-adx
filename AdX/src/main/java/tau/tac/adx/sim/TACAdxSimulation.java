@@ -62,6 +62,7 @@ import tau.tac.adx.auction.tracker.AdxBidTrackerImpl;
 import tau.tac.adx.devices.Device;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.PublisherCatalog;
+import tau.tac.adx.props.ReservePriceInfo;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.AdNetworkReportSender;
@@ -305,6 +306,7 @@ public class TACAdxSimulation extends Simulation implements AdxAgentRepository,
 		// Send the publisher catalog to the ad networks
 
 		sendToRole(AD_NETOWRK_ROLE_ID, this.publisherCatalog);
+		sendToRole(AD_NETOWRK_ROLE_ID, new ReservePriceInfo(this.publisherCatalog.reservePriceType));
 
 		for (SimulationAgent publisher : getPublishers()) {
 			Publisher publisherAgent = (Publisher) publisher.getAgent();
