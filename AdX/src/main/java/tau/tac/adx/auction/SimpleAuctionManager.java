@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.data.AuctionData;
 import tau.tac.adx.auction.data.AuctionOrder;
 import tau.tac.adx.auction.data.AuctionResult;
@@ -15,6 +16,8 @@ import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.report.adn.MarketSegment;
+import tau.tac.adx.sim.AuctionReport;
+import tau.tac.adx.sim.TACAdxSimulation;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -54,6 +57,10 @@ public class SimpleAuctionManager implements AuctionManager {
 				secondBid = bidInfo;
 			}
 		}
+		
+		AuctionReport auctionReport = new AuctionReport(winningBid.getBid(), secondBid.getBid(), auctionData.getReservePrice(), query);
+		AdxManager.getInstance().getSimulation().getEventWriter().dataUpdated(0, auctionReport);
+		
 		BidInfo adjustedWinningBid = (BidInfo) winningBid.clone();
 		Set<MarketSegment> marketSegments = Sets.intersection(
 				query.getMarketSegments(), winningBid.getMarketSegments());

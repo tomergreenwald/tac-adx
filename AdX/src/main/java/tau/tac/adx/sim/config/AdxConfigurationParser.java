@@ -14,9 +14,13 @@ import se.sics.tasim.sim.SimulationAgent;
 import tau.tac.adx.ads.properties.AdAttributeProbabilityMaps;
 import tau.tac.adx.ads.properties.AdType;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.parser.Auctions.ReservePriceManagerBundle;
+import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
+import tau.tac.adx.props.ReservePriceType;
 import tau.tac.adx.publishers.AdxPublisher;
-import tau.tac.adx.publishers.reserve.ReservePriceManager;
+import tau.tac.adx.publishers.reserve.MultiReservePriceManager;
+import tau.tac.adx.publishers.reserve.PredeterminedReservePriceManager;
 import tau.tac.adx.publishers.reserve.UserAdTypeReservePriceManager;
 import tau.tac.adx.sim.TACAdxSimulation;
 import tau.tac.adx.users.AdxUser;
@@ -35,10 +39,11 @@ import edu.umich.eecs.tac.props.AdvertiserInfo;
 public class AdxConfigurationParser {
 
 	private final ConfigManager config;
+	private Random random;
 
-	private String[] names = { "yahoo", "cnn", "nyt", "hfn", "msn", "fox",
-			"amazon", "ebay", "wallmart", "target", "bestbuy", "sears",
-			"webmd", "ehow", "ask", "tripadvisor", "cnet", "weather" };
+	public static String[] publisherNames = { "yahoo", "cnn", "nyt", "hfn",
+			"msn", "fox", "amazon", "ebay", "wallmart", "target", "bestbuy",
+			"sears", "webmd", "ehow", "ask", "tripadvisor", "cnet", "weather" };
 
 	private double[] ratings = { 0.16, 0.022, 0.031, 0.081, 0.182, 0.031,
 			0.128, 0.085, 0.38, 0.02, 0.016, 0.016, 0.025, 0.025, 0.05, 0.016,
@@ -88,7 +93,7 @@ public class AdxConfigurationParser {
 			0.78, 0.82, 0.81, 0.8, 0.81, 0.76, 0.72, 0.72, 0.70, 0.73, 0.69 };
 	private double[] deviceMobile = { 0.26, 0.24, 0.23, 0.22, 0.25, 0.24, 0.21,
 			0.22, 0.18, 0.19, 0.2, 0.19, 0.24, 0.28, 0.28, 0.30, 0.27, 0.31 };
-	
+
 	private static double RESERVE_PRICE_INIT = 0.005;
 	private static double RESERVE_PRICE_VARIANCE = 0.02;
 	private static double RESERVE_PRICE_LEARN_RATE = 0.2;
@@ -98,6 +103,7 @@ public class AdxConfigurationParser {
 	 */
 	public AdxConfigurationParser(ConfigManager config) {
 		this.config = config;
+		random = new Random();
 	}
 
 	/**
@@ -196,15 +202,25 @@ public class AdxConfigurationParser {
 			subsetskus.add(Integer.parseInt(skus3[r.nextInt(skus3.length)]));
 		}
 
+		int reservePriceManagerType = config.getPropertyAsInt(
+				"publishers.reserve_price_manager", 0);
+		String[] reservePriceManagerConfig = config.getPropertyAsArray(
+				"publishers.reserve_price_manager_config", "");
+		if (reservePriceManagerType == -1) {
+			reservePriceManagerType = random.nextInt(2);
+		}
+
+		catalog.reservePriceType = ReservePriceType.values()[reservePriceManagerType];
+
 		for (Integer sku : subsetskus) {
-			String name = names[sku];
+			String name = publisherNames[sku];
 			double rating = ratings[sku];
 
 			AdAttributeProbabilityMaps adAttributeProbabilityMaps = extractAdTypeAffiliation(sku);
 			AdxUserAttributeProbabilityMaps adxUserAttributeProbabilityMaps = extractUserAffiliation(sku);
 			Map<Device, Double> deviceAffiliation = extractDeviceAffiliation(sku);
-			UserAdTypeReservePriceManager reservePriceManager = new UserAdTypeReservePriceManager(
-					RESERVE_PRICE_INIT, RESERVE_PRICE_VARIANCE, RESERVE_PRICE_LEARN_RATE);
+			MultiReservePriceManager<AdxQuery> reservePriceManager = generateReservePriceManager(
+					reservePriceManagerType, reservePriceManagerConfig);
 			AdxPublisher publisher = new AdxPublisher(
 					adxUserAttributeProbabilityMaps,
 					adAttributeProbabilityMaps, deviceAffiliation, rating, 0,
@@ -215,6 +231,34 @@ public class AdxConfigurationParser {
 		catalog.lock();
 
 		return catalog;
+	}
+
+	private MultiReservePriceManager<AdxQuery> generateReservePriceManager(
+			int reservePriceManagerType, String[] reservePriceManagerConfig) {
+		switch (reservePriceManagerType) {
+		case 0:
+			return new PredeterminedReservePriceManager(new double[] { 0, 0, 0,
+					0, 0, 0, 0, 0 });
+		case 1:
+			return new UserAdTypeReservePriceManager(RESERVE_PRICE_INIT,
+					RESERVE_PRICE_VARIANCE, RESERVE_PRICE_LEARN_RATE);
+		case 2:
+			ReservePriceManagerBundle priceBundle;
+			double[] coefficients = new double[reservePriceManagerConfig.length];
+			for (int i = 0; i < coefficients.length; i++) {
+				coefficients[i] = Double
+						.parseDouble(reservePriceManagerConfig[i]);
+			}
+			return new PredeterminedReservePriceManager(coefficients);
+		case 3:
+			throw new RuntimeException(
+					"Reserve price manager type not supported yet - "
+							+ reservePriceManagerType);
+		default:
+			throw new RuntimeException(
+					"Reserve price manager type is not in range - "
+							+ reservePriceManagerType);
+		}
 	}
 
 	/**

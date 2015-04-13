@@ -10,6 +10,21 @@ AdX/adx-server/public_html/localhost/
 AdX/adx-agnet/logs/
 AdX/adx-server/logs/
 AdX/adx-server/*.slg
-AdX/src/main/cpp/reserve-price-payground/
+AdX/src/main/python/reserve price playground/.idea/
+*.pyc
 AdX/src/main/python/.idea/
-AdX/src/main/python/reserve price playground/
+AdX/src/main/cpp/reserve-price-payground/reserve-price-payground/x64/
+AdX/src/main/cpp/reserve-price-payground/x64/
+AdX/src/main/cpp/reserve-price-payground/reserve-price-payground/Debug/
+AdX/src/main/cpp/reserve-price-payground/Debug/
+*.sdf
+*.opensdf
+*.suo
+*.tlog
+*.obj
+*.lib
+*.pdb
+*.idb
+*.cache
+*.htm
+AdX/src/main/cpp/reserve-price-payground/Release/

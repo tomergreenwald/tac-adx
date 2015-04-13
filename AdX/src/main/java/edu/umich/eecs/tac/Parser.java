@@ -34,6 +34,7 @@ import se.sics.isl.transport.Transportable;
 import se.sics.tasim.logtool.LogReader;
 import se.sics.tasim.logtool.ParticipantInfo;
 import se.sics.tasim.props.ServerConfig;
+import tau.tac.adx.parser.Auctions.AuctionReport;
 import tau.tac.adx.props.AdxInfoContextFactory;
 
 /**

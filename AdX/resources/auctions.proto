@@ -1,0 +1,89 @@
+option java_package = "tau.tac.adx.parser";
+enum MarketSegment {
+    MALE = 0;
+    FEMALE = 1;
+    YOUNG = 2;
+    OLD = 3;
+    LOW_INCOME = 4;
+    HIGH_INCOME = 5;
+}
+
+enum Device {
+    MOBILE = 0;
+    PC = 1;
+}
+
+enum AdType {
+    TEXT = 0;
+    VIDEO = 1;
+}
+
+enum Age {
+	Age_18_24    = 0; 
+	Age_25_34    = 1;
+	Age_35_44    = 2;
+	Age_45_54    = 3;
+	Age_55_64    = 4;
+	Age_65_PLUS = 5;
+}
+
+enum Gender {
+	Gender_MALE = 0;
+	Gender_FEMALE = 1;
+}
+
+enum Income {
+	LOW            = 0;
+	MEDIUM       = 1;
+	HIGH           = 2;
+	VERY_HIGH  = 3;
+}
+
+message AMessage {
+	optional AdType adType = 1;
+	optional Device device = 2;
+	optional Age age = 3;
+	optional Gender gender = 4;
+	optional Income income = 5;
+}
+
+message BMessage {
+	optional int32 impressions = 1;
+	optional float cost = 2;
+}
+
+message ABMessage {
+	optional AMessage aMessage = 1;
+	optional BMessage bMessage = 2;
+}
+
+message RABMessage {
+	repeated ABMessage abMessages = 1;
+}
+
+message AdxQuery {
+	required string publisher = 1;
+	repeated MarketSegment marketSegments = 2;
+	required Device device = 3;
+	required AdType adtype = 4;
+}
+
+message AuctionReport {
+    required double firstBid = 1;
+    required double secondsBid = 2;
+    required double reservedPrice = 3;
+    required AdxQuery adxQuery = 4;
+}
+
+message DataBundle {
+    repeated AuctionReport reports = 1;
+}
+
+message AdxQueryPricing {
+	required AdxQuery adxQuery = 1;
+	required float reservePrice = 2;
+}
+
+message ReservePriceManagerBundle {
+	repeated AdxQueryPricing adxQueryPricings = 1;
+}

@@ -67,7 +67,7 @@ public class SystemMessageValidationTest {
 	public static Iterable<Object[]> data() throws FileNotFoundException,
 			IOException, ParseException {
 		LogReader logReader = new LogReader(new FileInputStream(
-				"src/test/resources/sim9.slg"));
+				"src/test/resources/localhost_sim10.slg"));
 		parser = new LogVerifierParser(logReader, null);
 		parser.start();
 		parser.stop();
