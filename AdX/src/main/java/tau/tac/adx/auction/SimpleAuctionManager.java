@@ -145,7 +145,7 @@ public class SimpleAuctionManager implements AuctionManager {
 		case GENERALIZED_SECOND_PRICE:
 			double winningPrice;
 			if (!passedReservePrice(secondBid, auctionData)) {
-				winningPrice = auctionData.getReservePrice();
+				winningPrice = auctionData.getReservePrice() * 1000;
 			} else {
 				winningPrice = secondBid.getBid();
 			}
