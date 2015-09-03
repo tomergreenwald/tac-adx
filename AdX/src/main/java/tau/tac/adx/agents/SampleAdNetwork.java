@@ -41,8 +41,7 @@ import edu.umich.eecs.tac.props.BankStatus;
 
 /**
  * 
- * @author Mariano Schain
- * Test plug-in
+ * @author Mariano Schain Test plug-in
  * 
  */
 public class SampleAdNetwork extends Agent {
@@ -148,7 +147,7 @@ public class SampleAdNetwork extends Agent {
 				handleStartInfo((StartInfo) content);
 			} else if (content instanceof BankStatus) {
 				handleBankStatus((BankStatus) content);
-			} else if(content instanceof CampaignAuctionReport) {
+			} else if (content instanceof CampaignAuctionReport) {
 				hadnleCampaignAuctionReport((CampaignAuctionReport) content);
 			} else if (content instanceof ReservePriceInfo) {
 				// ((ReservePriceInfo)content).getReservePriceType();
@@ -211,7 +210,8 @@ public class SampleAdNetwork extends Agent {
 		adxAgentAddress = campaignMessage.getAdxAgentAddress();
 
 		CampaignData campaignData = new CampaignData(initialCampaignMessage);
-		campaignData.setBudget(initialCampaignMessage.getBudgetMillis()/1000.0);
+		campaignData
+				.setBudget(initialCampaignMessage.getBudgetMillis() / 1000.0);
 		currCampaign = campaignData;
 		genCampaignQueries(currCampaign);
 
@@ -219,7 +219,8 @@ public class SampleAdNetwork extends Agent {
 		 * The initial campaign is already allocated to our agent so we add it
 		 * to our allocated-campaigns list.
 		 */
-		System.out.println("Day " + day + ": Allocated campaign - " + campaignData);
+		System.out.println("Day " + day + ": Allocated campaign - "
+				+ campaignData);
 		myCampaigns.put(initialCampaignMessage.getId(), campaignData);
 	}
 
@@ -235,7 +236,8 @@ public class SampleAdNetwork extends Agent {
 		day = com.getDay();
 
 		pendingCampaign = new CampaignData(com);
-		System.out.println("Day " + day + ": Campaign opportunity - " + pendingCampaign);
+		System.out.println("Day " + day + ": Campaign opportunity - "
+				+ pendingCampaign);
 
 		/*
 		 * The campaign requires com.getReachImps() impressions. The competing
@@ -248,9 +250,10 @@ public class SampleAdNetwork extends Agent {
 
 		Random random = new Random();
 		long cmpimps = com.getReachImps();
-		long cmpBidMillis = random.nextInt((int)cmpimps);
+		long cmpBidMillis = random.nextInt((int) cmpimps);
 
-		System.out.println("Day " + day + ": Campaign total budget bid (millis): " + cmpBidMillis);
+		System.out.println("Day " + day
+				+ ": Campaign total budget bid (millis): " + cmpBidMillis);
 
 		/*
 		 * Adjust ucs bid s.t. target level is achieved. Note: The bid for the
@@ -259,14 +262,16 @@ public class SampleAdNetwork extends Agent {
 
 		if (adNetworkDailyNotification != null) {
 			double ucsLevel = adNetworkDailyNotification.getServiceLevel();
-			ucsBid = 0.1 + random.nextDouble()/10.0;			
-			System.out.println("Day " + day + ": ucs level reported: " + ucsLevel);
+			ucsBid = 0.1 + random.nextDouble() / 10.0;
+			System.out.println("Day " + day + ": ucs level reported: "
+					+ ucsLevel);
 		} else {
 			System.out.println("Day " + day + ": Initial ucs bid is " + ucsBid);
 		}
 
 		/* Note: Campaign bid is in millis */
-		AdNetBidMessage bids = new AdNetBidMessage(ucsBid, pendingCampaign.id, cmpBidMillis);
+		AdNetBidMessage bids = new AdNetBidMessage(ucsBid, pendingCampaign.id,
+				cmpBidMillis);
 		sendMessage(demandAgentAddress, bids);
 	}
 
@@ -291,7 +296,8 @@ public class SampleAdNetwork extends Agent {
 				&& (notificationMessage.getCostMillis() != 0)) {
 
 			/* add campaign to list of won campaigns */
-			pendingCampaign.setBudget(notificationMessage.getCostMillis()/1000.0);
+			pendingCampaign
+					.setBudget(notificationMessage.getCostMillis() / 1000.0);
 			currCampaign = pendingCampaign;
 			genCampaignQueries(currCampaign);
 			myCampaigns.put(pendingCampaign.id, pendingCampaign);
@@ -300,10 +306,13 @@ public class SampleAdNetwork extends Agent {
 					+ notificationMessage.getCostMillis();
 		}
 
-		System.out.println("Day " + day + ": " + campaignAllocatedTo
-				+ ". UCS Level set to " + notificationMessage.getServiceLevel()
-				+ " at price " + notificationMessage.getPrice()
-				+ " Quality Score is: " + notificationMessage.getQualityScore());
+		System.out
+				.println("Day " + day + ": " + campaignAllocatedTo
+						+ ". UCS Level set to "
+						+ notificationMessage.getServiceLevel() + " at price "
+						+ notificationMessage.getPrice()
+						+ " Quality Score is: "
+						+ notificationMessage.getQualityScore());
 	}
 
 	/**
@@ -339,7 +348,7 @@ public class SampleAdNetwork extends Agent {
 		 * revenue per imp
 		 */
 
-		double rbid = 10.0*random.nextDouble();
+		double rbid = 10.0 * random.nextDouble();
 
 		/*
 		 * add bid entries w.r.t. each active campaign with remaining contracted
@@ -361,7 +370,8 @@ public class SampleAdNetwork extends Agent {
 					 * among matching entries with the same campaign id, the AdX
 					 * randomly chooses an entry according to the designated
 					 * weight. by setting a constant weight 1, we create a
-					 * uniform probability over active campaigns(irrelevant because we are bidding only on one campaign)
+					 * uniform probability over active campaigns(irrelevant
+					 * because we are bidding only on one campaign)
 					 */
 					if (query.getDevice() == Device.pc) {
 						if (query.getAdType() == AdType.text) {
@@ -371,9 +381,10 @@ public class SampleAdNetwork extends Agent {
 						}
 					} else {
 						if (query.getAdType() == AdType.text) {
-							entCount+=currCampaign.mobileCoef;
+							entCount += currCampaign.mobileCoef;
 						} else {
-							entCount += currCampaign.videoCoef + currCampaign.mobileCoef;
+							entCount += currCampaign.videoCoef
+									+ currCampaign.mobileCoef;
 						}
 
 					}
@@ -414,8 +425,8 @@ public class SampleAdNetwork extends Agent {
 					campaignKey).getCampaignStats();
 			myCampaigns.get(cmpId).setStats(cstats);
 
-			System.out.println("Day " + day + ": Updating campaign " + cmpId + " stats: "
-					+ cstats.getTargetedImps() + " tgtImps "
+			System.out.println("Day " + day + ": Updating campaign " + cmpId
+					+ " stats: " + cstats.getTargetedImps() + " tgtImps "
 					+ cstats.getOtherImps() + " nonTgtImps. Cost of imps is "
 					+ cstats.getCost());
 		}
@@ -452,12 +463,12 @@ public class SampleAdNetwork extends Agent {
 	@Override
 	protected void simulationSetup() {
 		Random random = new Random();
-		
+
 		day = 0;
 		bidBundle = new AdxBidBundle();
 
 		/* initial bid between 0.1 and 0.2 */
-		ucsBid = 0.1 + random.nextDouble()/10.0;
+		ucsBid = 0.1 + random.nextDouble() / 10.0;
 
 		myCampaigns = new HashMap<Integer, CampaignData>();
 		log.fine("AdNet " + getName() + " simulationSetup");
@@ -528,9 +539,10 @@ public class SampleAdNetwork extends Agent {
 			querySet.toArray(queries);
 		}
 	}
-	
-	/*genarates an array of the publishers names
-	 * */
+
+	/*
+	 * genarates an array of the publishers names
+	 */
 	private void getPublishersNames() {
 		if (null == publisherNames && publisherCatalog != null) {
 			ArrayList<String> names = new ArrayList<String>();
@@ -542,8 +554,10 @@ public class SampleAdNetwork extends Agent {
 			names.toArray(publisherNames);
 		}
 	}
+
 	/*
-	 * genarates the campaign queries relevant for the specific campaign, and assign them as the campaigns campaignQueries field 
+	 * genarates the campaign queries relevant for the specific campaign, and
+	 * assign them as the campaigns campaignQueries field
 	 */
 	private void genCampaignQueries(CampaignData campaignData) {
 		Set<AdxQuery> campaignQueriesSet = new HashSet<AdxQuery>();
@@ -560,8 +574,9 @@ public class SampleAdNetwork extends Agent {
 
 		campaignData.campaignQueries = new AdxQuery[campaignQueriesSet.size()];
 		campaignQueriesSet.toArray(campaignData.campaignQueries);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!"+Arrays.toString(campaignData.campaignQueries)+"!!!!!!!!!!!!!!!!");
-		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!"
+				+ Arrays.toString(campaignData.campaignQueries)
+				+ "!!!!!!!!!!!!!!!!");
 
 	}
 
@@ -574,7 +589,8 @@ public class SampleAdNetwork extends Agent {
 		double videoCoef;
 		double mobileCoef;
 		int id;
-		private AdxQuery[] campaignQueries;//array of queries relvent for the campaign.
+		private AdxQuery[] campaignQueries;// array of queries relvent for the
+											// campaign.
 
 		/* campaign info as reported */
 		CampaignStats stats;
