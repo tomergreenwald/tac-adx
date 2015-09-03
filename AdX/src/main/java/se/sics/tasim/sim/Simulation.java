@@ -73,7 +73,7 @@ public abstract class Simulation {
 
 	private Admin admin;
 	private ConfigManager config;
-	private SimulationInfo info;
+	public SimulationInfo info;
 	private EventWriter rootEventWriter;
 	private EventWriter eventWriter;
 
