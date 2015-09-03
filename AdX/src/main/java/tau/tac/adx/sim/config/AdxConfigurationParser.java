@@ -203,11 +203,11 @@ public class AdxConfigurationParser {
 		}
 
 		int reservePriceManagerType = config.getPropertyAsInt(
-				"publishers.reserve_price_manager", 0);
+				"publishers.reserve_price_manager", -1);
 		String[] reservePriceManagerConfig = config.getPropertyAsArray(
 				"publishers.reserve_price_manager_config", "");
 		if (reservePriceManagerType == -1) {
-			reservePriceManagerType = random.nextInt(2);
+			reservePriceManagerType = random.nextInt(3);
 		}
 
 		catalog.reservePriceType = ReservePriceType.values()[reservePriceManagerType];
