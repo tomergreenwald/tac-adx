@@ -1,0 +1,26 @@
+enum Gender {
+    MALE = 0;
+    FEMALE = 1;
+}
+enum Age {
+	Age_18_24 = 0;
+	Age_25_34 = 2;
+	Age_35_44 = 3;
+	Age_45_54 = 4;
+	Age_55_64 = 5;
+	Age_65_PLUS = 6;
+}
+enum Income {
+	Low = 0;
+	Medium = 2;
+	High = 3;
+	Very_High = 4;
+}
+enum AdType {
+	Text = 0;
+	Video = 1;
+}
+enum Device {
+	Pc = 0;
+	Mobile = 1;
+}
