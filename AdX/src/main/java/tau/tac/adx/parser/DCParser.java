@@ -108,50 +108,50 @@ public class DCParser extends Parser {
 	 */
 	@Override
 	protected void parseStopped() {
-		try {
-			System.out.println("serializing");
-			File file = new File("resources\\log.protobuf");
-			file.delete();
-			FileOutputStream fileOutputStream = new FileOutputStream(file);
-			DataBundle build = builder.build();
-			int reportsCount = build.getReportsCount();
-
-			int m = reportsCount;
-			if (reportsCount <= 0) {
-				return;
-			}
-				double[][] featureVector = new double[reportsCount][8];
-				double[] initial_w = { 57.49234810035743, -57.49238391234895,
-						57.49232353552666, -6.531233873881703E-8,
-						57.49230814349496, 172.4770780079259,
-						172.47707787106208, 114.98477706925033 };
-			double[] b1 = new double[reportsCount];
-			double[] b2 = new double[reportsCount];
-			double gamma = .001;
-			double lambda = 0.001;
-			double Lambda = 1000.0;
-			for (int i = 0; i < build.getReportsCount(); i++) {
-				tau.tac.adx.parser.Auctions.AuctionReport report = build
-						.getReports(i);
-				AdxQuery adxQuery = report.getAdxQuery();
-				featureVector[i] = getFeatures(adxQuery);
-				// initial_w[i] = report.getReservedPrice();
-				b1[i] = report.getFirstBid();
-				b2[i] = report.getSecondsBid();
-			}
-			double[] dc = Utils.DC(m, featureVector, initial_w, b1, b2, gamma,
-					lambda, Lambda);
-
-			fileOutputStream.write(build.toByteArray());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			System.out.println("serializing");
+//			File file = new File("resources\\log.protobuf");
+//			file.delete();
+//			FileOutputStream fileOutputStream = new FileOutputStream(file);
+//			DataBundle build = builder.build();
+//			int reportsCount = build.getReportsCount();
+//
+//			int m = reportsCount;
+//			if (reportsCount <= 0) {
+//				return;
+//			}
+//				double[][] featureVector = new double[reportsCount][8];
+//				double[] initial_w = { 57.49234810035743, -57.49238391234895,
+//						57.49232353552666, -6.531233873881703E-8,
+//						57.49230814349496, 172.4770780079259,
+//						172.47707787106208, 114.98477706925033 };
+//			double[] b1 = new double[reportsCount];
+//			double[] b2 = new double[reportsCount];
+//			double gamma = .001;
+//			double lambda = 0.001;
+//			double Lambda = 1000.0;
+//			for (int i = 0; i < build.getReportsCount(); i++) {
+//				tau.tac.adx.parser.Auctions.AuctionReport report = build
+//						.getReports(i);
+//				AdxQuery adxQuery = report.getAdxQuery();
+//				featureVector[i] = getFeatures(adxQuery);
+//				// initial_w[i] = report.getReservedPrice();
+//				b1[i] = report.getFirstBid();
+//				b2[i] = report.getSecondsBid();
+//			}
+//			double[] dc = Utils.DC(m, featureVector, initial_w, b1, b2, gamma,
+//					lambda, Lambda);
+//
+//			fileOutputStream.write(build.toByteArray());
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
