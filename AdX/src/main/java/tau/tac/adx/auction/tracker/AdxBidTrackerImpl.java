@@ -284,13 +284,16 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 				this.excludedCampaigns = excludedCampaigns;
 			}
 
-			@Override
-			public boolean apply(BidEntry input) {
-				return (((adxQuery.getMarketSegments().containsAll(
-						input.getMarketSegments()))
-				/* exclude campaigns over limit */
-				&& (!excludedCampaigns.contains(input.getCampaignId()))));
-			}
+            @Override
+            public boolean apply(BidEntry input) {
+                return ((adxQuery.getMarketSegments().containsAll(
+                        input.getMarketSegments()))
+                /* exclude campaigns over limit */
+                        && (!excludedCampaigns.contains(input.getCampaignId()))
+                        && adxQuery.getAdType() == input.getKey().getAdType()
+                        && adxQuery.getDevice() == input.getKey().getDevice()
+                        && adxQuery.getPublisher().equals(input.getKey().getPublisher()));
+            }
 		}
 
 		private synchronized void doAddQuery(BidEntry entry) {
@@ -302,8 +305,8 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 						.getSimulation()
 						.getEventBus()
 						.post(new CampaignLimitSet(false, entry.getCampaignId(),
-								advertiser, entry.getWeight(), entry
-										.getDailyLimit()));
+                                advertiser, entry.getWeight(), entry
+                                .getDailyLimit()));
 
 			} else if (entry.getKey().getPublisher().startsWith(AdxBidBundle.CMP_TSL)) {
 				/* it is a piggybacked set campain total limit command: notify */
@@ -313,8 +316,8 @@ public class AdxBidTrackerImpl implements AdxBidTracker {
 						.getSimulation()
 						.getEventBus()
 						.post(new CampaignLimitSet(true, entry.getCampaignId(),
-								advertiser, entry.getWeight(), entry
-										.getDailyLimit()));
+                                advertiser, entry.getWeight(), entry
+                                .getDailyLimit()));
 
 			} else {
 				querySet.add(entry);
