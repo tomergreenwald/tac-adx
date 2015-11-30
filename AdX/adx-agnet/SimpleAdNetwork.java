@@ -24,6 +24,7 @@ import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.PublisherCatalogEntry;
+import tau.tac.adx.props.ReservePriceInfo;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.report.demand.AdNetBidMessage;
@@ -44,10 +45,10 @@ import edu.umich.eecs.tac.props.BankStatus;
  * Test plug-in
  * 
  */
-public class SampleAdNetwork extends Agent {
+public class SimpleAdNetwork extends Agent {
 
 	private final Logger log = Logger
-			.getLogger(SampleAdNetwork.class.getName());
+			.getLogger(SimpleAdNetwork.class.getName());
 
 	/*
 	 * Basic simulation information. An agent should receive the {@link
@@ -102,12 +103,12 @@ public class SampleAdNetwork extends Agent {
 	/*
 	 * The current bid level for the user classification service
 	 */
-	double ucsBid;
+	private double ucsBid;
 
 	/*
 	 * The targeted service level for the user classification service
 	 */
-	double ucsTargetLevel;
+	private double ucsTargetLevel;
 
 	/*
 	 * current day of simulation
@@ -116,7 +117,7 @@ public class SampleAdNetwork extends Agent {
 	private String[] publisherNames;
 	private CampaignData currCampaign;
 
-	public SampleAdNetwork() {
+	public SimpleAdNetwork() {
 		campaignReports = new LinkedList<CampaignReport>();
 	}
 
@@ -149,8 +150,9 @@ public class SampleAdNetwork extends Agent {
 				handleBankStatus((BankStatus) content);
 			} else if(content instanceof CampaignAuctionReport) {
 				hadnleCampaignAuctionReport((CampaignAuctionReport) content);
-			}
-			else {
+			} else if (content instanceof ReservePriceInfo) {
+				// ((ReservePriceInfo)content).getReservePriceType();
+			} else {
 				System.out.println("UNKNOWN Message Received: " + content);
 			}
 
@@ -162,7 +164,7 @@ public class SampleAdNetwork extends Agent {
 	}
 
 	private void hadnleCampaignAuctionReport(CampaignAuctionReport content) {
-		// ingoring
+		// ingoring - this message is obsolete
 	}
 
 	private void handleBankStatus(BankStatus content) {
@@ -329,13 +331,15 @@ public class SampleAdNetwork extends Agent {
 
 		int dayBiddingFor = day + 1;
 
-		/* A fixed random bid, for all queries of the campaign */
+		Random random = new Random();
+
+		/* A random bid, fixed for all queries of the campaign */
 		/*
 		 * Note: bidding per 1000 imps (CPM) - no more than average budget
 		 * revenue per imp
 		 */
 
-		double rbid = 10000.0;
+		double rbid = 10.0*random.nextDouble();
 
 		/*
 		 * add bid entries w.r.t. each active campaign with remaining contracted
@@ -447,12 +451,13 @@ public class SampleAdNetwork extends Agent {
 
 	@Override
 	protected void simulationSetup() {
+		Random random = new Random();
 
 		day = 0;
 		bidBundle = new AdxBidBundle();
 
 		/* initial bid between 0.1 and 0.2 */
-		ucsBid = 0.2;
+		ucsBid = 0.1 + random.nextDouble()/10.0;
 
 		myCampaigns = new HashMap<Integer, CampaignData>();
 		log.fine("AdNet " + getName() + " simulationSetup");
