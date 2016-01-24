@@ -58,8 +58,8 @@ public class SimpleAuctionManager implements AuctionManager {
 			}
 		}
 		
-		AuctionReport auctionReport = new AuctionReport(winningBid.getBid(), secondBid.getBid(), auctionData.getReservePrice(), query);
-		AdxManager.getInstance().getSimulation().getEventWriter().dataUpdated(0, auctionReport);
+		//AuctionReport auctionReport = new AuctionReport(winningBid.getBid(), secondBid.getBid(), auctionData.getReservePrice(), query);
+		//AdxManager.getInstance().getSimulation().getEventWriter().dataUpdated(0, auctionReport);
 		
 		BidInfo adjustedWinningBid = (BidInfo) winningBid.clone();
 		Set<MarketSegment> marketSegments = Sets.intersection(
