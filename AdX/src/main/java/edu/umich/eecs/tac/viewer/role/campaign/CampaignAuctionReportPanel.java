@@ -165,7 +165,7 @@ public class CampaignAuctionReportPanel extends JPanel {
 			}
 
 			setHorizontalAlignment(JLabel.RIGHT);
-			setText(String.format("%.2f", object));
+			setText(String.format("%.5f", object));
 
 			return this;
 		}
