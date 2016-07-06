@@ -119,7 +119,7 @@ public class CampaignAuctionReportPanel extends JPanel {
 			} else if (columnIndex == 2) {
 				return entry.getActualBid();
 			} else if (columnIndex == 3) {
-				return entry.getEffctiveBid() / entry.getActualBid();
+				return entry.getEffctiveBid() * entry.getActualBid();
 			}
 			return null;
 		}
