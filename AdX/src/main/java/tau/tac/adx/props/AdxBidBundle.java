@@ -620,6 +620,7 @@ public class AdxBidBundle extends
 			temp = Double.doubleToLongBits(dailyLimit);
 			result = prime * result + (int) (temp ^ (temp >>> 32));
 			result = prime * result + weight;
+			result = prime * result + getKey().hashCode();
 			return result;
 		}
 
@@ -649,6 +650,8 @@ public class AdxBidBundle extends
 					.doubleToLongBits(other.dailyLimit))
 				return false;
 			if (weight != other.weight)
+				return false;
+			if (!getKey().equals(other.getKey()))
 				return false;
 			return true;
 		}
