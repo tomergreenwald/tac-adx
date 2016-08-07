@@ -57,8 +57,8 @@ public class DCParser extends Parser {
 			tau.tac.adx.parser.Auctions.AuctionReport.Builder auctionReportBuilder = tau.tac.adx.parser.Auctions.AuctionReport
 					.newBuilder();
 			auctionReportBuilder.setFirstBid(auctionReport.getFirstBid());
-			auctionReportBuilder.setSecondsBid(auctionReport.getSecondBid());
-			auctionReportBuilder.setReservedPrice(auctionReport
+			auctionReportBuilder.setSecondBid(auctionReport.getSecondBid());
+			auctionReportBuilder.setReservePrice(auctionReport
 					.getReservePrice());
 			tau.tac.adx.props.AdxQuery adxQuery = auctionReport.getAdxQuery();
 			List<MarketSegment> marketSegments = new LinkedList<Auctions.MarketSegment>();
