@@ -96,7 +96,18 @@ public class LogManager {
 		// Find out if anything should be done immediately
 		String dataFileName = config.getProperty("file");
 		if (dataFileName != null) {
-			processSingleFile(dataFileName);
+			File root = new File(dataFileName);
+			if (root.isDirectory()) {
+				int fileCount = 0;
+				int files = root.listFiles().length;
+				for (File file : root.listFiles()) {
+					fileCount++;
+					System.out.println(String.format("%d/%d\t- %s", fileCount, files, file.getAbsolutePath()));
+					processSingleFile(file.getAbsolutePath());
+				}
+			} else {
+				processSingleFile(root.getAbsolutePath());
+			}
 		} else {
 			ValueSet games = new ValueSet(config.getProperty("games", ""));
 			ValueSet excludes = new ValueSet(config.getProperty("excludes", ""));
