@@ -72,8 +72,11 @@ public class ViewerApplet extends JApplet implements ChatListener {
 	}
 
 	public void init() {
-		this.serverName = getParameter("serverName");
-		this.userName = getParameter("user");
+		init(getParameter("serverName"), getParameter("user"), getParameter("port"), getParameter("contextFactory"));
+	}
+	public void init(String serverName, String userName, String port, String contextFactoryName) {
+		this.serverName = serverName;
+		this.userName = userName;
 
 		if (serverName == null) {
 			throw new IllegalArgumentException("no server name specified");
@@ -82,7 +85,7 @@ public class ViewerApplet extends JApplet implements ChatListener {
 			throw new IllegalArgumentException("no user name specified");
 		}
 
-		String portDesc = getParameter("port");
+		String portDesc = port;
 		if (portDesc != null) {
 			try {
 				this.serverPort = Integer.parseInt(portDesc);
@@ -94,7 +97,7 @@ public class ViewerApplet extends JApplet implements ChatListener {
 
 		// TODO-contextFactory must be passed in, should be the same as in
 		// TACTGateway
-		String contextFactoryClassName = getParameter("contextFactory");
+		String contextFactoryClassName = contextFactoryName;
 		if (contextFactoryClassName == null) {
 			throw new IllegalArgumentException("no contextFactory specified");
 		}

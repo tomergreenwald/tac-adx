@@ -3,10 +3,7 @@
  */
 package tau.tac.adx.auction;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import tau.tac.adx.AdxManager;
 import tau.tac.adx.auction.data.AuctionData;
@@ -14,7 +11,9 @@ import tau.tac.adx.auction.data.AuctionOrder;
 import tau.tac.adx.auction.data.AuctionResult;
 import tau.tac.adx.auction.data.AuctionState;
 import tau.tac.adx.bids.BidInfo;
+import tau.tac.adx.parser.Auctions;
 import tau.tac.adx.props.AdxQuery;
+import tau.tac.adx.proto.ProtoLogger;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.sim.AuctionReport;
 import tau.tac.adx.sim.TACAdxSimulation;
@@ -57,9 +56,11 @@ public class SimpleAuctionManager implements AuctionManager {
 				secondBid = bidInfo;
 			}
 		}
+
+		logBids(bidInfos, query, auctionData.getReservePrice());
 		
-		//AuctionReport auctionReport = new AuctionReport(winningBid.getBid(), secondBid.getBid(), auctionData.getReservePrice(), query);
-		//AdxManager.getInstance().getSimulation().getEventWriter().dataUpdated(0, auctionReport);
+//		AuctionReport auctionReport = new AuctionReport(winningBid.getBid(), secondBid.getBid(), auctionData.getReservePrice(), query);
+//		AdxManager.getInstance().getSimulation().getEventWriter().dataUpdated(0, auctionReport);
 		
 		BidInfo adjustedWinningBid = (BidInfo) winningBid.clone();
 		Set<MarketSegment> marketSegments = Sets.intersection(
@@ -67,6 +68,33 @@ public class SimpleAuctionManager implements AuctionManager {
 		adjustedWinningBid.setMarketSegments(marketSegments);
 		return calculateAuctionResult(adjustedWinningBid, secondBid,
 				auctionData);
+	}
+
+	private void logBids(List<BidInfo> bidInfos, AdxQuery adxQuery, Double reservePrice) {
+		Auctions.AdxBidList.Builder bidListBuilder = Auctions.AdxBidList.newBuilder();
+		for (BidInfo bidInfo : bidInfos) {
+			Auctions.AdxBidList.AdxBidEntry.Builder builder = Auctions.AdxBidList.AdxBidEntry.newBuilder();
+			builder.setBid(bidInfo.getBid()).setBidder(bidInfo.getBidder().getName());
+
+
+			List<Auctions.MarketSegment> marketSegments = new LinkedList<Auctions.MarketSegment>();
+			for (MarketSegment marketSegment : adxQuery
+					.getMarketSegments()) {
+				marketSegments.add(Auctions.MarketSegment.valueOf(marketSegment
+						.ordinal()));
+			}
+
+			Auctions.AdxQuery protoAdxQuery = Auctions.AdxQuery.newBuilder()
+					.setPublisher(adxQuery.getPublisher())
+					.addAllMarketSegments(marketSegments)
+					.setDevice(Auctions.Device.valueOf(adxQuery.getDevice().ordinal()))
+					.setAdtype(Auctions.AdType.valueOf(adxQuery.getAdType().ordinal()))
+					.build();
+			builder.setAdxQuery(protoAdxQuery);
+			builder.setReservePrice(reservePrice);
+			bidListBuilder.addEntries(builder.build());
+		}
+		ProtoLogger.log(bidListBuilder.build());
 	}
 
 	/**

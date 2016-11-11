@@ -106,6 +106,7 @@ public class LogManager {
 					processSingleFile(file.getAbsolutePath());
 				}
 			} else {
+				System.out.println("Processing game " + " (" + root.getAbsolutePath() + ')');
 				processSingleFile(root.getAbsolutePath());
 			}
 		} else {
@@ -228,8 +229,6 @@ public class LogManager {
 		LogReader reader = null;
 		try {
 			reader = new LogReader(getDataStream(filename));
-			System.out.println("Processing game " + reader.getSimulationID()
-					+ " (" + filename + ')');
 			String simType = reader.getSimulationType();
 			LogHandler handler = getLogHandler(simType);
 			try {

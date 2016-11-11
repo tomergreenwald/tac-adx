@@ -59,10 +59,12 @@ public class AppletConnection implements Runnable {
 	private Thread connectionThread;
 	private boolean finish = false;
 
-	private String serverHost;
+	private String serverHost = "adxgame.org";
 
 	private static final Logger log = Logger.getLogger(AppletConnection.class
 			.getName());
+
+	private String state = "_";
 
 	public AppletConnection(ViewerApplet applet, ViewerConnection viewer) {
 		this.applet = applet;
@@ -71,38 +73,43 @@ public class AppletConnection implements Runnable {
 
 	public boolean connect() {
 		try {
+			state += 1;
+
 			disconnect();
-			URL url = applet.getCodeBase();
+//			URL url = applet.getCodeBase();
 			String serverName = applet.getServerName();
 			String userName = applet.getUserName();
 
 			int serverPort = applet.getServerPort();
-			serverHost = url.getHost();
-
+//			serverHost = url.getHost();
+			state += 2;
 			String statusMessage = "Connecting to server " + serverName
-					+ " at " + serverHost + ':' + serverPort;
+					+ " at " + null + ':' + serverPort;
 			log.fine(statusMessage);
 			applet.setStatusMessage(statusMessage);
-
+			state += 3;
 			transportWriter = new BinaryTransportWriter();
 			transportReader = new BinaryTransportReader();
 			transportReader.setContext(applet.getContextFactory()
 					.createContext());
-
-			socket = new Socket(serverHost, serverPort);
+			state += 4;
+			socket = new Socket("52.24.77.221", serverPort);
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
+			state += 5;
 			// Send the TACT protocol header
 			out.write(TACT_HEADER);
-
+			state += 6;
 			transportWriter.node("auth").attr("serverName", serverName).attr(
 					"userName", userName).attr("version", ViewerApplet.VERSION)
 					.endNode("auth");
-
+			state += 7;
 			sendData(transportWriter);
 			applet.setStatusMessage("Connected to server " + serverName);
+			state += 8;
 			return true;
 		} catch (Exception e) {
+			state += 0;
 			log.log(Level.SEVERE, "Connection to server failed", e);
 			socket = null;
 		}
@@ -130,9 +137,6 @@ public class AppletConnection implements Runnable {
 		while (!finish) {
 			try {
 				while (!finish && !connect()) {
-					applet.setStatusMessage("Failed to connect to "
-							+ applet.getServerName() + " at " + serverHost
-							+ " (will retry)");
 					Thread.sleep(30000);
 				}
 

@@ -60,9 +60,12 @@ import tau.tac.adx.auction.manager.AdxBidManager;
 import tau.tac.adx.auction.tracker.AdxBidTracker;
 import tau.tac.adx.auction.tracker.AdxBidTrackerImpl;
 import tau.tac.adx.devices.Device;
+import tau.tac.adx.parser.Auctions;
 import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.PublisherCatalog;
 import tau.tac.adx.props.ReservePriceInfo;
+import tau.tac.adx.proto.ProtoLogger;
+import tau.tac.adx.publishers.reserve.PredeterminedReservePriceManager;
 import tau.tac.adx.report.adn.AdNetworkKey;
 import tau.tac.adx.report.adn.AdNetworkReport;
 import tau.tac.adx.report.adn.AdNetworkReportSender;
@@ -286,6 +289,7 @@ public class TACAdxSimulation extends Simulation implements AdxAgentRepository,
 	@Override
 	protected void startSimulation() {
 		LogWriter logWriter = getLogWriter();
+		ProtoLogger.initOutputStream(getSimulationInfo().getSimulationID());
 
 		// Save the server configuration to the log.
 		ConfigManager config = getConfig();
@@ -323,7 +327,7 @@ public class TACAdxSimulation extends Simulation implements AdxAgentRepository,
 		startTickTimer(simInfo.getStartTime(), secondsPerDay * 1000);
 
 		logWriter.commit();
-
+		PredeterminedReservePriceManager.simulationStarted();
 	}
 
 	private StartInfo createStartInfo(SimulationInfo info) {
@@ -398,6 +402,9 @@ public class TACAdxSimulation extends Simulation implements AdxAgentRepository,
 			// Time to stop the simulation
 			requestStopSimulation();
 		}
+		Auctions.NewDay.Builder newDayBuilder = Auctions.NewDay.newBuilder();
+		newDayBuilder.setDay(timeUnit);
+		ProtoLogger.log(newDayBuilder.build());
 	}
 
 	/**

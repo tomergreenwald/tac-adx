@@ -4,16 +4,16 @@ import edu.umich.eecs.tac.Parser;
 import se.sics.isl.transport.Transportable;
 import se.sics.isl.util.ConfigManager;
 import se.sics.tasim.logtool.LogReader;
+import tau.tac.adx.props.AdxBidBundle;
 import tau.tac.adx.props.AdxQuery;
 import tau.tac.adx.report.adn.MarketSegment;
 import tau.tac.adx.sim.AuctionReport;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * <code>GeneralParser</code> is a simple example of a TAC Adx parser that
@@ -43,10 +43,12 @@ public class ProtobufConverterParser extends Parser {
         try {
             System.out.println("serializing");
             File file = new File(
-                    "T:\\log.protobuf");
+                    "T:\\log.protobuf.gz");
             file.delete();
             FileOutputStream fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(dataBundle.build().toByteArray());
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new BufferedOutputStream(fileOutputStream));
+            gzipOutputStream.write(dataBundle.build().toByteArray());
+            gzipOutputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -83,11 +85,10 @@ public class ProtobufConverterParser extends Parser {
             auctionReportBuilder.setAdxQuery(protoAdxQuery);
             dataBundle.addReports(auctionReportBuilder);
         }
-
     }
 
     protected void parseStopped() {
-
+        serialize();
     }
 
     @Override

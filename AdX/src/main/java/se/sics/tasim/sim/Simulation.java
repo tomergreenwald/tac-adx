@@ -49,6 +49,7 @@ import se.sics.tasim.aw.Message;
 import se.sics.tasim.aw.TimeListener;
 import se.sics.tasim.is.EventWriter;
 import se.sics.tasim.is.SimulationInfo;
+import tau.tac.adx.proto.ProtoLogger;
 import tau.tac.adx.sim.TACAdxConstants;
 
 //TODO-MODIFY CLASS
@@ -317,6 +318,7 @@ public abstract class Simulation {
 			this.logWriter.close();
 			this.eventWriter = this.rootEventWriter;
 		}
+		ProtoLogger.closeOutputStream();
 	}
 
 	final void agentChannelAvailable(AgentChannel channel) {

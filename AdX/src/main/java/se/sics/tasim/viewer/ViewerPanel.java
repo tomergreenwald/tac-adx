@@ -44,6 +44,7 @@ import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
 import com.botbox.util.ArrayUtils;
+import edu.umich.eecs.tac.viewer.TACAAViewer;
 import se.sics.isl.transport.Transportable;
 import se.sics.isl.util.ConfigManager;
 
@@ -106,18 +107,7 @@ public class ViewerPanel extends ViewerConnection {
 
 		viewer = null;
 
-		try {
-			String simulationViewerClass = config
-					.getProperty("simulationViewer");
-			viewer = (SimulationViewer) Class.forName(simulationViewerClass)
-					.newInstance();
-		} catch (InstantiationException e) {
-			log.severe("Could not instantiate the simulation viewer");
-		} catch (IllegalAccessException e) {
-			log.severe("Could not instantiate the simulation viewer");
-		} catch (ClassNotFoundException e) {
-			log.severe("Could not find the simulation viewer class");
-		}
+		viewer = (SimulationViewer) new TACAAViewer();
 
 		viewer.init(this);
 		viewerPanel = viewer.getComponent();
