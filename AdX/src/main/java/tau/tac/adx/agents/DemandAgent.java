@@ -58,6 +58,9 @@ public class DemandAgent extends Builtin {
 	private static final double CMP_MC_OFFSET_DEFAULT = 1.5;
 	private static double   cmp_mc_offset;
 
+	private final static double DEFAULT_RANDOM_ALLOC_PR = 0.3;
+	private static double random_campaign_alloc_pr;
+
 	
 	private static Random random;
 
@@ -127,7 +130,7 @@ public class DemandAgent extends Builtin {
 			pendingCampaign = new CampaignImpl(qualityManager,
 					reach, day + 2, lastCmpDay,
 					target, cmp_vc + cmp_vc_offset*random.nextDouble(),
-					cmp_mc + cmp_mc_offset*random.nextDouble());
+					cmp_mc + cmp_mc_offset*random.nextDouble(), random_campaign_alloc_pr);
 
 			pendingCampaign.registerToEventBus();
 
@@ -265,6 +268,9 @@ public class DemandAgent extends Builtin {
 		
 		cmp_mc_offset =  getSimulation().getConfig().getPropertyAsDouble(
 				"campaigns.mobile_coef_offset", CMP_MC_OFFSET_DEFAULT);
+
+		random_campaign_alloc_pr =  getSimulation().getConfig().getPropertyAsDouble(
+				"campaigns.random_alloc_pr", DEFAULT_RANDOM_ALLOC_PR);
 		
 		String[] cmp_lengths_str = getSimulation().getConfig().getPropertyAsArray("campaigns.lengths");
 		if (cmp_lengths_str == null) {
@@ -321,7 +327,7 @@ public class DemandAgent extends Builtin {
 			Campaign campaign = new CampaignImpl(qualityManager,
 					reach, 1, cmplength,
 					target, cmp_vc + cmp_vc_offset*random.nextDouble(),
-					cmp_mc + cmp_mc_offset*random.nextDouble());
+					cmp_mc + cmp_mc_offset*random.nextDouble(), random_campaign_alloc_pr);
 
 			campaign.allocateToAdvertiser(advertiser);
 			log.log(Level.FINE,

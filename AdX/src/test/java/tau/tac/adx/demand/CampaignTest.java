@@ -45,7 +45,7 @@ public class CampaignTest {
 		// #FIXME fix this test
 		//
 		campaign = new CampaignImpl(qualityMgr, reachImps, dayStart, dayEnd,
-				targetSegment, vcoef, mcoef);
+				targetSegment, vcoef, mcoef, 0.3);
 		campaign.setRandomAllocPr(new Double(0.0));
 
 		assertNotNull(campaign);

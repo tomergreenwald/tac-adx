@@ -40,7 +40,7 @@ public class CampaignImplTest {
 			double bestEffectiveBid = Double.NEGATIVE_INFINITY;
 
 			CampaignImpl campaignImpl = new CampaignImpl(qualityManager,
-					expectedReach, 0, 0, null, 0, 0);
+					expectedReach, 0, 0, null, 0, 0, 0.3);
 			for (int i = 0; i < 8; i++) {
 				qualityRatings[i] = Math.random();
 				when(qualityManager.getQualityScore(advertiserPrefix + i))

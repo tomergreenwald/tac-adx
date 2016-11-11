@@ -55,10 +55,7 @@ public class PopulationUserGenerator implements AdxUserGenerator {
 	 *         {@link Gender} and {@link Income}.
 	 */
 	private AdxUser getRandomUser() {
-		//FIXME export to configuration
-		double pContinue = 0.1;
 		AdxUser user = (AdxUser) userGenerator.randomType().clone();
-		user.setpContinue(pContinue);
 		user.setUniqueId(uniqueId);
 		uniqueId++;
 		return user;

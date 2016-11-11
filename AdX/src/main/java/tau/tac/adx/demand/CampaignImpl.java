@@ -37,7 +37,7 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private final static double ERRB = -3.08577;
 
 	private final static Long DEFAULT_BUDGET_FACTOR = 1L;
-	private final static Double DEFAULT_RANDOM_ALLOC_PR = new Double(0.3);
+
 	
 	private static Random random = new Random();
 
@@ -196,13 +196,13 @@ public class CampaignImpl implements Campaign, Accumulator<CampaignStats> {
 	private static double INITIAL_BUDGET_LIMIT = 1.0101010100101;
 
 	public CampaignImpl(QualityManager qualityManager, int reachImps,
-			int dayStart, int dayEnd, Set<MarketSegment> targetSegments,
-			double videoCoef, double mobileCoef) {
+						int dayStart, int dayEnd, Set<MarketSegment> targetSegments,
+						double videoCoef, double mobileCoef, double random_campaign_alloc_pr) {
 
 		if (qualityManager == null)
 			throw new NullPointerException("qualityManager cannot be null");
 
-		randomAllocPr = DEFAULT_RANDOM_ALLOC_PR;
+		randomAllocPr = random_campaign_alloc_pr;
 		id = hashCode();
 		dayStats = new TreeMap<Integer, CampaignStats>();
 		advertisersBids = new HashMap<String, Long>();
