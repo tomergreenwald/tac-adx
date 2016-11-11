@@ -1,0 +1,117 @@
+namespace tau.tac.adx.parser.flatbuffers;
+
+enum MarketSegment:byte {
+    MALE = 0,
+    FEMALE = 1,
+    YOUNG = 2,
+    OLD = 3,
+    LOW_INCOME = 4,
+    HIGH_INCOME = 5
+}
+
+enum Device:byte {
+    MOBILE = 0,
+    PC = 1
+}
+
+enum AdType:byte {
+    TEXT = 0,
+    VIDEO = 1
+}
+
+enum Age:byte {
+    Age_18_24    = 0,
+    Age_25_34    = 1,
+    Age_35_44    = 2,
+    Age_45_54    = 3,
+    Age_55_64    = 4,
+    Age_65_PLUS = 5
+}
+
+enum Gender:byte {
+    Gender_MALE = 0,
+    Gender_FEMALE = 1
+}
+
+enum Income:byte {
+    LOW            = 0,
+    MEDIUM       = 1,
+    HIGH           = 2,
+    VERY_HIGH  = 3
+}
+
+//struct AMessage {
+//     AdType adType = 1;
+//     Device device = 2;
+//     Age age = 3;
+//     Gender gender = 4;
+//     Income income = 5;
+//}
+//
+//struct BMessage {
+//     int32 impressions = 1;
+//     float cost = 2;
+//}
+//
+//struct ABMessage {
+//     AMessage aMessage = 1;
+//     BMessage bMessage = 2;
+//}
+//
+//struct RABMessage {
+//    repeated ABMessage abMessages = 1;
+//}
+
+table AdxQuery {
+    publisher:string;
+    marketSegments:[MarketSegment];
+    device:Device;
+    adtype:AdType;
+}
+
+table AuctionReport {
+     firstBid:double;
+     secondBid:double;
+     reservePrice:double;
+     adxQuery:AdxQuery;
+     day:short;
+}
+
+table DataBundle {
+    reports:[AuctionReport];
+}
+
+table AdxQueryPricing {
+     adxQuery:AdxQuery;
+     reservePrice:float;
+}
+
+table ReservePriceManagerBundle {
+     adxQueryPricings:AdxQueryPricing;
+}
+
+table AdxBidEntry {
+    bid:double;
+    bidder:string;
+    adxQuery:AdxQuery;
+    reservePrice:double;
+}
+table AdxBidList {
+    entries:[AdxBidEntry];
+
+}
+
+struct NewDay {
+     day:short;
+}
+
+table Container {
+     newDay:NewDay;
+     bidList:AdxBidList;
+}
+
+table Messages {
+    messages:[Container];
+}
+
+root_type Messages;

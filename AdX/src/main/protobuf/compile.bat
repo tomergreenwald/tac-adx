@@ -1,0 +1,1 @@
+protoc.exe --java_out=. Auctions.proto
