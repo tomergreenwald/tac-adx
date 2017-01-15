@@ -1,5 +1,6 @@
 package tau.tac.adx.analysis;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.io.ByteStreams;
 import com.google.protobuf.InvalidProtocolBufferException;
 import flatbuffers.FlatBufferBuilder;
@@ -33,17 +34,17 @@ import static java.lang.Math.max;
 public class ReservePriceAnalysis {
     public static final int PRECISION = 3;
     public static final int MIN_AUCTION_DAY = 10;
-    public static final int FILE_COUNT = 100;
+    public static final int FILE_COUNT = 10;
     private static final String GZIP_FILE_ENDING = ".gz";
     private static final double EPSILON = 0.00000000001;
     public static final double MAX_BID = 0.5;
     public static final double MIN_BID = 0.00000000001;
     private static double BUCKET_SIZE;
-    //public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
-    //public static final String OUTPUT_FOLDER = "t:\\";
+    public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
+    public static final String OUTPUT_FOLDER = "t:\\";
 	
-    public static final String LOGS_BASE_PATH = "/home/ubuntu/ADX/resources/";
-    public static final String OUTPUT_FOLDER = "/home/ubuntu/ADX/res/";
+//    public static final String LOGS_BASE_PATH = "/home/ubuntu/ADX/resources/";
+//    public static final String OUTPUT_FOLDER = "/home/ubuntu/ADX/res/";
 
     interface HistogramFunc {
         double call(Map<Double, Double> hist1, Map<Double, Double> hist2);
@@ -108,16 +109,15 @@ public class ReservePriceAnalysis {
         Map<Double, List<Map<Double, AtomicLong>>> map1 = new HashMap<>();
         Map<Double, List<Map<Double, AtomicLong>>> map2 = new HashMap<>();
 
+        Stopwatch stopwatch = new Stopwatch().start();
         parseFiles(String.format(LOGS_BASE_PATH + "%s", agent), map1, map2);
+        System.out.println(String.format("parsed files in %d seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
 
-        System.out.println("Reducing maps");
         calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new EMD());
         calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new MaxDiff());
     }
 
     private static void calc(String agent, Map<Double, Map<Double, Double>> histogramMap1, Map<Double, Map<Double, Double>> histogramMap2, HistogramFunc func) throws IOException {
-        System.out.println("Extracting data");
-
         FileOutputStream fos = new FileOutputStream(String.format(OUTPUT_FOLDER + "%s.%.2f.%s.csv", func.getClass().getSimpleName(), BUCKET_SIZE, agent));
 
         ArrayList<Double> list1 = new ArrayList<>(histogramMap1.keySet());
@@ -517,8 +517,7 @@ public class ReservePriceAnalysis {
     private static void reduceRecords(String input, String output, double keepRatio) throws IOException {
         DataBundle dataBundle = ReservePriceAnalysis.getDataBundle(input);
 
-        System.out.println("Reducing data");
-//        Stopwatch stopwatch = Stopwatch.createStarted();
+        Stopwatch stopwatch = new Stopwatch().start();
 
 
         FileOutputStream fos = new FileOutputStream(output);
@@ -533,7 +532,8 @@ public class ReservePriceAnalysis {
         }
         DataBundle reducedDataBundle = builder.build();
         reducedDataBundle.writeTo(gos);
-//        System.out.println(String.format("Reduced %d records in %d seconds", counter, stopwatch.elapsed(TimeUnit.SECONDS)));
+
+        System.out.println(String.format("Reduced %d records in %d seconds", counter, stopwatch.elapsed(TimeUnit.SECONDS)));
         gos.close();
     }
 
