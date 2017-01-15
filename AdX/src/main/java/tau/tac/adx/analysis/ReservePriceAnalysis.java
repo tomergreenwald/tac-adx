@@ -93,14 +93,9 @@ public class ReservePriceAnalysis {
                 agentGiza,
         };
 
-        double[] bucketSizes = {0.01, 0.05, 0.1};
-
         for (String agent : agents) {
-            for (double bucketSize : bucketSizes) {
-                BUCKET_SIZE = bucketSize;
-                parseAgent(agent);
-                System.gc();
-            }
+            parseAgent(agent);
+            System.gc();
         }
     }
 
@@ -113,8 +108,12 @@ public class ReservePriceAnalysis {
         parseFiles(String.format(LOGS_BASE_PATH + "%s", agent), map1, map2);
         System.out.println(String.format("parsed files in %d seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
 
-        calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new EMD());
-        calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new MaxDiff());
+        double[] bucketSizes = {0.01, 0.05, 0.1};
+        for (double bucketSize : bucketSizes) {
+            BUCKET_SIZE = bucketSize;
+            calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new EMD());
+            calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new MaxDiff());
+        }
     }
 
     private static void calc(String agent, Map<Double, Map<Double, Double>> histogramMap1, Map<Double, Map<Double, Double>> histogramMap2, HistogramFunc func) throws IOException {
