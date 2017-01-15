@@ -39,8 +39,11 @@ public class ReservePriceAnalysis {
     public static final double MAX_BID = 0.5;
     public static final double MIN_BID = 0.00000000001;
     private static final double BUCKET_SIZE = 0.05;
-    public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
-    public static final String OUTPUT_FOLDER = "t:\\";
+    //public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
+    //public static final String OUTPUT_FOLDER = "t:\\";
+	
+    public static final String LOGS_BASE_PATH = "/home/ubuntu/ADX/resources/";
+    public static final String OUTPUT_FOLDER = "/home/ubuntu/ADX/res/";
 
     interface HistogramFunc {
         double call(Map<Double, Double> hist1, Map<Double, Double> hist2);
@@ -76,9 +79,9 @@ public class ReservePriceAnalysis {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        String agentGiza = "Giza";
-        String agentBob = "Bob";
-        String agentAdxperts = "Adxperts";
+        String agentGiza = "GIZA";
+        String agentBob = "bob";
+        String agentAdxperts = "adxperts";
         String agentLosCaparos = "LosCaparos";
 
 
@@ -103,7 +106,7 @@ public class ReservePriceAnalysis {
         parseFiles(String.format(LOGS_BASE_PATH + "%s", agent), map1, map2);
 
         System.out.println("Reducing maps");
-//        calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new EMD());
+        calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new EMD());
         calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new MaxDiff());
     }
 
@@ -216,9 +219,10 @@ public class ReservePriceAnalysis {
 
     private static void parseFiles(String rootFolder, Map<Double, List<Map<Double, AtomicLong>>> map1, Map<Double, List<Map<Double, AtomicLong>>> map2) throws InterruptedException {
         System.out.println("Parsing files");
-        ExecutorService service = Executors.newFixedThreadPool(8);
+        ExecutorService service = Executors.newFixedThreadPool(36);
         List<Future> futures = new LinkedList<>();
         int fileCount = FILE_COUNT;
+	System.out.println(rootFolder);
         for (File simulation : new File(rootFolder).listFiles()) {
             futures.add(service.submit(() -> generateHistogram(readRecords(simulation), Math.random() > 0.5 ? map1 : map2, MIN_AUCTION_DAY)));
             if (fileCount-- == 0) {
