@@ -38,7 +38,7 @@ public class ReservePriceAnalysis {
     private static final double EPSILON = 0.00000000001;
     public static final double MAX_BID = 0.5;
     public static final double MIN_BID = 0.00000000001;
-    private static final double BUCKET_SIZE = 0.05;
+    private static double BUCKET_SIZE;
     //public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
     //public static final String OUTPUT_FOLDER = "t:\\";
 	
@@ -92,9 +92,14 @@ public class ReservePriceAnalysis {
                 agentGiza,
         };
 
+        double[] bucketSizes = {0.01,0.05,0.1};
+
         for (String agent : agents) {
-            parseAgent(agent);
-            System.gc();
+            for (double bucketSize: bucketSizes){
+                BUCKET_SIZE = bucketSize;
+                parseAgent(agent);
+                System.gc();
+            }
         }
     }
 
