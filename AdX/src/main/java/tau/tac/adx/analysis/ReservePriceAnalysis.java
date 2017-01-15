@@ -1,6 +1,5 @@
 package tau.tac.adx.analysis;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.io.ByteStreams;
 import com.google.protobuf.InvalidProtocolBufferException;
 import flatbuffers.FlatBufferBuilder;
@@ -31,9 +30,9 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class ReservePriceAnalysis {
-    public static final int PRECISION = 3;
+    public static final int PRECISION = 2;
     public static final int MIN_AUCTION_DAY = 10;
-    public static final int FILE_COUNT = 100;
+    public static final int FILE_COUNT = 90;
     private static final String GZIP_FILE_ENDING = ".gz";
     private static final double EPSILON = 0.00000000001;
     public static final double MAX_BID = 0.5;
@@ -47,7 +46,8 @@ public class ReservePriceAnalysis {
         String agentLosCaparos = "LosCaparos";
 
 
-        String[] agents = {agentAdxperts,
+        String[] agents = {
+//                agentAdxperts,
                 agentBob,
                 agentLosCaparos,
                 agentGiza,
@@ -55,65 +55,39 @@ public class ReservePriceAnalysis {
 
         for (String agent : agents) {
             parseAgent(agent);
+            System.gc();
         }
     }
 
     private static void parseAgent(String agent) throws InterruptedException, IOException {
-        Stopwatch stopwatch = Stopwatch.createStarted();
+//        Stopwatch stopwatch = Stopwatch.createStarted();
         Map<Double, List<Map<Double, AtomicLong>>> map1 = new HashMap<>();
         Map<Double, List<Map<Double, AtomicLong>>> map2 = new HashMap<>();
 
         parseFiles(String.format("c:\\temp\\2016_08_20\\%s", agent), map1, map2);
 
         System.out.println("Reducing maps");
-        calcEMD(agent, reduceHistograms(map1), reduceHistograms(map2));
-        System.out.println(stopwatch.elapsed(TimeUnit.SECONDS));
+        calcEMD(agent, reduceHistograms(map1, true), reduceHistograms(map2, true));
+//        calcCHI(agent, reduceHistograms(map1, false));
+//        System.out.println(stopwatch.elapsed(TimeUnit.SECONDS));
     }
 
     private static double EMD(Map<Double, Double> histogram1, Map<Double, Double> histogram2) {
         double EMD = 0;
+        double sum = 0;
         double step = 1.0 / Math.pow(10, PRECISION);
 
         for (double d = 0; round(d) <= MAX_BID; d += step) {
             EMD += (histogram1.get(round(d)) - histogram2.get(round(d)));
+            sum += Math.abs(EMD);
         }
-        return EMD;
-    }
-
-    private static double chi_squared() {
-        long[][] matrix = new long[0][];
-        long[] sumRows = new long[matrix[0].length];
-        long[] sumCols = new long[matrix.length];
-        long sum = 0;
-        double res = 0;
-
-        for (int i = 0; i < matrix[0].length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                sumRows[i] += matrix[i][j];
-                sum += matrix[i][j];;
-            }
-        }
-
-        for (int j = 0; j < matrix.length; j++) {
-            for (int i = 0; i < matrix[0].length; i++) {
-                sumCols[j] += matrix[i][j];
-            }
-        }
-
-        for (int i = 0; i < matrix[0].length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                Long observed = matrix[i][j];
-                Long expected = sumCols[j]*sumRows[i]/sum;
-                res += Math.pow(observed-expected, 2)/expected;
-            }
-        }
-        return res;
+        return sum;
     }
 
     private static void calcEMD(String agent, Map<Double, Map<Double, Double>> histogramMap1, Map<Double, Map<Double, Double>> histogramMap2) throws IOException {
         System.out.println("Extracting data");
 
-        FileOutputStream fos = new FileOutputStream(String.format("t:\\%s.EMD..csv", agent));
+        FileOutputStream fos = new FileOutputStream(String.format("t:\\%s.EMD.%d.csv", agent, PRECISION));
 
         ArrayList<Double> list1 = new ArrayList<>(histogramMap1.keySet());
         ArrayList<Double> list2 = new ArrayList<>(histogramMap2.keySet());
@@ -131,12 +105,96 @@ public class ReservePriceAnalysis {
             for (int j = 0; j < list2.size(); j++) {
                 double reserve2 = list2.get(j);
 
-                Map<Double, Double> cumulativeHistogram1 = cumulative(histogramMap1.get(reserve));
-                Map<Double, Double> cumulativeHistogram2 = cumulative(histogramMap2.get(reserve2));
+//                Map<Double, Double> cumulativeHistogram1 = cumulative(histogramMap1.get(reserve));
+//                Map<Double, Double> cumulativeHistogram2 = cumulative(histogramMap2.get(reserve2));
+                Map<Double, Double> cumulativeHistogram1 = fill(histogramMap1.get(reserve));
+                Map<Double, Double> cumulativeHistogram2 = fill(histogramMap2.get(reserve2));
                 double sum = EMD(cumulativeHistogram1, cumulativeHistogram2);
                 fos.write(String.format("%f,", sum).getBytes());
             }
         }
+    }
+
+    private static double chi_squared(double[][] matrix) {
+        double[][] res = new double[matrix.length][matrix[0].length];
+        double[] sumRows = new double[matrix.length];
+        double[] sumCols = new double[matrix[0].length];
+        double sum = 0;
+//        double res = 0;
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                sumRows[i] += matrix[i][j];
+                sum += matrix[i][j];
+                ;
+            }
+        }
+
+        for (int j = 0; j < matrix[0].length; j++) {
+            for (int i = 0; i < matrix.length; i++) {
+                sumCols[j] += matrix[i][j];
+            }
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                double observed = matrix[i][j];
+                double expected = sumCols[j] * sumRows[i] / sum;
+                sum += Math.pow(observed - expected, 2) / expected;
+            }
+        }
+        return sum;
+    }
+
+    private static Map<Double, Double> fill(Map<Double, Double> histogram) {
+        Map<Double, Double> map = new HashMap<>();
+        double step = 1.0 / Math.pow(10, PRECISION);
+        double d;
+        for (d = 0; round(d) <= MAX_BID; d += step) {
+            map.put(round(d), histogram.getOrDefault(round(d), 0.0));
+        }
+        return map;
+    }
+
+    private static void calcCHI(String agent, Map<Double, Map<Double, Double>> histogramMap) throws IOException {
+        System.out.println("Extracting data");
+        double step = 1.0 / Math.pow(10, PRECISION);
+        double[][] matrix = new double[histogramMap.size()][10000];
+
+        ArrayList<Double> reserves = new ArrayList<>(histogramMap.keySet());
+        ArrayList<Double> bids = new ArrayList<>();
+        Collections.sort(reserves);
+        int bidCount = 0;
+
+        for (int i = 0; i < reserves.size(); i++) {
+            double reserve = reserves.get(i);
+            int j = 0;
+            for (double bid = 0; round(bid) <= MAX_BID; bid += step) {
+                matrix[i][j] = histogramMap.getOrDefault(reserve, new HashMap<>()).getOrDefault(round(bid), 0.0);
+                j++;
+                bidCount++;
+                bids.add(bid);
+            }
+        }
+        double sum = chi_squared(matrix);
+        System.out.println(String.format("%s chi_squared sum: %f", agent, sum));
+//        double[][] res = chi_squared(matrix);
+//
+//        FileOutputStream fos = new FileOutputStream(String.format("t:\\%s.CHI..csv", agent));
+//
+//        fos.write(',');
+//        for (int i = 0; i < bids.size(); i++) {                        //print col headers
+//            fos.write(String.format("%f,", bids.get(i)).getBytes());
+//        }
+//
+//        for (int i = 0; i < reserves.size(); i++) {
+//            double reserve = reserves.get(i);
+//            fos.write(String.format("\n%f,", reserve).getBytes());        //print row headers
+//            for (int j = 0; j < bidCount; j++) {
+////                double bid = bids.get(j);
+//                fos.write(String.format("%f,", res[i][j]).getBytes());
+//            }
+//        }
     }
 
     private static void parseFiles(String rootFolder, Map<Double, List<Map<Double, AtomicLong>>> map1, Map<Double, List<Map<Double, AtomicLong>>> map2) throws InterruptedException {
@@ -167,7 +225,7 @@ public class ReservePriceAnalysis {
         return map;
     }
 
-    private static Map<Double, Map<Double, Double>> reduceHistograms(Map<Double, List<Map<Double, AtomicLong>>> megaMap) {
+    private static Map<Double, Map<Double, Double>> reduceHistograms(Map<Double, List<Map<Double, AtomicLong>>> megaMap, boolean shuoldNormalize) {
         Map<Double, Map<Double, AtomicLong>> reducedMap = new HashMap<>();
 
         for (Double reserve1 : megaMap.keySet()) {
@@ -184,8 +242,8 @@ public class ReservePriceAnalysis {
 
         Map<Double, Double> countMap = new HashMap<>();
         Map<Double, Map<Double, Double>> reducedMap2 = new HashMap<>();
-        for (Double reserve: reducedMap.keySet()) {
-            for (Double d2: reducedMap.get(reserve).keySet()) {
+        for (Double reserve : reducedMap.keySet()) {
+            for (Double d2 : reducedMap.get(reserve).keySet()) {
                 reducedMap2.putIfAbsent(reserve, new HashMap<>());
                 countMap.putIfAbsent(reserve, 0.0);
 
@@ -194,9 +252,11 @@ public class ReservePriceAnalysis {
             }
         }
 
-        for (Double reserve: reducedMap.keySet()) {
-            for (Double d2: reducedMap.get(reserve).keySet()) {
-                reducedMap2.get(reserve).put(d2, reducedMap2.get(reserve).get(d2)/countMap.get(reserve));
+        if (shuoldNormalize) {
+            for (Double reserve : reducedMap.keySet()) {
+                for (Double d2 : reducedMap.get(reserve).keySet()) {
+                    reducedMap2.get(reserve).put(d2, reducedMap2.get(reserve).get(d2) / countMap.get(reserve));
+                }
             }
         }
         return reducedMap2;
@@ -278,6 +338,7 @@ public class ReservePriceAnalysis {
             map.putIfAbsent(reservePrice, new LinkedList<>());
             map.get(reservePrice).add(histogram);
         }
+        System.gc();
     }
 
     private static void printChart(List<Double> bidList, String folderPath) {
@@ -306,13 +367,8 @@ public class ReservePriceAnalysis {
     }
 
     private static double round(double value) {
-        try {
-            BigDecimal bd = new BigDecimal(value);
-            bd = bd.setScale(PRECISION, RoundingMode.HALF_UP);
-            return bd.doubleValue();
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        int scale = (int) Math.pow(10, PRECISION);
+        return (double) Math.round(value * scale) / scale;
     }
 
     private static List<Container> readRecords(File simulation) {
@@ -433,7 +489,7 @@ public class ReservePriceAnalysis {
         DataBundle dataBundle = ReservePriceAnalysis.getDataBundle(input);
 
         System.out.println("Reducing data");
-        Stopwatch stopwatch = Stopwatch.createStarted();
+//        Stopwatch stopwatch = Stopwatch.createStarted();
 
 
         FileOutputStream fos = new FileOutputStream(output);
@@ -448,7 +504,7 @@ public class ReservePriceAnalysis {
         }
         DataBundle reducedDataBundle = builder.build();
         reducedDataBundle.writeTo(gos);
-        System.out.println(String.format("Reduced %d records in %d seconds", counter, stopwatch.elapsed(TimeUnit.SECONDS)));
+//        System.out.println(String.format("Reduced %d records in %d seconds", counter, stopwatch.elapsed(TimeUnit.SECONDS)));
         gos.close();
     }
 
