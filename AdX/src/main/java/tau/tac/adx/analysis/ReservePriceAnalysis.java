@@ -18,8 +18,6 @@ import tau.tac.adx.parser.Auctions.DataBundle;
 import tau.tac.adx.parser.Auctions.DataBundle.Builder;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,14 +27,52 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+
 public class ReservePriceAnalysis {
-    public static final int PRECISION = 2;
+    public static final int PRECISION = 3;
     public static final int MIN_AUCTION_DAY = 10;
-    public static final int FILE_COUNT = 90;
+    public static final int FILE_COUNT = 100;
     private static final String GZIP_FILE_ENDING = ".gz";
     private static final double EPSILON = 0.00000000001;
     public static final double MAX_BID = 0.5;
     public static final double MIN_BID = 0.00000000001;
+    private static final double BUCKET_SIZE = 0.05;
+    public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
+    public static final String OUTPUT_FOLDER = "t:\\";
+
+    interface HistogramFunc {
+        double call(Map<Double, Double> hist1, Map<Double, Double> hist2);
+    }
+
+    static class EMD implements HistogramFunc {
+        @Override
+        public double call(Map<Double, Double> hist1, Map<Double, Double> hist2) {
+            double EMD = 0;
+            double sum = 0;
+
+            for (double d = 0; round(d) <= MAX_BID; d += BUCKET_SIZE) {
+                EMD += (hist1.get(round(d)) - hist2.get(round(d)));
+                sum += abs(EMD);
+            }
+            return sum;
+        }
+    }
+
+    static class MaxDiff implements HistogramFunc {
+        @Override
+        public double call(Map<Double, Double> hist1, Map<Double, Double> hist2) {
+            double maxDiff = 0;
+
+            for (double d = 0; round(d) <= MAX_BID; d += BUCKET_SIZE) {
+                double diff = abs((hist1.get(round(d)) - hist2.get(round(d))));
+                maxDiff = max(diff, maxDiff);
+            }
+            return maxDiff;
+        }
+    }
+
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -47,7 +83,7 @@ public class ReservePriceAnalysis {
 
 
         String[] agents = {
-//                agentAdxperts,
+                agentAdxperts,
                 agentBob,
                 agentLosCaparos,
                 agentGiza,
@@ -64,30 +100,17 @@ public class ReservePriceAnalysis {
         Map<Double, List<Map<Double, AtomicLong>>> map1 = new HashMap<>();
         Map<Double, List<Map<Double, AtomicLong>>> map2 = new HashMap<>();
 
-        parseFiles(String.format("c:\\temp\\2016_08_20\\%s", agent), map1, map2);
+        parseFiles(String.format(LOGS_BASE_PATH + "%s", agent), map1, map2);
 
         System.out.println("Reducing maps");
-        calcEMD(agent, reduceHistograms(map1, true), reduceHistograms(map2, true));
-//        calcCHI(agent, reduceHistograms(map1, false));
-//        System.out.println(stopwatch.elapsed(TimeUnit.SECONDS));
+//        calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new EMD());
+        calc(agent, reduceHistograms(map1, true), reduceHistograms(map2, true), new MaxDiff());
     }
 
-    private static double EMD(Map<Double, Double> histogram1, Map<Double, Double> histogram2) {
-        double EMD = 0;
-        double sum = 0;
-        double step = 1.0 / Math.pow(10, PRECISION);
-
-        for (double d = 0; round(d) <= MAX_BID; d += step) {
-            EMD += (histogram1.get(round(d)) - histogram2.get(round(d)));
-            sum += Math.abs(EMD);
-        }
-        return sum;
-    }
-
-    private static void calcEMD(String agent, Map<Double, Map<Double, Double>> histogramMap1, Map<Double, Map<Double, Double>> histogramMap2) throws IOException {
+    private static void calc(String agent, Map<Double, Map<Double, Double>> histogramMap1, Map<Double, Map<Double, Double>> histogramMap2, HistogramFunc func) throws IOException {
         System.out.println("Extracting data");
 
-        FileOutputStream fos = new FileOutputStream(String.format("t:\\%s.EMD.%d.csv", agent, PRECISION));
+        FileOutputStream fos = new FileOutputStream(String.format(OUTPUT_FOLDER + "%s.%.2f.%s.csv", func.getClass().getSimpleName(), BUCKET_SIZE, agent));
 
         ArrayList<Double> list1 = new ArrayList<>(histogramMap1.keySet());
         ArrayList<Double> list2 = new ArrayList<>(histogramMap2.keySet());
@@ -105,15 +128,12 @@ public class ReservePriceAnalysis {
             for (int j = 0; j < list2.size(); j++) {
                 double reserve2 = list2.get(j);
 
-//                Map<Double, Double> cumulativeHistogram1 = cumulative(histogramMap1.get(reserve));
-//                Map<Double, Double> cumulativeHistogram2 = cumulative(histogramMap2.get(reserve2));
-                Map<Double, Double> cumulativeHistogram1 = fill(histogramMap1.get(reserve));
-                Map<Double, Double> cumulativeHistogram2 = fill(histogramMap2.get(reserve2));
-                double sum = EMD(cumulativeHistogram1, cumulativeHistogram2);
+                double sum = func.call(fill(histogramMap1.get(reserve)), fill(histogramMap2.get(reserve2)));
                 fos.write(String.format("%f,", sum).getBytes());
             }
         }
     }
+
 
     private static double chi_squared(double[][] matrix) {
         double[][] res = new double[matrix.length][matrix[0].length];
@@ -148,9 +168,7 @@ public class ReservePriceAnalysis {
 
     private static Map<Double, Double> fill(Map<Double, Double> histogram) {
         Map<Double, Double> map = new HashMap<>();
-        double step = 1.0 / Math.pow(10, PRECISION);
-        double d;
-        for (d = 0; round(d) <= MAX_BID; d += step) {
+        for (double d = 0; round(d) <= MAX_BID; d += BUCKET_SIZE) {
             map.put(round(d), histogram.getOrDefault(round(d), 0.0));
         }
         return map;
@@ -158,7 +176,6 @@ public class ReservePriceAnalysis {
 
     private static void calcCHI(String agent, Map<Double, Map<Double, Double>> histogramMap) throws IOException {
         System.out.println("Extracting data");
-        double step = 1.0 / Math.pow(10, PRECISION);
         double[][] matrix = new double[histogramMap.size()][10000];
 
         ArrayList<Double> reserves = new ArrayList<>(histogramMap.keySet());
@@ -169,7 +186,7 @@ public class ReservePriceAnalysis {
         for (int i = 0; i < reserves.size(); i++) {
             double reserve = reserves.get(i);
             int j = 0;
-            for (double bid = 0; round(bid) <= MAX_BID; bid += step) {
+            for (double bid = 0; round(bid) <= MAX_BID; bid += BUCKET_SIZE) {
                 matrix[i][j] = histogramMap.getOrDefault(reserve, new HashMap<>()).getOrDefault(round(bid), 0.0);
                 j++;
                 bidCount++;
@@ -216,9 +233,8 @@ public class ReservePriceAnalysis {
     private static Map<Double, Double> cumulative(Map<Double, Double> histogram) {
         Map<Double, Double> map = new HashMap<>();
         double cumulative = 0;
-        double step = 1.0 / Math.pow(10, PRECISION);
         double d;
-        for (d = 0; round(d) <= MAX_BID; d += step) {
+        for (d = 0; round(d) <= MAX_BID; d += BUCKET_SIZE) {
             cumulative += histogram.getOrDefault(round(d), 0.0);
             map.put(round(d), cumulative);
         }
@@ -262,25 +278,25 @@ public class ReservePriceAnalysis {
         return reducedMap2;
     }
 
-    private static double compareDatasets(Map<Double, AtomicLong> h1, Map<Double, AtomicLong> h2) {
-        double sum = 0;
-        double step = 1.0 / Math.pow(10, PRECISION);
-
-        long sum1 = 0, sum2 = 0;
-        for (AtomicLong al : h1.values()) {
-            sum1 += al.get();
-        }
-        for (AtomicLong al : h2.values()) {
-            sum2 += al.get();
-        }
-
-        for (double i = 0; i < 1; i += step) {
-            double p1i = (1.0 * h1.getOrDefault(ReservePriceAnalysis.round(i), new AtomicLong(0)).get()) / sum1;
-            double p2i = 1.0 * h2.getOrDefault(ReservePriceAnalysis.round(i), new AtomicLong(0)).get() / sum2;
-            sum += Math.abs(p1i - p2i);
-        }
-        return ReservePriceAnalysis.round(sum);
-    }
+//    private static double compareDatasets(Map<Double, AtomicLong> h1, Map<Double, AtomicLong> h2) {
+//        double sum = 0;
+//        double step = 1.0 / Math.pow(10, PRECISION);
+//
+//        long sum1 = 0, sum2 = 0;
+//        for (AtomicLong al : h1.values()) {
+//            sum1 += al.get();
+//        }
+//        for (AtomicLong al : h2.values()) {
+//            sum2 += al.get();
+//        }
+//
+//        for (double i = 0; i < 1; i += step) {
+//            double p1i = (1.0 * h1.getOrDefault(ReservePriceAnalysis.round(i), new AtomicLong(0)).get()) / sum1;
+//            double p2i = 1.0 * h2.getOrDefault(ReservePriceAnalysis.round(i), new AtomicLong(0)).get() / sum2;
+//            sum += abs(p1i - p2i);
+//        }
+//        return ReservePriceAnalysis.round(sum);
+//    }
 
     private static void convertContainer(Auctions.Container container) {
         if (container.hasBidList()) {
@@ -315,7 +331,7 @@ public class ReservePriceAnalysis {
             }
             if (container.hasBidList() && day >= minAuctionDay) {
                 for (AdxBidEntry entry : container.getBidList().getEntriesList()) {
-                    double bid = round(entry.getBid());
+                    double bid = round(entry.getBid(), BUCKET_SIZE);
                     if (bid <= MAX_BID && bid > MIN_BID) {
                         bidList.add(bid);
                         histogram.putIfAbsent(bid, new AtomicLong(0));
@@ -339,6 +355,10 @@ public class ReservePriceAnalysis {
             map.get(reservePrice).add(histogram);
         }
         System.gc();
+    }
+
+    private static double round(double bid, double bucketSize) {
+        return (int) (bid* 1/bucketSize) /(1.0/bucketSize);
     }
 
     private static void printChart(List<Double> bidList, String folderPath) {
