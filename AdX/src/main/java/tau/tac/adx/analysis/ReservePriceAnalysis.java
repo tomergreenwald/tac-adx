@@ -34,17 +34,17 @@ import static java.lang.Math.max;
 public class ReservePriceAnalysis {
     public static final int PRECISION = 3;
     public static final int MIN_AUCTION_DAY = 10;
-    public static final int FILE_COUNT = 10;
+    public static final int FILE_COUNT = 100;
     private static final String GZIP_FILE_ENDING = ".gz";
     private static final double EPSILON = 0.00000000001;
     public static final double MAX_BID = 0.5;
     public static final double MIN_BID = 0.00000000001;
     private static double BUCKET_SIZE;
-    public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
-    public static final String OUTPUT_FOLDER = "t:\\";
-	
-//    public static final String LOGS_BASE_PATH = "/home/ubuntu/ADX/resources/";
-//    public static final String OUTPUT_FOLDER = "/home/ubuntu/ADX/res/";
+//    public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
+//    public static final String OUTPUT_FOLDER = "t:\\";
+
+    public static final String LOGS_BASE_PATH = "/home/ubuntu/ADX/resources/";
+    public static final String OUTPUT_FOLDER = "/home/ubuntu/ADX/res/";
 
     interface HistogramFunc {
         double call(Map<Double, Double> hist1, Map<Double, Double> hist2);
@@ -93,10 +93,10 @@ public class ReservePriceAnalysis {
                 agentGiza,
         };
 
-        double[] bucketSizes = {0.01,0.05,0.1};
+        double[] bucketSizes = {0.01, 0.05, 0.1};
 
         for (String agent : agents) {
-            for (double bucketSize: bucketSizes){
+            for (double bucketSize : bucketSizes) {
                 BUCKET_SIZE = bucketSize;
                 parseAgent(agent);
                 System.gc();
@@ -227,9 +227,9 @@ public class ReservePriceAnalysis {
         ExecutorService service = Executors.newFixedThreadPool(36);
         List<Future> futures = new LinkedList<>();
         int fileCount = FILE_COUNT;
-	System.out.println(rootFolder);
+        System.out.println(rootFolder);
         for (File simulation : new File(rootFolder).listFiles()) {
-            futures.add(service.submit(() -> generateHistogram(readRecords(simulation), Math.random() > 0.5 ? map1 : map2, MIN_AUCTION_DAY)));
+            futures.add(service.submit(() -> generateHistogram(simulation, Math.random() > 0.5 ? map1 : map2, MIN_AUCTION_DAY)));
             if (fileCount-- == 0) {
                 break;
             }
@@ -329,7 +329,10 @@ public class ReservePriceAnalysis {
         //NewDay.createNewDay(builder);
     }
 
-    private static void generateHistogram(List<Container> containers, Map<Double, List<Map<Double, AtomicLong>>> map, int minAuctionDay) {
+    private static void generateHistogram(File simulation, Map<Double, List<Map<Double, AtomicLong>>> map, int minAuctionDay) {
+        List<Container> containers = readRecords(simulation);
+
+
         Map<Double, AtomicLong> histogram = new HashMap<>();
         List<Double> bidList = new ArrayList<>(containers.size());
         double reservePrice = Double.NaN;
@@ -367,7 +370,7 @@ public class ReservePriceAnalysis {
     }
 
     private static double round(double bid, double bucketSize) {
-        return (int) (bid* 1/bucketSize) /(1.0/bucketSize);
+        return (int) (bid * 1 / bucketSize) / (1.0 / bucketSize);
     }
 
     private static void printChart(List<Double> bidList, String folderPath) {
