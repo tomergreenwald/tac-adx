@@ -37,10 +37,10 @@ public class ReservePriceAnalysis {
     public static final int FILE_COUNT = 100;
     private static final String GZIP_FILE_ENDING = ".gz";
     private static final double EPSILON = 0.00000000001;
-    public static final double MAX_BID = 0.4;
+    public static final double MAX_BID = 0.1;
     public static final double MIN_BID = 0.00000000001;
     public static final int THREAD_POOL_SIZE = 8;
-    private static double BUCKET_SIZE = 0.2
+    private static double BUCKET_SIZE = 0.005
             ;
     public static final String LOGS_BASE_PATH = "c:\\temp\\2016_08_20\\";
     public static final String OUTPUT_FOLDER = "t:\\";
@@ -56,18 +56,21 @@ public class ReservePriceAnalysis {
             String agentBob = "bob";
             String agentAdxperts = "adxperts";
             String agentLosCaparos = "LosCaparos";
+            String demo = "demo";
 
 
             String[] agents = {
-                    agentAdxperts,
-                    agentBob,
-                    agentLosCaparos,
-                    agentGiza,
+//                    agentAdxperts,
+//                    agentBob,
+//                    agentLosCaparos,
+//                    agentGiza,
+                    demo
             };
-
-            for (String agent : agents) {
-                parseAgent(agent);
-                System.gc();
+            for (int i = 0; i < 10;i++){
+                for (String agent : agents) {
+                    parseAgent(agent);
+                    System.gc();
+                }
             }
         }
 
@@ -78,13 +81,13 @@ public class ReservePriceAnalysis {
 
             Stopwatch stopwatch = new Stopwatch().start();
             parseFiles(String.format(LOGS_BASE_PATH + "%s", agent), map1, map2);
-            System.out.println(String.format("parsed files in %d seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
+//            System.out.println(String.format("parsed files in %d seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
 
-            calc(agent, reduceHistograms(map1, false), reduceHistograms(map2, false), new EMD());
-            calc(agent, reduceHistograms(map1, false), reduceHistograms(map2, false), new MaxDiff());
+//            calc(agent, reduceHistograms(map1, false), reduceHistograms(map2, false), new EMD());
+//            calc(agent, reduceHistograms(map1, false), reduceHistograms(map2, false), new MaxDiff());
 //            parseFiles(String.format(LOGS_BASE_PATH + "%s", agent), map1, map1);
 //            System.out.println(String.format("parsed files in %d seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
-//            calc_chi(reduceHistograms(map1, false));
+            calc_chi(reduceHistograms(map1, false));
 
         }
 
@@ -123,9 +126,7 @@ public class ReservePriceAnalysis {
         double[][] matrix = new double[histogramMap.size()][(int)(MAX_BID/BUCKET_SIZE)+1];
 
         ArrayList<Double> reserves = new ArrayList<>(histogramMap.keySet());
-        ArrayList<Double> bids = new ArrayList<>();
         Collections.sort(reserves);
-        int bidCount = 0;
 
         for (int i = 0; i < reserves.size(); i++) {
             double reserve = reserves.get(i);
@@ -134,8 +135,6 @@ public class ReservePriceAnalysis {
             for (double bid = 0; round(bid) <= MAX_BID; bid += BUCKET_SIZE) {
                 matrix[i][j] = reserveMap.get(round(bid));
                 j++;
-                bidCount++;
-                bids.add(bid);
             }
         }
         return matrix;
@@ -155,14 +154,8 @@ public class ReservePriceAnalysis {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 sumRows[i] += matrix[i][j];
-                globalSum += matrix[i][j];
-                ;
-            }
-        }
-
-        for (int j = 0; j < matrix[0].length; j++) {
-            for (int i = 0; i < matrix.length; i++) {
                 sumCols[j] += matrix[i][j];
+                globalSum += matrix[i][j];
             }
         }
 
@@ -174,7 +167,7 @@ public class ReservePriceAnalysis {
                     sum += Math.pow(observed - expected, 2) / expected;
             }
         }
-        System.out.println(String.format("Test statistic: %f, degress of freedom: %d, %d, %d", sum, (matrix.length-1)*(matrix[0].length-1), matrix.length-1, matrix[0].length-1));
+        System.out.println(String.format("Test statistic: %f, degrees of freedom: %d, (col) %d, (row) %d", sum, (matrix.length-1)*(matrix[0].length-1), matrix.length-1, matrix[0].length-1));
     }
 
         private static void calc(String agent, Map<Double, Map<Double, Double>> histogramMap1, Map<Double, Map<Double, Double>> histogramMap2, HistogramFunc func) throws IOException {
@@ -238,20 +231,29 @@ public class ReservePriceAnalysis {
         }
 
         private static void parseFiles(String rootFolder, Map<Double, List<Map<Double, AtomicLong>>> map1, Map<Double, List<Map<Double, AtomicLong>>> map2) throws InterruptedException {
-            System.out.println("Parsing files");
-            ExecutorService service = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-            List<Future> futures = new LinkedList<>();
-            int fileCount = FILE_COUNT;
-            System.out.println(rootFolder);
-            for (File simulation : new File(rootFolder).listFiles()) {
-                futures.add(service.submit(() -> generateHistogram(simulation, Math.random() >= 0.5 ? map1 : map2, MIN_AUCTION_DAY)));
-                if (fileCount-- == 0) {
-                    break;
+//            System.out.println("Parsing files");
+
+//            System.out.println(rootFolder);
+            if (rootFolder.contains("demo")){
+                for (int i = 0; i < FILE_COUNT; i++) {
+                    generateDemoHistogram(map1);
+                    generateDemoHistogram(map2);
+                }
+            } else {
+                ExecutorService service = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+                List<Future> futures = new LinkedList<>();
+                int fileCount = FILE_COUNT;
+                for (File simulation : new File(rootFolder).listFiles()) {
+                    futures.add(service.submit(() -> generateHistogram(simulation, Math.random() >= 0.5 ? map1 : map2, MIN_AUCTION_DAY)));
+                    if (fileCount-- == 0) {
+                        break;
+                    }
+                }
+                service.shutdown();
+                while (!service.awaitTermination(1, TimeUnit.SECONDS)) {
                 }
             }
-            service.shutdown();
-            while (!service.awaitTermination(1, TimeUnit.SECONDS)) {
-            }
+
         }
 
         private static Map<Double, Double> cumulative(Map<Double, Double> histogram) {
@@ -302,6 +304,8 @@ public class ReservePriceAnalysis {
                     }
                 }
             }
+//            List<Double> bidList = new ArrayList<>(10000);
+//            printChart(bidList, String.format("t:\\%.02f", 1000 * reservePrice));
             return reducedMap2;
         }
 
@@ -346,6 +350,28 @@ public class ReservePriceAnalysis {
             FlatBufferBuilder builder = new FlatBufferBuilder(0);
             //NewDay.createNewDay(builder);
         }
+
+    private static void generateDemoHistogram(Map<Double, List<Map<Double, AtomicLong>>> map) {
+        Map<Double, AtomicLong> histogram = new HashMap<>();
+        Random r = new Random(System.currentTimeMillis());
+        double reservePrice = round(0.00002 + (0.0002 - 0.00002) * r.nextDouble(), 0.00002);
+        List<Double> bidList = new ArrayList<>(10000);
+
+        int day = 0;
+        for (int i = 0; i < 1000000; i++) {
+            double bid = round(MIN_BID + (MAX_BID - MIN_BID) * r.nextDouble(), BUCKET_SIZE);
+            bidList.add(bid);
+            histogram.putIfAbsent(bid, new AtomicLong(0));
+            histogram.get(bid).incrementAndGet();
+        }
+
+//        printChart(bidList, String.format("t:\\%.02f", 1000 * reservePrice));
+        synchronized (map) {
+            map.putIfAbsent(reservePrice, new LinkedList<>());
+            map.get(reservePrice).add(histogram);
+        }
+        System.gc();
+    }
 
         private static void generateHistogram(File simulation, Map<Double, List<Map<Double, AtomicLong>>> map, int minAuctionDay) {
             List<Container> containers = readRecords(simulation);
